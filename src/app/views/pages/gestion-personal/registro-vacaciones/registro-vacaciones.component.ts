@@ -64,7 +64,6 @@ export class RegistroVacacionesComponent implements OnInit {
   };
 
   listaRegVacaciones: any[] = [];
-  fechaI: any
   cargarOBuscarVacaciones(){
     this.blockUI.start("Cargando Registro de Vacaciones...");
     let parametro: any[] = [{
@@ -86,9 +85,6 @@ export class RegistroVacacionesComponent implements OnInit {
      console.log('Lista-VACACIONES-APROB', resp, resp.list.length);
       this.listaRegVacaciones = [];
       this.listaRegVacaciones = resp.list;
-      this.fechaI = resp.list.map((fecha: any) => fecha.fecha_ini_vac);
-      console.log('FECHA_I', this.fechaI);
-
 
       this.spinner.hide();
     });
@@ -177,7 +173,7 @@ export class RegistroVacacionesComponent implements OnInit {
   }
 
   actualizarVacaciones(DATA: any) {
-    // console.log('DATA_PERSONA_HC', DATA);
+    console.log('DATA_PERSONA_VACACIONES', DATA);
     this.dialog
       .open(ModalVacacionesComponent, {width: '55%', height: '90%', data: DATA})
       .afterClosed().subscribe((resp) => {

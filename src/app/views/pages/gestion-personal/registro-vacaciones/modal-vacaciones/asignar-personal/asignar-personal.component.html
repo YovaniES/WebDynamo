@@ -68,7 +68,7 @@
       <div style="display: flex">
         <div class="flex-1"></div>
         <div style="color: #345df3;">
-          Total : <span class="total">{{ listaPersonal.length }} Activos</span>
+          Total : <span class="total">{{ listaPersonalActivo.length }} Activos</span>
         </div>
       </div>
 
@@ -85,7 +85,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let personal of listaPersonal | paginate:
+            <tr *ngFor="let personal of listaPersonalActivo | paginate:
                       { itemsPerPage: pageSize,
                         currentPage : page,
                         totalItems  : totalPersonal
@@ -112,7 +112,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listaPersonal.length == 0"
+          *ngIf="!loadingItem && listaPersonalActivo.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434"
           >No hay Personal disponible para mostrar

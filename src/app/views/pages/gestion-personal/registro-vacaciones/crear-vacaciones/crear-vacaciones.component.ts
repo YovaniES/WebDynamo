@@ -46,6 +46,7 @@ export class CrearVacacionesComponent implements OnInit {
        apPaterno     : [''],
        apMaterno     : [''],
        codCorp       : [''],
+       fecha_ingreso : [''],
        fechaInicVac  : [''],
        fechaFinVac   : [''],
        id_proyecto   : [''],
@@ -57,9 +58,36 @@ export class CrearVacacionesComponent implements OnInit {
       })
      }
 
- crearVacaciones(){
-
- }
+  crearVacaciones() {
+  this.spinner.show();
+    const formValues = this.vacacionesForm.getRawValue();
+    let parametro: any =  {
+    queryId: 137,
+    mapValue: {
+       p_id_persona        : formValues.idPersonal,
+       p_id_sist_vac       : formValues.idSistema,
+       p_fecha_ini_vac     : formValues.fechaInicVac,
+       p_fecha_fin_vac     : formValues.fechaFinVac,
+       p_id_estado_vac     : formValues.id_estado_vac,
+       p_id_responsable    : this.userID,
+       p_fecha_crea_vac    : '',
+       CONFIG_USER_ID      : this.userID,
+       CONFIG_OUT_MSG_ERROR: "",
+       CONFIG_OUT_MSG_EXITO: "",
+  },
+  };
+  console.log('VAOR_VACACIONES', this.vacacionesForm.value , parametro);
+  this.vacacionesService.crearVacaciones(parametro).subscribe((resp: any) => {
+    Swal.fire({
+      title: 'Crear vacaciones!',
+      text: `Vacaciones: ??? , creado con éxito`,
+      icon: 'success',
+      confirmButtonText: 'Ok',
+      });
+      this.close(true);
+    });
+    this.spinner.hide();
+  }
 
   listSistemaVacaciones: any[] = [];
   getLstSistemaVacaciones(){
@@ -92,10 +120,26 @@ export class CrearVacacionesComponent implements OnInit {
   }
 
   asignarDatosPerona(persona: any){
-    this.vacacionesForm.controls['codCorp'].setValue(persona.codigo_corporativo)
-    this.vacacionesForm.controls['proyecto'].setValue(persona.codigo_proyecto)
-    this.vacacionesForm.controls['nombre'].setValue(persona.nombres)
-    this.vacacionesForm.controls['idPersonal'].setValue(persona.id)
+    console.log('DATA_ASIG_PERS',persona);
+
+    this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
+    this.vacacionesForm.controls['codCorp'      ].setValue(persona.codigo_corporativo)
+    this.vacacionesForm.controls['apPaterno'    ].setValue(persona.apellido_paterno)
+    this.vacacionesForm.controls['apMaterno'    ].setValue(persona.apellido_materno)
+    this.vacacionesForm.controls['nombre'       ].setValue(persona.nombres)
+    this.vacacionesForm.controls['proyecto'     ].setValue(persona.codigo_proyecto)
+    this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
+    this.vacacionesForm.controls['fecha_ingreso'].setValue(persona.fecha_ingreso)
+
+    // if (this.DATA_VACACIONES.fecha_ingreso) {
+    //   let fecha_x = this.DATA_VACACIONES.fecha_ingreso
+    //   const str   = fecha_x.split('/');
+    //   const year  = Number(str[2]);
+    //   const month = Number(str[1]);
+    //   const date  = Number(str[0]);
+    //   this.vacacionesForm.controls['fecha_ingreso'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
+    // }
+
 
   }
 

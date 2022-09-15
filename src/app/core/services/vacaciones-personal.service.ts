@@ -77,5 +77,9 @@ export class VacacionesPersonalService {
   asignarPersonal(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
+
+  crearVacaciones(id: any) {
+    return this.http.post(API_DYNAMO, id);
+  }
 }
 

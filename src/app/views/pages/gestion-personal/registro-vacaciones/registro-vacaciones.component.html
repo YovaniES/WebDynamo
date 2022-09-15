@@ -166,7 +166,7 @@
               <td> {{vacaciones.sist_vac}}</td>
               <td class="w100">{{ vacaciones.fecha_ini_vac }}</td>
               <td>{{ vacaciones.fecha_fin_vac | firstCapital }}</td>
-              <td style="color: #0daef4; width: 100px; font-weight: 600;"> {{cantDias}} <small>d</small></td>
+              <td style="color: #0d6efd; width: 100px; font-weight: 600;"> {{vacaciones.cant_dias_vac}} <small>d</small></td>
               <td style="width: 100px">
                 <span *ngIf="vacaciones.estado_vac == 'En curso'"    class="w135 label estado-info">  {{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="w135 label estado-danger">{{ vacaciones.estado_vac | uppercase }}</span>

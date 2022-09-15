@@ -52,7 +52,6 @@ export class ModalVacacionesComponent implements OnInit {
 
     newForm(){
       this.vacacionesForm = this.fb.group({
-      //  idPersonal    : [''],
        nombre        : ['', [Validators.required]],
        apPaterno     : [''],
        apMaterno     : [''],
@@ -66,6 +65,8 @@ export class ModalVacacionesComponent implements OnInit {
        idSistema     : [''],
        periodoVac    : [''],
 
+       fecha_ingreso : [''],
+       total_dias_vac: [''],
        idVacaciones  : ['']
 
       })
@@ -86,7 +87,7 @@ export class ModalVacacionesComponent implements OnInit {
           param_apellido_materno  : formValues.apMaterno,
           param_dni               : formValues.dni,
           param_correo            : formValues.correo,
-          param_fecha_ingreso     : formValues.fechaIngreso,
+          param_fecha_ingreso     : formValues.fecha_ingreso,
           param_fecha_nacimiento  : formValues.fechaNacimiento,
           param_id_proyecto       : formValues.id_proyecto,
           param_id_perfil         : formValues.codPerfil,
@@ -113,23 +114,6 @@ export class ModalVacacionesComponent implements OnInit {
         })
     });
   };
-  // apellido_materno:"Chávez"
-  // apellido_paterno:"Zaá "
-  // apellidos:"Zaá  Chávez"
-  // codigo_corporativo:"470793"
-  // codigo_proyecto:"TRAMOP"
-  // estado_vac:"En curso"
-  // fecha_fin_vac:"26/10/2022"
-  // fecha_ini_vac:"20/10/2022"
-  // id_estado_vac:1
-  // id_proyecto:14
-  // id_responsable:10
-  // id_sist_vac:2
-  // id_vacaciones:5
-  // nombres:"Ursula"
-  // responsable:"Soto Vilcapoma, Jhon Jimmy"
-  // sist_vac:"TAWA"
- // id_estado_vac
 
   actionBtn: string = 'Registrar';
   cargarVacacionesById(){
@@ -146,12 +130,22 @@ export class ModalVacacionesComponent implements OnInit {
       this.vacacionesForm.controls['estado_persona'].setValue(this.DATA_VACACIONES.estado_persona);
       this.vacacionesForm.controls['id_estado_vac' ].setValue(this.DATA_VACACIONES.id_estado_vac);
 
-      this.vacacionesForm.controls['idSistema' ].setValue(this.DATA_VACACIONES.id_sist_vac);
-      // this.vacacionesForm.controls['periodoVac' ].setValue(this.DATA_VACACIONES.periodo);
+      this.vacacionesForm.controls['idSistema'     ].setValue(this.DATA_VACACIONES.id_sist_vac);
+      this.vacacionesForm.controls['total_dias_vac'].setValue(this.DATA_VACACIONES.cant_dias_vac);
+      this.vacacionesForm.controls['fecha_ingreso' ].setValue(this.DATA_VACACIONES.fecha_ingreso);
+
+      // if (this.DATA_VACACIONES.fecha_ingreso) {
+      //   let fecha_x = this.DATA_VACACIONES.fecha_ingreso
+      //   const str   = fecha_x.split('/');
+      //   const year  = Number(str[2]);
+      //   const month = Number(str[1]);
+      //   const date  = Number(str[0]);
+      //   this.vacacionesForm.controls['fecha_ingreso'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
+      // }
 
       if (this.DATA_VACACIONES.fecha_ini_vac) {
-        let fechaIngr = this.DATA_VACACIONES.fecha_ini_vac
-        const str   = fechaIngr.split('/');
+        let fecha_x = this.DATA_VACACIONES.fecha_ini_vac
+        const str   = fecha_x.split('/');
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
@@ -159,8 +153,8 @@ export class ModalVacacionesComponent implements OnInit {
       }
 
       if (this.DATA_VACACIONES.fecha_fin_vac) {
-        let fechaIngr = this.DATA_VACACIONES.fecha_fin_vac
-        const str   = fechaIngr.split('/');
+        let fecha_x = this.DATA_VACACIONES.fecha_fin_vac
+        const str   = fecha_x.split('/');
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);

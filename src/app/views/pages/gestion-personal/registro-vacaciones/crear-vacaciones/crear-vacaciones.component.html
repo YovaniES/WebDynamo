@@ -30,7 +30,7 @@
             </div>
 
             <div class="input-group col-sm-4">
-              <div class="input-group-text"><mat-icon>account_circle</mat-icon></div>
+              <div class="input-group-text"><mat-icon>person</mat-icon></div>
               <div class="info">{{vacacionesForm.controls['nombre'].value | uppercase}} {{vacacionesForm.controls['apPaterno'].value | uppercase}} {{vacacionesForm.controls['apMaterno'].value | uppercase}}</div>
             </div>
 
@@ -39,13 +39,9 @@
               <div class="info">{{vacacionesForm.controls['proyecto'].value}}</div>
             </div>
 
-            <div class="input-group col-sm-4"
-                 [ngClass]="vacacionesForm.controls['estado_persona'].value == 'Activo' ? 'estado-act' : 'estado-danger'">
-              <div class="input-group-text"
-                 [ngClass]="vacacionesForm.controls['estado_persona'].value == 'Activo' ? 'estado-act' : 'estado-danger'"
-                 ><mat-icon>info</mat-icon>
-              </div>
-              <div class="info">{{vacacionesForm.controls['estado_persona'].value}}</div>
+            <div class="input-group col-sm-4">
+              <div class="input-group-text"><mat-icon>calendar_month</mat-icon></div>
+              <div class="info">{{vacacionesForm.controls['fecha_ingreso'].value}}</div>
             </div>
           </div>
         </div>
@@ -57,8 +53,8 @@
               >Aún no hay personal registrado
      </div> -->
 
-      <!-- DATOS DE LA EMPRESA ------------------------------------------------------------------------->
-      <div class="pr-subtitle mt-2">Data empresa</div>
+      <!-- REGISTRO DE VACACIONES ------------------------------------------------------------------------->
+      <div class="pr-subtitle mt-2">Registro de vacaciones</div>
       <div class="pr-section mb-3">
         <div class="pr-module-container">
           <div class="row g-3">

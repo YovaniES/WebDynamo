@@ -54,7 +54,7 @@ export class AsignarPersonalComponent implements OnInit {
    })
   }
 
-  listaPersonal: any[] = [];
+  listaPersonalActivo: any[] = [];
   cargarOBuscarPersonalActivo(){
     this.blockUI.start("Cargando personal...");
     let parametro: any[] = [{
@@ -69,8 +69,8 @@ export class AsignarPersonalComponent implements OnInit {
     this.blockUI.stop();
 
      console.log('Lista-Personal_ACT', resp, resp.list.length);
-      this.listaPersonal = [];
-      this.listaPersonal = resp.list;
+      this.listaPersonalActivo = [];
+      this.listaPersonalActivo = resp.list;
 
       this.spinner.hide();
     });
