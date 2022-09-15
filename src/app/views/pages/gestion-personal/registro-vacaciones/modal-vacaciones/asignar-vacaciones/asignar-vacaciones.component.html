@@ -1,0 +1,97 @@
+<div style="display: flex">
+  <div class="flex-1"></div>
+  <div class="modal-title c-male"> {{DATA_VACAC && DATA_VACAC.isCreation ? 'Planificar': 'Actualizar'}} vacaciones</div>
+  <div class="flex-1"></div>
+
+  <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form class="row g-3" [formGroup]="asigVacacionesForm">
+  <div class="cli-form newvac-wrapper">
+    <div class="chart-draw">
+      <!-- REGISTRAR VACACIONES---------------------------------------------------------- -->
+        <div class="pr-module-container">
+          <div class="row g-3">
+
+            <div class="col-sm-6 cli-form-element">
+              <div class="form-group">
+                <label>Fecha inicio vacaciones</label>
+                <input
+                  type="date"
+                  class="form-control cli-input-white"
+                  formControlName="fechaInicio"/>
+                <small class="form-text text-alert" *ngIf="campoNoValido('fechaInicio')">* Ingrese la Fecha es obligatorio</small>
+              </div>
+            </div>
+
+            <div class="col-sm-6 cli-form-element">
+              <div class="form-group">
+                <label>Fecha fin vacaciones</label>
+                <input
+                  type="date"
+                  class="form-control cli-input-white"
+                  formControlName="fechaFin"/>
+                  <small class="form-text text-alert" *ngIf="campoNoValido('fechaFin')">* Ingrese la Fecha es obligatorio</small>
+              </div>
+            </div>
+
+            <div class="col-sm-6 cli-form-element">
+              <label>Estado *</label>
+              <select class="cli-input-white" formControlName="id_estado">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="estado.id_correlativo" *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
+              </select>
+                <small class="form-text text-alert" *ngIf="campoNoValido('id_estado')">* Ingrese el Estado es obligatorio</small>
+            </div>
+
+            <div class="col-sm-6 cli-form-element">
+              <label>Motivo *</label>
+              <select class="cli-input-white" formControlName="id_motivo">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="motivo.id_correlativo" *ngFor="let motivo of listVacacionesMotivo">{{motivo.valor_texto_1}}</option>
+              </select>
+                <small class="form-text text-alert" *ngIf="campoNoValido('id_motivo')">* Ingrese el Motivo es obligatorio</small>
+            </div>
+
+            <!-- <div class="col-sm-4 cli-form-element">
+              <label>Periodo</label>
+              <select class="cli-input-white" formControlName="periodoVac">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="1">1</option>
+                <option [value]="2">2</option>
+                <option [value]="3">3</option>
+              </select>
+            </div> -->
+
+            <div class="cli-form-element mb-2">
+              <label>Obervaciones *</label>
+              <textarea
+                class="form-control"
+                style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+                rows="3"
+                placeholder="Escriba algún Comentario de sobre la Planificación de vacaciones..."
+                formControlName="observaciones"
+               ></textarea>
+                <small class="form-text text-alert" *ngIf="campoNoValido('observaciones')">* Ingrese la Observación es obligatorio</small>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- --------------------------------------------BOTONES ------------------------------------------>
+    <div class="cli-form-buttons" style="margin-top: 8%">
+      <button class="cli-btn btn-m btn-cancel" type="submit" (click)="close()">
+        <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+      </button>
+      <button
+        class="cli-btn btn-m btn-blue"
+        [disabled]="asigVacacionesForm.invalid"
+        (click)="agregarOactualizarVacaciones()">
+        <mat-icon class="icon-18">save</mat-icon> {{titleBtn}}
+      </button>
+    </div>
+  </div>
+</form>
+

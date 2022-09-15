@@ -1,0 +1,117 @@
+<div style="display: flex;">
+  <div class="flex-1"></div>
+  <div class="modal-title c-male">Crear vacaciones</div>
+  <div class="flex-1"></div>
+
+  <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form class="row g-3" [formGroup]="vacacionesForm">
+  <div class="cli-form newvac-wrapper">
+    <div class="chart-draw">
+      <!-- REGISTROS DEL PERSONAL-------------------------------------------------------------------- -->
+      <div style="display: flex; background-color: #f6f3f3;">
+        <div class="pr-subtitle">Datos del personal</div>
+        <div class="flex-1"></div>
+          <button class="btn-asignar btn-grey"  matTooltip="Agregar personal" type="submit" style="color: #4a93ff; margin-right: 6px;" (click)="asignarPersonal()">
+            <mat-icon class="icon-13">add</mat-icon><mat-icon class="icon-13">person</mat-icon>
+          </button>
+      </div>
+
+      <div class="pr-section mt-2">
+        <div class="pr-module-containerXZ">
+          <div class="row" style="justify-content: space-between;">
+            <!-- account_circle / sensor_occupied-->
+            <div class="input-group col-sm-4">
+              <div class="input-group-text"><mat-icon>workspaces</mat-icon></div>
+              <div class="info">{{vacacionesForm.controls['codCorp'].value}}</div>
+            </div>
+
+            <div class="input-group col-sm-4">
+              <div class="input-group-text"><mat-icon>account_circle</mat-icon></div>
+              <div class="info">{{vacacionesForm.controls['nombre'].value | uppercase}} {{vacacionesForm.controls['apPaterno'].value | uppercase}} {{vacacionesForm.controls['apMaterno'].value | uppercase}}</div>
+            </div>
+
+            <div class="input-group col-sm-4">
+              <div class="input-group-text"><mat-icon>category</mat-icon></div>
+              <div class="info">{{vacacionesForm.controls['proyecto'].value}}</div>
+            </div>
+
+            <div class="input-group col-sm-4"
+                 [ngClass]="vacacionesForm.controls['estado_persona'].value == 'Activo' ? 'estado-act' : 'estado-danger'">
+              <div class="input-group-text"
+                 [ngClass]="vacacionesForm.controls['estado_persona'].value == 'Activo' ? 'estado-act' : 'estado-danger'"
+                 ><mat-icon>info</mat-icon>
+              </div>
+              <div class="info">{{vacacionesForm.controls['estado_persona'].value}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div *ngIf="!loadingItem"
+              class="cli-loader"
+              style="color: #c9c9c9"
+              >Aún no hay personal registrado
+     </div> -->
+
+      <!-- DATOS DE LA EMPRESA ------------------------------------------------------------------------->
+      <div class="pr-subtitle mt-2">Data empresa</div>
+      <div class="pr-section mb-3">
+        <div class="pr-module-container">
+          <div class="row g-3">
+            <div class="col-sm-3 cli-form-element">
+              <label>Sistema</label>
+              <select class="cli-input-white" formControlName="idSistema">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="sistema.id_correlativo" *ngFor="let sistema of listSistemaVacaciones">{{sistema.valor_texto_1}}</option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <div class="form-group">
+                <label>Fecha de incio</label>
+                <input
+                  type="date"
+                  class="form-control cli-input-white"
+                  formControlName="fechaInicVac"/>
+              </div>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <div class="form-group">
+                <label>Fecha de fin</label>
+                <input
+                  type="date"
+                  class="form-control cli-input-white"
+                  formControlName="fechaFinVac"/>
+              </div>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <label>Estado *</label>
+              <select class="cli-input-white" formControlName="id_estado_vac">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas">{{estado.valor_texto_1}}</option>
+              </select>
+                <small class="form-text text-alert" *ngIf="campoNoValido('id_estado_vac')">* Ingrese el Estado es obligatorio</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------BOTONES ------------------------------------------->
+    <div class="cli-form-buttons">
+      <button class="cli-btn btn-m btn-cancel" type="submit" (click)="close()">
+        <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+      </button>
+      <button class="cli-btn btn-m btn-blue" (click)="crearVacaciones()">
+        <!-- [disabled]="vacacionesForm.invalid" -->
+        <mat-icon class="icon-18">save</mat-icon> Registrar
+      </button>
+    </div>
+  </div>
+</form>

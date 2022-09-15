@@ -1,0 +1,28 @@
+.btn-asignar {
+  border: none;
+  border-radius: 2px;
+  display: flex;
+  height: 18px;
+  align-items: center;
+  border: solid 0.5px #4a93ff;
+  color: #4a93ff;
+  margin-right: 6px;
+  & mat-icon {
+    margin: 0 1px;
+  }
+  &:disabled {
+    background-color: #bcd7ff;
+    color: #fff;
+  }
+}
+
+.input-group-text {
+  background-color: #ffffff;
+  border: none;
+  padding: 0.5px 5px;
+}
+
+.input-group {
+  width: auto;
+  justify-content: center;
+}
