@@ -125,17 +125,14 @@
         <div class="pr-section mb-2">
           <div class="pr-module-container">
             <div style="overflow: auto; min-height: 50px">
-              <!-- <div *ngIf="listVacacionesPeriodo.length > 0"> -->
                 <table class="cli-table stripedtable underlinedtable">
                   <thead>
                     <tr class="bgc-blue-light c-white">
                       <th>Accíón</th>
                       <th>N°</th>
-                      <!-- <th>Sistema</th> -->
                       <th>Fecha inicio</th>
                       <th>Fecha fin</th>
                       <th>Días Calendario</th>
-                      <!-- <th>Periodo</th> -->
                       <th>Estado</th>
                       <th>Motivo</th>
                       <th>Fecha registro</th>
@@ -161,11 +158,9 @@
                         </div>
                       </td>
                       <td>{{i+1}}</td>
-                      <!-- <td>GABIN</td> -->
                       <td>{{periodo.fecha_inicio}}</td>
                       <td>{{periodo.fecha_fin}}</td>
                       <td>{{periodo.cant_dias_periodo}}</td>
-                      <!-- <td>{{i+1}}</td> -->
                       <td>{{periodo.vac_estado}}</td>
                       <td>{{periodo.vac_motivo}}</td>
                       <td>{{periodo.fecha_creacion}}</td>
@@ -176,13 +171,6 @@
                   <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
                   cargando...
                 </div>
-              <!-- </div> -->
-              <!-- <div
-                *ngIf="!loadingItem && listperiodoPeriodo.length == 0"
-                class="cli-loader mt-2"
-                style="color: #c9c9c9"
-                >Aún no tiene Vacaciones Registradas
-              </div> -->
             </div>
           </div>
         </div>
@@ -209,7 +197,6 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ cambios.proyecto_codigo }}</td>
                     <td>En curso</td>
-                    <!-- <td>{{ cambios.proyecto_descripcion }}</td> -->
                     <td>{{ cambios.fecha_asignacion }}</td>
                     <td>{{ cambios.nombre_usuario_asignacion }}</td>
                   </tr>

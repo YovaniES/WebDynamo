@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -34,8 +34,6 @@ export class CrearVacacionesComponent implements OnInit {
     this.getUsuario();
     this.getLstEstadoVacaciones();
     this.getLstSistemaVacaciones();
-    // this.cargarVacacionesAsignado();
-
   }
 
     newForm(){
@@ -43,18 +41,15 @@ export class CrearVacacionesComponent implements OnInit {
        idPersonal    : [''],
 
        nombre        : ['', [Validators.required]],
-       apPaterno     : [''],
-       apMaterno     : [''],
-       codCorp       : [''],
-       fecha_ingreso : [''],
-       fechaInicVac  : [''],
-       fechaFinVac   : [''],
-       id_proyecto   : [''],
-       estado_persona: [''],
-       proyecto      : [''],
+       apPaterno     : ['', [Validators.required]],
+       apMaterno     : ['', [Validators.required]],
+       codCorp       : ['', [Validators.required]],
+       fecha_ingreso : ['', [Validators.required]],
+       fechaInicVac  : ['', [Validators.required]],
+       fechaFinVac   : ['', [Validators.required]],
+       proyecto      : ['', [Validators.required]],
        id_estado_vac : [''],
-       idSistema     : [''],
-       periodoVac    : ['']
+       idSistema     : ['', [Validators.required]],
       })
      }
 
@@ -64,12 +59,13 @@ export class CrearVacacionesComponent implements OnInit {
     let parametro: any =  {
     queryId: 137,
     mapValue: {
-       p_id_persona        : formValues.idPersonal,
+       p_id_persona        : this.id_persona,
        p_id_sist_vac       : formValues.idSistema,
        p_fecha_ini_vac     : formValues.fechaInicVac,
        p_fecha_fin_vac     : formValues.fechaFinVac,
        p_id_estado_vac     : formValues.id_estado_vac,
        p_id_responsable    : this.userID,
+      //  p_id_responsable    : this.userLogeado,
        p_fecha_crea_vac    : '',
        CONFIG_USER_ID      : this.userID,
        CONFIG_OUT_MSG_ERROR: "",
@@ -108,10 +104,12 @@ export class CrearVacacionesComponent implements OnInit {
   }
 
   userID: number = 0;
+  userLogeado: string = '';
   getUsuario(){
    this.authService.getCurrentUser().subscribe( resp => {
-     this.userID   = resp.user.userId;
-     // console.log('ID-USER', this.userID);
+     this.userID   =resp,  resp.user.userId;
+     this.userLogeado = `${resp.user.nombres} ${resp.user.apellidoPaterno}`
+     console.log('USER_lOGEADO', this.userID, this.userLogeado);
    })
   };
 
@@ -130,17 +128,6 @@ export class CrearVacacionesComponent implements OnInit {
     this.vacacionesForm.controls['proyecto'     ].setValue(persona.codigo_proyecto)
     this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
     this.vacacionesForm.controls['fecha_ingreso'].setValue(persona.fecha_ingreso)
-
-    // if (this.DATA_VACACIONES.fecha_ingreso) {
-    //   let fecha_x = this.DATA_VACACIONES.fecha_ingreso
-    //   const str   = fecha_x.split('/');
-    //   const year  = Number(str[2]);
-    //   const month = Number(str[1]);
-    //   const date  = Number(str[0]);
-    //   this.vacacionesForm.controls['fecha_ingreso'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
-    // }
-
-
   }
 
   campoNoValido(campo: string): boolean {
@@ -151,6 +138,7 @@ export class CrearVacacionesComponent implements OnInit {
     }
   }
 
+  id_persona: number = 0;
   asignarPersonal(){
 
     const dialogRef = this.dialog.open(AsignarPersonalComponent, { width:'35%', data: {vacForm: this.vacacionesForm.value, isCreation: true} });
@@ -159,8 +147,10 @@ export class CrearVacacionesComponent implements OnInit {
       console.log('PERS', resp);
 
       if (resp) {
+        this.id_persona = resp.id;
+        console.log('ID_P', this.id_persona);
+
         this.asignarDatosPerona(resp);
-        // this.cargarVacacionesAsignado()
       }
     })
   };

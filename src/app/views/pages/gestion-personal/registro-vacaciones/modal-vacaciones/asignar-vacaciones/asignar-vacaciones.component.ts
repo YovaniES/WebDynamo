@@ -60,8 +60,6 @@ export class AsignarVacacionesComponent implements OnInit {
    }
 
    agregarPeriodoVacaciones() {
-
-
     this.spinner.show();
     const formValues = this.asigVacacionesForm.getRawValue();
 
@@ -111,7 +109,7 @@ export class AsignarVacacionesComponent implements OnInit {
           p_id_usuario_asignacion: this.userID ,
           p_fecha_vac_creacion   : '' ,
           p_id_sist_vac          : this.DATA_VACAC.id_sist,
-          CONFIG_USER_ID      : this.userID,
+          CONFIG_USER_ID         : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
           CONFIG_OUT_MSG_EXITO: ''
         },
@@ -168,18 +166,12 @@ export class AsignarVacacionesComponent implements OnInit {
     }
   }
 
-  formatPeriodo(fechaPeriodo: string){
-    const mesAndYear = fechaPeriodo.split('/');
-
-    return mesAndYear[1] + '-' + mesAndYear[0]
-  }
-
   listSistemaVacaciones: any[] = [];
   getLstSistemaVacaciones(){
   let parametro: any[] = [{ queryId: 126}];
   this.vacacionesService.getLstSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listSistemaVacaciones = resp.list;
-    console.log('SISTEMA-ASIG_VAC', resp.list);
+    // console.log('SISTEMA-ASIG_VAC', resp.list);
     })
   }
 
@@ -188,7 +180,7 @@ export class AsignarVacacionesComponent implements OnInit {
   let parametro: any[] = [{ queryId: 124}];
   this.vacacionesService.getLstEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listVacacionesEstado = resp.list;
-    console.log('VACAS-ESTADO', resp.list);
+    // console.log('VACAS-ESTADO', resp.list);
     })
   }
 
@@ -197,7 +189,7 @@ export class AsignarVacacionesComponent implements OnInit {
   let parametro: any[] = [{ queryId: 125}];
   this.vacacionesService.getLstMotivosVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listVacacionesMotivo = resp.list;
-    console.log('VACAS-MOTIVO', resp.list);
+    // console.log('VACAS-MOTIVO', resp.list);
     })
   }
 

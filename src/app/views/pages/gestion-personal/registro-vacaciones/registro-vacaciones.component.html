@@ -127,7 +127,7 @@
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
               <th>ID Vacaciones</th>
-              <th>ID Persona</th>
+              <!-- <th>ID Persona</th> -->
               <th>Código</th>
               <th>Nombres y Apellidos</th>
               <th>Cód. Proyecto</th>
@@ -156,10 +156,16 @@
                     (click)="actualizarVacaciones(vacaciones)"
                     ><mat-icon class="icon-18">hail</mat-icon>
                   </button>
+
+                  <button matTooltip="Eliminar"
+                    class="icon-btn btn-trans c-fucsia"
+                    ><mat-icon class="icon-18">delete_forever</mat-icon>
+                  </button>
+                  <!-- (click)="abrirEliminarLogico(personal.id, personal.codigo_corporativo, '', personal.nombres)" -->
                 </div>
               </td>
               <td>{{ vacaciones.id_vacaciones }}</td>
-              <td>{{ vacaciones.id_persona }}</td>
+              <!-- <td>{{ vacaciones.id_persona }}</td> -->
               <td>{{ vacaciones.codigo_corporativo }}</td>
               <td class="w350"> {{ vacaciones.apellidos |firstCapital}}, {{vacaciones.nombres | firstCapital}}</td>
               <td>{{ vacaciones.codigo_proyecto | uppercase}}</td>

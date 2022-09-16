@@ -1,6 +1,6 @@
 <div style="display: flex">
   <div class="flex-1"></div>
-  <div class="modal-title c-male"> {{DATA_VACAC && DATA_VACAC.isCreation ? 'Planificar': 'Actualizar'}} vacaciones</div>
+  <div class="modal-title c-male"> {{DATA_VACAC && DATA_VACAC.isCreation ? 'Planificar': 'Actualizar planificación de'}} vacaciones</div>
   <div class="flex-1"></div>
 
   <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">
@@ -11,7 +11,7 @@
 <form class="row g-3" [formGroup]="asigVacacionesForm">
   <div class="cli-form newvac-wrapper">
     <div class="chart-draw">
-      <!-- REGISTRAR VACACIONES---------------------------------------------------------- -->
+      <!-- REGISTRAR PERIODO DE LAS VACACIONES---------------------------------------------------------- -->
         <div class="pr-module-container">
           <div class="row g-3">
 
@@ -54,16 +54,6 @@
               </select>
                 <small class="form-text text-alert" *ngIf="campoNoValido('id_motivo')">* Ingrese el Motivo es obligatorio</small>
             </div>
-
-            <!-- <div class="col-sm-4 cli-form-element">
-              <label>Periodo</label>
-              <select class="cli-input-white" formControlName="periodoVac">
-                <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="1">1</option>
-                <option [value]="2">2</option>
-                <option [value]="3">3</option>
-              </select>
-            </div> -->
 
             <div class="cli-form-element mb-2">
               <label>Obervaciones *</label>

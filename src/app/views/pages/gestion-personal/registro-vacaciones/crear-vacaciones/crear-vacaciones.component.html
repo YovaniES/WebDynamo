@@ -104,8 +104,9 @@
       <button class="cli-btn btn-m btn-cancel" type="submit" (click)="close()">
         <mat-icon class="icon-18">cancel</mat-icon> Cancelar
       </button>
-      <button class="cli-btn btn-m btn-blue" (click)="crearVacaciones()">
-        <!-- [disabled]="vacacionesForm.invalid" -->
+      <button class="cli-btn btn-m btn-blue"
+        [disabled]="vacacionesForm.invalid"
+        (click)="crearVacaciones()">
         <mat-icon class="icon-18">save</mat-icon> Registrar
       </button>
     </div>
