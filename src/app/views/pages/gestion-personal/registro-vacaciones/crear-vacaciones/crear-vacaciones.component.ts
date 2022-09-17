@@ -40,14 +40,14 @@ export class CrearVacacionesComponent implements OnInit {
       this.vacacionesForm = this.fb.group({
        idPersonal    : [''],
 
+       codCorp       : [''],
        nombre        : ['', [Validators.required]],
-       apPaterno     : ['', [Validators.required]],
-       apMaterno     : ['', [Validators.required]],
-       codCorp       : ['', [Validators.required]],
-       fecha_ingreso : ['', [Validators.required]],
-       fechaInicVac  : ['', [Validators.required]],
-       fechaFinVac   : ['', [Validators.required]],
-       proyecto      : ['', [Validators.required]],
+       apPaterno     : [''],
+       apMaterno     : [''],
+       proyecto      : [''],
+       fecha_ingreso : [''],
+       fechaInicVac  : [''],
+       fechaFinVac   : [''],
        id_estado_vac : [''],
        idSistema     : ['', [Validators.required]],
       })
@@ -99,7 +99,7 @@ export class CrearVacacionesComponent implements OnInit {
   let parametro: any[] = [{ queryId: 132}];
   this.vacacionesService.getLstEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listEstadoVacacionesAprobadas = resp.list;
-    // console.log('VACAS-ESTADO', resp.list);
+    console.log('VACAS-ESTADO', resp.list);
     })
   }
 
@@ -107,9 +107,11 @@ export class CrearVacacionesComponent implements OnInit {
   userLogeado: string = '';
   getUsuario(){
    this.authService.getCurrentUser().subscribe( resp => {
-     this.userID   =resp,  resp.user.userId;
+     this.userID   =  resp.user.userId;
+    //  this.userID   = resp,  resp.user.userId;
      this.userLogeado = `${resp.user.nombres} ${resp.user.apellidoPaterno}`
      console.log('USER_lOGEADO', this.userID, this.userLogeado);
+     console.log('USER_ID_LOG', this.userID);
    })
   };
 

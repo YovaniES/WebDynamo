@@ -17,11 +17,14 @@ import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacacio
   templateUrl: './modal-vacaciones.component.html',
   styleUrls: ['./modal-vacaciones.component.scss']
 })
+
 export class ModalVacacionesComponent implements OnInit {
 
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
+
+  currentDate: any
 
   constructor(
     private personalService: PersonalService,

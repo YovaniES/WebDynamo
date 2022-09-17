@@ -66,12 +66,11 @@
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <div class="col-sm-3 cli-form-element ">
+              <label>Fecha de incio</label>
               <div class="form-group">
-                <label>Fecha de incio</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
+                <input type="date"
+                  class="form-control cli-input-white calendario"
                   formControlName="fechaInicVac"/>
               </div>
             </div>
@@ -85,6 +84,24 @@
                   formControlName="fechaFinVac"/>
               </div>
             </div>
+
+            <!-- <div class="col-sm-3 cli-form-element">
+              <mat-form-field>
+                 <input matInput [matDatepicker]="picker2"
+                  placeholder="Fecha inicio" required formControlName="fechaInicVac" />
+                  <mat-datepicker #picker2></mat-datepicker>
+                  <mat-datepicker-toggle matSuffix [for]="picker2" ></mat-datepicker-toggle>
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <mat-form-field>
+                 <input matInput [matDatepicker]="picker"
+                  placeholder="Fecha fin" required formControlName="fechaFinVac" />
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+              </mat-form-field>
+            </div> -->
 
             <div class="col-sm-3 cli-form-element">
               <label>Estado *</label>

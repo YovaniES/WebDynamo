@@ -21,6 +21,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [],
@@ -37,7 +41,6 @@ import { MatMenuModule } from '@angular/material/menu';
     MatFormFieldModule,
     MatPaginatorModule,
     MatSortModule,
-    MatInputModule,
     MatCardModule,
     MatCheckboxModule,
     MatProgressBarModule,
@@ -47,6 +50,13 @@ import { MatMenuModule } from '@angular/material/menu';
     MatRadioModule,
     MatSnackBarModule,
     MatMenuModule,
+    MatDatepickerModule,
+    MatInputModule,
+
+    MatNativeDateModule,
+    // MatMomentDateModule
+
   ],
+  providers:[{provide: MAT_DATE_LOCALE, useValue: 'en-GB'}]
 })
 export class MaterialModule {}

@@ -20,7 +20,6 @@ import { AsignarVacacionesComponent } from './registro-vacaciones/modal-vacacion
 import { AsignarPersonalComponent } from './registro-vacaciones/modal-vacaciones/asignar-personal/asignar-personal.component';
 import { CrearVacacionesComponent } from './registro-vacaciones/crear-vacaciones/crear-vacaciones.component';
 
-
 @NgModule({
   declarations: [
     RegistroCuentaComponent,
@@ -41,7 +40,6 @@ import { CrearVacacionesComponent } from './registro-vacaciones/crear-vacaciones
   imports: [
     GestionPersonalRoutingModule,
     CoreModule,
-
     NgxPaginationModule,
     NgxSpinnerModule,
     MaterialModule
