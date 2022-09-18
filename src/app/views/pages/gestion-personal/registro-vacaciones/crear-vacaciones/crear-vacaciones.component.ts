@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -18,6 +18,11 @@ export class CrearVacacionesComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
+
+  // range = new FormGroup({
+  //   start: new FormControl<Date | null>(null),
+  //   end  : new FormControl<Date | null>(null),
+  // });
 
   constructor(
     private vacacionesService: VacacionesPersonalService,
@@ -45,11 +50,12 @@ export class CrearVacacionesComponent implements OnInit {
        apPaterno     : [''],
        apMaterno     : [''],
        proyecto      : [''],
+       fechaInicVac  : ['', [Validators.required]],
        fecha_ingreso : [''],
-       fechaInicVac  : [''],
-       fechaFinVac   : [''],
+       fechaFinVac   : ['', [Validators.required]],
        id_estado_vac : [''],
        idSistema     : ['', [Validators.required]],
+       total_dias_vac: ['']
       })
      }
 

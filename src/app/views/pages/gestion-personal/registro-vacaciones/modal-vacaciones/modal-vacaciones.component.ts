@@ -74,7 +74,15 @@ export class ModalVacacionesComponent implements OnInit {
 
       })
      }
+  getFechaIni(event: any){
+    console.log('FECHA-INI-IMPUT', event.target.value);
 
+  }
+
+  getFechaInit(e: any){
+    console.log('F_INI', e.target.value);
+
+  }
 
   actualizarPersonalVacaciones(){
     this.spinner.show();

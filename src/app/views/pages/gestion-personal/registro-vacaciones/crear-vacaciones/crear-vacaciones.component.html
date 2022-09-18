@@ -66,7 +66,7 @@
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element ">
+            <!-- <div class="col-sm-3 cli-form-element ">
               <label>Fecha de incio</label>
               <div class="form-group">
                 <input type="date"
@@ -83,6 +83,61 @@
                   class="form-control cli-input-white"
                   formControlName="fechaFinVac"/>
               </div>
+            </div> -->
+
+            <!-- <mat-form-field appearance="fill">
+              <mat-label>Inserte el rago de Vacaciones</mat-label>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate placeholder="Start date">
+                <input matEndDate placeholder="End date">
+              </mat-date-range-input>
+              <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field> -->
+          <div class="col-sm-4 cli-form-elementxx">
+            <label>FECHA X</label>
+            <!-- <label for="" class="col-form-label col-sm-2">Fecha Inici v</label> -->
+            <div class="form-group row">
+              <div class="col-sm-4zx" style="display:flex">
+                <input class="form-control"
+                [matDatepicker]="myPicker"
+                formControlName="fechaFinVac"/>
+                <mat-datepicker-toggle [for]="myPicker"></mat-datepicker-toggle>
+                <mat-datepicker #myPicker></mat-datepicker>
+              </div>
+            </div>
+          </div>
+
+
+            <div class="col-sm-12xx">
+            <mat-form-field appearance="fill">
+              <mat-label>Días de Vacaciones</mat-label>
+              <mat-date-range-input [formGroup]="vacacionesForm" [rangePicker]="picker">
+                <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones">
+                <input matEndDate formControlName="fechaFinVac" placeholder="Final de vacaciones">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+
+              <mat-error *ngIf="vacacionesForm.controls['fechaInicVac'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
+              <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid')">Invalid end date</mat-error>
+            </mat-form-field>
+          </div>
+
+
+            <!-- <p>Selected range: {{vacacionesForm.value | json}}</p> -->
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Total días vacaciones</label>
+              <input
+                style="font-weight: 600; text-align:center"
+                type="number"
+                readonly="true"
+                class="form-control"
+                formControlName="total_dias_vac"
+                />
             </div>
 
             <!-- <div class="col-sm-3 cli-form-element">
@@ -103,14 +158,14 @@
               </mat-form-field>
             </div> -->
 
-            <div class="col-sm-3 cli-form-element">
+            <!-- <div class="col-sm-3 cli-form-element">
               <label>Estado *</label>
               <select class="cli-input-white" formControlName="id_estado_vac">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas">{{estado.valor_texto_1}}</option>
               </select>
                 <small class="form-text text-alert" *ngIf="campoNoValido('id_estado_vac')">* Ingrese el Estado es obligatorio</small>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

@@ -114,6 +114,7 @@
                 <mat-form-field color = "acento" apariencia = "relleno" >
                    <input matInput [matDatepicker]="picker2"
                     [max]="currentDate"
+                    (dateChange)="getFechaIni($event)"
                     required formControlName="fechaInicVac" />
                     <mat-datepicker #picker2></mat-datepicker>
                     <mat-datepicker-toggle matSuffix [for]="picker2" ></mat-datepicker-toggle>
@@ -170,15 +171,6 @@
                 <small class="form-text text-alert" *ngIf="campoNoValido('id_estado_vac')">* Ingrese el Estado es obligatorio</small>
             </div>
 
-            <!-- <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha de registro Vacaciones</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaIngreso"/>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
