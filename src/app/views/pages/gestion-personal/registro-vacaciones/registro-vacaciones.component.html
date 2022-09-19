@@ -1,6 +1,6 @@
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Registro de vacaciones</div>
+    <div class="modal-title c-male">Regulación de vacaciones</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
       <div class="card" style="border-radius: 2px; font-weight: 600; padding: 7px">
@@ -48,14 +48,14 @@
 
 
             <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Registros de:</label>
+              <label class="form-label">Responsables</label>
               <select class="form-select" formControlName="id_responsable">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="admin.id_correlativo" *ngFor="let admin of listAdminVacaciones">{{admin.valor_texto_1}}</option>
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <!-- <div class="col-sm-3 cli-form-element">
               <div class="form-group">
                 <label>Fecha registro vacaciones <span class="date-rango">(desde)</span></label>
                  <input
@@ -73,6 +73,23 @@
                   class="form-control"
                   formControlName="fechaCreaVacFin"/>
               </div>
+            </div> -->
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Fecha de registro vacaciones </label>
+
+              <mat-form-field color="accent" appearance="outline">
+                <!-- <mat-label>Seleccione el rango de días</mat-label> -->
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate formControlName="fechaCreaVacIni" placeholder="Inicio vacaciones"   >
+                  <input matEndDate   formControlName="fechaCreaVacFin"  placeholder="Final de vacaciones" >
+                </mat-date-range-input>
+                <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <!-- <mat-error *ngIf="vacacionesForm.controls['fechaCreaVacIni'].hasError('matStartDateInvalid')">Invalid start date</mat-error> -->
+                <!-- <mat-error *ngIf="vacacionesForm.controls['fechaCreaVacFin' ].hasError('matEndDateInvalid')">Invalid end date</mat-error> -->
+              </mat-form-field>
             </div>
 
             <div class="cli-form-buttons" style="margin-top: 8px">
@@ -116,7 +133,7 @@
 
         <div class="flex-1"></div>
         <div class="mt-2" style="color: #345df3; font-weight: 600;">
-          Total : <span class="total">{{ listaRegVacaciones.length }} Personas</span>
+          Total : <span class="total">{{ listaRegVacaciones.length }} Registros</span>
         </div>
       </div>
 
@@ -139,7 +156,6 @@
               <th>Responsable</th>
               <th>Planificado</th>
               <th>Pendiente</th>
-              <!-- <th>Periodo</th> -->
             </tr>
           </thead>
 
@@ -174,14 +190,14 @@
               <td>{{ vacaciones.fecha_fin_vac | firstCapital }}</td>
               <td style="color: #0d6efd; width: 100px; font-weight: 600;"> {{vacaciones.cant_dias_vac}} <small>d</small></td>
               <td style="width: 100px">
-                <span *ngIf="vacaciones.estado_vac == 'En curso'"    class="w135 label estado-info">  {{ vacaciones.estado_vac | uppercase }}</span>
-                <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="w135 label estado-danger">{{ vacaciones.estado_vac | uppercase }}</span>
-                <span *ngIf="vacaciones.estado_vac == 'Planificado'" class="w135 label estado-planif">{{ vacaciones.estado_vac | uppercase }}</span>
-                <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="w135 label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
+                <span *ngIf="vacaciones.estado_vac == 'En curso'"    class="label estado-info">  {{ vacaciones.estado_vac | uppercase }}</span>
+                <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="label estado-danger">{{ vacaciones.estado_vac | uppercase }}</span>
+                <span *ngIf="vacaciones.estado_vac == 'Planificado'" class="label estado-planif">{{ vacaciones.estado_vac | uppercase }}</span>
+                <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
               </td>
               <td class="w350">{{vacaciones.responsable}}</td>
               <!-- <td>{{vacaciones.estado_vac}}</td> -->
-              <td style="color: #20c997; font-weight:600;"> 12 <small>d</small></td>
+              <td style="color: #20c997; font-weight:600;">{{vacaciones.dias_vac_planificado}}<small> d</small></td>
               <td style="color: red"> 8 <small>d</small></td>
             </tr>
           </tbody>

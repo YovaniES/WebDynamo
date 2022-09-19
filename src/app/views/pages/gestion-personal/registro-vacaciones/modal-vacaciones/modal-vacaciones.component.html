@@ -36,14 +36,6 @@
               <div class="info">{{vacacionesForm.controls['fecha_ingreso'].value}}</div>
             </div>
 
-            <!-- <div class="input-group col-sm-4"
-                 [ngClass]="vacacionesForm.controls['estado_persona'].value == 'Activo' ? 'estado-act' : 'estado-danger'">
-              <div class="input-group-text"
-                 [ngClass]="vacacionesForm.controls['estado_persona'].value == 'Activo' ? 'estado-act' : 'estado-danger'"
-                 ><mat-icon>info</mat-icon>
-              </div>
-              <div class="info">{{vacacionesForm.controls['estado_persona'].value}}</div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -60,55 +52,34 @@
                 <option [value]="sistema.id_correlativo" *ngFor="let sistema of listSistemaVacaciones">{{sistema.valor_texto_1}}</option>
               </select>
             </div>
-
-            <!-- <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha de incio</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaInicVac"/>
-              </div>
-            </div> -->
-
-            <!-- <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha de incio</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaInicVac"/>
-              </div>
-            </div> -->
-
-            <!-- <div class="col-sm-3 cli-form-element">
-              <mat-form-field>
-                 <input matInput
-                  [matDatepicker]="picker2"
-                  [max]="currentDate"
-                  placeholder="Fecha de inicio"
-                  required
-                  formControlName="fechaInicVac" />
-                  <mat-datepicker #picker2></mat-datepicker>
-                  <mat-datepicker-toggle matSuffix [for]="picker2" ></mat-datepicker-toggle>
-              </mat-form-field>
+            <div class="col-sm-3 cli-form-element">
+              <label>Estado</label>
+              <select class="cli-input-white" formControlName="id_estado_vac">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas">{{estado.valor_texto_1}}</option>
+              </select>
             </div>
 
+            <!-- <div class="col-sm-3 cli-form-element">
+              <div class="form-group">
+                <label>Fecha de incio</label>
+                <input
+                  type="date"
+                  class="form-control cli-input-white"
+                  formControlName="fechaInicVac"/>
+              </div>
+            </div>
             <div class="col-sm-3 cli-form-element">
               <div class="form-group">
-                <label>Fecha finAL</label>
-                <input matInput [matDatepicker]="mypicker"
+                <label>Fecha de fin</label>
+                <input
+                  type="date"
                   class="form-control cli-input-white"
-                  style="display:inline"
                   formControlName="fechaFinVac"/>
-                  <mat-datepicker-toggle matSuffix [for]="mypicker"></mat-datepicker-toggle>
-                  <mat-datepicker #mypicker></mat-datepicker>
-
-                <small class="form-text text-alert" *ngIf="campoNoValido('fechaFinVac')">* Ingrese la Fecha es obligatorio</small>
               </div>
             </div> -->
 
-            <div class="col-sm-3 cli-form-element">
+            <!-- <div class="col-sm-3 cli-form-element">
               <label class="form-label">Fecha de Inicio </label>
               <div class="calendario">
                 <mat-form-field color = "acento" apariencia = "relleno" >
@@ -133,24 +104,23 @@
                     <mat-datepicker-toggle matSuffix [for]="picker3" ></mat-datepicker-toggle>
                 </mat-form-field>
               </div>
-            </div>
-
-            <!-- <div class="col-sm-3 cli-form-element">
-              <mat-form-field>
-                 <input matInput [matDatepicker]="picker" [max]="currentDate"
-                  placeholder="Fecha fin" required formControlName="fechaFinVac" />
-                  <mat-datepicker #picker></mat-datepicker>
-                  <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
-              </mat-form-field>
             </div> -->
-           <!-- <div class="col-md-3 Dinline-block">
-            <mat-form-field>
-               <input matInput [matDatepicker]="picker2" [max]="currentDate"
-                placeholder="DOB(DD/MM/YYYY)" required formControlName="dob" readonly />
-               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-               <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
-         </div> -->
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Fecha de vacaciones </label>
+              <mat-form-field color="accent" appearance="outline">
+                <mat-date-range-input  [rangePicker]="picker">
+                  <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   >
+                  <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" >
+                </mat-date-range-input>
+                <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+
+                <mat-error *ngIf="vacacionesForm.controls['fechaInicVac'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid')">Invalid end date</mat-error>
+              </mat-form-field>
+            </div>
 
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Total días vacaciones</label>
@@ -160,15 +130,6 @@
                 readonly="true"
                 class="form-control"
                 formControlName="total_dias_vac"/>
-            </div>
-
-            <div class="col-sm-3 cli-form-element">
-              <label>Estado *</label>
-              <select class="cli-input-white" formControlName="id_estado_vac">
-                <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas">{{estado.valor_texto_1}}</option>
-              </select>
-                <small class="form-text text-alert" *ngIf="campoNoValido('id_estado_vac')">* Ingrese el Estado es obligatorio</small>
             </div>
 
           </div>
@@ -208,7 +169,7 @@
                           <button
                               matTooltip="Actualizar"
                               class="icon-btn btn-trans c-blue"
-                              (click)="actualizarVacaciones(periodo)"
+                              (click)="actualizarPeriodoVacaciones(periodo)"
                               ><mat-icon class="icon-13">edit</mat-icon>
                             </button>
                           <button
@@ -223,7 +184,11 @@
                       <td>{{periodo.fecha_inicio}}</td>
                       <td>{{periodo.fecha_fin}}</td>
                       <td>{{periodo.cant_dias_periodo}}</td>
-                      <td>{{periodo.vac_estado}}</td>
+                      <td style="width: 100px">
+                        <span *ngIf="periodo.vac_estado == 'Completado'"    class="w135 label estado-danger">{{ periodo.vac_estado | uppercase }}</span>
+                        <span *ngIf="periodo.vac_estado == 'Planificado'"   class="w135 label estado-planif">{{ periodo.vac_estado | uppercase }}</span>
+                        <span *ngIf="periodo.vac_estado == 'Replanificado'" class="w135 label estado-reg ">  {{ periodo.vac_estado | uppercase }}</span>
+                      </td>
                       <td>{{periodo.vac_motivo}}</td>
                       <td>{{periodo.fecha_creacion}}</td>
                     </tr>
@@ -293,7 +258,7 @@
       <button class="cli-btn btn-m btn-cancel" type="submit" (click)="close()">
         <mat-icon class="icon-18">cancel</mat-icon> Cancelar
       </button>
-      <button class="cli-btn btn-m btn-blue" (click)="actualizarVacaciones">
+      <button class="cli-btn btn-m btn-blue" (click)="actualizarPersonalVacaciones()">
         <!-- [disabled]="vacacionesForm.invalid" -->
         <mat-icon class="icon-18">save</mat-icon> Actualizar
       </button>

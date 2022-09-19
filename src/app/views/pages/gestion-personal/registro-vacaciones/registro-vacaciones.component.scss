@@ -80,7 +80,7 @@
   border-radius: 4px;
   font-size: 75%;
   background-color: #398bf7;
-  width: 190px;
+  // width: 190px;s
 }
 
 .estado-reg {
@@ -97,6 +97,44 @@
 
 .estado-info {
   background-color: #20c997;
+}
+
+
+// estilos para el rango de fechas
+.input-group {
+  width: auto;
+  justify-content: center;
+}
+
+
+::ng-deep .mat-form-field-type-mat-date-range-input .mat-form-field-infix {
+  height: 50px;
+  margin-top: -10px;
+}
+
+::ng-deep .mat-date-range-input-start-wrapper{
+  font-size: 12px;
+}
+
+::ng-deep .mat-date-range-input-end-wrapper{
+  font-size: 12px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+   margin: 0 0;
+}
+
+.mat-hint {
+  font-size: 8px;
+}
+
+::ng-deep .mat-form-field-subscript-wrapper {
+  margin-top: 1px;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: #0daef4;
+  color: #fff;
 }
 
 @media (max-width: 850px) {

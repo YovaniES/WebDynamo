@@ -42,7 +42,7 @@ import { CrearVacacionesComponent } from './registro-vacaciones/crear-vacaciones
     CoreModule,
     NgxPaginationModule,
     NgxSpinnerModule,
-    MaterialModule
+    MaterialModule,
   ]
 })
 export class GestionPersonalModule { }

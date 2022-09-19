@@ -130,8 +130,6 @@ export class ModalVacacionesComponent implements OnInit {
   cargarVacacionesById(){
     this.spinner.show();
 
-      // this.vacacionesForm.controls['idPersonal'    ].setValue(this.DATA_VACACIONES.id_persona);
-      // this.vacacionesForm.controls['id_vacaciones' ].setValue(this.DATA_VACACIONES.id_vacaciones);
       this.vacacionesForm.controls['nombre'        ].setValue(this.DATA_VACACIONES.nombres);
       this.vacacionesForm.controls['apPaterno'     ].setValue(this.DATA_VACACIONES.apellido_paterno);
       this.vacacionesForm.controls['apMaterno'     ].setValue(this.DATA_VACACIONES.apellido_materno);
@@ -144,15 +142,6 @@ export class ModalVacacionesComponent implements OnInit {
       this.vacacionesForm.controls['idSistema'     ].setValue(this.DATA_VACACIONES.id_sist_vac);
       this.vacacionesForm.controls['total_dias_vac'].setValue(this.DATA_VACACIONES.cant_dias_vac);
       this.vacacionesForm.controls['fecha_ingreso' ].setValue(this.DATA_VACACIONES.fecha_ingreso);
-
-      // if (this.DATA_VACACIONES.fecha_ingreso) {
-      //   let fecha_x = this.DATA_VACACIONES.fecha_ingreso
-      //   const str   = fecha_x.split('/');
-      //   const year  = Number(str[2]);
-      //   const month = Number(str[1]);
-      //   const date  = Number(str[0]);
-      //   this.vacacionesForm.controls['fecha_ingreso'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
-      // }
 
       if (this.DATA_VACACIONES.fecha_ini_vac) {
         let fecha_x = this.DATA_VACACIONES.fecha_ini_vac
@@ -298,7 +287,7 @@ export class ModalVacacionesComponent implements OnInit {
   };
 
 
-  actualizarVacaciones(DATA: any){
+  actualizarPeriodoVacaciones(DATA: any){
     console.log('DATA_VACACIONES', DATA);
     // const DATA = this.facturaForm.value
     const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: DATA});

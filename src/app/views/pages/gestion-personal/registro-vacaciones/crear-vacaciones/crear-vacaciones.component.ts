@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
 import Swal from 'sweetalert2';
 import { AsignarPersonalComponent } from '../modal-vacaciones/asignar-personal/asignar-personal.component';
+// import 'moment' from moment;
 
 @Component({
   selector: 'app-crear-vacaciones',
@@ -58,6 +59,15 @@ export class CrearVacacionesComponent implements OnInit {
        total_dias_vac: ['']
       })
      }
+
+
+// let isoDate = "2021-09-19T05:30:00.000Z";
+
+// let newDate =  moment.utc(isoDate).format('MM/DD/YY');
+// console.log('converted date', newDate); // 09/23/21
+
+// let newDate2 = moment.utc(isoDate).format("MMM Do, YYYY");
+// console.log('converted date', newDate2); // Sept 24, 2021
 
   crearVacaciones() {
   this.spinner.show();

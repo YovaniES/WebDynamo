@@ -15,7 +15,7 @@
         <div class="pr-module-container">
           <div class="row g-3">
 
-            <div class="col-sm-6 cli-form-element">
+            <!-- <div class="col-sm-6 cli-form-element">
               <div class="form-group">
                 <label>Fecha inicio vacaciones</label>
                 <input
@@ -35,6 +35,30 @@
                   formControlName="fechaFin"/>
                   <small class="form-text text-alert" *ngIf="campoNoValido('fechaFin')">* Ingrese la Fecha es obligatorio</small>
               </div>
+            </div> -->
+
+            <div class="col-sm-6 cli-form-element">
+              <label class="form-label">Rango de de vacaciones *</label>
+              <mat-form-field color="accent" appearance="outline">
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"   >
+                  <input matEndDate   formControlName="fechaFin"  placeholder="Final de vacaciones" >
+                </mat-date-range-input>
+                <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+            </div>
+
+            <div class="col-sm-6 cli-form-element">
+              <label class="form-label">Total días</label>
+              <input
+                style="font-weight: 600; text-align:center"
+                type="number"
+                readonly="true"
+                class="form-control"
+                formControlName="dias_vac"
+                />
             </div>
 
             <div class="col-sm-6 cli-form-element">
@@ -56,7 +80,7 @@
             </div>
 
             <div class="cli-form-element mb-2">
-              <label>Obervaciones *</label>
+              <label>Obervaciones</label>
               <textarea
                 class="form-control"
                 style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"

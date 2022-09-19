@@ -137,25 +137,47 @@
   text-align: center;
 }
 
-// mat-form-field {
-//   margin-right: 12px;
-// }
-
-
 ::ng-deep .mat-calendar-body-selected {
   background-color: #0daef4;
   color: #fff;
 }
 
 ::ng-deep input.mat-input-element {
-  margin-top: -0.0625em;
+  // margin-top: -0.0625em;
   color: #212529;
 }
 
-// ::ng-deep .mat-datepicker-content .mat-calendar {
-//   width: 260px;
-//   height: 285px;
-// }
+::ng-deep .mat-form-field-infix {
+  margin-top: -11px;
+  // width: 1px;
+}
+
+
+// ESTILO A LOS ESTADOS PERIODO
+.label {
+  // padding: 3px 10px;
+  padding: 1px 6px;
+  line-height: 13px;
+  color: #fff;
+  font-weight: 400;
+  border-radius: 4px;
+  font-size: 75%;
+  background-color: #398bf7;
+  width: 190px;
+}
+
+.estado-danger {
+  background-color: #ff727f;
+}
+
+.estado-planif {
+  background-color: #0daef4;
+}
+
+.estado-info {
+  background-color: #20c997;
+}
+
 
 @media (max-width: 768px) {
   .modal-title {

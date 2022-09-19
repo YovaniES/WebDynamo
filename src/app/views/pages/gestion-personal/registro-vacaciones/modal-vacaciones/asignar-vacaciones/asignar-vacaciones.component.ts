@@ -4,9 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { UtilService } from 'src/app/core/services/util.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
-import { MatDatepickerModule,  } from '@angular/material/datepicker';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -44,6 +42,7 @@ export class AsignarVacacionesComponent implements OnInit {
     this.asigVacacionesForm = this.fb.group({
       fechaInicio   : ['', [Validators.required]],
       fechaFin      : ['', [Validators.required]],
+      dias_vac      : [''],
       id_estado     : ['', [Validators.required]],
       id_motivo     : ['', [Validators.required]],
       observaciones : [''],
