@@ -30,21 +30,20 @@ export class AsignarVacacionesComponent implements OnInit {
     this.newForm();
     this.getUserID();
     this.cargarVacacionesByID();
-    this.getLstEstadoVacaciones();
-    this.getLstMotivosVacaciones();
-    this.getLstSistemaVacaciones();
+    this.getListEstadoVacaciones();
+    this.getListMotivosVacaciones();
+    this.getListSistemaVacaciones();
     console.log('DATA_VACAC_PERIODO', this.DATA_VACAC, this.DATA_VACAC.vdForm);
     // console.log('ID_PERS_VACAC', this.DATA_VACAC.vacForm.idPersonal); //idPersonal= 496
-
   }
 
   newForm(){
     this.asigVacacionesForm = this.fb.group({
       fechaInicio   : ['', [Validators.required]],
       fechaFin      : ['', [Validators.required]],
-      dias_vac      : [''],
       id_estado     : ['', [Validators.required]],
       id_motivo     : ['', [Validators.required]],
+      dias_periodo  : [''],
       observaciones : [''],
     })
    }
@@ -137,7 +136,6 @@ export class AsignarVacacionesComponent implements OnInit {
      });
   }
 
-
   titleBtn: string = 'Agregar';
   cargarVacacionesByID(){
     if (!this.DATA_VACAC.isCreation) {
@@ -145,6 +143,8 @@ export class AsignarVacacionesComponent implements OnInit {
       this.asigVacacionesForm.controls['id_motivo'    ].setValue(this.DATA_VACAC.id_vac_motivo);
       this.asigVacacionesForm.controls['id_estado'    ].setValue(this.DATA_VACAC.id_vac_estado);
       this.asigVacacionesForm.controls['observaciones'].setValue(this.DATA_VACAC.observacion);
+      this.asigVacacionesForm.controls['dias_periodo' ].setValue(this.DATA_VACAC.cant_dias_periodo);
+
 
       if (this.DATA_VACAC.fecha_inicio !='null' && this.DATA_VACAC.fecha_inicio != '') {
           let fecha_x = this.DATA_VACAC.fecha_inicio
@@ -167,27 +167,27 @@ export class AsignarVacacionesComponent implements OnInit {
   }
 
   listSistemaVacaciones: any[] = [];
-  getLstSistemaVacaciones(){
+  getListSistemaVacaciones(){
   let parametro: any[] = [{ queryId: 126}];
-  this.vacacionesService.getLstSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listSistemaVacaciones = resp.list;
     // console.log('SISTEMA-ASIG_VAC', resp.list);
     })
   }
 
   listVacacionesEstado: any[] = [];
-  getLstEstadoVacaciones(){
+  getListEstadoVacaciones(){
   let parametro: any[] = [{ queryId: 124}];
-  this.vacacionesService.getLstEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listVacacionesEstado = resp.list;
     // console.log('VACAS-ESTADO', resp.list);
     })
   }
 
   listVacacionesMotivo: any[] = [];
-  getLstMotivosVacaciones(){
+  getListMotivosVacaciones(){
   let parametro: any[] = [{ queryId: 125}];
-  this.vacacionesService.getLstMotivosVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListMotivosVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listVacacionesMotivo = resp.list;
     // console.log('VACAS-MOTIVO', resp.list);
     })

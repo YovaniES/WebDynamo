@@ -183,7 +183,7 @@
                       <td>{{i+1}}</td>
                       <td>{{periodo.fecha_inicio}}</td>
                       <td>{{periodo.fecha_fin}}</td>
-                      <td>{{periodo.cant_dias_periodo}}</td>
+                      <td>{{periodo.cant_dias_periodo}} días</td>
                       <td style="width: 100px">
                         <span *ngIf="periodo.vac_estado == 'Completado'"    class="w135 label estado-danger">{{ periodo.vac_estado | uppercase }}</span>
                         <span *ngIf="periodo.vac_estado == 'Planificado'"   class="w135 label estado-planif">{{ periodo.vac_estado | uppercase }}</span>

@@ -17,7 +17,7 @@ import { ModalCuentaComponent } from './registro-cuenta/modal-cuenta/modal-cuent
 import { RegistroVacacionesComponent } from './registro-vacaciones/registro-vacaciones.component';
 import { ModalVacacionesComponent } from './registro-vacaciones/modal-vacaciones/modal-vacaciones.component';
 import { AsignarVacacionesComponent } from './registro-vacaciones/modal-vacaciones/asignar-vacaciones/asignar-vacaciones.component';
-import { AsignarPersonalComponent } from './registro-vacaciones/modal-vacaciones/asignar-personal/asignar-personal.component';
+import { AsignarPersonalComponent } from './registro-vacaciones/crear-vacaciones/asignar-personal/asignar-personal.component';
 import { CrearVacacionesComponent } from './registro-vacaciones/crear-vacaciones/crear-vacaciones.component';
 
 @NgModule({

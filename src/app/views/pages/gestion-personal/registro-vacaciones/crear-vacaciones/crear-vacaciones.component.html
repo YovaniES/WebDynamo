@@ -85,14 +85,14 @@
             </div> -->
 
           <div class="col-sm-6 cli-form-element">
-            <label class="form-label">Fecha de vacaciones </label>
+            <label class="form-label">Fecha de vacaciones (desde/hasta) </label>
             <mat-form-field color="accent" appearance="outline">
               <!-- <mat-label>Seleccione el rango de días</mat-label> -->
               <mat-date-range-input [formGroup]="vacacionesForm" [rangePicker]="picker">
                 <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   >
                 <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" >
               </mat-date-range-input>
-              <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+              <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-date-range-picker #picker></mat-date-range-picker>
 

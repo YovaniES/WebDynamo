@@ -7,7 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
 import Swal from 'sweetalert2';
-import { AsignarPersonalComponent } from '../modal-vacaciones/asignar-personal/asignar-personal.component';
+import { AsignarPersonalComponent } from './asignar-personal/asignar-personal.component';
 // import 'moment' from moment;
 
 @Component({
@@ -19,11 +19,6 @@ export class CrearVacacionesComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
-
-  // range = new FormGroup({
-  //   start: new FormControl<Date | null>(null),
-  //   end  : new FormControl<Date | null>(null),
-  // });
 
   constructor(
     private vacacionesService: VacacionesPersonalService,
@@ -38,8 +33,8 @@ export class CrearVacacionesComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.getUsuario();
-    this.getLstEstadoVacaciones();
-    this.getLstSistemaVacaciones();
+    this.getListEstadoVacaciones();
+    this.getListSistemaVacaciones();
   }
 
     newForm(){
@@ -86,7 +81,7 @@ export class CrearVacacionesComponent implements OnInit {
        CONFIG_USER_ID      : this.userID,
        CONFIG_OUT_MSG_ERROR: "",
        CONFIG_OUT_MSG_EXITO: "",
-  },
+    },
   };
   console.log('VAOR_VACACIONES', this.vacacionesForm.value , parametro);
   this.vacacionesService.crearVacaciones(parametro).subscribe((resp: any) => {
@@ -102,18 +97,18 @@ export class CrearVacacionesComponent implements OnInit {
   }
 
   listSistemaVacaciones: any[] = [];
-  getLstSistemaVacaciones(){
+  getListSistemaVacaciones(){
   let parametro: any[] = [{ queryId: 126}];
-  this.vacacionesService.getLstSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listSistemaVacaciones = resp.list;
     // console.log('SISTEMA-ASIG_VAC', resp.list);
     })
   }
 
   listEstadoVacacionesAprobadas: any[] = [];
-  getLstEstadoVacaciones(){
+  getListEstadoVacaciones(){
   let parametro: any[] = [{ queryId: 132}];
-  this.vacacionesService.getLstEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listEstadoVacacionesAprobadas = resp.list;
     console.log('VACAS-ESTADO', resp.list);
     })

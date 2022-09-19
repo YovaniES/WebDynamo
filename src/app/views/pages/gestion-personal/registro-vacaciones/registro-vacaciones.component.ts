@@ -41,7 +41,7 @@ export class RegistroVacacionesComponent implements OnInit {
     this.newFilfroForm();
     this.cargarOBuscarVacaciones();
     this.getListProyectos();
-    this.getLstEstadoVacaciones();
+    this.getListEstadoVacaciones();
     this.getListAdminVacaciones();
     // console.log('DIF-DATE', this.time_difference);
     this.getCantDias();
@@ -120,9 +120,9 @@ export class RegistroVacacionesComponent implements OnInit {
   }
 
   listEstadoVacacionesAprobadas: any[] = [];
-  getLstEstadoVacaciones(){
+  getListEstadoVacaciones(){
   let parametro: any[] = [{ queryId: 132}];
-  this.vacacionesService.getLstEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listEstadoVacacionesAprobadas = resp.list;
     // console.log('VACAC-ESTADO-APROB', resp.list);
     })

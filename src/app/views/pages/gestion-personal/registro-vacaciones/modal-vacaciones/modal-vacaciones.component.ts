@@ -9,7 +9,6 @@ import { PersonalService } from 'src/app/core/services/personal.service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
 import Swal from 'sweetalert2';
-import { AsignarPersonalComponent } from './asignar-personal/asignar-personal.component';
 import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacaciones.component';
 
 @Component({
@@ -42,7 +41,7 @@ export class ModalVacacionesComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.getUsuario();
-    this.getLstEstadoVacaciones();
+    this.getListEstadoVacaciones();
     this.getLstSistemaVacaciones();
     this.cargarVacacionesAsignado();
     this.cargarVacacionesById();
@@ -67,7 +66,6 @@ export class ModalVacacionesComponent implements OnInit {
        id_estado_vac : [''],
        idSistema     : [''],
        periodoVac    : [''],
-
        fecha_ingreso : [''],
        total_dias_vac: [''],
        idVacaciones  : ['']
@@ -81,7 +79,6 @@ export class ModalVacacionesComponent implements OnInit {
 
   getFechaInit(e: any){
     console.log('F_INI', e.target.value);
-
   }
 
   actualizarPersonalVacaciones(){
@@ -220,7 +217,6 @@ export class ModalVacacionesComponent implements OnInit {
     })
   }
 
-
   histCambiosProyecto: any[] = [];
   getHistoricoCambiosProyecto(id: number){
   this.spinner.show();
@@ -238,16 +234,16 @@ export class ModalVacacionesComponent implements OnInit {
   listSistemaVacaciones: any[] = [];
   getLstSistemaVacaciones(){
   let parametro: any[] = [{ queryId: 126}];
-  this.vacacionesService.getLstSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listSistemaVacaciones = resp.list;
     // console.log('SISTEMA-ASIG_VAC', resp.list);
     })
   }
 
   listEstadoVacacionesAprobadas: any[] = [];
-  getLstEstadoVacaciones(){
+  getListEstadoVacaciones(){
   let parametro: any[] = [{ queryId: 132}];
-  this.vacacionesService.getLstEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
+  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listEstadoVacacionesAprobadas = resp.list;
     // console.log('VACAS-ESTADO', resp.list);
     })
@@ -275,7 +271,7 @@ export class ModalVacacionesComponent implements OnInit {
 
   asignarVacaciones(){
     const diasVacaciones = this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value);
-    // console.log('FORMULARIO', this.vacacionesForm.value, this.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value));
+    console.log('FORMULARIO', this.vacacionesForm.value, this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value));
 
     const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: {vacForm: this.vacacionesForm.value, isCreation: true, diasVacaciones: diasVacaciones} });
 

@@ -81,8 +81,8 @@
               <mat-form-field color="accent" appearance="outline">
                 <!-- <mat-label>Seleccione el rango de días</mat-label> -->
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaCreaVacIni" placeholder="Inicio vacaciones"   >
-                  <input matEndDate   formControlName="fechaCreaVacFin"  placeholder="Final de vacaciones" >
+                  <input matStartDate formControlName="fechaCreaVacIni"  placeholder="Desde"   >
+                  <input matEndDate   formControlName="fechaCreaVacFin"  placeholder="Hasta" >
                 </mat-date-range-input>
                 <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -98,7 +98,7 @@
                 class="cli-btn btn-cancel"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
                 (click)="limpiarFiltro()"
-              ><mat-icon class="icon-18">rotate_left</mat-icon>
+                ><mat-icon class="icon-18">rotate_left</mat-icon>
                 Limpiar
               </button>
 
@@ -180,7 +180,7 @@
                   <!-- (click)="abrirEliminarLogico(personal.id, personal.codigo_corporativo, '', personal.nombres)" -->
                 </div>
               </td>
-              <td>{{ vacaciones.id_vacaciones }}</td>
+              <td>{{ vacaciones.cod_vac }}</td>
               <!-- <td>{{ vacaciones.id_persona }}</td> -->
               <td>{{ vacaciones.codigo_corporativo }}</td>
               <td class="w350"> {{ vacaciones.apellidos |firstCapital}}, {{vacaciones.nombres | firstCapital}}</td>
@@ -198,7 +198,7 @@
               <td class="w350">{{vacaciones.responsable}}</td>
               <!-- <td>{{vacaciones.estado_vac}}</td> -->
               <td style="color: #20c997; font-weight:600;">{{vacaciones.dias_vac_planificado}}<small> d</small></td>
-              <td style="color: red"> 8 <small>d</small></td>
+              <td style="color: red; font-weight:600;"    >{{vacaciones.dias_vac_pendiente  }}<small> d</small></td>
             </tr>
           </tbody>
         </table>

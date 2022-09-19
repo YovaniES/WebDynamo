@@ -38,11 +38,11 @@
             </div> -->
 
             <div class="col-sm-6 cli-form-element">
-              <label class="form-label">Rango de de vacaciones *</label>
+              <label class="form-label">Fecha de vacaciones *</label>
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"   >
-                  <input matEndDate   formControlName="fechaFin"  placeholder="Final de vacaciones" >
+                  <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"  >
+                  <input matEndDate   formControlName="fechaFin"    placeholder="Final de vacaciones">
                 </mat-date-range-input>
                 <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -57,7 +57,7 @@
                 type="number"
                 readonly="true"
                 class="form-control"
-                formControlName="dias_vac"
+                formControlName="dias_periodo"
                 />
             </div>
 
