@@ -6,7 +6,6 @@ import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { PersonalService } from 'src/app/core/services/personal.service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
 import Swal from 'sweetalert2';
@@ -19,13 +18,14 @@ import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacacio
 })
 
 export class ModalVacacionesComponent implements OnInit {
+  minDate = new Date();
+  maxDate = new Date(2022, 9, 9);
 
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
 
   constructor(
-    private personalService: PersonalService,
     private vacacionesService: VacacionesPersonalService,
     private utilService: UtilService,
     private authService: AuthService,
@@ -93,7 +93,6 @@ export class ModalVacacionesComponent implements OnInit {
           p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
           p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
           p_id_estado_vac     : formValues.id_estado_vac,
-          // p_id_responsable    : this.userID,
           p_fecha_crea_vac    : '',
           CONFIG_USER_ID      : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
@@ -139,7 +138,7 @@ export class ModalVacacionesComponent implements OnInit {
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
-        this.vacacionesForm.controls['fechaInicVac'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
+        this.vacacionesForm.controls['fechaInicVac'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
 
       if (this.DATA_VACACIONES.fecha_fin_vac) {
@@ -148,7 +147,7 @@ export class ModalVacacionesComponent implements OnInit {
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
-        this.vacacionesForm.controls['fechaFinVac'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
+        this.vacacionesForm.controls['fechaFinVac'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
 
       this.spinner.hide();
@@ -189,43 +188,6 @@ export class ModalVacacionesComponent implements OnInit {
     });
     this.spinner.hide();
   }
-
-  // eliminarIniciativa(id: any){
-  //   this.spinner.show();
-
-  //   let parametro:any[] = [{
-  //     queryId: 95,
-  //     mapValue: {
-  //       'param_id_iniciativa' : id ,
-  //       'CONFIG_REGIS_ID'     : this.userID ,
-  //       'CONFIG_OUT_MSG_ERROR': '' ,
-  //       'CONFIG_OUT_MSG_EXITO': ''
-  //     }
-  //   }];
-  //   Swal.fire({
-  //     title: '¿Eliminar Iniciativa?',
-  //     text: `¿Estas seguro que deseas eliminar la iniciativa: ${id} ?`,
-  //     icon: 'question',
-  //     showCancelButton: true,
-  //     confirmButtonColor: '#3085d6',
-  //     cancelButtonColor: '#d33',
-  //     confirmButtonText: 'Si, Eliminar!',
-  //   }).then((resp) => {
-  //     if (resp.value) {
-  //       this.iniciativaService.eliminarIniciativa(parametro[0]).subscribe(resp => {
-
-  //         this.buscarOcargarRegistro();
-
-  //           Swal.fire({
-  //             title: 'Eliminar Iniciativa',
-  //             text: `La Iniciativa: ${id}; fue eliminado con éxito`,
-  //             icon: 'success',
-  //           });
-  //         });
-  //     }
-  //   });
-  //   this.spinner.hide();
-  // }
 
   totalDiasVac(){
     const fechaIni = moment.utc(this.vacacionesForm.controls['fechaInicVac'].value).format('YYYY-MM-DD')

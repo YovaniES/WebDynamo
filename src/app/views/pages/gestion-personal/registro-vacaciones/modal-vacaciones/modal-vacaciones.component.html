@@ -63,8 +63,8 @@
               <label class="form-label">Fecha de vacaciones </label>
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input  [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   #diasIniVac (dateChange)="totalDiasVac()">
-                  <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" #diasFinVac (dateChange)="totalDiasVac()">
+                  <input matStartDate formControlName="fechaInicVac" [min]="minDate"  placeholder="Inicio vacaciones"   #diasIniVac (dateChange)="totalDiasVac()">
+                  <input matEndDate   formControlName="fechaFinVac"  [max]="maxDate" placeholder="Final de vacaciones" #diasFinVac (dateChange)="totalDiasVac()">
                 </mat-date-range-input>
                 <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

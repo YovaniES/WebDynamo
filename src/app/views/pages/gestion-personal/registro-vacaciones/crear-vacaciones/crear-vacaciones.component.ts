@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDatepicker } from '@angular/material/datepicker';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -17,6 +18,8 @@ import { AsignarPersonalComponent } from './asignar-personal/asignar-personal.co
   styleUrls: ['./crear-vacaciones.component.scss'],
 })
 export class CrearVacacionesComponent implements OnInit {
+  // @ViewChild(MatDatepicker) datepicker!: MatDatepicker<Date>;
+
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
@@ -183,3 +186,7 @@ export class CrearVacacionesComponent implements OnInit {
   };
 
 }
+function ViewChild(MatDatepicker: any) {
+  throw new Error('Function not implemented.');
+}
+
