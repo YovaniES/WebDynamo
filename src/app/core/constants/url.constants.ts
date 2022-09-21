@@ -12,9 +12,9 @@ switch (ENVIROMENT) {
     AUTH_B2B = '';
     break;
   case 'PROD':
-    MAIN_PATH_NET  = 'https://localhost:3061/api/configurador/';
+    // MAIN_PATH_NET  = 'https://localhost:3061/api/configurador/';
 
-    // MAIN_PATH_NET  = 'http://backsupport.indratools.com/api/configurador/';
+    MAIN_PATH_NET  = 'http://backsupport.indratools.com/api/configurador/';
     AUTH_B2B       = 'http://b2bsecurityservice.indratools.com/aut/seguridad/';
     break;
   default:
