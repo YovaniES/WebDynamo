@@ -167,7 +167,7 @@ export class AsignarVacacionesComponent implements OnInit {
           const year  = Number(str[2]);
           const month = Number(str[1]);
           const date  = Number(str[0]);
-          this.asigVacacionesForm.controls['fechaInicio'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
+          this.asigVacacionesForm.controls['fechaInicio'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
 
       if (this.DATA_VACAC.fecha_fin !='null' && this.DATA_VACAC.fecha_fin != '') {
@@ -176,7 +176,7 @@ export class AsignarVacacionesComponent implements OnInit {
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
-        this.asigVacacionesForm.controls['fechaFin'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
+        this.asigVacacionesForm.controls['fechaFin'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
     }
   }
@@ -212,7 +212,7 @@ export class AsignarVacacionesComponent implements OnInit {
    getUserID(){
     this.authService.getCurrentUser().subscribe( resp => {
       this.userID   = resp.user.userId;
-      console.log('ID-USER', this.userID);
+      // console.log('ID-USER', this.userID);
     })
    }
 

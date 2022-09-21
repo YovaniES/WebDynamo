@@ -11,7 +11,7 @@
 <form class="row g-3" [formGroup]="vacacionesForm">
   <div class="cli-form newvac-wrapper">
     <div class="chart-draw">
-      <!-- REGISTROS DEL PERSONAL-------------------------------------------------------------------- -->
+      <!-- REGISTROS DEL PERSONAL---------------------------------------------------------------------->
       <div class="mx-5 mt-2">
         <div class="pr-module-containerXZ">
           <div class="row" style="justify-content: space-between;">
@@ -64,7 +64,7 @@
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input  [rangePicker]="picker">
                   <input matStartDate formControlName="fechaInicVac" [min]="minDate"  placeholder="Inicio vacaciones"   #diasIniVac (dateChange)="totalDiasVac()">
-                  <input matEndDate   formControlName="fechaFinVac"  [max]="maxDate" placeholder="Final de vacaciones" #diasFinVac (dateChange)="totalDiasVac()">
+                  <input matEndDate   formControlName="fechaFinVac"  [max]="maxDate" placeholder="Final de vacaciones"  #diasFinVac (dateChange)="totalDiasVac()">
                 </mat-date-range-input>
                 <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -88,7 +88,7 @@
         </div>
       </div>
 
-      <!-- AGREGAR VACACIONES------------------------------------------------------------------ -->
+      <!-- AGREGAR PERIODO VACACIONES-------------------------------------------------------------------->
       <div *ngIf="DATA_VACACIONES">
         <div style="display: flex; background-color: #f6f3f3;" >
           <div class="pr-subtitle">Periodo Vacaciones</div>
@@ -110,6 +110,7 @@
                       <th>Días Calendario</th>
                       <th>Estado</th>
                       <th>Motivo</th>
+                      <th>Asignado por:</th>
                       <th>Fecha registro</th>
                     </tr>
                   </thead>
@@ -139,9 +140,10 @@
                       <td style="width: 100px">
                         <span *ngIf="periodo.vac_estado == 'Completado'"    class="w135 label estado-danger">{{ periodo.vac_estado | uppercase }}</span>
                         <span *ngIf="periodo.vac_estado == 'Planificado'"   class="w135 label estado-planif">{{ periodo.vac_estado | uppercase }}</span>
-                        <span *ngIf="periodo.vac_estado == 'Replanificado'" class="w135 label estado-reg ">  {{ periodo.vac_estado | uppercase }}</span>
+                        <span *ngIf="periodo.vac_estado == 'Replanificado'" class="w135 label estado-reg "  >{{ periodo.vac_estado | uppercase }}</span>
                       </td>
                       <td>{{periodo.vac_motivo}}</td>
+                      <td>{{periodo.usuario_asignacion}}</td>
                       <td>{{periodo.fecha_creacion}}</td>
                     </tr>
                   </tbody>

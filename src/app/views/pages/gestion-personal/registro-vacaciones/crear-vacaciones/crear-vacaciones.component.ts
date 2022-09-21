@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDatepicker } from '@angular/material/datepicker';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -18,7 +17,6 @@ import { AsignarPersonalComponent } from './asignar-personal/asignar-personal.co
   styleUrls: ['./crear-vacaciones.component.scss'],
 })
 export class CrearVacacionesComponent implements OnInit {
-  // @ViewChild(MatDatepicker) datepicker!: MatDatepicker<Date>;
 
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
@@ -62,13 +60,13 @@ export class CrearVacacionesComponent implements OnInit {
 
 
 // let isoDate = "2021-09-19T05:30:00.000Z";
-
 // let newDate =  moment.utc(isoDate).format('MM/DD/YY');
 // console.log('converted date', newDate); // 09/23/21
 
 // let newDate2 = moment.utc(isoDate).format("MMM Do, YYYY");
 // console.log('converted date', newDate2); // Sept 24, 2021
 
+  fullName: string = '';
   crearVacaciones() {
   this.spinner.show();
     const formValues = this.vacacionesForm.getRawValue();
@@ -92,7 +90,8 @@ export class CrearVacacionesComponent implements OnInit {
   this.vacacionesService.crearVacaciones(parametro).subscribe((resp: any) => {
     Swal.fire({
       title: 'Crear vacaciones!',
-      text: `Vacaciones: ??? , creado con éxito`,
+      text: `La vacación fue creado con éxito`,
+      // text: `La vacación de `${fullName}`, fue creado con éxito`,
       icon: 'success',
       confirmButtonText: 'Ok',
       });
@@ -127,7 +126,7 @@ export class CrearVacacionesComponent implements OnInit {
   let parametro: any[] = [{ queryId: 132}];
   this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listEstadoVacacionesAprobadas = resp.list;
-    console.log('VACAS-ESTADO', resp.list);
+    // console.log('VACAS-ESTADO', resp.list);
     })
   }
 
@@ -149,6 +148,10 @@ export class CrearVacacionesComponent implements OnInit {
 
   asignarDatosPerona(persona: any){
     console.log('DATA_ASIG_PERS',persona);
+    this.fullName = persona.nombres;
+
+    console.log('NAME',this.fullName);
+
 
     this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
     this.vacacionesForm.controls['codCorp'      ].setValue(persona.codigo_corporativo)
