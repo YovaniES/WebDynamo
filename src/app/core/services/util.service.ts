@@ -38,9 +38,7 @@ export class UtilService {
 
     const numDias = this.dateDiffInDays( fechaIniDate, fechaFinDate)+1;
     console.log('DIAS', numDias, );
-
     return numDias;
-
   }
 }
 

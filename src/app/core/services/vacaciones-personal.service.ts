@@ -8,31 +8,11 @@ import { API_DYNAMO } from '../constants/url.constants';
 export class VacacionesPersonalService {
   constructor(private http: HttpClient) {}
 
-  eliminarEntidad(id: number) {
-    return this.http.post(API_DYNAMO, id);
-  }
-
-  crearEntidadLista(obj: any) {
-    return this.http.post(API_DYNAMO, obj);
-  }
-
-  actualizarTablaEntidad(obj: any) {
-    return this.http.post(API_DYNAMO, obj);
-  }
-
-  agregarEntidadTabla(obj: any) {
-    return this.http.post(API_DYNAMO, obj);
-  }
-
-  getListEntidades(obj: any) {
-    return this.http.post(API_DYNAMO, obj);
-  }
-
   cargarOBuscarVacaciones(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
 
-  actualizarVacaciones(id: any) {
+  actualizarPlanificacionVacaciones(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
 
@@ -40,7 +20,7 @@ export class VacacionesPersonalService {
     return this.http.post(API_DYNAMO, id);
   }
 
-  eliminarVacaciones(id: any) {
+  eliminarPeriodoVacaciones(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
 
@@ -69,7 +49,6 @@ export class VacacionesPersonalService {
     return this.http.post(API_DYNAMO, id);
   }
 
-
   cargarOBuscarPersonalActivo(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
@@ -79,6 +58,18 @@ export class VacacionesPersonalService {
   }
 
   crearVacaciones(id: any) {
+    return this.http.post(API_DYNAMO, id);
+  }
+
+  actualizarVacaciones(id: any) {
+    return this.http.post(API_DYNAMO, id);
+  }
+
+  getHistoricoCambiosEstado(id: any) {
+    return this.http.post(API_DYNAMO, id);
+  }
+
+  eliminarVacaciones(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
 }

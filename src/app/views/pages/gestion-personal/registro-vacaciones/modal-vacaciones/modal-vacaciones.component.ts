@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -23,8 +24,6 @@ export class ModalVacacionesComponent implements OnInit {
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
 
-  currentDate: any
-
   constructor(
     private personalService: PersonalService,
     private vacacionesService: VacacionesPersonalService,
@@ -45,7 +44,7 @@ export class ModalVacacionesComponent implements OnInit {
     this.getLstSistemaVacaciones();
     this.cargarVacacionesAsignado();
     this.cargarVacacionesById();
-    // this.getHistoricoCambiosProyecto(this.DATA_VACACIONES);
+    this.getHistoricoCambiosEstado(this.DATA_VACACIONES);
     console.log('DATA_VACACIONES', this.DATA_VACACIONES);
     console.log('ID_DATA_VACACIONES', this.DATA_VACACIONES.id_vacaciones);
 
@@ -68,46 +67,40 @@ export class ModalVacacionesComponent implements OnInit {
        periodoVac    : [''],
        fecha_ingreso : [''],
        total_dias_vac: [''],
-       idVacaciones  : ['']
+       idVacaciones  : [''],
+       totalDias     : ['']
 
       })
      }
   getFechaIni(event: any){
     console.log('FECHA-INI-IMPUT', event.target.value);
-
   }
 
   getFechaInit(e: any){
     console.log('F_INI', e.target.value);
   }
 
-  actualizarPersonalVacaciones(){
+  actualizarVacaciones(){
     this.spinner.show();
 
     const formValues = this.vacacionesForm.getRawValue();
     let parametro: any[] = [{
-        queryId: 8,
+        queryId: 138,
         mapValue: {
-          param_id_persona        : formValues.idPersonal,
-          param_codigo_corporativo: formValues.codCorp,
-          param_nombres           : formValues.nombre,
-          param_apellido_paterno  : formValues.apPaterno,
-          param_apellido_materno  : formValues.apMaterno,
-          param_dni               : formValues.dni,
-          param_correo            : formValues.correo,
-          param_fecha_ingreso     : formValues.fecha_ingreso,
-          param_fecha_nacimiento  : formValues.fechaNacimiento,
-          param_id_proyecto       : formValues.id_proyecto,
-          param_id_perfil         : formValues.codPerfil,
-          param_id_sistema        : formValues.idSistema,
-          param_periodo           : formValues.periodoVac,
-          param_estado            : 1,
-          CONFIG_USER_ID          : this.userID,
-          CONFIG_OUT_MSG_ERROR    : "",
-          CONFIG_OUT_MSG_EXITO    : "",
+          p_id_vacaciones     : this.DATA_VACACIONES.id_vacaciones,
+          p_id_persona        : this.DATA_VACACIONES.id_persona,
+          p_id_sist_vac       : formValues.idSistema,
+          p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
+          p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
+          p_id_estado_vac     : formValues.id_estado_vac,
+          // p_id_responsable    : this.userID,
+          p_fecha_crea_vac    : '',
+          CONFIG_USER_ID      : this.userID,
+          CONFIG_OUT_MSG_ERROR: '',
+          CONFIG_OUT_MSG_EXITO: ''
         },
       }];
-    this.vacacionesService.actualizarPersonalVacaciones(parametro[0]).subscribe( resp => {
+    this.vacacionesService.actualizarVacaciones(parametro[0]).subscribe( resp => {
       this.spinner.hide();
       console.log('DATA_ACTUALIZADO', resp);
 
@@ -116,7 +109,7 @@ export class ModalVacacionesComponent implements OnInit {
 
       Swal.fire({
         title: 'Actualizar Vacaciones!',
-        text : `La vacación:  ${ formValues.nombre +' '+formValues.apPaterno }, fue actualizado con éxito`,
+        text : `La vacación:  VAC000${ this.DATA_VACACIONES.id_vacaciones }, fue actualizado con éxito`,
         icon : 'success',
         confirmButtonText: 'Ok'
         })
@@ -146,7 +139,7 @@ export class ModalVacacionesComponent implements OnInit {
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
-        this.vacacionesForm.controls['fechaInicVac'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
+        this.vacacionesForm.controls['fechaInicVac'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
       }
 
       if (this.DATA_VACACIONES.fecha_fin_vac) {
@@ -155,48 +148,95 @@ export class ModalVacacionesComponent implements OnInit {
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
-        this.vacacionesForm.controls['fechaFinVac'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
+        this.vacacionesForm.controls['fechaFinVac'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
       }
 
       this.spinner.hide();
   }
 
-  eliminarVacaciones(idRecurso: number){
+  eliminarPeriodoVacaciones(id: number){
     this.spinner.show();
 
     let parametro:any[] = [{
-      "queryId": 26,
+      "queryId": 141,
       "mapValue": {
-        "param_id_persona"    : this.DATA_VACACIONES.id_vacaciones,
-        "param_id_recurso"    : idRecurso,
-        "CONFIG_USER_ID"      : this.userID,
+        "p_idPeriodoVac"      : this.DATA_VACACIONES.id_vacaciones,
         "CONFIG_OUT_MSG_ERROR": '',
         "CONFIG_OUT_MSG_EXITO": ''
       }
     }];
       Swal.fire({
-        title: 'Eliminar vacaciones?',
-        text: `¿Estas seguro que desea Eliminar la vacación: ${idRecurso}?`,
+        title: 'Eliminar periodo?',
+        text: `¿Estas seguro que desea Eliminar el periodo?`,
         icon: 'question',
         confirmButtonColor: '#ec4756',
         cancelButtonColor : '#0d6efd',
-        confirmButtonText : 'Si, Desasignar!',
+        confirmButtonText : 'Si, Eliminar!',
         showCancelButton: true,
         cancelButtonText: 'Cancelar',
       }).then((resp) => {
         if (resp.value) {
-          this.vacacionesService.eliminarVacaciones(parametro[0]).subscribe(resp => {
+          this.vacacionesService.eliminarPeriodoVacaciones(parametro[0]).subscribe(resp => {
             this.cargarVacacionesAsignado();
 
               Swal.fire({
-                title: 'Eliminar vacaciones',
-                text : `La vacación: ${idRecurso}, fue eliminado con éxito`,
+                title: 'Eliminar periodo',
+                text : `El periodo fue eliminado con éxito`,
                 icon : 'success',
               });
             });
         }
     });
     this.spinner.hide();
+  }
+
+  // eliminarIniciativa(id: any){
+  //   this.spinner.show();
+
+  //   let parametro:any[] = [{
+  //     queryId: 95,
+  //     mapValue: {
+  //       'param_id_iniciativa' : id ,
+  //       'CONFIG_REGIS_ID'     : this.userID ,
+  //       'CONFIG_OUT_MSG_ERROR': '' ,
+  //       'CONFIG_OUT_MSG_EXITO': ''
+  //     }
+  //   }];
+  //   Swal.fire({
+  //     title: '¿Eliminar Iniciativa?',
+  //     text: `¿Estas seguro que deseas eliminar la iniciativa: ${id} ?`,
+  //     icon: 'question',
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     confirmButtonText: 'Si, Eliminar!',
+  //   }).then((resp) => {
+  //     if (resp.value) {
+  //       this.iniciativaService.eliminarIniciativa(parametro[0]).subscribe(resp => {
+
+  //         this.buscarOcargarRegistro();
+
+  //           Swal.fire({
+  //             title: 'Eliminar Iniciativa',
+  //             text: `La Iniciativa: ${id}; fue eliminado con éxito`,
+  //             icon: 'success',
+  //           });
+  //         });
+  //     }
+  //   });
+  //   this.spinner.hide();
+  // }
+
+  totalDiasVac(){
+    const fechaIni = moment.utc(this.vacacionesForm.controls['fechaInicVac'].value).format('YYYY-MM-DD')
+    const fechaFin = moment.utc(this.vacacionesForm.controls['fechaFinVac' ].value).format('YYYY-MM-DD')
+
+    if (fechaIni && fechaFin) {
+      const numDias = this.utilService.calcularDifDias( fechaFin, fechaIni)
+
+      this.vacacionesForm.controls['total_dias_vac'].setValue(numDias)
+      console.log('DIAS_ESTADO', numDias);
+    }
   }
 
   listVacacionesPeriodo: any[]= [];
@@ -217,16 +257,17 @@ export class ModalVacacionesComponent implements OnInit {
     })
   }
 
-  histCambiosProyecto: any[] = [];
-  getHistoricoCambiosProyecto(id: number){
+  histCambiosEstado: any[] = [];
+  getHistoricoCambiosEstado(id: number){
   this.spinner.show();
-    let parametro: any[] = [{ queryId: 57, mapValue: {
-        param_id_persona: this.DATA_VACACIONES.id_vacaciones,
-      }
+    let parametro: any[] = [{
+      queryId: 139,
+      mapValue: {p_id_vacaciones: this.DATA_VACACIONES.id_vacaciones}
     }];
-    this.personalService.getHistoricoCambiosProyecto(parametro[0]).subscribe((resp: any) => {
-      this.histCambiosProyecto = resp.list;
-      // console.log('ListHistCambID', resp)
+
+    this.vacacionesService.getHistoricoCambiosEstado(parametro[0]).subscribe((resp: any) => {
+      this.histCambiosEstado = resp.list;
+      console.log('HistCambEstado', resp.list)
     });
     this.spinner.hide();
   }
@@ -271,7 +312,7 @@ export class ModalVacacionesComponent implements OnInit {
 
   asignarVacaciones(){
     const diasVacaciones = this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value);
-    console.log('FORMULARIO', this.vacacionesForm.value, this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value));
+    // console.log('FORMULARIO', this.vacacionesForm.value, this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value));
 
     const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: {vacForm: this.vacacionesForm.value, isCreation: true, diasVacaciones: diasVacaciones} });
 
@@ -281,7 +322,6 @@ export class ModalVacacionesComponent implements OnInit {
       }
     })
   };
-
 
   actualizarPeriodoVacaciones(DATA: any){
     console.log('DATA_VACACIONES', DATA);
@@ -295,3 +335,4 @@ export class ModalVacacionesComponent implements OnInit {
     })
   };
 }
+

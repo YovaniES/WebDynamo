@@ -9,6 +9,7 @@ import { ExportExcellService } from 'src/app/core/services/export-excell.service
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
 import { ModalVacacionesComponent } from './modal-vacaciones/modal-vacaciones.component';
 import { CrearVacacionesComponent } from './crear-vacaciones/crear-vacaciones.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registro-vacaciones',
@@ -89,6 +90,65 @@ export class RegistroVacacionesComponent implements OnInit {
       this.spinner.hide();
     });
   }
+
+
+  // @p_id_vacaciones,
+  // @CONFIG_USER_ID,
+  // @CONFIG_OUT_MSG_ERROR,
+  // @CONFIG_OUT_MSG_EXITO
+
+  abrirEliminarLogico(id:number, ){
+    Swal.fire({
+      title: `Eliminar vacaciones?`,
+      text: `¿Desea eliminar la vacación: VAC000${id}?`,
+      icon: 'question',
+      confirmButtonColor: '#20c997',
+      cancelButtonColor : '#b2b5b4',
+      confirmButtonText : 'Si!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((resp) => {
+        if (resp.value) {
+          this.eliminacionLogica(id);
+       }
+      });
+  }
+
+  eliminacionLogica(id: number){
+    this.spinner.show();
+    let parametro:any[] = [{
+      "queryId" : 142,
+      "mapValue": { p_id_vacacion : id }
+    }];
+
+    this.vacacionesService.eliminarVacaciones(parametro[0]).subscribe(resp => {
+      const arrayData:any[] = Array.of(resp);
+      let msj  = arrayData[0].exitoMessage;
+      let msj2 = arrayData[0].errorMessage
+
+      if(msj == undefined){msj = ''}
+
+      if (msj != '') {
+        Swal.fire({
+          title: 'Eliminar vacaciones',
+          text: `La vacación: ${id}, fue eliminado con éxito`,
+          icon: 'success',
+        });
+
+      }else if (msj2 != ''){
+        Swal.fire({
+          title: `Eliminar vacaciones`,
+          text : `La vacación: ${id}, no pudo ser eliminado por que tiene vacaciones planificadas`,
+          icon : 'error',
+        });
+      }else{
+        // this.showError('Error');
+      }
+      this.cargarOBuscarVacaciones();
+    });
+    this.spinner.hide();
+  }
+
 
    difference(date1: any, date2: any) {
     const date1utc = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());

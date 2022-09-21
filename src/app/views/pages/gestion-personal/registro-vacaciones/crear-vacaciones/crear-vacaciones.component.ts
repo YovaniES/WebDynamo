@@ -2,18 +2,19 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { UtilService } from 'src/app/core/services/util.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
 import Swal from 'sweetalert2';
 import { AsignarPersonalComponent } from './asignar-personal/asignar-personal.component';
-// import 'moment' from moment;
 
 @Component({
   selector: 'app-crear-vacaciones',
   templateUrl: './crear-vacaciones.component.html',
-  styleUrls: ['./crear-vacaciones.component.scss']
+  styleUrls: ['./crear-vacaciones.component.scss'],
 })
 export class CrearVacacionesComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
@@ -23,6 +24,7 @@ export class CrearVacacionesComponent implements OnInit {
   constructor(
     private vacacionesService: VacacionesPersonalService,
     private authService: AuthService,
+    private utilService: UtilService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     public datePipe: DatePipe,
@@ -47,8 +49,8 @@ export class CrearVacacionesComponent implements OnInit {
        apMaterno     : [''],
        proyecto      : [''],
        fechaInicVac  : ['', [Validators.required]],
-       fecha_ingreso : [''],
        fechaFinVac   : ['', [Validators.required]],
+       fecha_ingreso : [''],
        id_estado_vac : [''],
        idSistema     : ['', [Validators.required]],
        total_dias_vac: ['']
@@ -72,8 +74,8 @@ export class CrearVacacionesComponent implements OnInit {
     mapValue: {
        p_id_persona        : this.id_persona,
        p_id_sist_vac       : formValues.idSistema,
-       p_fecha_ini_vac     : formValues.fechaInicVac,
-       p_fecha_fin_vac     : formValues.fechaFinVac,
+       p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
+       p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
        p_id_estado_vac     : formValues.id_estado_vac,
        p_id_responsable    : this.userID,
       //  p_id_responsable    : this.userLogeado,
@@ -94,6 +96,18 @@ export class CrearVacacionesComponent implements OnInit {
       this.close(true);
     });
     this.spinner.hide();
+  }
+
+  totalDiasVacaciones(){
+    const fechaIni = moment.utc(this.vacacionesForm.controls['fechaInicVac'].value).format('YYYY-MM-DD')
+    const fechaFin = moment.utc(this.vacacionesForm.controls['fechaFinVac' ].value).format('YYYY-MM-DD')
+
+    if (fechaIni && fechaFin) {
+      const numDias = this.utilService.calcularDifDias( fechaFin, fechaIni)
+
+      this.vacacionesForm.controls['total_dias_vac'].setValue(numDias)
+      console.log('DIAS_PARAM', numDias);
+    }
   }
 
   listSistemaVacaciones: any[] = [];

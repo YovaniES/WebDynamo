@@ -65,32 +65,12 @@
               </select>
             </div>
 
-            <!-- <div class="col-sm-3 cli-form-element ">
-              <label>Fecha de incio</label>
-              <div class="form-group">
-                <input type="date"
-                  class="form-control cli-input-white calendario"
-                  formControlName="fechaInicVac"/>
-              </div>
-            </div>
-
-            <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha de fin</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaFinVac"/>
-              </div>
-            </div> -->
-
           <div class="col-sm-6 cli-form-element">
             <label class="form-label">Fecha de vacaciones (desde/hasta) </label>
             <mat-form-field color="accent" appearance="outline">
-              <!-- <mat-label>Seleccione el rango de días</mat-label> -->
               <mat-date-range-input [formGroup]="vacacionesForm" [rangePicker]="picker">
-                <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   >
-                <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" >
+                <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   #fechaIni (dateChange)="totalDiasVacaciones()" >
+                <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" #fechaFin (dateChange)="totalDiasVacaciones()" >
               </mat-date-range-input>
               <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -108,8 +88,7 @@
                 type="number"
                 readonly="true"
                 class="form-control"
-                formControlName="total_dias_vac"
-                />
+                formControlName="total_dias_vac"/>
             </div>
             <!-- <p>Selected range: {{vacacionesForm.value | json}}</p> -->
 
@@ -131,46 +110,3 @@
     </div>
   </div>
 </form>
-
-
-
-
-            <!-- <mat-form-field appearance="fill">
-              <mat-label>Inserte el rago de Vacaciones</mat-label>
-              <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start date">
-                <input matEndDate placeholder="End date">
-              </mat-date-range-input>
-              <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field> -->
-
-            <!-- fecha con boton fuera del input -->
-          <!-- <div class="col-sm-4 cli-form-elementxx">
-            <label>FECHA con boton</label>
-            <div class="form-group row">
-              <div class="col-sm-4zx" style="display:flex">
-                <input class="form-control"
-                [matDatepicker]="myPicker"
-                formControlName="fechaFinVac"/>
-                <mat-datepicker-toggle [for]="myPicker"></mat-datepicker-toggle>
-                <mat-datepicker #myPicker></mat-datepicker>
-              </div>
-            </div>
-          </div> -->
-
-          <!-- (ngSubmit)="onSubmit()" -->
-          <!-- <form [formGroup]="vacacionesForm">
-            <mat-form-field appearance="outline">
-              <mat-label>Fecha de Inicio</mat-label>
-              <input matInput
-
-              [matDatepicker]="matDatePicker" formControlName="dob" />
-              <mat-datepicker-toggle matPrefix [for]="matDatePicker">
-              </mat-datepicker-toggle>
-              <mat-datepicker #matDatePicker></mat-datepicker>
-            </mat-form-field>
-          </form> -->
-          <!-- [max]="dateMaxDate"
-          [min]="dateMinDate" -->

@@ -59,6 +59,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     // MatMomentDateModule
     // MomentDateModule
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es' }],
 })
 export class MaterialModule {}

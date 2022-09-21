@@ -46,7 +46,6 @@
               </select>
             </div>
 
-
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Responsables</label>
               <select class="form-select" formControlName="id_responsable">
@@ -55,27 +54,7 @@
               </select>
             </div>
 
-            <!-- <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha registro vacaciones <span class="date-rango">(desde)</span></label>
-                 <input
-                  type="date"
-                  class="form-control"
-                  formControlName="fechaCreaVacIni"/>
-              </div>
-            </div>
-
-            <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha registro vacaciones<span class="date-rango">(hasta)</span></label>
-                <input
-                  type="date"
-                  class="form-control"
-                  formControlName="fechaCreaVacFin"/>
-              </div>
-            </div> -->
-
-            <div class="col-sm-3 cli-form-element">
+             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Fecha de registro vacaciones </label>
 
               <mat-form-field color="accent" appearance="outline">
@@ -113,7 +92,6 @@
             </div>
           </form>
       </div>
-
 
       <!-- EXPORTAR REGISTRO DE VACACIONES ----------------------------------------------------->
       <div style="display: flex" class="mt-4 mb-1">
@@ -174,10 +152,10 @@
                   </button>
 
                   <button matTooltip="Eliminar"
+                    (click)="abrirEliminarLogico(vacaciones.id_vacaciones)"
                     class="icon-btn btn-trans c-fucsia"
                     ><mat-icon class="icon-18">delete_forever</mat-icon>
                   </button>
-                  <!-- (click)="abrirEliminarLogico(personal.id, personal.codigo_corporativo, '', personal.nombres)" -->
                 </div>
               </td>
               <td>{{ vacaciones.cod_vac }}</td>
@@ -196,9 +174,8 @@
                 <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
               </td>
               <td class="w350">{{vacaciones.responsable}}</td>
-              <!-- <td>{{vacaciones.estado_vac}}</td> -->
-              <td style="color: #20c997; font-weight:600;">{{vacaciones.dias_vac_planificado}}<small> d</small></td>
-              <td style="color: red; font-weight:600;"    >{{vacaciones.dias_vac_pendiente  }}<small> d</small></td>
+              <td style="color: #20c997; font-weight:600;">{{vacaciones.dias_vac_planificado? vacaciones.dias_vac_planificado: 0}}<small> d</small></td>
+              <td style="color: #f56c79; font-weight:600;"    >  {{vacaciones.vac_pendiente?  vacaciones.vac_pendiente : 0 }}<small> d</small></td>
             </tr>
           </tbody>
         </table>
@@ -221,6 +198,7 @@
         previousLabel="Anterior"
         nextLabel="Siguiente"
         [responsive]="false"
+        #pageVacaciones
         (pageChange)="cambiarPagina($event)">
       </pagination-controls>
     </div>

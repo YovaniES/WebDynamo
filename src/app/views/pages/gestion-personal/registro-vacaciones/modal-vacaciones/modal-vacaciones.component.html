@@ -35,7 +35,6 @@
               <div class="input-group-text"><mat-icon>calendar_month</mat-icon></div>
               <div class="info">{{vacacionesForm.controls['fecha_ingreso'].value}}</div>
             </div>
-
           </div>
         </div>
       </div>
@@ -60,58 +59,12 @@
               </select>
             </div>
 
-            <!-- <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha de incio</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaInicVac"/>
-              </div>
-            </div>
-            <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha de fin</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaFinVac"/>
-              </div>
-            </div> -->
-
-            <!-- <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Fecha de Inicio </label>
-              <div class="calendario">
-                <mat-form-field color = "acento" apariencia = "relleno" >
-                   <input matInput [matDatepicker]="picker2"
-                    [max]="currentDate"
-                    (dateChange)="getFechaIni($event)"
-                    required formControlName="fechaInicVac" />
-                    <mat-datepicker #picker2></mat-datepicker>
-                    <mat-datepicker-toggle matSuffix [for]="picker2" ></mat-datepicker-toggle>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Fecha de Fin </label>
-              <div class="calendario">
-                <mat-form-field >
-                   <input matInput [matDatepicker]="picker3"
-                    [max]="currentDate"
-                    required formControlName="fechaFinVac" />
-                    <mat-datepicker #picker3></mat-datepicker>
-                    <mat-datepicker-toggle matSuffix [for]="picker3" ></mat-datepicker-toggle>
-                </mat-form-field>
-              </div>
-            </div> -->
-
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Fecha de vacaciones </label>
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input  [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   >
-                  <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" >
+                  <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   #diasIniVac (dateChange)="totalDiasVac()">
+                  <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" #diasFinVac (dateChange)="totalDiasVac()">
                 </mat-date-range-input>
                 <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -131,7 +84,6 @@
                 class="form-control"
                 formControlName="total_dias_vac"/>
             </div>
-
           </div>
         </div>
       </div>
@@ -175,7 +127,7 @@
                           <button
                             matTooltip="Eliminar"
                             class="icon-btn c-fucsia"
-                            (click)="eliminarVacaciones(periodo.idVacaciones)"
+                            (click)="eliminarPeriodoVacaciones(periodo.idVacaciones)"
                             ><mat-icon class="icon-13">delete_forever</mat-icon>
                           </button>
                         </div>
@@ -218,8 +170,7 @@
               <table class="cli-table stripedtable underlinedtable">
                 <thead>
                   <tr class="bgc-turquey c-white">
-                    <th>#</th>
-                    <th>Cód. Proyecto</th>
+                    <th>N°</th>
                     <th>Estado</th>
                     <th>Fecha de Cambio</th>
                     <th>Responsable</th>
@@ -227,12 +178,11 @@
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let cambios of histCambiosProyecto; let i = index">
+                  <tr *ngFor="let cambios of histCambiosEstado; let i = index">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ cambios.proyecto_codigo }}</td>
-                    <td>En curso</td>
-                    <td>{{ cambios.fecha_asignacion }}</td>
-                    <td>{{ cambios.nombre_usuario_asignacion }}</td>
+                    <td>{{cambios.estado_vacaciones}}</td>
+                    <td>{{ cambios.fecha_cambio }}</td>
+                    <td>{{ cambios.usuario_responsable }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -242,7 +192,7 @@
               </div>
 
               <div
-                *ngIf="!loadingItem && histCambiosProyecto.length == 0"
+                *ngIf="!loadingItem && histCambiosEstado.length == 0"
                 class="cli-loader mt-2"
                 style="color: #c9c9c9"
                 >Aquí se mostrará el histórico de Vacaciones ...
@@ -250,7 +200,6 @@
             </div>
           </div>
         </div>
-
     </div>
 
     <!-- --------------------------------------------BOTONES ------------------------------------------->
@@ -258,7 +207,7 @@
       <button class="cli-btn btn-m btn-cancel" type="submit" (click)="close()">
         <mat-icon class="icon-18">cancel</mat-icon> Cancelar
       </button>
-      <button class="cli-btn btn-m btn-blue" (click)="actualizarPersonalVacaciones()">
+      <button class="cli-btn btn-m btn-blue" (click)="actualizarVacaciones()">
         <!-- [disabled]="vacacionesForm.invalid" -->
         <mat-icon class="icon-18">save</mat-icon> Actualizar
       </button>

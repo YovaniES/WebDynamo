@@ -14,35 +14,12 @@
       <!-- REGISTRAR PERIODO DE LAS VACACIONES---------------------------------------------------------- -->
         <div class="pr-module-container">
           <div class="row g-3">
-
-            <!-- <div class="col-sm-6 cli-form-element">
-              <div class="form-group">
-                <label>Fecha inicio vacaciones</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaInicio"/>
-                <small class="form-text text-alert" *ngIf="campoNoValido('fechaInicio')">* Ingrese la Fecha es obligatorio</small>
-              </div>
-            </div>
-
-            <div class="col-sm-6 cli-form-element">
-              <div class="form-group">
-                <label>Fecha fin vacaciones</label>
-                <input
-                  type="date"
-                  class="form-control cli-input-white"
-                  formControlName="fechaFin"/>
-                  <small class="form-text text-alert" *ngIf="campoNoValido('fechaFin')">* Ingrese la Fecha es obligatorio</small>
-              </div>
-            </div> -->
-
             <div class="col-sm-6 cli-form-element">
               <label class="form-label">Fecha de vacaciones *</label>
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"  >
-                  <input matEndDate   formControlName="fechaFin"    placeholder="Final de vacaciones">
+                  <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
+                  <input matEndDate   formControlName="fechaFin"    placeholder="Final de vacaciones"#fechaFinPlanif (dateChange)="totalDiasPlanificado()">
                 </mat-date-range-input>
                 <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -102,7 +79,7 @@
       <button
         class="cli-btn btn-m btn-blue"
         [disabled]="asigVacacionesForm.invalid"
-        (click)="agregarOactualizarVacaciones()">
+        (click)="agregarOactualizarPlanificacionVacaciones()">
         <mat-icon class="icon-18">save</mat-icon> {{titleBtn}}
       </button>
     </div>

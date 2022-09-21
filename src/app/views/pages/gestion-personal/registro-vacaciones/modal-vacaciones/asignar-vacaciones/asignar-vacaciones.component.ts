@@ -2,8 +2,10 @@ import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { UtilService } from 'src/app/core/services/util.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
 import Swal from 'sweetalert2';
 
@@ -19,6 +21,7 @@ export class AsignarVacacionesComponent implements OnInit {
   constructor(
     private vacacionesService: VacacionesPersonalService,
     private authService: AuthService,
+    private utilService: UtilService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     public datePipe: DatePipe,
@@ -48,13 +51,13 @@ export class AsignarVacacionesComponent implements OnInit {
     })
    }
 
-   agregarOactualizarVacaciones(){
+   agregarOactualizarPlanificacionVacaciones(){
     if (!this.DATA_VACAC) {return}
 
     if (this.DATA_VACAC.isCreation) {
       if (this.asigVacacionesForm.valid) { this.agregarPeriodoVacaciones()}
     } else {
-      this.actualizarVacaciones();
+      this.actualizarPlanificacionVacaciones();
     }
    }
 
@@ -65,8 +68,8 @@ export class AsignarVacacionesComponent implements OnInit {
     let parametro: any =  {queryId: 129, mapValue: {
           p_id_vacaciones        : this.DATA_VACAC.vacForm.idVacaciones.id_vacaciones,
           p_id_persona           : this.DATA_VACAC.vacForm.idVacaciones.id_persona ,
-          p_fecha_vac_ini        : formValues.fechaInicio ,
-          p_fecha_vac_fin        : formValues.fechaFin ,
+          p_fecha_vac_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
+          p_fecha_vac_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
           p_id_vac_estado        : formValues.id_estado ,
           p_id_vac_motivo        : formValues.id_motivo ,
           p_observacion          : formValues.observaciones ,
@@ -91,7 +94,7 @@ export class AsignarVacacionesComponent implements OnInit {
     this.spinner.hide();
   }
 
-  actualizarVacaciones() {
+  actualizarPlanificacionVacaciones() {
     this.spinner.show();
 
     const formValues = this.asigVacacionesForm.getRawValue();
@@ -100,8 +103,8 @@ export class AsignarVacacionesComponent implements OnInit {
           p_idPeriodoVac         : this.DATA_VACAC.id_periodo,
           p_id_vacaciones        : this.DATA_VACAC.id_vacaciones ,
           p_id_persona           : this.DATA_VACAC.id_persona ,
-          p_fecha_vac_ini        : formValues.fechaInicio ,
-          p_fecha_vac_fin        : formValues.fechaFin ,
+          p_fecha_vac_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
+          p_fecha_vac_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
           p_id_vac_estado        : formValues.id_estado ,
           p_id_vac_motivo        : formValues.id_motivo ,
           p_observacion          : formValues.observaciones ,
@@ -113,7 +116,7 @@ export class AsignarVacacionesComponent implements OnInit {
           CONFIG_OUT_MSG_EXITO: ''
         },
       }];
-     this.vacacionesService.actualizarVacaciones(parametro[0]).subscribe({next: (res) => {
+     this.vacacionesService.actualizarPlanificacionVacaciones(parametro[0]).subscribe({next: (res) => {
         this.spinner.hide();
 
         this.close(true)
@@ -136,6 +139,18 @@ export class AsignarVacacionesComponent implements OnInit {
      });
   }
 
+  totalDiasPlanificado(){
+    const fechaIni = moment.utc(this.asigVacacionesForm.controls['fechaInicio'].value).format('YYYY-MM-DD')
+    const fechaFin = moment.utc(this.asigVacacionesForm.controls['fechaFin'   ].value).format('YYYY-MM-DD')
+
+    if (fechaIni && fechaFin) {
+      const numDias = this.utilService.calcularDifDias( fechaFin, fechaIni)
+
+      this.asigVacacionesForm.controls['dias_periodo'].setValue(numDias)
+      console.log('DIAS_PARAM', numDias);
+    }
+  }
+
   titleBtn: string = 'Agregar';
   cargarVacacionesByID(){
     if (!this.DATA_VACAC.isCreation) {
@@ -152,7 +167,7 @@ export class AsignarVacacionesComponent implements OnInit {
           const year  = Number(str[2]);
           const month = Number(str[1]);
           const date  = Number(str[0]);
-          this.asigVacacionesForm.controls['fechaInicio'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
+          this.asigVacacionesForm.controls['fechaInicio'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
       }
 
       if (this.DATA_VACAC.fecha_fin !='null' && this.DATA_VACAC.fecha_fin != '') {
@@ -161,7 +176,7 @@ export class AsignarVacacionesComponent implements OnInit {
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
-        this.asigVacacionesForm.controls['fechaFin'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
+        this.asigVacacionesForm.controls['fechaFin'].setValue(this.datePipe.transform(new Date(year, month-1, date+1), 'yyyy-MM-dd'))
       }
     }
   }

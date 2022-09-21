@@ -133,6 +133,7 @@
           <tbody>
             <tr *ngFor="let personal of listaPersonal | paginate:
                       { itemsPerPage: pageSize,
+                        id:'persona',
                         currentPage : page,
                         totalItems  : totalPersonal
                       } ">
@@ -215,6 +216,7 @@
       <pagination-controls
         previousLabel="Anterior"
         nextLabel="Siguiente"
+        id="persona"
         [responsive]="false"
         (pageChange)="cambiarPagina($event)">
       </pagination-controls>
