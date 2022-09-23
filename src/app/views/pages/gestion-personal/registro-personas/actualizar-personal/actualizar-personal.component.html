@@ -84,7 +84,6 @@
               <input
                 type="number"
                 maxlength="6"
-                readonly="true"
                 class="form-control cli-input-white"
                 formControlName="codCorp"/>
             </div>
@@ -92,7 +91,7 @@
             <div class="col-sm-2 cli-form-element">
               <label>Cód. Perfil</label>
               <select class="cli-input-white" formControlName="codPerfil">
-                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="0">- Seleccione -</option>
                 <option [value]="perfil.id" *ngFor="let perfil of listPerfiles">{{ perfil.nombre }}</option>
               </select>
             </div>
@@ -100,7 +99,7 @@
             <div class="col-sm-2 cli-form-element">
               <label>Cód. Proyecto</label>
               <select class="cli-input-white" formControlName="id_proyecto">
-                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="0">- Seleccione -</option>
                 <option [value]="cod.id_proyecto" *ngFor="let cod of listProyectos">{{ cod.codigo }}</option>
               </select>
             </div>
@@ -110,7 +109,6 @@
                 <label>Fecha de Ingreso</label>
                 <input
                   type="date"
-                  readonly="true"
                   class="form-control cli-input-white"
                   formControlName="fechaIngreso"/>
               </div>

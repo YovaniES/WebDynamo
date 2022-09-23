@@ -18,8 +18,14 @@ import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacacio
 })
 
 export class ModalVacacionesComponent implements OnInit {
+  // moment.locale("es");
+  // moment().format("L"); 16/02/2021
+
   minDate = new Date();
   maxDate = new Date(2022, 9, 9);
+
+  dateStar = new Date('2022-09-09');
+  dateEnd  = new Date('2022-09-20');
 
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
@@ -42,10 +48,12 @@ export class ModalVacacionesComponent implements OnInit {
     this.getUsuario();
     this.getListEstadoVacaciones();
     this.getLstSistemaVacaciones();
-    this.cargarVacacionesAsignado();
+    this.cargarPeriodoVacaciones();
     this.cargarVacacionesById();
     this.getHistoricoCambiosEstado(this.DATA_VACACIONES);
     console.log('DATA_VACACIONES', this.DATA_VACACIONES);
+    // console.log('FECHA_1', moment(this.DATA_VACACIONES.fecha_ini_vac).format("YYYY-MM-DD hh:mm A"));
+    // console.log('FECHA_123', moment(Date.now()).format('YYYY-MM-DD hh:mm A'));
     console.log('ID_DATA_VACACIONES', this.DATA_VACACIONES.id_vacaciones);
 
     this.vacacionesForm.controls['idVacaciones'].setValue(this.DATA_VACACIONES)
@@ -72,6 +80,15 @@ export class ModalVacacionesComponent implements OnInit {
 
       })
      }
+
+  filtroFecha(calendario: Date): boolean {
+    // const dateIni = moment.utc(this.DATA_VACACIONES.fecha_ini_vac).format('YYYY-MM-DD')
+    // console.log('FECHA_START', dateIni);
+
+    const fechaInicial = '2022-09-25'
+    return calendario > new Date(fechaInicial);
+  }
+
   getFechaIni(event: any){
     console.log('FECHA-INI-IMPUT', event.target.value);
   }
@@ -102,6 +119,7 @@ export class ModalVacacionesComponent implements OnInit {
     this.vacacionesService.actualizarVacaciones(parametro[0]).subscribe( resp => {
       this.spinner.hide();
       console.log('DATA_ACTUALIZADO', resp);
+      console.log('FECHA_INI',moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD') );
 
       this.cargarVacacionesById();
       this.close(true)
@@ -132,6 +150,7 @@ export class ModalVacacionesComponent implements OnInit {
       this.vacacionesForm.controls['total_dias_vac'].setValue(this.DATA_VACACIONES.cant_dias_vac);
       this.vacacionesForm.controls['fecha_ingreso' ].setValue(this.DATA_VACACIONES.fecha_ingreso);
 
+      // fecha_ini_vac = "01/10/2022"
       if (this.DATA_VACACIONES.fecha_ini_vac) {
         let fecha_x = this.DATA_VACACIONES.fecha_ini_vac
         const str   = fecha_x.split('/');
@@ -160,6 +179,7 @@ export class ModalVacacionesComponent implements OnInit {
       "queryId": 141,
       "mapValue": {
         "p_idPeriodoVac"      : this.DATA_VACACIONES.id_vacaciones,
+        "CONFIG_USER_ID"      : this.userID,
         "CONFIG_OUT_MSG_ERROR": '',
         "CONFIG_OUT_MSG_EXITO": ''
       }
@@ -176,7 +196,7 @@ export class ModalVacacionesComponent implements OnInit {
       }).then((resp) => {
         if (resp.value) {
           this.vacacionesService.eliminarPeriodoVacaciones(parametro[0]).subscribe(resp => {
-            this.cargarVacacionesAsignado();
+            this.cargarPeriodoVacaciones();
 
               Swal.fire({
                 title: 'Eliminar periodo',
@@ -202,7 +222,7 @@ export class ModalVacacionesComponent implements OnInit {
   }
 
   listVacacionesPeriodo: any[]= [];
-  cargarVacacionesAsignado(){
+  cargarPeriodoVacaciones(){
     this.listVacacionesPeriodo = [];
 
     this.spinner.show();
@@ -213,7 +233,7 @@ export class ModalVacacionesComponent implements OnInit {
       }
     }];
 
-    this.vacacionesService.cargarVacacionesAsignado(parametro[0]).subscribe( (resp: any) => {
+    this.vacacionesService.cargarPeriodoVacaciones(parametro[0]).subscribe( (resp: any) => {
       this.listVacacionesPeriodo = resp.list;
       console.log('VACACIONES-PLANIFICADAS', resp.list);
     })
@@ -280,7 +300,7 @@ export class ModalVacacionesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
-        this.cargarVacacionesAsignado()
+        this.cargarPeriodoVacaciones()
       }
     })
   };
@@ -292,7 +312,7 @@ export class ModalVacacionesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
-        this.cargarVacacionesAsignado()
+        this.cargarPeriodoVacaciones()
       }
     })
   };

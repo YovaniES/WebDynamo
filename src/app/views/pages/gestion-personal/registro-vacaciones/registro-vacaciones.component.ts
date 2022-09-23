@@ -97,7 +97,7 @@ export class RegistroVacacionesComponent implements OnInit {
   // @CONFIG_OUT_MSG_ERROR,
   // @CONFIG_OUT_MSG_EXITO
 
-  abrirEliminarLogico(id:number, ){
+  abrirEliminarLogico(id: number, ){
     Swal.fire({
       title: `Eliminar vacaciones?`,
       text: `¿Desea eliminar la vacación: VAC000${id}?`,

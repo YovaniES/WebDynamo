@@ -44,7 +44,7 @@ export class AsignarVacacionesComponent implements OnInit {
     this.asigVacacionesForm = this.fb.group({
       fechaInicio   : ['', [Validators.required]],
       fechaFin      : ['', [Validators.required]],
-      id_estado     : ['', [Validators.required]],
+      id_estado     : [2, [Validators.required]],
       id_motivo     : ['', [Validators.required]],
       dias_periodo  : [''],
       observaciones : [''],
@@ -70,6 +70,7 @@ export class AsignarVacacionesComponent implements OnInit {
           p_id_persona           : this.DATA_VACAC.vacForm.idVacaciones.id_persona ,
           p_fecha_vac_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
           p_fecha_vac_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
+          // p_id_vac_estado        : this.DATA_VACAC.vacForm.idVacaciones.id_estado_vac ,
           p_id_vac_estado        : formValues.id_estado ,
           p_id_vac_motivo        : formValues.id_motivo ,
           p_observacion          : formValues.observaciones ,

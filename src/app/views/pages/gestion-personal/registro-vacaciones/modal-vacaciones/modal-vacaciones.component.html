@@ -58,13 +58,18 @@
                 <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas">{{estado.valor_texto_1}}</option>
               </select>
             </div>
+            <!-- [comparisonStart]="dateStar"
+              [comparisonEnd]="dateEnd" -->
 
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Fecha de vacaciones </label>
               <mat-form-field color="accent" appearance="outline">
-                <mat-date-range-input  [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaInicVac" [min]="minDate"  placeholder="Inicio vacaciones"   #diasIniVac (dateChange)="totalDiasVac()">
-                  <input matEndDate   formControlName="fechaFinVac"  [max]="maxDate" placeholder="Final de vacaciones"  #diasFinVac (dateChange)="totalDiasVac()">
+                <mat-date-range-input  [rangePicker]="picker"
+                [dateFilter]="filtroFecha"
+
+                >
+                <input matStartDate formControlName="fechaInicVac" [min]="minDate"  placeholder="Inicio vacaciones"   #diasIniVac (dateChange)="totalDiasVac()">
+                <input matEndDate   formControlName="fechaFinVac"  [max]="maxDate"  placeholder="Final de vacaciones" #diasFinVac (dateChange)="totalDiasVac()">
                 </mat-date-range-input>
                 <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -173,7 +178,9 @@
                 <thead>
                   <tr class="bgc-turquey c-white">
                     <th>N°</th>
+                    <th>Sistema</th>
                     <th>Estado</th>
+                    <th>Días solicitados</th>
                     <th>Fecha de Cambio</th>
                     <th>Responsable</th>
                   </tr>
@@ -182,7 +189,9 @@
                 <tbody>
                   <tr *ngFor="let cambios of histCambiosEstado; let i = index">
                     <td>{{ i + 1 }}</td>
+                    <td>GABIN</td>
                     <td>{{cambios.estado_vacaciones}}</td>
+                    <td>20</td>
                     <td>{{ cambios.fecha_cambio }}</td>
                     <td>{{ cambios.usuario_responsable }}</td>
                   </tr>
