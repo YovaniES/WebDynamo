@@ -51,13 +51,24 @@
                 <option [value]="sistema.id_correlativo" *ngFor="let sistema of listSistemaVacaciones">{{sistema.valor_texto_1}}</option>
               </select>
             </div>
-            <div class="col-sm-3 cli-form-element">
+            <!-- <div class="col-sm-3 cli-form-element">
               <label>Estado</label>
               <select class="cli-input-white" formControlName="id_estado_vac">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas">{{estado.valor_texto_1}}</option>
               </select>
+            </div> -->
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Estado Vacación</label>
+              <input
+                style="font-weight: 500; text-align:center"
+                type="text"
+                readonly="true"
+                class="form-control"
+                formControlName="estado_vac"/>
             </div>
+
             <!-- [comparisonStart]="dateStar"
               [comparisonEnd]="dateEnd" -->
 
@@ -110,6 +121,7 @@
                     <tr class="bgc-blue-light c-white">
                       <th>Accíón</th>
                       <th>N°</th>
+                      <th>ID periodo</th>
                       <th>Fecha inicio</th>
                       <th>Fecha fin</th>
                       <th>Días Calendario</th>
@@ -133,12 +145,13 @@
                           <button
                             matTooltip="Eliminar"
                             class="icon-btn c-fucsia"
-                            (click)="eliminarPeriodoVacaciones(periodo.idVacaciones)"
+                            (click)="eliminarPeriodoVacaciones(periodo.id_periodo)"
                             ><mat-icon class="icon-13">delete_forever</mat-icon>
                           </button>
                         </div>
                       </td>
                       <td>{{i+1}}</td>
+                      <td>{{periodo.id_periodo}}</td>
                       <td>{{periodo.fecha_inicio}}</td>
                       <td>{{periodo.fecha_fin}}</td>
                       <td>{{periodo.cant_dias_periodo}} días</td>

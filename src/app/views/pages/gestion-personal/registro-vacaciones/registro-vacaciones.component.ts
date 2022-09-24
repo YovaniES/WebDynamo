@@ -26,7 +26,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   page = 1;
   totalVacaciones: number = 0;
-  pageSize = 10;
+  pageSize = 15;
 
   constructor(
     private personalService: PersonalService,
@@ -91,7 +91,9 @@ export class RegistroVacacionesComponent implements OnInit {
     });
   }
 
+  nameResponsable(){
 
+  }
   // @p_id_vacaciones,
   // @CONFIG_USER_ID,
   // @CONFIG_OUT_MSG_ERROR,
@@ -118,7 +120,7 @@ export class RegistroVacacionesComponent implements OnInit {
     this.spinner.show();
     let parametro:any[] = [{
       "queryId" : 142,
-      "mapValue": { p_id_vacacion : id }
+      "mapValue": { p_idVac : id }
     }];
 
     this.vacacionesService.eliminarVacaciones(parametro[0]).subscribe(resp => {
@@ -247,3 +249,5 @@ export class RegistroVacacionesComponent implements OnInit {
     this.exportExcellService.exportarExcel(this.listaRegVacaciones, 'Vacaciones');
   }
 }
+
+

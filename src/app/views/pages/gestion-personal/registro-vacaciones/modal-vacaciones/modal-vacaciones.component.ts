@@ -71,6 +71,7 @@ export class ModalVacacionesComponent implements OnInit {
        estado_persona: [''],
        proyecto      : [''],
        id_estado_vac : [''],
+       estado_vac    : [''],
        idSistema     : [''],
        periodoVac    : [''],
        fecha_ingreso : [''],
@@ -104,7 +105,7 @@ export class ModalVacacionesComponent implements OnInit {
     let parametro: any[] = [{
         queryId: 138,
         mapValue: {
-          p_id_vacaciones     : this.DATA_VACACIONES.id_vacaciones,
+          p_idVac             : this.DATA_VACACIONES.idVac,
           p_id_persona        : this.DATA_VACACIONES.id_persona,
           p_id_sist_vac       : formValues.idSistema,
           p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
@@ -126,7 +127,7 @@ export class ModalVacacionesComponent implements OnInit {
 
       Swal.fire({
         title: 'Actualizar Vacaciones!',
-        text : `La vacación:  VAC000${ this.DATA_VACACIONES.id_vacaciones }, fue actualizado con éxito`,
+        text : `La vacación:  VAC000${ this.DATA_VACACIONES.idVac }, fue actualizado con éxito`,
         icon : 'success',
         confirmButtonText: 'Ok'
         })
@@ -145,6 +146,7 @@ export class ModalVacacionesComponent implements OnInit {
       this.vacacionesForm.controls['id_proyecto'   ].setValue(this.DATA_VACACIONES.id_proyecto);
       this.vacacionesForm.controls['estado_persona'].setValue(this.DATA_VACACIONES.estado_persona);
       this.vacacionesForm.controls['id_estado_vac' ].setValue(this.DATA_VACACIONES.id_estado_vac);
+      this.vacacionesForm.controls['estado_vac'    ].setValue(this.DATA_VACACIONES.estado_vac);
 
       this.vacacionesForm.controls['idSistema'     ].setValue(this.DATA_VACACIONES.id_sist_vac);
       this.vacacionesForm.controls['total_dias_vac'].setValue(this.DATA_VACACIONES.cant_dias_vac);
@@ -178,7 +180,7 @@ export class ModalVacacionesComponent implements OnInit {
     let parametro:any[] = [{
       "queryId": 141,
       "mapValue": {
-        "p_idPeriodoVac"      : this.DATA_VACACIONES.id_vacaciones,
+        "p_idPeriodoVac"      : id,
         "CONFIG_USER_ID"      : this.userID,
         "CONFIG_OUT_MSG_ERROR": '',
         "CONFIG_OUT_MSG_EXITO": ''
@@ -229,7 +231,7 @@ export class ModalVacacionesComponent implements OnInit {
     let parametro:any[] = [{
       "queryId": 128,
       "mapValue": {
-      "p_id_vacaciones": this.DATA_VACACIONES.id_vacaciones,
+      "p_id_vacaciones": this.DATA_VACACIONES.idVac,
       }
     }];
 
@@ -244,7 +246,7 @@ export class ModalVacacionesComponent implements OnInit {
   this.spinner.show();
     let parametro: any[] = [{
       queryId: 139,
-      mapValue: {p_id_vacaciones: this.DATA_VACACIONES.id_vacaciones}
+      mapValue: {p_id_vacaciones: this.DATA_VACACIONES.idVac}
     }];
 
     this.vacacionesService.getHistoricoCambiosEstado(parametro[0]).subscribe((resp: any) => {

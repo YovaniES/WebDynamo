@@ -84,7 +84,7 @@
 }
 
 .estado-reg {
-  background-color: #6c757d;
+  background-color: #b5bec6;
 }
 
 .estado-danger {
@@ -92,11 +92,30 @@
 }
 
 .estado-planif {
-  background-color: #0daef4;
+  background-color: #1dbafe;
 }
 
 .estado-info {
   background-color: #20c997;
+}
+
+.cli-table{
+  width: 100%;
+  background-color: #fff;
+  &-user{
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      color: #6c757d;
+  };
+  &-dias{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #0daef4;
+    border: solid 1px #0daef4;
+    border-radius: 15px;
+}
 }
 
 

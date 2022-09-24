@@ -44,7 +44,7 @@ export class AsignarVacacionesComponent implements OnInit {
     this.asigVacacionesForm = this.fb.group({
       fechaInicio   : ['', [Validators.required]],
       fechaFin      : ['', [Validators.required]],
-      id_estado     : [2, [Validators.required]],
+      id_estado     : [2, [Validators.required]], // ESTADO_PERIODO: PLANIFICADO
       id_motivo     : ['', [Validators.required]],
       dias_periodo  : [''],
       observaciones : [''],
@@ -66,7 +66,7 @@ export class AsignarVacacionesComponent implements OnInit {
     const formValues = this.asigVacacionesForm.getRawValue();
 
     let parametro: any =  {queryId: 129, mapValue: {
-          p_id_vacaciones        : this.DATA_VACAC.vacForm.idVacaciones.id_vacaciones,
+          p_id_vacaciones        : this.DATA_VACAC.vacForm.idVacaciones.idVac,
           p_id_persona           : this.DATA_VACAC.vacForm.idVacaciones.id_persona ,
           p_fecha_vac_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
           p_fecha_vac_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),

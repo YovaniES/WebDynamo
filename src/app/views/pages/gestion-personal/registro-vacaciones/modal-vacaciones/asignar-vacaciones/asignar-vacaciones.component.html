@@ -21,7 +21,6 @@
                   <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
                   <input matEndDate   formControlName="fechaFin"    placeholder="Final de vacaciones"#fechaFinPlanif (dateChange)="totalDiasPlanificado()">
                 </mat-date-range-input>
-                <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
@@ -42,7 +41,7 @@
               <label>Estado *</label>
               <select class="cli-input-white" formControlName="id_estado">
                 <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="estado.id_correlativo" *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
+                <option [value]="estado.id_correlativo"  disabled *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
               </select>
                 <small class="form-text text-alert" *ngIf="campoNoValido('id_estado')">* Ingrese el Estado es obligatorio</small>
             </div>

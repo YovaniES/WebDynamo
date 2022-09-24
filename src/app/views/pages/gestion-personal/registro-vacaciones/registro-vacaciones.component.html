@@ -124,16 +124,17 @@
               <th>ID Vacaciones</th>
               <!-- <th>ID Persona</th> -->
               <th>Código</th>
-              <th>Nombres y Apellidos</th>
+              <th style="text-align: left">Nombres y Apellidos</th>
               <th>Cód. Proyecto</th>
               <th>Sistema</th>
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
               <th>Cant. días</th>
               <th>Estado</th>
-              <th>Responsable</th>
+              <th style="text-align:left">Responsable</th>
               <th>Planificado</th>
               <th>Pendiente</th>
+              <th>Completado</th>
             </tr>
           </thead>
 
@@ -144,15 +145,17 @@
                         totalItems  : totalVacaciones
                       } ">
               <td class="w50">
+                <!-- matTooltip="Planificar Vacaciones" -->
                 <div class="cli-table-actions">
-                  <button matTooltip="Planificar Vacaciones"
+                  <button
+                    matTooltip={{vacaciones.responsable}}
                     class="icon-btn btn-trans c-darkcyan"
                     (click)="actualizarVacaciones(vacaciones)"
                     ><mat-icon class="icon-18">hail</mat-icon>
                   </button>
 
                   <button matTooltip="Eliminar"
-                    (click)="abrirEliminarLogico(vacaciones.id_vacaciones)"
+                    (click)="abrirEliminarLogico(vacaciones.idVac)"
                     class="icon-btn btn-trans c-fucsia"
                     ><mat-icon class="icon-18">delete_forever</mat-icon>
                   </button>
@@ -161,21 +164,38 @@
               <td>{{ vacaciones.cod_vac }}</td>
               <!-- <td>{{ vacaciones.id_persona }}</td> -->
               <td>{{ vacaciones.codigo_corporativo }}</td>
-              <td class="w350"> {{ vacaciones.apellidos |firstCapital}}, {{vacaciones.nombres | firstCapital}}</td>
+              <td class="w350" style="text-align: left"> {{ vacaciones.apellidos |firstCapital}}, {{vacaciones.nombres | firstCapital}}</td>
               <td>{{ vacaciones.codigo_proyecto | uppercase}}</td>
               <td> {{vacaciones.sist_vac}}</td>
               <td class="w100">{{ vacaciones.fecha_ini_vac }}</td>
               <td>{{ vacaciones.fecha_fin_vac | firstCapital }}</td>
-              <td style="color: #0d6efd; width: 100px; font-weight: 600;"> {{vacaciones.cant_dias_vac}} <small>d</small></td>
+
+              <td style="width: 100px; font-weight: 600;">
+                <div class="cli-table-dias">
+                  {{vacaciones.cant_dias_vac}} <small>d</small>
+                </div>
+              </td>
               <td style="width: 100px">
                 <span *ngIf="vacaciones.estado_vac == 'En curso'"    class="label estado-info">  {{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="label estado-danger">{{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Planificado'" class="label estado-planif">{{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
               </td>
-              <td class="w350">{{vacaciones.responsable}}</td>
+
+              <td class="w350x" style="text-align:left ">
+                <div class="cli-table-user">
+                  <button
+                    matTooltip={{vacaciones.responsable}}
+                    class="icon-btn btn-trans"
+                    style="color: #6c757d"
+                    ><mat-icon class="icon-18">account_circle</mat-icon>
+                  </button>{{vacaciones.usuario}}
+              </div>
+              </td>
+
               <td style="color: #20c997; font-weight:600;">{{vacaciones.dias_vac_planificado? vacaciones.dias_vac_planificado: 0}}<small> d</small></td>
               <td style="color: #f56c79; font-weight:600;"    >  {{vacaciones.vac_pendiente?  vacaciones.vac_pendiente : 0 }}<small> d</small></td>
+              <td style="color: #696767; font-weight:600;"    >  {{vacaciones.vac_dias_completo?  vacaciones.vac_dias_completo : 0 }}<small> d</small></td>
             </tr>
           </tbody>
         </table>
