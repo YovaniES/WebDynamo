@@ -46,7 +46,7 @@ export class ModalVacacionesComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.getUsuario();
-    this.getListEstadoVacaciones();
+    // this.getListEstadoVacaciones();
     this.getLstSistemaVacaciones();
     this.cargarPeriodoVacaciones();
     this.cargarVacacionesById();
@@ -110,7 +110,8 @@ export class ModalVacacionesComponent implements OnInit {
           p_id_sist_vac       : formValues.idSistema,
           p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
           p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
-          p_id_estado_vac     : formValues.id_estado_vac,
+          // p_id_estado_vac     : formValues.id_estado_vac,
+          p_id_estado_vac     : formValues.id_estado_vac, // ENVIAR EL ESTADO DEL PERIODO CON ESTADO 'PLANIFICADO', COMPLETADO
           p_fecha_crea_vac    : '',
           CONFIG_USER_ID      : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
@@ -237,7 +238,7 @@ export class ModalVacacionesComponent implements OnInit {
 
     this.vacacionesService.cargarPeriodoVacaciones(parametro[0]).subscribe( (resp: any) => {
       this.listVacacionesPeriodo = resp.list;
-      console.log('VACACIONES-PLANIFICADAS', resp.list);
+      console.log('PERIODOS-PLANIFICADAS', resp.list);
     })
   }
 
@@ -265,15 +266,6 @@ export class ModalVacacionesComponent implements OnInit {
     })
   }
 
-  listEstadoVacacionesAprobadas: any[] = [];
-  getListEstadoVacaciones(){
-  let parametro: any[] = [{ queryId: 132}];
-  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
-    this.listEstadoVacacionesAprobadas = resp.list;
-    // console.log('VACAS-ESTADO', resp.list);
-    })
-  }
-
   userID: number = 0;
   getUsuario(){
    this.authService.getCurrentUser().subscribe( resp => {
@@ -294,6 +286,13 @@ export class ModalVacacionesComponent implements OnInit {
     }
   }
 
+  asignarPeriodoEstAvacaciones(dataPeriodo: any){
+    console.log('data_periodo_asignado', dataPeriodo);
+
+    this.vacacionesForm.controls['estado_vac'   ].setValue(dataPeriodo.vac_estado)
+    this.vacacionesForm.controls['id_estado_vac'].setValue(dataPeriodo.id_vac_estado)
+  }
+
   asignarVacaciones(){
     const diasVacaciones = this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value);
     // console.log('FORMULARIO', this.vacacionesForm.value, this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value));
@@ -301,12 +300,18 @@ export class ModalVacacionesComponent implements OnInit {
     const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: {vacForm: this.vacacionesForm.value, isCreation: true, diasVacaciones: diasVacaciones} });
 
     dialogRef.afterClosed().subscribe(resp => {
+      console.log('PERIODO_AL_MODAL', resp);
+
       if (resp) {
+
+        console.log('PERIODO->MODAL');
         this.cargarPeriodoVacaciones()
+        this.asignarPeriodoEstAvacaciones(resp)
       }
     })
   };
 
+  id_estado_periodo: number = 0;
   actualizarPeriodoVacaciones(DATA: any){
     console.log('DATA_VACACIONES', DATA);
     // const DATA = this.facturaForm.value

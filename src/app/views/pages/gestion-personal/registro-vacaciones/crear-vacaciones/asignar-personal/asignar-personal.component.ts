@@ -78,7 +78,6 @@ export class AsignarPersonalComponent implements OnInit {
 
   asignarPersonal(persona: any){
     console.log('persona', persona);
-
     this.close(persona)
   }
 

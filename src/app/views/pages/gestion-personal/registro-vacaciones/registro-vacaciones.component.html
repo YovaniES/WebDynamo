@@ -42,7 +42,7 @@
               <label class="form-label">Estado</label>
               <select class="form-select" formControlName="id_estado_vac">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas" >{{estado.valor_texto_1}}</option>
+                <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacaciones" >{{estado.valor_texto_1}}</option>
               </select>
             </div>
 
@@ -148,7 +148,7 @@
                 <!-- matTooltip="Planificar Vacaciones" -->
                 <div class="cli-table-actions">
                   <button
-                    matTooltip={{vacaciones.responsable}}
+                    matTooltip='Actualizar'
                     class="icon-btn btn-trans c-darkcyan"
                     (click)="actualizarVacaciones(vacaciones)"
                     ><mat-icon class="icon-18">hail</mat-icon>

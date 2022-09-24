@@ -181,12 +181,12 @@ export class RegistroVacacionesComponent implements OnInit {
       });
   }
 
-  listEstadoVacacionesAprobadas: any[] = [];
+  listEstadoVacaciones: any[] = [];
   getListEstadoVacaciones(){
   let parametro: any[] = [{ queryId: 132}];
   this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
-    this.listEstadoVacacionesAprobadas = resp.list;
-    // console.log('VACAC-ESTADO-APROB', resp.list);
+    this.listEstadoVacaciones = resp.list;
+    console.log('VACAC-ESTADO', resp.list);
     })
   }
 

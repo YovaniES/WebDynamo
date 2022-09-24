@@ -36,7 +36,7 @@ export class CrearVacacionesComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.getUsuario();
-    this.getListEstadoVacaciones();
+    // this.getListEstadoVacaciones();
     this.getListSistemaVacaciones();
   }
 
@@ -121,14 +121,14 @@ export class CrearVacacionesComponent implements OnInit {
     })
   }
 
-  listEstadoVacacionesAprobadas: any[] = [];
-  getListEstadoVacaciones(){
-  let parametro: any[] = [{ queryId: 132}];
-  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
-    this.listEstadoVacacionesAprobadas = resp.list;
-    // console.log('VACAS-ESTADO', resp.list);
-    })
-  }
+  // listEstadoVacacionesAprobadas: any[] = [];
+  // getListEstadoVacaciones(){
+  // let parametro: any[] = [{ queryId: 132}];
+  // this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
+  //   this.listEstadoVacacionesAprobadas = resp.list;
+  //   // console.log('VACAS-ESTADO', resp.list);
+  //   })
+  // }
 
   userID: number = 0;
   userLogeado: string = '';
@@ -146,12 +146,11 @@ export class CrearVacacionesComponent implements OnInit {
     this.dialogRef.close(succes);
   }
 
-  asignarDatosPerona(persona: any){
-    console.log('DATA_ASIG_PERS',persona);
+  asignarDataPersona(persona: any){
+    console.log('DATA_ASIG_PERS', persona);
     this.fullName = persona.nombres;
 
     console.log('NAME',this.fullName);
-
 
     this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
     this.vacacionesForm.controls['codCorp'      ].setValue(persona.codigo_corporativo)
@@ -173,23 +172,18 @@ export class CrearVacacionesComponent implements OnInit {
 
   id_persona: number = 0;
   asignarPersonal(){
-
     const dialogRef = this.dialog.open(AsignarPersonalComponent, { width:'35%', data: {vacForm: this.vacacionesForm.value, isCreation: true} });
 
     dialogRef.afterClosed().subscribe(resp => {
-      console.log('PERS', resp);
+      console.log('PERS->M_CREAR', resp);
 
       if (resp) {
         this.id_persona = resp.id;
         console.log('ID_P', this.id_persona);
 
-        this.asignarDatosPerona(resp);
+        this.asignarDataPersona(resp);
       }
     })
   };
 
 }
-function ViewChild(MatDatepicker: any) {
-  throw new Error('Function not implemented.');
-}
-
