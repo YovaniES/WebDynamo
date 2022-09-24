@@ -193,9 +193,9 @@
               </div>
               </td>
 
-              <td style="color: #20c997; font-weight:600;">{{vacaciones.dias_vac_planificado? vacaciones.dias_vac_planificado: 0}}<small> d</small></td>
-              <td style="color: #f56c79; font-weight:600;"    >  {{vacaciones.vac_pendiente?  vacaciones.vac_pendiente : 0 }}<small> d</small></td>
-              <td style="color: #696767; font-weight:600;"    >  {{vacaciones.vac_dias_completo?  vacaciones.vac_dias_completo : 0 }}<small> d</small></td>
+              <td style="color: #20c997; font-weight:600;">  {{vacaciones.dias_planificado? vacaciones.dias_planificado: 0}}<small> d</small></td>
+              <td style="color: #f56c79; font-weight:600;">  {{vacaciones.cant_dias_vac - vacaciones.dias_completados}}<small> d</small></td>
+              <td style="color: #696767; font-weight:600;">  {{vacaciones.dias_completados?  vacaciones.dias_completados : 0 }}<small> d</small></td>
             </tr>
           </tbody>
         </table>
