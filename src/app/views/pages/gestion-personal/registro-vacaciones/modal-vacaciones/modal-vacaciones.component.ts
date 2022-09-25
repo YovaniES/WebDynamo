@@ -18,7 +18,6 @@ import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacacio
 })
 
 export class ModalVacacionesComponent implements OnInit {
-  // moment.locale("es");
   // moment().format("L"); 16/02/2021
 
   minDate = new Date();
@@ -52,11 +51,10 @@ export class ModalVacacionesComponent implements OnInit {
     this.cargarVacacionesById();
     this.getHistoricoCambiosEstado(this.DATA_VACACIONES);
     console.log('DATA_VACACIONES', this.DATA_VACACIONES);
+    console.log('ID_DATA_VACACIONES', this.DATA_VACACIONES.id_vacaciones);
+    this.vacacionesForm.controls['idVacaciones'].setValue(this.DATA_VACACIONES)
     // console.log('FECHA_1', moment(this.DATA_VACACIONES.fecha_ini_vac).format("YYYY-MM-DD hh:mm A"));
     // console.log('FECHA_123', moment(Date.now()).format('YYYY-MM-DD hh:mm A'));
-    console.log('ID_DATA_VACACIONES', this.DATA_VACACIONES.id_vacaciones);
-
-    this.vacacionesForm.controls['idVacaciones'].setValue(this.DATA_VACACIONES)
   }
 
     newForm(){
@@ -77,15 +75,12 @@ export class ModalVacacionesComponent implements OnInit {
        fecha_ingreso : [''],
        total_dias_vac: [''],
        idVacaciones  : [''],
-       totalDias     : ['']
-
       })
      }
 
   filtroFecha(calendario: Date): boolean {
     // const dateIni = moment.utc(this.DATA_VACACIONES.fecha_ini_vac).format('YYYY-MM-DD')
     // console.log('FECHA_START', dateIni);
-
     const fechaInicial = '2022-09-25'
     return calendario > new Date(fechaInicial);
   }
@@ -259,15 +254,44 @@ export class ModalVacacionesComponent implements OnInit {
       console.log('PERIODO_PLANI', existePeriodoPlanificado, this.listVacacionesEstado);
 
       if (existePeriodoPlanificado) {
-        const idEstadoPlanificado = this.listVacacionesEstado.find( estado => estado.valor_texto_1.toUpperCase() == 'PLANIFICADO');
-          if (idEstadoPlanificado) {
-            console.log('ID_EST_PLANIF', idEstadoPlanificado);
-
-            this.actualizarVacaciones(idEstadoPlanificado.id_correlativo);
-          }
+        this.validarEstadoPlanificado();
+      } else {
+        this.validarEstadoCompletado(listVacacionesPeriodo);
       }
   }
 
+  validarEstadoPlanificado(){
+    const idEstadoPlanificado = this.buscarEstadoPorDescripcion('PLANIFICADO');
+    if (idEstadoPlanificado) {
+      // console.log('ID_EST_PLANIF', idEstadoPlanificado);
+      this.actualizarVacaciones(idEstadoPlanificado.id_correlativo);
+    }
+  }
+
+  buscarEstadoPorDescripcion(descripcion: string): any{
+    return this.listVacacionesEstado.find( estado => estado.valor_texto_1.toUpperCase() == descripcion)
+  }
+
+  validarEstadoCompletado(listVacacionesPeriodo: any[]){
+    const cantidadDiasCompletados = this.acumularDiasCompletados(listVacacionesPeriodo);
+
+    console.log('DIAS_COMPL', cantidadDiasCompletados, this.vacacionesForm.controls['total_dias_vac'].value);
+    if (cantidadDiasCompletados == this.vacacionesForm.controls['total_dias_vac'].value) {
+      console.log('DIAS');
+    const idEstadoCompletado = this.buscarEstadoPorDescripcion('COMPLETADO');
+    this.actualizarVacaciones(idEstadoCompletado.id_correlativo);
+    }
+  }
+
+  acumularDiasCompletados(listVacacionesPeriodo: any[]): number{
+    let cantidadDiasCompletados = 0;
+    listVacacionesPeriodo.map( periodo => {
+      if (periodo.vac_estado.toUpperCase() == 'COMPLETADO') {
+        cantidadDiasCompletados = cantidadDiasCompletados + periodo.cant_dias_periodo;
+      }
+    });
+    return cantidadDiasCompletados;
+  }
 
   histCambiosEstado: any[] = [];
   getHistoricoCambiosEstado(id: number){
@@ -334,7 +358,6 @@ export class ModalVacacionesComponent implements OnInit {
     })
   };
 
-  id_estado_periodo: number = 0;
   actualizarPeriodoVacaciones(DATA: any){
     console.log('DATA_VACACIONES', DATA);
     // const DATA = this.facturaForm.value

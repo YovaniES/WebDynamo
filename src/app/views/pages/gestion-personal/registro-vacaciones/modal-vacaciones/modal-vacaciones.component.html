@@ -69,9 +69,6 @@
                 formControlName="estado_vac"/>
             </div>
 
-            <!-- [comparisonStart]="dateStar"
-              [comparisonEnd]="dateEnd" -->
-
             <div class="col-sm-4 cli-form-element">
               <label class="form-label">Fecha de vacaciones </label>
               <mat-form-field color="accent" appearance="outline">
@@ -119,10 +116,10 @@
                     <tr class="bgc-blue-light c-white">
                       <th>Accíón</th>
                       <th>N°</th>
-                      <th>ID periodo</th>
+                      <!-- <th>ID periodo</th> -->
                       <th>Fecha inicio</th>
                       <th>Fecha fin</th>
-                      <th>Días Calendario</th>
+                      <th>Días periodo</th>
                       <th>Estado periodo</th>
                       <th>Motivo</th>
                       <th>Asignado por:</th>
@@ -149,7 +146,7 @@
                         </div>
                       </td>
                       <td>{{i+1}}</td>
-                      <td>{{periodo.id_periodo}}</td>
+                      <!-- <td>{{periodo.id_periodo}}</td> -->
                       <td>{{periodo.fecha_inicio}}</td>
                       <td>{{periodo.fecha_fin}}</td>
                       <td>{{periodo.cant_dias_periodo}} días</td>

@@ -26,7 +26,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   page = 1;
   totalVacaciones: number = 0;
-  pageSize = 15;
+  pageSize = 10;
 
   constructor(
     private personalService: PersonalService,
@@ -44,10 +44,7 @@ export class RegistroVacacionesComponent implements OnInit {
     this.getListProyectos();
     this.getListEstadoVacaciones();
     this.getListAdminVacaciones();
-    // console.log('DIF-DATE', this.time_difference);
     this.getCantDias();
-
-    // this.difFechas();
   }
 
     newFilfroForm(){
@@ -90,14 +87,6 @@ export class RegistroVacacionesComponent implements OnInit {
       this.spinner.hide();
     });
   }
-
-  nameResponsable(){
-
-  }
-  // @p_id_vacaciones,
-  // @CONFIG_USER_ID,
-  // @CONFIG_OUT_MSG_ERROR,
-  // @CONFIG_OUT_MSG_EXITO
 
   abrirEliminarLogico(id: number, ){
     Swal.fire({
@@ -162,8 +151,6 @@ export class RegistroVacacionesComponent implements OnInit {
 
   cantDias: number = 0;
   getCantDias(){
-    // const date1 = new Date("08/10/2022");
-    // const date2 = new Date("20/10/2022");
     const date1 = new Date("2020-12-3");
     const date2 = new Date("2020-12-31");
 
