@@ -49,6 +49,13 @@
   font-size: 8px;
 }
 
+::ng-deep .mat-date-range-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 ::ng-deep .mat-form-field-subscript-wrapper {
   margin-top: 1px;
 }

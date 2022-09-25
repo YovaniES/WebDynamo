@@ -128,12 +128,12 @@
               <th>Sistema</th>
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
-              <th>Cant. días</th>
+              <th style="text-align: left">Cant. días</th>
               <th>Estado</th>
-              <th style="text-align:left">Responsable</th>
+              <th style="text-align:center">Responsable</th>
               <th>Planificado</th>
               <th>Pendiente</th>
-              <th>Completado</th>
+              <th style="text-align: left">Completados</th>
             </tr>
           </thead>
 
@@ -171,7 +171,7 @@
 
               <td style="width: 100px; font-weight: 600;">
                 <div class="cli-table-dias">
-                  {{vacaciones.cant_dias_vac}} <small>d</small>
+                  {{vacaciones.cant_dias_vac}}
                 </div>
               </td>
               <td style="width: 100px">
@@ -186,15 +186,27 @@
                   <button
                     matTooltip={{vacaciones.responsable}}
                     class="icon-btn btn-trans"
-                    style="color: #6c757d"
+                    style="color: #6c757d;"
                     ><mat-icon class="icon-18">account_circle</mat-icon>
                   </button>{{vacaciones.usuario}}
               </div>
               </td>
-
-              <td style="color: #20c997; font-weight:600;">  {{vacaciones.dias_planificado? vacaciones.dias_planificado: 0}}<small> d</small></td>
-              <td style="color: #f56c79; font-weight:600;">  {{vacaciones.cant_dias_vac - vacaciones.dias_completados}}<small> d</small></td>
-              <td style="color: #696767; font-weight:600;">  {{vacaciones.dias_completados?  vacaciones.dias_completados : 0 }}<small> d</small></td>
+              <td style="color: #20c997; font-weight:600;">
+                <div *ngIf="vacaciones.dias_planificado">
+                  {{vacaciones.dias_planificado? vacaciones.dias_planificado: 0}}<small> días</small>
+                </div>
+              </td>
+              <td style="color: #f56c79; font-weight:600;">
+                <div *ngIf="(vacaciones.cant_dias_vac - vacaciones.dias_completados)">
+                  {{vacaciones.cant_dias_vac - vacaciones.dias_completados}}<small> d</small>
+                </div>
+              </td>
+              <td style="width: 100px; font-weight: 600;">
+                <div class="cli-table-diascompl" *ngIf="vacaciones.dias_completados">
+                  {{vacaciones.dias_completados}}
+                </div>
+              </td>
+              <!-- <td style="color: #696767; font-weight:600;">  {{vacaciones.dias_completados?  vacaciones.dias_completados : 0 }}<small> d</small></td> -->
             </tr>
           </tbody>
         </table>

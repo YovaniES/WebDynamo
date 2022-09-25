@@ -341,7 +341,7 @@ export class ModalVacacionesComponent implements OnInit {
     console.log('data_periodo_asignado', dataPeriodo);
 
     this.vacacionesForm.controls['estado_vac'   ].setValue(dataPeriodo.vac_estado)
-    this.vacacionesForm.controls['id_estado_vac'].setValue(dataPeriodo.id_vac_estado)
+    this.vacacionesForm.controls['id_estado_vac'].setValue(dataPeriodo.id_per_estado)
   }
 
   asignarVacaciones(){

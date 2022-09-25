@@ -44,8 +44,9 @@ export class AsignarVacacionesComponent implements OnInit {
     this.asigVacacionesForm = this.fb.group({
       fechaInicio   : ['', [Validators.required]],
       fechaFin      : ['', [Validators.required]],
-      id_estado     : [2, [Validators.required]], // ESTADO_PERIODO: PLANIFICADO
-      id_motivo     : ['', [Validators.required]],
+      id_estado     : [ 2, [Validators.required]],
+      estado_periodo: ['Planificado'],
+      id_motivo     : [ 5, [Validators.required]],
       dias_periodo  : [''],
       observaciones : [''],
     })
@@ -68,14 +69,14 @@ export class AsignarVacacionesComponent implements OnInit {
     let parametro: any =  {queryId: 129, mapValue: {
           p_id_vacaciones        : this.DATA_VACAC.vacForm.idVacaciones.idVac,
           p_id_persona           : this.DATA_VACAC.vacForm.idVacaciones.id_persona ,
-          p_fecha_vac_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
-          p_fecha_vac_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
-          // p_id_vac_estado        : this.DATA_VACAC.vacForm.idVacaciones.id_estado_vac ,
-          p_id_vac_estado        : formValues.id_estado ,
-          p_id_vac_motivo        : formValues.id_motivo ,
+          p_fecha_per_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
+          p_fecha_per_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
+          // p_id_per_estado        : this.DATA_VACAC.vacForm.idVacaciones.id_estado_vac ,
+          p_id_per_estado        : formValues.id_estado ,
+          p_id_per_motivo        : formValues.id_motivo ,
           p_observacion          : formValues.observaciones ,
           p_id_usuario_asignacion: this.userID ,
-          p_fecha_vac_creacion   : '' ,
+          p_fecha_per_creacion   : '' ,
           p_id_sist_vac          : this.DATA_VACAC.vacForm.idVacaciones.id_sist_vac,
           CONFIG_USER_ID         : this.userID ,
           CONFIG_OUT_MSG_ERROR   : '' ,
@@ -104,13 +105,13 @@ export class AsignarVacacionesComponent implements OnInit {
           p_idPeriodoVac         : this.DATA_VACAC.id_periodo,
           p_id_vacaciones        : this.DATA_VACAC.id_vacaciones ,
           p_id_persona           : this.DATA_VACAC.id_persona ,
-          p_fecha_vac_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
-          p_fecha_vac_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
-          p_id_vac_estado        : formValues.id_estado ,
-          p_id_vac_motivo        : formValues.id_motivo ,
+          p_fecha_per_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
+          p_fecha_per_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
+          p_id_per_estado        : formValues.id_estado ,
+          p_id_per_motivo        : formValues.id_motivo ,
           p_observacion          : formValues.observaciones ,
           p_id_usuario_asignacion: this.userID ,
-          p_fecha_vac_creacion   : '' ,
+          p_fecha_per_creacion   : '' ,
           p_id_sist_vac          : this.DATA_VACAC.id_sist,
           CONFIG_USER_ID         : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
@@ -156,11 +157,10 @@ export class AsignarVacacionesComponent implements OnInit {
   cargarVacacionesByID(){
     if (!this.DATA_VACAC.isCreation) {
       this.titleBtn = 'Actualizar'
-      this.asigVacacionesForm.controls['id_motivo'    ].setValue(this.DATA_VACAC.id_vac_motivo);
-      this.asigVacacionesForm.controls['id_estado'    ].setValue(this.DATA_VACAC.id_vac_estado);
+      this.asigVacacionesForm.controls['id_motivo'    ].setValue(this.DATA_VACAC.id_per_motivo);
+      this.asigVacacionesForm.controls['id_estado'    ].setValue(this.DATA_VACAC.id_per_estado);
       this.asigVacacionesForm.controls['observaciones'].setValue(this.DATA_VACAC.observacion);
       this.asigVacacionesForm.controls['dias_periodo' ].setValue(this.DATA_VACAC.cant_dias_periodo);
-
 
       if (this.DATA_VACAC.fecha_inicio !='null' && this.DATA_VACAC.fecha_inicio != '') {
           let fecha_x = this.DATA_VACAC.fecha_inicio
@@ -229,3 +229,5 @@ export class AsignarVacacionesComponent implements OnInit {
     this.dialogRef.close(succes);
   }
 }
+
+

@@ -133,10 +133,6 @@
   width: 135px;
 }
 
-.mat-form-field {
-  text-align: center;
-}
-
 ::ng-deep .mat-calendar-body-selected {
   background-color: #0daef4;
   color: #fff;
@@ -150,6 +146,12 @@
 ::ng-deep .mat-form-field-infix {
   margin-top: -11px;
   // width: 1px;
+}
+
+::ng-deep .mat-date-range-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 

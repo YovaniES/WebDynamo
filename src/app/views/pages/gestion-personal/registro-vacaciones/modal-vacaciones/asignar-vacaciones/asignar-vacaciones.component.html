@@ -16,7 +16,7 @@
           <div class="row g-3">
 
             <div class="col-sm-6 cli-form-element">
-              <label class="form-label">Fecha de vacaciones *</label>
+              <label class="form-label">Fecha de planificación *</label>
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
                   <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
@@ -28,24 +28,37 @@
             </div>
 
             <div class="col-sm-6 cli-form-element">
-              <label class="form-label">Total días</label>
+              <label class="form-label">Días planificado</label>
               <input
                 style="font-weight: 600; text-align:center"
                 type="number"
                 readonly="true"
                 class="form-control"
-                formControlName="dias_periodo"
-                />
+                formControlName="dias_periodo"/>
             </div>
 
-            <div class="col-sm-6 cli-form-element">
-              <label>Estado *</label>
-              <select class="cli-input-white" formControlName="id_estado">
-                <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="estado.id_correlativo" *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
-              </select>
-                <small class="form-text text-alert" *ngIf="campoNoValido('id_estado')">* Ingrese el Estado es obligatorio</small>
-            </div>
+
+            <ng-container *ngIf="DATA_VACAC.isCreation">
+              <div class="col-sm-6 cli-form-element">
+                <label>Estado *</label>
+                  <input
+                  type="text"
+                  readonly="true"
+                  class="form-control"
+                  formControlName="estado_periodo"/>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="!DATA_VACAC.isCreation">
+              <div class="col-sm-6 cli-form-element">
+                <label>Estado *</label>
+                <select class="cli-input-white" formControlName="id_estado">
+                  <option [value]="0" disabled>- Seleccione -</option>
+                  <option [value]="estado.id_correlativo" *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
+                </select>
+                  <small class="form-text text-alert" *ngIf="campoNoValido('id_estado')">* Ingrese el Estado es obligatorio</small>
+              </div>
+            </ng-container>
 
             <div class="col-sm-6 cli-form-element">
               <label>Motivo *</label>
