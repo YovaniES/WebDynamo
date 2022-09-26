@@ -20,8 +20,8 @@
           </button>
       </div>
 
-      <div class="pr-section mt-2">
-        <div class="pr-module-containerXZ">
+      <div class="pr-section mt-2" *ngIf="fullName">
+        <div class="pr-module-container">
           <div class="row" style="justify-content: space-between;">
             <div class="input-group col-sm-4">
               <div class="input-group-text"><mat-icon>workspaces</mat-icon></div>
@@ -46,11 +46,11 @@
         </div>
       </div>
 
-      <!-- <div *ngIf="!loadingItem"
-              class="cli-loader"
-              style="color: #c9c9c9"
+      <div *ngIf="!fullName"
+              class="cli-loader pr-section mt-2"
+              style="color: #c9c9c9; min-height: 55px;"
               >Aún no hay personal registrado
-     </div> -->
+     </div>
 
       <!-- REGISTRO DE VACACIONES ------------------------------------------------------------------------->
       <div class="pr-subtitle mt-2">Registro de vacaciones</div>
@@ -72,12 +72,11 @@
                 <input matStartDate formControlName="fechaInicVac" placeholder="Inicio vacaciones"   #fechaIni (dateChange)="totalDiasVacaciones()" >
                 <input matEndDate   formControlName="fechaFinVac"  placeholder="Final de vacaciones" #fechaFin (dateChange)="totalDiasVacaciones()" >
               </mat-date-range-input>
-              <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-date-range-picker #picker></mat-date-range-picker>
 
-              <mat-error *ngIf="vacacionesForm.controls['fechaInicVac'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
-              <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid')">Invalid end date</mat-error>
+              <mat-error *ngIf="vacacionesForm.controls['fechaInicVac'].hasError('matStartDateInvalid')">Fecha de inicio no válida</mat-error>
+              <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid')">Fecha de fin no válida</mat-error>
             </mat-form-field>
           </div>
 

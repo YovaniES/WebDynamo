@@ -118,7 +118,7 @@
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
               <!-- <th>ID Personal</th> -->
-              <th>Nombres y Apellidos</th>
+              <th style="text-align: left">Nombres y Apellidos</th>
               <th>Correo</th>
               <th>Perfil</th>
               <th>Cód. Corporativo</th>
@@ -159,7 +159,7 @@
                 </div>
               </td>
               <!-- <td>{{ personal.id }}</td> -->
-              <td class="w350"> {{ personal.apellidos |firstCapital}}, {{personal.nombres | firstCapital}}</td>
+              <td class="w350" style="text-align:left"> {{ personal.apellidos |firstCapital}}, {{personal.nombres | firstCapital}}</td>
               <td>{{ personal.correo }}</td>
               <td>{{ personal.perfil | firstCapital }}</td>
               <td>{{ personal.codigo_corporativo| uppercase }}</td>

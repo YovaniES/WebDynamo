@@ -109,22 +109,18 @@
   &-dias {
     width: 22px;
     font-size: 11px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: #0daef4;
     border: solid 1px #0daef4;
     border-radius: 18px;
+    display: inline-block;
   }
   &-diascompl {
     width: 22px;
     font-size: 11px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: #6c757d;
     border: solid 1px #6c757d;
-    border-radius: 40px;
+    border-radius: 20px;
+    display: inline-block;
   }
 }
 

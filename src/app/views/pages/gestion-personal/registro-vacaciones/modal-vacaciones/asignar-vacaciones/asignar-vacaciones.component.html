@@ -24,6 +24,9 @@
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
+
+                <mat-error *ngIf="asigVacacionesForm.controls['fechaInicio'].hasError('matStartDateInvalid')">Fecha de inicio no válida</mat-error>
+                <mat-error *ngIf="asigVacacionesForm.controls['fechaFin'   ].hasError('matEndDateInvalid')">Fecha de fin no válida</mat-error>
               </mat-form-field>
             </div>
 

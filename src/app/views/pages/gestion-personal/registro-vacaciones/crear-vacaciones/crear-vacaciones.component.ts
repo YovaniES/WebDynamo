@@ -36,7 +36,6 @@ export class CrearVacacionesComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.getUsuario();
-    // this.getListEstadoVacaciones();
     this.getListSistemaVacaciones();
   }
 
@@ -66,7 +65,6 @@ export class CrearVacacionesComponent implements OnInit {
 // let newDate2 = moment.utc(isoDate).format("MMM Do, YYYY");
 // console.log('converted date', newDate2); // Sept 24, 2021
 
-  fullName: string = '';
   crearVacaciones() {
   this.spinner.show();
     const formValues = this.vacacionesForm.getRawValue();
@@ -79,7 +77,6 @@ export class CrearVacacionesComponent implements OnInit {
        p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
        p_id_estado_vac     : formValues.id_estado_vac,
        p_id_responsable    : this.userID,
-      //  p_id_responsable    : this.userLogeado,
        p_fecha_crea_vac    : '',
        CONFIG_USER_ID      : this.userID,
        CONFIG_OUT_MSG_ERROR: "",
@@ -121,15 +118,6 @@ export class CrearVacacionesComponent implements OnInit {
     })
   }
 
-  // listEstadoVacacionesAprobadas: any[] = [];
-  // getListEstadoVacaciones(){
-  // let parametro: any[] = [{ queryId: 132}];
-  // this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
-  //   this.listEstadoVacacionesAprobadas = resp.list;
-  //   // console.log('VACAS-ESTADO', resp.list);
-  //   })
-  // }
-
   userID: number = 0;
   userLogeado: string = '';
   getUsuario(){
@@ -146,11 +134,12 @@ export class CrearVacacionesComponent implements OnInit {
     this.dialogRef.close(succes);
   }
 
+  fullName: string = '';
   asignarDataPersona(persona: any){
     console.log('DATA_ASIG_PERS', persona);
     this.fullName = persona.nombres;
 
-    console.log('NAME',this.fullName);
+    console.log('NAME',this.fullName, this.vacacionesForm.controls['idPersonal']);
 
     this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
     this.vacacionesForm.controls['codCorp'      ].setValue(persona.codigo_corporativo)

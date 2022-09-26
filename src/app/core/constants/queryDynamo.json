@@ -1,0 +1,3072 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "description": "Get all projects",
+    "sql": "
+ SELECT id,
+	  id_correlativo AS id_proyecto,
+    valor_texto_1 AS codigo,
+    valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 1 AND estado = 1
+    ORDER BY valor_texto_1  ASC;
+     "
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "description": "Get one project",
+    "sql": "
+SELECT id,
+	id_correlativo,
+    valor_texto_1 as codigo,
+    valor_texto_2 as descripcion
+FROM entidad
+WHERE id_tabla = 1 AND estado = 1 and id = @param_id_proyecto;
+     "
+  },
+  {
+    "id": 3,
+    "type": 4,
+    "description": "Record one project",
+    "sql": "
+    CALL prc_ins_proyecto(
+    @param_codigo,
+    @param_descripcion,
+    @param_id_padre,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 4,
+    "type": 5,
+    "description": "Update one project",
+    "sql": "
+    CALL prc_update_proyecto(
+    @param_id_proyecto,
+    @param_codigo,
+    @param_descripcion,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 5,
+    "type": 6,
+    "description": "Delete one project",
+    "sql": "
+    CALL prc_delete_proyecto(
+    @param_id_proyecto,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 6,
+    "type": 1,
+    "description": "Get all persons",
+    "sql": "
+    SELECT p.id,
+    p.nombres,
+    concat(p.apellido_paterno,
+    ' ',
+    p.apellido_materno) as
+    apellidos,
+    p.correo,
+    p.dni,
+    p.codigo_corporativo,
+    perfil.valor_texto_1 as
+    perfil,
+    proyecto.valor_texto_1 as
+    codigo_proyecto,
+    proyecto.valor_texto_2 as
+    proyecto_descripcion,
+    date_format(p.fecha_ingreso,
+    '%d/%m/%Y') as
+    fecha_ingreso,
+    case when
+    p.estado =
+    1 then
+    'Activo' else
+    'Inactivo' end
+    as estado
+    FROM persona
+    p left
+    join entidad
+    proyecto on
+    p.id_proyecto =
+    proyecto.id_correlativo and
+    proyecto.id_tabla =
+    1 left
+    join entidad
+    perfil on
+    p.id_perfil =
+    perfil.id_correlativo and
+    perfil.id_tabla =
+    2 WHERE
+    p.eliminacion_logica =
+    1 order
+    by p.id
+    asc; "
+  },
+  {
+    "id": 7,
+    "type": 4,
+    "description": "Insert one person",
+    "sql": "
+    CALL prc_ins_persona(
+    @param_codigo_corporativo,
+    @param_nombres,
+    @param_apellido_paterno,
+    @param_apellido_materno,
+    @param_dni,
+    @param_correo,
+    @param_fecha_ingreso,
+    @param_fecha_nacimiento,
+    @param_id_proyecto,
+    @param_id_perfil,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 8,
+    "type": 5,
+    "description": "Update one person",
+    "sql": "
+    CALL prc_update_persona(
+    @param_id_persona,
+    @param_codigo_corporativo,
+    @param_nombres,
+    @param_apellido_paterno,
+    @param_apellido_materno,
+    @param_dni,
+    @param_correo,
+    @param_fecha_ingreso,
+    @param_fecha_nacimiento,
+    @param_id_proyecto,
+    @param_id_perfil,
+    @param_estado,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 9,
+    "type": 5,
+    "description": "Delete one person",
+    "sql": "
+    CALL prc_delete_persona(
+    @param_id_persona,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 10,
+    "type": 1,
+    "description": "Get all profiles",
+    "sql": "
+    SELECT id_correlativo
+    as id,
+    valor_texto_1 as
+    nombre,
+    valor_texto_2 as
+    descripcion FROM
+    entidad WHERE
+    id_tabla =
+    2 AND
+    estado =
+    1 order
+    by id_correlativo
+    asc; "
+  },
+  {
+    "id": 11,
+    "type": 1,
+    "description": "Get one profile",
+    "sql": "
+    SELECT id_correlativo
+    as id,
+    valor_texto_1 as
+    nombre,
+    valor_texto_2 as
+    descripcion FROM
+    entidad WHERE
+    id_tabla =
+    2 AND
+    estado =
+    1 and
+    id_correlativo =
+    @param_id_perfil; "
+  },
+  {
+    "id": 12,
+    "type": 4,
+    "description": "Record one profile",
+    "sql": "
+    CALL prc_ins_perfil(
+    @param_nombre,
+    @param_descripcion,
+    @param_id_padre,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 13,
+    "type": 5,
+    "description": "Update one profile",
+    "sql": "
+    CALL prc_update_perfil(
+    @param_id_perfil,
+    @param_nombre,
+    @param_descripcion,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 14,
+    "type": 6,
+    "description": "Delete one profile",
+    "sql": "
+    CALL prc_delete_perfil(
+    @param_id_perfil,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 15,
+    "type": 1,
+    "description": "Get all recursos hardware",
+    "sql": "
+    SELECT r.id
+    AS id_recurso,
+    tipo.valor_texto_1 AS
+    tipo,
+    marca.valor_texto_1 AS
+    marca,
+    rh.descripcion AS
+    equipo,
+    rh.modelo AS
+    modelo,
+    rh.serie AS
+    serie,
+    rh.imei AS
+    imei,
+    (select concat(p.apellido_paterno,
+    ' ',
+    p.apellido_materno,
+    ',',
+    p.nombres) nombres
+    from recurso_hardware
+    rhd inner
+    join persona_recursos
+    pr on
+    rhd.id =
+    pr.id_recurso inner
+    join persona
+    p on
+    pr.id_persona =
+    p.id inner
+    join entidad
+    marcaent on
+    rhd.id_tipo =
+    marcaent.id_correlativo where
+    rhd.id =
+    rh.id and
+    marcaent.id_tabla =
+    4 and
+    pr.fecha_liberacion is
+    null) nombres,
+    CASE WHEN
+    r.estado =
+    0 THEN
+    'Reservado' ELSE
+    'Disponible' END
+    AS estado_recurso,
+    rh.observaciON FROM
+    recurso r
+    INNER JOIN
+    recurso_hardware rh
+    ON r.id
+    = rh.id
+    INNER JOIN
+    entidad AS
+    tipo ON
+    rh.id_tipo =
+    tipo.id_correlativo AND
+    tipo.id_tabla =
+    3 INNER
+    JOIN entidad
+    AS marca
+    ON rh.id_marca
+    = marca.id_correlativo
+    AND marca.id_tabla
+    = 4
+    AND r.eliminacion_logica
+    = 1
+    order by
+    r.id asc;
+    "
+  },
+  {
+    "id": 16,
+    "type": 4,
+    "description": "Record one hardware",
+    "sql": "
+    CALL prc_ins_hardware(
+    @param_id_tipo,
+    @param_id_marca,
+    @param_descripcion,
+    @param_modelo,
+    @param_serie,
+    @param_imei,
+    @param_observacion,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 17,
+    "type": 5,
+    "description": "Update one hardware",
+    "sql": "
+    CALL prc_update_hardware(
+    @param_id_recurso,
+    @param_id_tipo,
+    @param_id_marca,
+    @param_descripcion,
+    @param_modelo,
+    @param_serie,
+    @param_imei,
+    @param_observacion,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 18,
+    "type": 6,
+    "description": "Delete one hardware",
+    "sql": "
+    CALL prc_delete_hardware(
+    @param_id_hardware,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 19,
+    "type": 4,
+    "description": "Record one cuenta",
+    "sql": "
+    CALL prc_ins_cuenta(
+    @param_usuario,
+    @param_password,
+    @param_id_tipo,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 20,
+    "type": 5,
+    "description": "Update one cuenta",
+    "sql": "
+    CALL prc_update_cuenta(
+    @param_id_recurso,
+    @param_usuario,
+    @param_password,
+    @param_id_tipo,
+    @param_fecha_ultima_renovacion,
+    @param_fecha_proxima_renovacion,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 21,
+    "type": 4,
+    "description": "Record one hardware tipo",
+    "sql": "
+    CALL prc_ins_hardware_tipo(
+    @param_nombre,
+    @param_descripcion,
+    @param_id_padre,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 22,
+    "type": 4,
+    "description": "Record one hardware marca",
+    "sql": "
+    CALL prc_ins_hardware_marca(
+    @param_nombre,
+    @param_descripcion,
+    @param_id_padre,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 23,
+    "type": 1,
+    "description": "Get availables hardware",
+    "sql": "
+    SELECT r.id,
+    tipo.valor_texto_1 as
+    tipo,
+    marca.valor_texto_1 as
+    marca,
+    rh.descripcion,
+    rh.modelo,
+    rh.serie,
+    rh.imei,
+    rh.observacion FROM
+    recurso_hardware rh
+    INNER JOIN
+    recurso r
+    ON rh.id
+    = r.id
+    INNER JOIN
+    entidad tipo
+    ON rh.id_tipo
+    = tipo.id_correlativo
+    AND tipo.id_tabla
+    = 3
+    INNER JOIN
+    entidad marca
+    ON rh.id_marca
+    = marca.id_correlativo
+    AND marca.id_tabla
+    = 4
+    WHERE r.estado
+    = 1
+    AND r.eliminacion_logica
+    = 1
+    order by
+    r.id asc;
+    "
+  },
+  {
+    "id": 24,
+    "type": 1,
+    "description": "Get availables cuenta",
+    "sql": "
+SELECT
+	r.id,
+	rc.usuario,
+	rc.password,
+	tipo.valor_texto_1 AS tipo,
+	rc.fecha_ultima_renovacion,
+	rc.fecha_proxima_renovacion
+FROM recurso_cuenta rc
+	INNER JOIN recurso r ON rc.id = r.id
+	INNER JOIN entidad tipo ON rc.id_tipo = tipo.id_correlativo AND tipo.id_tabla = 5
+WHERE r.estado = 1 AND r.eliminacion_logica = 1
+ORDER BY r.id ASC;
+    "
+  },
+  {
+    "id": 25,
+    "type": 4,
+    "description": "Assign one recurso(hardware o cuenta) to persona",
+    "sql": "
+    CALL prc_assign_recurso_to_persona(
+    @param_id_persona,
+    @param_id_recurso,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 26,
+    "type": 5,
+    "description": "Unassign one recurso from one persona",
+    "sql": "
+    CALL prc_unassign_recurso_from_persona(
+    @param_id_recurso,
+    @param_id_persona,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 27,
+    "type": 1,
+    "description": "Get hardware from one persona",
+    "sql": "
+SELECT r.id,
+    tipo.valor_texto_1 AS tipo,
+    marca.valor_texto_1 AS marca,
+    rh.descripcion,
+    rh.modelo,
+    rh.serie,
+    rh.imei,
+    rh.observacion
+FROM recurso r
+  INNER JOIN recurso_hardware rh ON r.id = rh.id
+  INNER JOIN entidad tipo        ON rh.id_tipo  = tipo.id_correlativo  AND tipo.id_tabla = 3
+  INNER JOIN entidad marca       ON rh.id_marca = marca.id_correlativo AND marca.id_tabla = 4
+  INNER JOIN persona_recursos pr ON r.id        = pr.id_recurso
+  INNER JOIN persona p           ON pr.id_persona = p.id
+WHERE p.id = @param_id_persona
+  AND r.estado != 1
+  AND pr.fecha_liberacion IS NULL;
+    "
+  },
+  {
+    "id": 28,
+    "type": 1,
+    "description": "Get cuenta from one persona",
+    "sql": "
+    SELECT rc.id,
+    rc.usuario,
+    rc.password,
+    tipo.valor_texto_1 AS
+    tipo,
+    rc.fecha_ultima_renovacion,
+    rc.fecha_proxima_renovacion FROM
+    recurso r
+    INNER JOIN
+    recurso_cuenta rc
+    ON r.id
+    = rc.id
+    INNER JOIN
+    persona_recursos pr
+    ON r.id
+    = pr.id_recurso
+    INNER JOIN
+    persona p
+    ON pr.id_persona
+    = p.id
+    INNER JOIN
+    entidad tipo
+    ON rc.id_tipo
+    = tipo.id_correlativo
+    AND tipo.id_tabla
+    = 5
+    WHERE p.id
+    = @param_id_persona
+    AND r.estado
+    != 1
+    AND pr.fecha_liberacion
+    IS NULL;
+    "
+  },
+  {
+    "id": 29,
+    "type": 1,
+    "description": "search hardware disponible by serie",
+    "sql": "
+SELECT r.id AS id_recurso,
+       tipo.valor_texto_1  AS tipo,
+       marca.valor_texto_1 AS marca,
+       rh.descripcion 	   AS equipo,
+       rh.modelo 		   AS modelo,
+       rh.serie 		   AS serie,
+       rh.imei 			   AS imei,
+       (SELECT CONCAT(p.apellido_paterno,' ',p.apellido_materno,',',p.nombres) nombres
+FROM recurso_hardware rhd
+      INNER JOIN persona_recursos pr ON rhd.id = pr.id_recurso
+      INNER JOIN persona p 		  ON pr.id_persona = p.id
+	  INNER JOIN entidad marcaent ON rhd.id_tipo   = marcaent.id_correlativo
+      WHERE rhd.id = rh.id AND marcaent.id_tabla = 4 AND pr.fecha_liberacion IS NULL) nombres,
+	  CASE WHEN r.estado = 0 THEN 'Reservado' ELSE 'Disponible' END AS estado_recurso,
+              rh.observacion
+FROM recurso r
+     INNER JOIN recurso_hardware rh ON r.id = rh.id
+     INNER JOIN entidad AS tipo 	ON rh.id_tipo  = tipo.id_correlativo  AND tipo.id_tabla  = 3
+     INNER JOIN entidad AS marca 	ON rh.id_marca = marca.id_correlativo AND marca.id_tabla = 4
+WHERE
+     (@param_serie IS NULL OR rh.serie LIKE CONCAT('%', @param_serie,'%'))
+     AND (@param_id_tipo  IS NULL OR tipo.id_correlativo  = @param_id_tipo)
+     AND (@param_id_marca IS NULL OR marca.id_correlativo = @param_id_marca)
+     AND r.estado = 1 AND r.eliminacion_logica = 1
+    ORDER BY r.id DESC; "
+  },
+  {
+    "id": 30,
+    "type": 1,
+    "description": "Buscar y listar persona",
+    "sql": "
+    SELECT p.id,
+    p.nombres,
+    CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
+    p.correo,
+    p.dni,
+    p.codigo_corporativo,
+    perfil.valor_texto_1 AS perfil,
+    proyecto.valor_texto_1 AS codigo_proyecto,
+    proyecto.valor_texto_2 AS proyecto_descripcion,
+    DATE_FORMAT(p.fecha_ingreso,'%d/%m/%Y') AS fecha_ingreso,
+    CASE WHEN
+    p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado
+FROM persona p
+left join entidad perfil on perfil.id_correlativo = p.id_perfil and perfil.id_tabla = 2
+left join entidad proyecto on proyecto.id_correlativo = p.id_proyecto and proyecto.id_tabla = 1
+WHERE
+	  (@nombre IS NULL OR UPPER(CONCAT(p.nombres, ' ', p.apellido_paterno, ' ', p.apellido_materno)) LIKE CONCAT('%', @nombre, '%'))
+  AND (@dni IS NULL OR p.dni LIKE CONCAT('%', @dni, '%'))
+  AND (@id_estado 	IS NULL OR p.estado = @id_estado)
+  AND (@codigo_proyecto IS NULL OR p.id_proyecto = @codigo_proyecto)
+  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+  AND DATE(p.fecha_ingreso) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
+  AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+  AND DATE(p.fecha_ingreso) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+  AND DATE(p.fecha_ingreso) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+  AND p.eliminacion_logica = 1
+  ORDER BY p.id DESC; "
+  },
+  {
+    "id": 31,
+    "type": 1,
+    "description": "Get one persona",
+    "sql": "
+    SELECT p.id,
+    p.nombres,
+    p.apellido_paterno,
+    p.apellido_materno,
+    p.correo,
+    p.dni,
+    p.codigo_corporativo,
+    perfil.valor_texto_1 AS
+    perfil,
+    p.id_perfil AS
+    id_perfil,
+    proyecto.valor_texto_1 AS
+    codigo_proyecto,
+    p.id_proyecto AS
+    id_codigo_proyecto,
+    proyecto.valor_texto_2 AS
+    proyecto_descripcion,
+    DATE_FORMAT(p.fecha_ingreso,
+    '%d/%m/%Y') AS
+    fecha_ingreso,
+    DATE_FORMAT(p.fecha_nacimiento,
+    '%d/%m/%Y') AS
+    fecha_nacimiento,
+    CASE WHEN
+    p.estado =
+    1 THEN
+    'Activo' ELSE
+    'Inactivo' END
+    AS estado
+    FROM persona
+    p LEFT
+    JOIN entidad
+    proyecto ON
+    p.id_proyecto =
+    proyecto.id_correlativo AND
+    proyecto.id_tabla =
+    1 LEFT
+    JOIN entidad
+    perfil ON
+    p.id_perfil =
+    perfil.id_correlativo AND
+    perfil.id_tabla =
+    2 WHERE
+    p.id =
+    @param_id_persona AND
+    p.eliminacion_logica =
+    1; "
+  },
+  {
+    "id": 32,
+    "type": 1,
+    "description": "Get all hardware tipos",
+    "sql": "
+    SELECT id_correlativo
+    AS id,
+    valor_texto_1 AS
+    nombre,
+    valor_texto_2 AS
+    descripcion FROM
+    entidad e
+    WHERE estado
+    = 1
+    AND id_tabla
+    = 3;
+    "
+  },
+  {
+    "id": 33,
+    "type": 1,
+    "description": "Get all hardware marcas",
+    "sql": "
+    SELECT id_correlativo
+    AS id,
+    valor_texto_1 AS
+    nombre,
+    valor_texto_2 AS
+    descripcion FROM
+    entidad e
+    WHERE estado
+    = 1
+    AND id_tabla
+    = 4;
+    "
+  },
+  {
+    "id": 34,
+    "type": 1,
+    "description": "Get one hardware",
+    "sql": "
+SELECT rh.id,
+    tipo.valor_texto_1 	 AS    tipo,
+    tipo.id_correlativo  AS    id_tipo,
+    marca.valor_texto_1  AS    marca,
+    marca.id_correlativo AS    id_marca,
+    rh.descripcion,
+    rh.modelo,
+    rh.serie,
+    rh.imei,
+    rh.observacion,
+    rh.costo_mensual_actual
+FROM recurso_hardware rh
+    LEFT JOIN    entidad tipo    ON rh.id_tipo    = tipo.id_correlativo    AND tipo.id_tabla    = 3
+    LEFT JOIN    entidad marca   ON rh.id_marca   = marca.id_correlativo   AND marca.id_tabla   = 4
+    WHERE rh.id = @param_id_hardware; "
+  },
+  {
+    "id": 35,
+    "type": 6,
+    "description": "Delete one hardware marca",
+    "sql": "
+    CALL prc_delete_marca(
+    @param_id_marca,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 36,
+    "type": 6,
+    "description": "Delete one hardware tipo",
+    "sql": "
+    CALL prc_delete_tipo(
+    @param_id_tipo,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 37,
+    "type": 5,
+    "description": "Delete logic one person",
+    "sql": "
+    CALL prc_delete_logica_persona(
+    @param_id_persona,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 38,
+    "type": 1,
+    "description": "Get all cuentas",
+    "sql": "
+    SELECT r.id,
+    rc.usuario,
+    rc.password,
+    tipo.valor_texto_1 AS
+    tipo,
+    rc.fecha_ultima_renovacion,
+    rc.fecha_proxima_renovacion,
+    (select distinct(concat(p.apellido_paterno,
+    ' ',
+    p.apellido_materno,
+    ',',
+    p.nombres)) nombres
+    from recurso_cuenta
+    rcd inner
+    join persona_recursos
+    pr on
+    rcd.id =
+    pr.id_recurso inner
+    join persona
+    p on
+    pr.id_persona =
+    p.id inner
+    join entidad
+    tipoent ON
+    rcd.id_tipo =
+    tipoent.id_correlativo where
+    rcd.id =
+    rc.id and
+    tipoent.id_tabla =
+    5 and
+    pr.fecha_liberacion is
+    null) nombres,
+    CASE WHEN
+    r.estado =
+    0 THEN
+    'Reservado' ELSE
+    'Disponible' END
+    estado FROM
+    recurso_cuenta rc
+    INNER JOIN
+    recurso r
+    ON rc.id
+    = r.id
+    INNER JOIN
+    entidad tipo
+    ON rc.id_tipo
+    = tipo.id_correlativo
+    AND tipo.id_tabla
+    = 5
+    WHERE r.eliminacion_logica
+    = 1
+    order by
+    r.id desc;
+    "
+  },
+  {
+    "id": 39,
+    "type": 4,
+    "description": "Record one cuenta tipo",
+    "sql": "
+    CALL prc_ins_cuenta_tipo(
+    @param_nombre,
+    @param_descripcion,
+    @param_id_padre,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 40,
+    "type": 1,
+    "description": "Get all cuenta tipo",
+    "sql": "
+    SELECT id_correlativo
+    as id,
+    valor_texto_1 as
+    nombre,
+    valor_texto_2 as
+    descripcion FROM
+    entidad WHERE
+    id_tabla =
+    5 AND
+    estado =
+    1; "
+  },
+  {
+    "id": 41,
+    "type": 6,
+    "description": "Delete one cuenta tipo",
+    "sql": "
+    CALL prc_delete_cuenta_tipo(
+    @param_id_tipo,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 42,
+    "type": 6,
+    "description": "Delete one cuenta",
+    "sql": "
+    CALL prc_delete_cuenta(
+    @param_id_cuenta,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 43,
+    "type": 1,
+    "description": "Get information from one cuenta",
+    "sql": "
+    SELECT rc.id,
+    tipo.valor_texto_1 AS
+    tipo,
+    tipo.id_correlativo as
+    id_tipo,
+    rc.usuario,
+    rc.password,
+    rc.fecha_ultima_renovacion,
+    rc.fecha_proxima_renovacion FROM
+    recurso_cuenta rc
+    left JOIN
+    entidad tipo
+    ON rc.id_tipo
+    = tipo.id_correlativo
+    AND tipo.id_tabla
+    = 5
+    WHERE rc.id
+    = @param_id_cuenta;
+    "
+  },
+  {
+    "id": 44,
+    "type": 1,
+    "description": "search cuenta disponible by usuario",
+    "sql": "
+SELECT
+    r.id AS id_recurso,
+	rc.usuario,
+    rc.password,
+    tipo.valor_texto_1 AS tipo,
+    rc.fecha_ultima_renovacion,
+    rc.fecha_proxima_renovacion
+FROM
+	recurso_cuenta rc
+    INNER JOIN recurso r ON rc.id = r.id
+    INNER JOIN entidad tipo ON rc.id_tipo = tipo.id_correlativo AND tipo.id_tabla = 5
+WHERE rc.usuario
+    LIKE CONCAT('%', @param_username , '%')
+    AND r.estado = 1
+    AND r.eliminacion_logica = 1
+	order by r.id asc; "
+  },
+  {
+    "id": 45,
+    "type": 1,
+    "description": "search hardware by serie",
+    "sql": "
+SELECT r.id   		   	AS id_recurso,
+    tipo.valor_texto_1 	AS tipo,
+    marca.valor_texto_1 AS marca,
+    rh.descripcion 		AS equipo,
+    rh.modelo 			AS modelo,
+    rh.serie 			AS serie,
+    rh.imei 			AS imei,
+    (SELECT CONCAT(p.apellido_paterno, ' ', p.apellido_materno, ',', p.nombres) nombres
+FROM recurso_hardware rhd
+INNER JOIN persona_recursos pr 	ON rhd.id 		 = pr.id_recurso
+INNER JOIN persona p 			ON pr.id_persona = p.id
+INNER JOIN entidad marcaent 	ON rhd.id_tipo 	 = marcaent.id_correlativo
+WHERE    rhd.id =  rh.id AND  marcaent.id_tabla =  4
+AND  pr.fecha_liberacion IS NULL) nombres,
+    CASE WHEN    r.estado = 0 THEN 'Reservado' ELSE 'Disponible'
+    END  AS estado_recurso, rh.observacion
+    FROM  recurso r
+    INNER JOIN recurso_hardware rh  ON r.id = rh.id
+    INNER JOIN entidad AS tipo  ON  rh.id_tipo = tipo.id_correlativo  AND tipo.id_tabla = 3
+    INNER JOIN entidad AS marca ON rh.id_marca = marca.id_correlativo AND marca.id_tabla = 4
+WHERE (@param_serie 	IS NULL OR rh.serie  LIKE CONCAT('%', @param_serie, '%'))
+AND (@param_id_tipo 	IS NULL OR tipo.id_correlativo = @param_id_tipo)
+AND (@param_id_marca	IS NULL OR marca.id_correlativo = @param_id_marca)
+AND (@param_id_estado 	IS NULL OR r.estado = @param_id_estado)
+AND (@param_imei 		IS NULL OR rh.imei = @param_imei)
+AND  r.eliminacion_logica = 1
+ORDER BY r.id DESC; "
+  },
+  {
+    "id": 46,
+    "type": 1,
+    "description": "search cuenta by usuario",
+    "sql": "
+		SELECT
+              r.id,
+              rc.usuario,
+              rc.password,
+              tipo.valor_texto_1 AS tipo,
+              rc.fecha_ultima_renovacion,
+              rc.fecha_proxima_renovacion,
+      (SELECT DISTINCT(CONCAT(p.apellido_paterno,' ',p.apellido_materno,',',p.nombres)) nombres
+      FROM recurso_cuenta rcd
+        INNER JOIN persona_recursos pr ON rcd.id 	    = pr.id_recurso
+        INNER JOIN persona p 	   	   ON pr.id_persona = p.id
+        INNER JOIN entidad tipoent 	   ON rcd.id_tipo   = tipoent.id_correlativo
+	  WHERE rcd.id = rc.id AND tipoent.id_tabla = 5 AND pr.fecha_liberacion IS NULL) nombres,
+      CASE WHEN r.estado = 0 THEN 'Reservado' ELSE 'Disponible' END estado
+        FROM recurso_cuenta rc
+		INNER JOIN recurso r    ON rc.id = r.id
+		INNER JOIN entidad tipo ON rc.id_tipo = tipo.id_correlativo AND tipo.id_tabla = 5
+	WHERE
+          (@param_usuario   IS NULL OR rc.usuario LIKE CONCAT('%',@param_usuario,'%'))
+      AND (@param_id_estado IS NULL OR r.estado = @param_id_estado)
+      AND r.eliminacion_logica = 1
+    ORDER BY r.id DESC; "
+  },
+  {
+    "id": 47,
+    "type": 1,
+    "description": "Todas las tablas",
+    "sql": "
+    select id_correlativo
+    id,
+    valor_texto_1 nombre,
+    valor_texto_2 descripcion,
+    idPadre from
+    entidad where
+    id_tabla =
+    0 and
+    estado =
+    1; "
+  },
+  {
+    "id": 48,
+    "type": 1,
+    "description": "Info tabla",
+    "sql": "
+      SELECT
+      e.id,
+      e.id_tabla,
+      e.id_correlativo AS id,
+      e.valor_texto_1  AS nombre,
+      e.valor_texto_2  AS descripcion,
+      e.idPadre,
+      (SELECT ent.valor_texto_1 nombre FROM entidad ent WHERE ent.id = e.idPadre) AS nombrePadre
+      FROM entidad e
+      WHERE e.id_tabla = @param_id_tabla AND estado = 1
+      ORDER BY e.id_correlativo ASC;
+    "
+  },
+  {
+    "id": 49,
+    "type": 4,
+    "description": "agregar entidad",
+    "sql": "
+    CALL prc_ins_entidad(
+    @param_nombre,
+    @param_descripcion,
+    @param_padre_id,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 50,
+    "type": 4,
+    "description": "agregar info entidad",
+    "sql": "
+    CALL prc_ins_info_entidad(
+    @param_nombre,
+    @param_descripcion,
+    @param_id_padre,
+    @param_id_tabla,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 51,
+    "type": 1,
+    "description": "Desplegable entidad",
+    "sql": "
+    select id_correlativo
+    id,
+    valor_texto_1 nombre
+    from entidad
+    where id_tabla
+    = 0
+    and estado
+    = 1;
+    "
+  },
+  {
+    "id": 52,
+    "type": 1,
+    "description": "Desplegable por entidad",
+    "sql": "
+    select id,
+    valor_texto_1 nombre
+    from entidad
+    where id_tabla
+    = @param_id_tabla
+    and estado
+    = 1;
+    "
+  },
+  {
+    "id": 53,
+    "type": 6,
+    "description": "Delete info entidad",
+    "sql": "
+    CALL prc_delete_info_entidad(
+    @param_id_tabla,
+    @param_id_correlativo,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 54,
+    "type": 1,
+    "description": "Get one info entidad",
+    "sql": "
+    select e.id,
+    e.id_tabla idTabla,
+    e.id_correlativo idInfo,
+    e.valor_texto_1 nombre,
+    e.valor_texto_2 descripcion,
+    (select ent.id
+    from entidad
+    ent where
+    ent.id =
+    e.idPadre) idPadre,
+    (select ent.valor_texto_1
+    from entidad
+    ent where
+    ent.id =
+    e.idPadre) nombrePadre,
+    (select ent.id_tabla
+    from entidad
+    ent where
+    ent.id =
+    e.idPadre) idTablaEntidad,
+    (select ent.valor_texto_1
+    from entidad
+    ent where
+    ent.id_correlativo =
+    (select ent.id_tabla
+    from entidad
+    ent where
+    ent.id =
+    e.idPadre) and
+    ent.id_tabla =
+    0) NombreTablaEntidad,
+    (select ent.id_correlativo
+    from entidad
+    ent where
+    ent.id =
+    e.idPadre) idCorrelativoPadre
+    from entidad
+    e where
+    e.id_tabla =
+    @param_id_tabla and
+    e.id_correlativo =
+    @param_id_correlativo and
+    e.estado =
+    1; "
+  },
+  {
+    "id": 55,
+    "type": 1,
+    "description": "Get one info entidad 2",
+    "sql": "
+    select id
+    idPadre,
+    id_correlativo idCorrelativo,
+    valor_texto_1 from
+    entidad where
+    id_tabla =
+    @param_id_tabla and
+    estado =
+    1; "
+  },
+  {
+    "id": 56,
+    "type": 5,
+    "description": "Update info entidad",
+    "sql": "
+    CALL prc_update_info_entidad(
+    @param_id,
+    @param_tabla,
+    @param_correlativo,
+    @param_nombre,
+    @param_descripcion,
+    @param_padre,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 57,
+    "type": 1,
+    "description": "Get historico cambios de proyectos",
+    "sql": "
+select pp.id_persona,
+	pp.id_proyecto,
+    e.valor_texto_1 as proyecto_codigo,
+    e.valor_texto_2 as proyecto_descripcion,
+    DATE_FORMAT(pp.fecha_asignacion,'%Y-%m-%d') as fecha_asignacion,
+    id_usuario_asignacion,
+    u.usuario as nombre_usuario_asignacion
+from persona_proyectos pp
+    left join entidad e on e.id_tabla = 1 and e.id_correlativo = pp.id_proyecto
+    left join usuario u on u.id = pp.id_usuario_asignacion
+where pp.id_persona = @param_id_persona;
+    "
+  },
+  {
+    "id": 58,
+    "type": 1,
+    "description": "Get all usuario",
+    "sql": "
+    select u.id,
+    u.usuario,
+    u.clave,
+    pl.rol perfil,
+    concat(p.nombres,
+    ', ',
+    p.apellido_paterno,
+    ' ',
+    p.apellido_materno) nombre
+    from usuario
+    u left
+    join perfil
+    pl on
+    u.id_perfil =
+    pl.id left
+    join persona
+    p on
+    u.id_persona =
+    p.id and
+    p.eliminacion_logica =
+    1; "
+  },
+  {
+    "id": 59,
+    "type": 1,
+    "description": "Get all perfil para usuario",
+    "sql": "
+    select id,
+    rol from
+    perfil "
+  },
+  {
+    "id": 60,
+    "type": 4,
+    "description": "agregar usuario",
+    "sql": "
+    CALL prc_ins_usuario(
+    @param_usuario,
+    @param_clave,
+    @param_perfil_id,
+    @param_persona_id,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+  {
+    "id": 61,
+    "type": 1,
+    "description": "Get one usuario",
+    "sql": "
+    select u.id,
+    u.usuario,
+    u.clave,
+    pl.id idPerfil,
+    pl.rol perfil,
+    p.id idPersona,
+    concat(p.nombres,
+    ', ',
+    p.apellido_paterno,
+    ' ',
+    p.apellido_materno) nombre
+    from usuario
+    u left
+    join perfil
+    pl on
+    u.id_perfil =
+    pl.id left
+    join persona
+    p on
+    u.id_persona =
+    p.id where
+    u.id =
+    @param_id_usuario"
+  },
+  {
+    "id": 62,
+    "type": 5,
+    "description": "Update one usuario",
+    "sql": "
+    CALL prc_update_usuario(
+    @param_id,
+    @param_usuario,
+    @param_clave,
+    @param_perfil,
+    @param_persona,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+
+
+  {
+    "id": 63,
+    "type": 1,
+    "description": "Get all Estados",
+    "sql": "
+    SELECT *
+    FROM entidad
+    WHERE id_tabla
+    = 7
+    AND estado
+    = 1
+    and id
+    not in
+    (182,
+    183) order
+    by id_correlativo
+    asc; "
+  },
+  {
+    "id": 64,
+    "type": 1,
+    "description": "get one registro facturacion",
+    "sql": "
+    select *,
+    idFactura,
+    substring(periodo,
+    1,
+    4) as
+    anio,
+    substring(periodo,
+    6,
+    2) as
+    mes from
+    facturacion where
+    idfactura =
+    @p_id "
+  },
+
+  {
+    "id": 65,
+    "type": 1,
+    "description": "Get proyectos",
+    "sql": "
+    SELECT *
+    FROM entidad
+    WHERE id_tabla
+    = 1
+    AND estado
+    = 1
+    order by
+    valor_texto_1 asc;
+    "
+  },
+  {
+    "id": 66,
+    "type": 5,
+    "description": "update registro Liquidacion",
+    "sql": "
+    CALL prc_update_liquidacion(
+        @p_idFactura,
+        @p_periodo,
+        @p_idProyecto,
+        @p_idLiquidacion,
+        @p_subServicio,
+        @p_gestor,
+        @p_idGestor,
+        @p_venta_declarada,
+        @p_idEstado,
+        @p_orden_compra,
+        @p_cod_certificacion,
+        @p_factura,
+        @p_monto_facturado,
+        @p_Comentarios,
+        @p_idMotivo,
+        @p_idUsuarioCrea,
+        @p_fechaCrea,
+        @p_idUsuarioActualiza,
+        @p_fechaActualiza,
+        @p_ver_estado,
+        @CONFIG_USER_ID,
+        @CONFIG_OUT_MSG_ERROR,
+        @CONFIG_OUT_MSG_EXITO
+      )"
+  },
+  {
+    "id": 67,
+    "type": 1,
+    "description": "Historico de cambios de Estado, Proyecto",
+    "sql": "
+SELECT FC.idFactCambio,
+    FC.idFactura,
+    FC.idEstado,
+    E1.valor_texto_1 AS estado,
+    FC.idProyecto,
+    E2.valor_texto_1 AS proyecto,
+    FC.venta_declarada,
+    FC.usuario,
+    U.usuario AS username,
+    DATE_FORMAT(FC.dFecha,'%d/%m/%Y %H:%i') AS fecha
+FROM    facturacion_cambios AS FC
+LEFT JOIN entidad E1 ON FC.idEstado   = E1.id AND E1.id_tabla = 7
+LEFT JOIN entidad E2 ON FC.idProyecto = E2.id AND E2.id_tabla = 1
+LEFT JOIN usuario U  ON FC.usuario    = U.id
+WHERE FC.idFactura =  @p_id
+ORDER BY FC.dFecha;"
+  },
+  {
+    "id": 68,
+    "type": 1,
+    "description": "Listado y busqueda del registro Liquidacion",
+    "sql": "
+SELECT f.idFactura,
+    DATE_FORMAT(f.periodo, '%Y/%m') AS periodo,
+    e2.valor_texto_1 AS proyecto,
+    e2.id_correlativo AS id_proyecto,
+    e3.valor_texto_1 AS liquidacion,
+    e3.id_correlativo AS id_liquidacion,
+    f.subServicio,
+    e4.id_correlativo AS id_gestor,
+    CASE WHEN e4.valor_texto_1 IS NOT NULL  THEN e4.valor_texto_1  ELSE f.gestor END AS  gestor,
+    e1.valor_texto_1 AS estado,
+    f.orden_compra,
+    f.cod_certificacion,
+    f.factura,
+    f.venta_declarada AS importe,
+    -- SUM(fc.importe)   AS facturado,
+    (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado
+FROM facturacion f
+    LEFT JOIN entidad e1 ON f.idEstado		= e1.id AND e1.id_tabla = 7
+    LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
+    LEFT JOIN entidad e3 ON f.idLiquidacion = e3.id AND e3.id_tabla = 9
+    LEFT JOIN entidad e4 ON f.idGestor 		= e4.id_correlativo AND e4.id_tabla = 8
+    LEFT JOIN facturacion_certificacion fc ON f.idFactura = fc.idFactura
+WHERE
+      (@cod_fact 		IS NULL OR f.idFactura       = @cod_fact)
+  AND (@id_proy 		IS NULL OR e2.id_correlativo = @id_proy)
+  AND (@id_liquidacion 	IS NULL OR e3.id_correlativo = @id_liquidacion)
+  AND (@id_estado 		IS NULL OR e1.id_correlativo = @id_estado)
+  AND (@id_gestor 		IS NULL OR e4.id_correlativo = @id_gestor)
+  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+  AND DATE(f.fechaCrea) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
+  AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+  AND DATE(f.fechaCrea) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+  AND DATE(f.fechaCrea) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+  AND ver_estado = 1
+ORDER BY f.idFactura DESC;
+    "
+  },
+  {
+    "id": 69,
+    "type": 1,
+    "description": "eliminar one registro seguimiento",
+    "sql": "
+    update facturacion
+    set ver_estado
+    = 0
+    where idFactura
+    = @p_id
+    "
+  },
+  {
+    "id": 70,
+    "type": 4,
+    "description": "insert new registro seguimiento",
+    "sql": "
+  CALL prc_ins_factura(
+  @p_periodo,
+  @p_idProyecto,
+  @p_idLiquidacion,
+  @p_subServicio,
+  @p_gestor,
+  @p_idGestor,
+  @p_venta_declarada,
+  @p_idEstado,
+  @p_orden_compra,
+  @p_cod_certificacion,
+  @p_factura,
+  @p_monto_facturado,
+  @p_Comentarios,
+  @p_idMotivo,
+  @p_idUsuarioCrea,
+  @p_fechaCrea,
+  @p_idUsuarioActualiza,
+  @p_fechaActualiza,
+  @p_ver_estado,
+  @CONFIG_USER_ID,
+  @CONFIG_OUT_MSG_ERROR,
+  @CONFIG_OUT_MSG_EXITO)
+  "
+  },
+  {
+    "id": 71,
+    "type": 1,
+    "description": "Listar factura certificada",
+    "sql": "
+SELECT
+    idFactCertificacion,
+    idFactura,
+    oc,
+    importe,
+    certificacion,
+    factura,
+    dFecha,
+    DATE_FORMAT(fecha_facturacion, '%d/%m/%Y') AS fecha_facturacion,
+    comentario,
+    e1.valor_texto_1 AS estado,
+    e1.id AS id_estado
+FROM facturacion_certificacion
+	LEFT JOIN entidad e1 ON idEstado = e1.id AND e1.id_tabla = 7
+WHERE idFactura = @p_id"
+  },
+  {
+    "id": 72,
+    "type": 1,
+    "description": "Listar factura de venta declarada",
+    "sql": "
+    select idFactVenta,
+    idFactura,
+    DATE_FORMAT(periodo,
+    '%Y/%m') as
+    periodo,
+    venta_declarada,
+    comentario from
+    facturacion_venta_declarada where
+    idFactura =
+    @p_id "
+  },
+  {
+    "id": 73,
+    "type": 4,
+    "description": "agregar factura certificada",
+    "sql": "
+    CALL prc_ins_registro_factura_certificacion(
+    @param_id_factura,
+    @param_fecha_facturacion,
+    @param_importe,
+    @param_orde_compra,
+    @param_certificacion,
+    @param_id_estado,
+    @param_factura,
+    @param_fecha_creacion,
+    @param_comentario,
+    @param_usuario_creacion )
+    "
+  },
+  {
+    "id": 74,
+    "type": 1,
+    "description": "agregar detalle facturacion",
+    "sql": "
+    select *,
+    DATE_FORMAT(fecha_facturacion,
+    '%Y-%m-%d') as
+    f_facturacion from
+    facturacion_certificacion where
+    idFactCertificacion =
+    @p_id;"
+  },
+  {
+    "id": 75,
+    "type": 5,
+    "description": "update registro facturacion certificacion",
+    "sql": "
+    CALL prc_update_facturacion_certificacion(@p_idFactCertificacion,
+    @p_fecha_facturacion,
+    @p_importe,
+    @p_oc,
+    @p_certificacion,
+    @p_idEstado,
+    @p_factura,
+    @p_fecha_actualizacion,
+    @p_comentario,
+    @p_usuario)"
+  },
+  {
+    "id": 76,
+    "type": 1,
+    "description": "delete registro facturacion certificacion",
+    "sql": "
+    delete from
+    facturacion_certificacion where
+    idFactCertificacion =
+    @p_id; "
+  },
+  {
+    "id": 77,
+    "type": 1,
+    "description": "ver detalle venta declarada",
+    "sql": "
+    select *,
+    DATE_FORMAT(periodo,
+    '%Y-%m-%d') as
+    f_periodo from
+    facturacion_venta_declarada where
+    idFactVenta =
+    @p_id;"
+  },
+  {
+    "id": 78,
+    "type": 1,
+    "description": "update registro facturacion venta declarada",
+    "sql": "
+    CALL prc_update_facturacion_venta_declarada(
+    @p_idfacturaventa,
+    @p_periodo,
+    @p_venta_declara,
+    @p_comentario,
+    @p_fecha_actualizacion,
+    @p_usuario)"
+  },
+  {
+    "id": 79,
+    "type": 1,
+    "description": "delete registro facturacion venta declarada",
+    "sql": "
+    delete from
+    facturacion_venta_declarada where
+    idFactVenta =
+    @p_id; "
+  },
+  {
+    "id": 80,
+    "type": 4,
+    "description": "agregar factura venta declarada",
+    "sql": "
+    CALL prc_ins_registro_factura_venta_declarada(
+    @param_id_factura,
+    @param_periodo,
+    @param_venta_declarada,
+    @param_comentario,
+    @param_fecha_creacion,
+    @param_usuario_creacion )
+    "
+  },
+  {
+    "id": 81,
+    "type": 1,
+    "description": "update registros masivo proyecto - estado",
+    "sql": "
+    CALL prc_update_masivo_proyectos(
+    @p_idproyecto,
+    @p_idestado,
+    @p_periodo,
+    @p_fecha_actualizacion,
+    @p_usuario)
+      "
+  },
+  {
+    "id": 82,
+    "type": 1,
+    "description": "Get all Liquidaciones",
+    "sql": "
+    SELECT id,id_correlativo, valor_texto_1 AS nombre FROM entidad
+    WHERE id_tabla = 9 AND estado = 1
+    ORDER BY id_correlativo ASC;
+    "
+  },
+  {
+    "id": 83,
+    "type": 1,
+    "description": "Get all Gestores",
+    "sql": "
+    SELECT *
+    FROM entidad
+    WHERE id_tabla
+    = 8
+    AND estado
+    = 1
+    and idPadre
+    = @p_idproyecto
+    order by
+    id_correlativo asc;
+    "
+  },
+  {
+    "id": 84,
+    "type": 1,
+    "description": "Get all Estados para facturacion",
+    "sql": "
+    SELECT *
+    FROM entidad
+    WHERE id_tabla
+    = 7
+    AND estado
+    = 1
+    and id
+    in (182,
+    183,
+    663) order
+    by id_correlativo
+    asc; "
+  },
+  {
+    "id": 85,
+    "type": 1,
+    "description": "Last id de facturacion detalle",
+    "sql": "
+    SELECT MAX(idFactura)
+    as last_idfacturacion
+    FROM facturacion;
+    "
+  },
+  {
+    "id": 86,
+    "type": 4,
+    "description": "duplicidad new registro facturacion",
+    "sql": "CALL prc_duplicidad_facturacion(
+    @p_periodo,
+    @p_id_proyecto,
+    @p_id_liquidacion,
+    @p_subservicio,
+    @p_id_gestor,
+    @p_venta_declarada,
+    @p_id_estado,
+    @p_comentariosGenerales,
+    @p_user_creacion,
+    @p_fecha_creacion,
+    @CONFIG_OUT_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO) "
+  },
+  {
+    "id": 87,
+    "type": 1,
+    "description": "Reporte facturado",
+    "sql": "
+    SELECT f.idFactura,
+    DATE_FORMAT(f.periodo,
+    '%Y/%m') as
+    periodo,
+    e2.valor_texto_1 as
+    proyecto,
+    e3.valor_texto_1 as
+    liquidacion,
+    f.subServicio,
+    case WHEN
+    e4.valor_texto_1 is
+    not null
+    THEN e4.valor_texto_1
+    ELSE f.gestor
+    end as
+    gestor,
+    e1.valor_texto_1 as
+    estado,
+    f.venta_declarada as
+    importe,
+    fc.oc,
+    fc.importe as
+    importe_facturado,
+    fc.certificacion,
+    e5.valor_texto_1 as
+    estado_facturacion,
+    fc.factura,
+    DATE_FORMAT(fc.fecha_facturacion,
+    '%d/%m/%Y') as
+    fecha_facturacion,
+    fc.comentario from
+    facturacion f
+    left join
+    entidad e1
+    on f.idEstado
+    = e1.id
+    and e1.id_tabla
+    = 7
+    left join
+    entidad e2
+    on f.idProyecto
+    = e2.id
+    and e2.id_tabla
+    = 1
+    left join
+    entidad e3
+    on f.idLiquidacion
+    = e3.id
+    and e3.id_tabla
+    = 9
+    left join
+    entidad e4
+    on f.idGestor
+    = e4.id
+    and e4.id_tabla
+    = 8
+    left join
+    facturacion_certificacion fc
+    on f.idFactura
+    = fc.idFactura
+    left join
+    entidad e5
+    on fc.idEstado
+    = e5.id
+    and e5.id_tabla
+    = 7
+    where ver_estado
+    = 1
+    /*and fc.idFactura = 1217*/
+    order by
+    f.idFactura desc,
+    f.periodo desc;
+    "
+  },
+  {
+    "id": 88,
+    "type": 1,
+    "description": "Reporte venta declarada",
+    "sql": "
+    SELECT f.idFactura,
+    DATE_FORMAT(f.periodo,
+    '%Y/%m') as
+    periodo,
+    e2.valor_texto_1 as
+    proyecto,
+    e3.valor_texto_1 as
+    liquidacion,
+    f.subServicio,
+    case WHEN
+    e4.valor_texto_1 is
+    not null
+    THEN e4.valor_texto_1
+    ELSE f.gestor
+    end as
+    gestor,
+    e1.valor_texto_1 as
+    estado,
+    f.venta_declarada as
+    importe,
+    DATE_FORMAT(fvd.periodo,
+    '%Y/%m') as
+    periodo_venta_declarada,
+    fvd.venta_declarada,
+    fvd.comentario from
+    facturacion f
+    left join
+    entidad e1
+    on f.idEstado
+    = e1.id
+    and e1.id_tabla
+    = 7
+    left join
+    entidad e2
+    on f.idProyecto
+    = e2.id
+    and e2.id_tabla
+    = 1
+    left join
+    entidad e3
+    on f.idLiquidacion
+    = e3.id
+    and e3.id_tabla
+    = 9
+    left join
+    entidad e4
+    on f.idGestor
+    = e4.id
+    and e4.id_tabla
+    = 8
+    left join
+    facturacion_venta_declarada fvd
+    on f.idFactura
+    = fvd.idFactura
+    where ver_estado
+    = 1
+    order by
+    f.idFactura desc,
+    f.periodo desc;
+    "
+  },
+{
+  "id": 89,
+  "type": 1,
+  "description": "Lista de estados",
+  "sql": "
+  SELECT idEstado, cNombre,iCiclo, idEstadoPadre FROM estado
+  ORDER BY cNombre;
+  "
+},
+{
+"id": 90,
+"type": 1,
+"description": "Obtencion de listado Naturaleza",
+"sql": "
+  SELECT id, id_correlativo as id_naturaleza, valor_texto_1  as nombre
+    FROM entidad
+    WHERE id_tabla = 4
+    ORDER BY valor_texto_1;
+  "
+},
+{
+ "id": 91,
+"type": 1,
+"description": "Listado de Tecnologias",
+"sql": "
+  SELECT id, valor_texto_1 AS nombre FROM entidad
+  WHERE id_tabla = 3;
+  "
+},
+{
+"id": 92,
+"type": 1,
+"description": "Listado de VP",
+"sql": "
+  SELECT id, valor_texto_1 AS nombre FROM entidad
+  WHERE id_tabla = 1
+  ORDER BY valor_texto_1;
+  "
+},
+{
+"id": 93,
+"type": 1,
+"description": "Listado de Gerencia",
+"sql": "
+SELECT id,
+     valor_texto_1  AS nombre
+FROM entidad
+WHERE id_tabla = 2
+ORDER BY valor_texto_1 asc;
+"
+},
+{
+"id": 94,
+"type": 1,
+"description": "Obtencion de Lista de Cambios",
+"sql": "
+ SELECT
+  C.id ,
+  C.idiniciativa,
+  I.cdescripcion,
+  E.cNombre AS estado,
+  C.id_motivo AS motivo,
+  DATE_FORMAT(C.dFecha, '%d/%m%/%Y  %H:%i') AS fecha_cambio,
+  C.usuario
+FROM iniciativa_cambios C
+JOIN iniciativa I ON C.idiniciativa = I.idIniciativa
+JOIN estado E     ON C.idEstado     = E.idEstado
+WHERE I.idIniciativa = @param_id_iniciativa
+ORDER BY C.id;"
+},
+{
+    "id": 95,
+    "type": 5,
+    "description": "Eliminar 1 Iniciativa",
+    "sql":"
+    CALL prc_delete_iniciativa(
+    @param_id_iniciativa,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO
+    )"
+ },
+{
+"id": 96,
+"type": 1,
+"description": "Listado y busqueda de Registros",
+"sql": "
+SELECT
+  I.idIniciativa,
+  I.cdescripcion 	 AS nombre,
+  I.cod_proyecto 	 AS codigo,
+  S.cNombre		     AS estado,
+  I.po_proyecto  	 AS po_proyecto,
+  I.responsable  	 AS responsable,
+  E1.valor_texto_1 AS gerencia_beneficiaria,
+  E2.valor_texto_1 AS naturaleza,
+  I.user_crea	     AS userCrea,
+DATE_FORMAT(I.fecha_crea, '%d/%m/%Y') AS fecha_creacion
+FROM iniciativa I
+  LEFT JOIN entidad E  ON E.id  = I.idIniciativa
+  LEFT JOIN entidad E1 ON E1.id = I.id_gerencia_ben	AND E1.id_tabla = 2
+  LEFT JOIN entidad E2 ON E2.id = I.id_naturaleza		AND E2.id_tabla = 4
+  LEFT JOIN estado  S  ON S.idEstado = I.id_estado
+WHERE
+      (@param_nombre  	   	 IS NULL OR UPPER(I.cdescripcion) LIKE CONCAT('%',@param_nombre,'%'))
+  AND (@param_codigo  			 IS NULL OR UPPER(I.cod_proyecto) LIKE CONCAT('%',@param_codigo,'%'))
+  AND (@param_id_ger_ben 		 IS NULL OR I.id_gerencia_ben = @param_id_ger_ben)
+  AND (@param_id_estado 		 IS NULL OR I.id_estado		    = @param_id_estado)
+  AND (@param_id_naturaleza  IS NULL OR I.id_naturaleza   = @param_id_naturaleza)
+  AND (@param_user_crea 		 IS NULL OR I.user_crea       = @param_user_crea)
+  AND (@param_est_act			   IS NULL OR S.iCiclo >=   @param_est_act)
+
+  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+  AND DATE(I.fecha_crea) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d') AND STR_TO_DATE(@fin, '%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+  AND DATE(I.fecha_crea) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+  AND DATE(I.fecha_crea) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+  AND eliminacion_logica = 1
+  ORDER BY I.idIniciativa DESC;
+ "
+},
+{
+"id": 97,
+"type": 4,
+"description": "Insertar 1 registro a la tabla",
+"sql": "
+CALL prc_ins_iniciativa(
+    @p_cdescripcion ,
+    @p_cod_proyecto ,
+    @p_id_vp ,
+    @p_id_gerencia_sol ,
+    @p_id_estado ,
+    @p_po_proyecto ,
+    @p_responsable ,
+    @p_id_gerencia_ben ,
+    @p_planner ,
+    @p_cont_ger_ben ,
+    @p_cont_apr_bc ,
+    @p_id_tecnologia ,
+    @p_q_licencias ,
+    @p_id_naturaleza ,
+    @p_prob_actual ,
+    @p_func_robotiz ,
+    @p_def_alcance ,
+    @p_riesgo_no_rpa ,
+    @p_pi ,
+    @p_qtrx_mes ,
+    @p_tmo_trx ,
+    @p_flu_contx ,
+    @p_user_crea ,
+    @p_fecha_crea ,
+    @p_user_act ,
+    @p_fecha_act,
+    @CONFIG_REG_ID,
+    @CONFIG_OUT_MSG_ERROR ,
+    @CONFIG_OUT_MSG_EXITO
+    )
+  "
+},
+{
+  "id": 98,
+  "type": 4,
+  "description": "Insertar estado cambios",
+  "sql": "
+     CALL prc_ins_iniciativa_cambios(
+      @p_idiniciativa ,
+      @p_idEstado ,
+      @p_id_motivo ,
+      @p_usuario,
+      @CONFIG_USER_ID ,
+      @CONFIG_OUT_MSG_ERROR ,
+      @CONFIG_OUT_MSG_EXITO
+ )"
+},
+{
+  "id": 99,
+  "type": 5,
+  "description": "Actualizar 1 registro por ID",
+  "sql": "
+    CALL prc_update_iniciativa(
+     @param_idIniciativa ,
+     @param_cdescripcion ,
+     @param_cod_proyecto ,
+     @param_id_vp ,
+     @param_id_gerencia_sol ,
+     @param_id_estado ,
+     @param_po_proyecto ,
+     @param_responsable ,
+     @param_id_gerencia_ben ,
+     @param_planner ,
+     @param_cont_ger_ben ,
+     @param_cont_apr_bc ,
+     @param_id_tecnologia ,
+     @param_q_licencias ,
+     @param_id_naturaleza ,
+     @param_prob_actual ,
+     @param_func_robotiz ,
+     @param_def_alcance ,
+     @param_riesgo_no_rpa ,
+     @param_pi ,
+     @param_qtrx_mes ,
+     @param_tmo_trx ,
+     @param_flu_contx ,
+     @param_user_crea ,
+     @param_fecha_crea ,
+     @param_user_act ,
+     @param_fecha_act ,
+     @CONFIG_REG_ID,
+     @CONFIG_OUT_MSG_ERROR ,
+     @CONFIG_OUT_MSG_EXITO
+    )"
+},
+{
+    "id": 100,
+    "type": 1,
+    "description": "Modal 1 registro por ID",
+    "sql": "
+  SELECT 	  I.idIniciativa,
+        I.cdescripcion 	   AS nombre,
+        I.cod_proyecto 	   AS codigo,
+        I.id_vp			       AS vp,
+        I.id_gerencia_sol  AS gerencia_solicitante,
+        S.idEstado		     AS estado,
+        I.po_proyecto  	   AS po_proyecto,
+        I.responsable      AS responsable,
+        I.id_gerencia_ben  AS gerencia_beneficiaria,
+        I.planner 	 	     AS planner,
+        I.cont_ger_ben	   AS controller_ger_ben,
+        I.cont_apr_bc	     AS controller_aprob_bc,
+        I.id_tecnologia    AS tecnologia,
+        I.q_licencias      AS licencias,
+        I.id_naturaleza    AS naturaleza,
+        I.prob_actual		   AS problema,
+        I.func_robotiz	   AS robotizacion,
+        I.def_alcance		   AS alcance,
+        I.riesgo_no_rpa	   AS riesgo,
+        I.pi				       AS pi,
+        I.qtrx_mes		     AS qtrx,
+        I.tmo_trx			     AS tmo,
+        I.flu_contx		     AS flujo,
+        I.user_crea		   ,
+  date_format(I.fecha_crea, '%d/%m/%Y') AS fecha_creacion
+FROM iniciativa I
+LEFT JOIN entidad E  ON E.id  = I.idIniciativa
+LEFT JOIN entidad E1 ON E1.id = I.id_tecnologia	  AND E1.id_tabla = 3
+LEFT JOIN entidad E2 ON E2.id = I.id_vp			      AND E2.id_tabla = 1
+LEFT JOIN entidad E3 ON E3.id = I.id_gerencia_ben	AND E3.id_tabla = 2
+LEFT JOIN entidad E4 ON E4.id = I.id_gerencia_sol	AND E4.id_tabla = 2
+LEFT JOIN entidad E5 ON E5.id = I.id_naturaleza	  AND E5.id_tabla = 4
+LEFT JOIN entidad E6 ON E6.valor_texto_1 = I.responsable AND E6.id_tabla = 5
+LEFT JOIN estado S  ON S.idEstado = I.id_estado
+WHERE I.idIniciativa = @param_idIniciativa ;
+      "
+ },
+{
+ "id":101,
+"type": 1,
+"description": "Listado de estados Liquidacion",
+"sql": "
+SELECT id, id_correlativo as id_estado, valor_texto_1  as nombre
+    FROM entidad
+WHERE id_tabla = 7 AND id_correlativo NOT IN (6,7)
+    AND estado = 1
+    ORDER BY valor_texto_1;"
+  },
+  {
+    "id": 102,
+    "type": 1,
+    "description": "Listado de Gestores facturacion",
+    "sql": "
+SELECT id,
+    id_correlativo as id_gestor,
+    valor_texto_1 as nombre FROM
+    entidad
+WHERE
+    id_tabla = 8
+ORDER BY valor_texto_1;
+    "
+  },
+  {
+ "id":103,
+"type": 1,
+"description": "Listado de Facturas por ID - Actualizar",
+"sql": "
+SELECT
+  F.idFactura,
+  DATE_FORMAT(F.periodo, '%Y-%m') AS periodo,
+  E.valor_texto_1   AS proyecto ,
+  E.id  AS id_proyecto ,
+  E3.valor_texto_1  AS liquidacion,
+  E3.id AS id_liquidacion,
+  F.subServicio     AS subServicio,
+  E1.valor_texto_1  AS gestor,
+  E1.id AS id_gestor,
+  F.venta_declarada,
+  E2.valor_texto_1  AS estadoFactura,
+  E2.id AS id_estado,
+  F.orden_compra,
+  F.cod_certificacion,
+  F.factura,
+  F.monto_facturado,
+  F.Comentarios,
+  F.idMotivo,
+  F.idUsuarioCrea,
+  DATE_FORMAT(F.fechaCrea, '%Y-%m-%d') AS fechaCrea,
+  F.idUsuarioActualiza,
+  DATE_FORMAT(F.fechaActualiza, '%d/%m/%Y') AS fechaActualiza,
+  CASE WHEN F.ver_estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado
+FROM facturacion F
+	LEFT JOIN  entidad E  ON F.idProyecto 	 = E.id   AND E.id_tabla  = 1
+	LEFT JOIN  entidad E1 ON F.idGestor   	 = E1.id  AND E1.id_tabla = 8
+    LEFT JOIN  entidad E2 ON F.idEstado  	 = E2.id  AND E2.id_tabla = 7
+    LEFT JOIN  entidad E3 ON F.idLiquidacion = E3.id  AND E3.id_tabla = 9
+WHERE F.idFactura =  @param_id_factura;
+  "
+  },
+{
+  "id": 104,
+  "type": 4,
+  "description": "Insertar estado cambios en la Facturacion",
+  "sql": "
+     CALL prc_ins_facturacion_cambios(
+      @p_idFactura ,
+      @p_idEstado ,
+      @p_venta_declarada ,
+      @p_idProyecto,
+      @p_usuario,
+      @CONFIG_USER_ID ,
+      @CONFIG_OUT_MSG_ERROR ,
+      @CONFIG_OUT_MSG_EXITO
+ )"
+},
+  {
+    "id": 105,
+    "type": 4,
+    "description": "Agregar venta declarada",
+    "sql": "
+    CALL prc_ins_ventadeclarada(
+    @p_idFactura,
+    @p_periodo,
+    @p_venta_declarada,
+    @p_comentario,
+    @p_fecha_creacion,
+    @p_usuario_creacion,
+    @CONFIG_USER_ID )
+    "
+  },
+  {
+    "id": 106,
+    "type": 1,
+    "description": "Get 3 Estados de certificacion",
+    "sql": "
+SELECT id,
+	id_correlativo AS id_estado,
+	valor_texto_1  AS nombre
+    FROM entidad
+WHERE id_tabla = 7
+AND id_correlativo IN (6,7,8)
+AND estado = 1
+ORDER BY valor_texto_1 ASC; "
+  },
+{
+ "id": 107,
+ "type": 1,
+ "description": "Cargar venta declarda por ID",
+ "sql": "
+SELECT VD.idFactura,
+	DATE_FORMAT(VD.periodo, '%m/%Y') AS periodo,
+	F.venta_declarada,
+    VD.comentario,
+    DATE_FORMAT(VD.dFecha, '%d/%m/%Y') AS fechaCrea,
+    VD.usuario
+FROM facturacion_venta_declarada VD
+LEFT JOIN facturacion F ON VD.venta_declarada = F.venta_declarada
+WHERE
+	VD.idFactura = @param_id_factura
+	AND F.ver_estado = 1; "
+  },
+
+{
+ "id": 108,
+ "type": 1,
+ "description": "Cargar y Buscar Lista Recurso Hardware",
+ "sql": "
+SELECT r.id   		   	AS id_recurso,
+	tipo.id_correlativo	AS id_tipo,
+    tipo.valor_texto_1 	AS tipo,
+    marca.valor_texto_1 AS marca,
+    marca.id_correlativo AS id_marca,
+    rh.descripcion 		AS equipo,
+    rh.modelo 			AS modelo,
+    rh.serie 			AS serie,
+    rh.imei 			AS imei,
+    (SELECT CONCAT(p.apellido_paterno, ' ', p.apellido_materno, ',', p.nombres) nombres
+FROM recurso_hardware rhd
+INNER JOIN persona_recursos pr 	ON rhd.id 		 = pr.id_recurso
+INNER JOIN persona p 			ON pr.id_persona = p.id
+INNER JOIN entidad marcaent 	ON rhd.id_tipo 	 = marcaent.id_correlativo
+WHERE    rhd.id =  rh.id AND  marcaent.id_tabla =  4
+AND  pr.fecha_liberacion IS NULL) nombres,
+    CASE WHEN    r.estado = 0 THEN 'Reservado' ELSE 'Disponible'
+    END  AS estado_recurso, rh.observacion
+    FROM  recurso r
+    INNER JOIN recurso_hardware rh  ON r.id = rh.id
+    INNER JOIN entidad AS tipo  ON  rh.id_tipo = tipo.id_correlativo  AND tipo.id_tabla = 3
+    INNER JOIN entidad AS marca ON rh.id_marca = marca.id_correlativo AND marca.id_tabla = 4
+WHERE (@param_serie 	IS NULL OR rh.serie  LIKE CONCAT('%', @param_serie, '%'))
+AND (@param_id_tipo 	IS NULL OR tipo.id_correlativo = @param_id_tipo)
+AND (@param_id_marca	IS NULL OR marca.id_correlativo = @param_id_marca)
+AND (@param_id_estado 	IS NULL OR r.estado = @param_id_estado)
+AND (@param_imei 		IS NULL OR rh.imei = @param_imei)
+AND  r.eliminacion_logica = 1
+ORDER BY r.id DESC;"
+  },
+  {
+    "id": 109,
+    "type": 1,
+    "description": "search cuenta by usuario",
+    "sql": "
+	SELECT
+              r.id,
+              rc.usuario,
+              rc.password,
+              tipo.valor_texto_1 AS tipo,
+              tipo.id_correlativo AS id_tipo,
+              rc.fecha_ultima_renovacion,
+              rc.fecha_proxima_renovacion,
+      (SELECT DISTINCT(CONCAT(p.apellido_paterno,' ',p.apellido_materno,',',p.nombres)) nombres
+      FROM recurso_cuenta rcd
+        INNER JOIN persona_recursos pr ON rcd.id 	    = pr.id_recurso
+        INNER JOIN persona p 	   	   ON pr.id_persona = p.id
+        INNER JOIN entidad tipoent 	   ON rcd.id_tipo   = tipoent.id_correlativo
+	WHERE rcd.id = rc.id AND tipoent.id_tabla = 5 AND pr.fecha_liberacion IS NULL) nombres,
+      CASE WHEN r.estado = 0 THEN 'Reservado' ELSE 'Disponible' END estado
+        FROM recurso_cuenta rc
+		INNER JOIN recurso r    ON rc.id = r.id
+		INNER JOIN entidad tipo ON rc.id_tipo = tipo.id_correlativo AND tipo.id_tabla = 5
+	WHERE
+          (@param_usuario   IS NULL OR rc.usuario LIKE CONCAT('%',@param_usuario,'%'))
+      AND (@param_id_estado IS NULL OR r.estado = @param_id_estado)
+	  AND (@param_id_tipo   IS NULL OR rc.id_tipo = @param_id_tipo)
+      AND r.eliminacion_logica = 1
+    ORDER BY r.id DESC; "
+  },
+{
+  "id": 110,
+  "type": 5,
+  "description": "Actualizar Venta declarada",
+  "sql": "
+    CALL prc_update_ventadeclarada(
+     @p_idFactVenta,
+     @p_idFactura,
+     @p_periodo,
+     @p_venta_declarada,
+     @p_comentario,
+     @p_dFecha,
+     @p_usuario,
+     @CONFIG_REG_ID,
+     @CONFIG_OUT_MSG_ERROR ,
+     @CONFIG_OUT_MSG_EXITO
+    )"
+},
+{
+  "id": 111,
+  "type": 4,
+  "description": "Agregar Certificacion",
+  "sql": "
+    CALL prc_ins_certificacion(
+  @p_idFactura,
+  @p_fecha_facturacion,
+  @p_importe,
+  @p_oc,
+  @p_certificacion,
+  @p_idEstado,
+  @p_factura,
+  @p_fechacreacion,
+  @p_comentario,
+  @p_usuario,
+  @CONFIG_USER_ID,
+  @CONFIG_OUT_MSG_ERROR,
+  @CONFIG_OUT_MSG_EXITO
+  )"
+},
+  {
+    "id": 112,
+    "type": 1,
+    "description": "Listar venta declarada",
+    "sql": "
+select idFactVenta,
+    idFactura,
+    dFecha,
+    DATE_FORMAT(periodo, '%m/%Y') as periodo,
+    venta_declarada,
+    comentario
+from facturacion_venta_declarada
+where idFactura = @p_id "
+  },
+  {
+    "id": 113,
+    "type": 1,
+    "description": "Obtener la informacion de 1 entidad por ID",
+    "sql": "
+SELECT X.id,
+X.id_tabla idTabla,
+X.id_correlativo idCorrelativo,
+X.valor_texto_1 nombre,
+X.valor_texto_2 descripcion,
+(SELECT E.id FROM entidad E WHERE E.id = X.idPadre) idPadre,
+(SELECT E.valor_texto_1 FROM entidad E WHERE E.id = X.idPadre) nombrePadre,
+(SELECT E.id_tabla FROM entidad E WHERE E.id = X.idPadre) idTablaEntidad,
+(SELECT E.valor_texto_1  FROM entidad E WHERE E.id_correlativo = (SELECT E.id_tabla FROM entidad E WHERE E.id = X.idPadre) AND E.id_tabla = 0) NombreTablaEntidad,
+(SELECT E.id_correlativo FROM entidad E WHERE E.id = X.idPadre) idCorrelativoPadre
+FROM entidad X
+WHERE X.id_tabla = @param_id_tabla
+AND X.id_correlativo = @param_id_correlativo
+AND X.estado = 1; "
+  },
+{
+  "id": 114,
+  "type": 5,
+  "description": "Actualizar facturacion certificacion",
+  "sql": "
+    CALL prc_update_certificacion(
+    @p_idFactCertificacion,
+    @p_idFactura,
+    @p_fecha_facturacion,
+    @p_importe,
+    @p_oc,
+    @p_certificacion,
+    @p_idEstado,
+    @p_factura,
+    @p_dFecha,
+    @p_comentario,
+    @p_usuario,
+    @CONFIG_REG_ID,
+    @CONFIG_OUT_MSG_ERROR ,
+    @CONFIG_OUT_MSG_EXITO
+    )"
+  },
+  {
+    "id": 115,
+    "type": 1,
+    "description": "Listado de la lista Entidad para la tabla",
+    "sql": "
+      SELECT
+      e.id,
+      e.id_tabla,
+      e.id_correlativo,
+      e.valor_texto_1  AS nombre,
+      e.valor_texto_2  AS descripcion,
+      e.idPadre,
+      (SELECT ent.valor_texto_1 nombre FROM entidad ent WHERE ent.id = e.idPadre) AS nombrePadre
+      FROM entidad e
+      WHERE e.id_tabla = @param_id_tabla AND estado = 1
+      ORDER BY e.id_correlativo ASC;
+    "
+  },
+
+    {
+    "id": 116,
+    "type": 1,
+    "description": "Get historico Hardware para el Personal",
+    "sql": "
+SELECT
+	PR.id_persona,
+	CONCAT(P.apellido_paterno,' ',P.apellido_materno,', ',P.nombres) AS persona,
+    PR.id_recurso,
+	PP.id_proyecto,
+    E.id_correlativo,
+    E.valor_texto_1 AS proyecto,
+    U.usuario AS usuario_asignacion,
+    U.usuario_id,
+    PR.id_usuario_asignacion,
+    DATE_FORMAT(PR.fecha_asignacion,'%Y-%m-%d') AS fecha_asignacion,
+	DATE_FORMAT(PR.fecha_liberacion,'%Y-%m-%d') AS fecha_liberacion
+FROM persona_recursos PR
+    LEFT JOIN persona_proyectos PP ON PP.id_persona = PR.id_persona -- and E.id_correlativo = PR.id_recurso
+    LEFT JOIN usuario U ON U.id = PR.id_usuario_asignacion
+    LEFT JOIN entidad E ON E.id_correlativo = PP.id_proyecto AND id_tabla = 1
+    LEFT JOIN persona P ON P.id = PR.id_persona
+ WHERE PR.id_recurso =  @param_id_recurso
+ ORDER BY PR.fecha_asignacion DESC;
+    "
+  },
+  {
+    "id": 117,
+    "type": 4,
+    "description": "insert new registro liquidacion",
+    "sql": "
+  CALL prc_ins_liquidacion(
+  @p_periodo,
+  @p_idProyecto,
+  @p_idLiquidacion,
+  @p_subServicio,
+  @p_gestor,
+  @p_idGestor,
+  @p_venta_declarada,
+  @p_idEstado,
+  @p_orden_compra,
+  @p_cod_certificacion,
+  @p_factura,
+  @p_monto_facturado,
+  @p_Comentarios,
+  @p_idMotivo,
+  @p_idUsuarioCrea,
+  @p_fechaCrea,
+  @p_idUsuarioActualiza,
+  @p_fechaActualiza,
+  @p_ver_estado,
+  @CONFIG_USER_ID,
+  @CONFIG_OUT_MSG_ERROR,
+  @CONFIG_OUT_MSG_EXITO)
+   "
+  },
+  {
+    "id": 118,
+    "type": 1,
+    "description": "Listado y busqueda del registro Liquidacion",
+    "sql": "
+SELECT DISTINCT f.idFactura,
+    DATE_FORMAT(f.periodo, '%Y/%m') AS periodo,
+    e2.valor_texto_1 AS proyecto,
+    e2.id AS id_proyecto,
+    e3.valor_texto_1 AS liquidacion,
+    e3.id AS id_liquidacion,
+    f.subServicio,
+    e4.id AS id_gestor,
+    CASE WHEN e4.valor_texto_1 IS NOT NULL  THEN e4.valor_texto_1  ELSE f.gestor END AS  gestor,
+    e1.valor_texto_1 AS estado,
+    e1.id AS id_estado,
+    f.orden_compra,
+    f.cod_certificacion,
+    f.factura,
+    f.venta_declarada AS importe,
+    -- SUM(fc.importe)   AS facturado,
+    (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado
+FROM facturacion f
+    LEFT JOIN entidad e1 ON f.idEstado		= e1.id AND e1.id_tabla = 7
+    LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
+    LEFT JOIN entidad e3 ON f.idLiquidacion = e3.id AND e3.id_tabla = 9
+    LEFT JOIN entidad e4 ON f.idGestor 		= e4.id AND e4.id_tabla = 8
+    LEFT JOIN facturacion_certificacion fc ON f.idFactura = fc.idFactura
+WHERE
+      (@cod_fact 		IS NULL OR f.idFactura       = @cod_fact)
+  AND (@id_proy 		IS NULL OR e2.id = @id_proy)
+  AND (@id_liquidacion 	IS NULL OR e3.id = @id_liquidacion)
+  AND (@id_estado 		IS NULL OR e1.id = @id_estado)
+  AND (@id_gestor 		IS NULL OR e4.id = @id_gestor)
+AND (@importe 		IS NULL OR f.venta_declarada LIKE CONCAT('%', @importe, '%'))
+  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+  AND DATE(f.fechaCrea) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
+  AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+  AND DATE(f.fechaCrea) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+  AND DATE(f.fechaCrea) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+  AND ver_estado = 1
+ORDER BY f.idFactura DESC;
+    "
+  },
+{
+    "id": 119,
+    "type": 5,
+    "description": "Eliminar facturacion certificacion",
+    "sql":"
+        DELETE FROM facturacion_certificacion
+    WHERE
+		idFactCertificacion = @p_idFactCertificacion;
+      "
+ },
+  {
+    "id": 120,
+    "type": 1,
+    "description": "eliminar venta declarada",
+    "sql": "
+    DELETE FROM facturacion_venta_declarada
+    WHERE
+		idFactVenta = @p_idFactVenta;
+    "
+  },
+    {
+    "id": 121,
+    "type": 1,
+    "description": "Buscar y listar persona con total de RH y RC",
+    "sql": "
+SELECT  p.id,
+     p.nombres,
+     CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
+     p.apellido_paterno,
+     p.apellido_materno,
+     p.correo,
+     p.dni,
+     p.codigo_corporativo,
+     E.valor_texto_1   AS perfil,
+     E.id_correlativo  AS id_perfil,
+     E2.id_correlativo AS id_proyecto,
+     E2.valor_texto_1  AS codigo_proyecto,
+     E2.valor_texto_2  AS proyecto_descripcion,
+     DATE_FORMAT(p.fecha_ingreso,'%d/%m/%Y') AS fecha_ingreso,
+     CASE WHEN
+     p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado,
+    count(rh.id) AS total_rh,
+    count(rc.id) AS total_rc
+FROM persona p
+left join entidad E   on E.id_correlativo = p.id_perfil 	  and E.id_tabla  = 2
+left join entidad E2  on E2.id_correlativo = p.id_proyecto    and E2.id_tabla = 1
+
+ LEFT JOIN persona_recursos pr 	ON pr.id_persona = p.id OR pr.id_persona is null -- AND PR.id_recurso is not null
+ LEFT JOIN recurso r 			ON r.id = pr.id_recurso
+ LEFT JOIN recurso_hardware rh 	ON r.id = rh.id
+ LEFT JOIN recurso_cuenta rc 	ON r.id = rc.id
+WHERE
+	  (@nombre IS NULL OR UPPER(CONCAT(p.nombres, ' ', p.apellido_paterno, ' ', p.apellido_materno)) LIKE CONCAT('%', @nombre, '%'))
+  AND (@dni IS NULL OR p.dni LIKE CONCAT('%', @dni, '%'))
+  AND (@id_estado 	IS NULL OR p.estado = @id_estado)
+  AND (@codigo_proyecto IS NULL OR p.id_proyecto = @codigo_proyecto)
+  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+  AND DATE(p.fecha_ingreso) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
+  AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+  AND DATE(p.fecha_ingreso) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+  AND DATE(p.fecha_ingreso) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+
+  AND pr.fecha_liberacion is null
+  AND p.eliminacion_logica = 1
+  GROUP BY 1, 2, 3, 4,5,6,7,8,9,10,11
+  ORDER BY p.id DESC;
+    "
+  },
+  {
+    "id": 122,
+    "type": 5,
+    "description": "Eliminar 1 liquidacion del registro",
+    "sql":"
+    CALL prc_eliminar_liquidacion(
+    @p_idFactura,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO
+    )
+    "
+ },
+{
+  "id": 123,
+  "type": 5,
+  "description": "Actualizacion masiva liquidacion",
+  "sql": "
+    CALL prc_update_masivaproyectosliquidacion(
+    @p_idProyecto,
+    @p_idEstado,
+    @p_periodo,
+    @p_idUsuarioActualiza,
+    @p_fechaActualiza,
+    @CONFIG_REG_ID,
+    @CONFIG_OUT_MSG_ERROR ,
+    @CONFIG_OUT_MSG_EXITO
+    )"
+  },
+// QUERY VACACIONES PERSONAL ------------------------------------------------------------------------->
+  {
+    "id": 124,
+    "type": 1,
+    "description": "Lista de Estados - Vacaciones Personal",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+  valor_texto_1,
+  valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 12 AND estado = 1
+    ORDER BY valor_texto_1  ASC; "
+  },
+  {
+    "id": 125,
+    "type": 1,
+    "description": "Lista de Motivos - Vacaciones Personal",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+  valor_texto_1,
+  valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 11 AND estado = 1
+    ORDER BY valor_texto_1  ASC; "
+  },
+  {
+    "id": 126,
+    "type": 1,
+    "description": "Lista de Sistema de Registro (TAWA-GABIN)",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+    valor_texto_1,
+    valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 10 AND estado = 1
+    ORDER BY valor_texto_1  ASC;"
+  },
+
+  {
+    "id": 127,
+    "type": 1,
+    "description": "Lista de ADMINISTRADORES - Vacaciones Personal",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+  valor_texto_1,
+  valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 13 AND estado = 1
+    ORDER BY valor_texto_1  ASC; "
+  },
+  {
+    "id": 128,
+    "type": 1,
+    "description": "Listado de tabla - PERIODO DE VACACIONES",
+    "sql": "
+SELECT
+    sv.idPeriodoVac AS id_periodo,
+    sv.id_vacaciones,
+    sv.id_persona,
+    DATE_FORMAT(sv.fecha_per_ini, '%d/%m/%Y') AS fecha_inicio,
+    DATE_FORMAT(sv.fecha_per_fin, '%d/%m/%Y') AS fecha_fin,
+    DATEDIFF(sv.fecha_per_fin, sv.fecha_per_ini)+1 AS cant_dias_periodo,
+    e.id_correlativo  AS id_per_estado,
+    e.valor_texto_1   AS vac_estado,
+    e2.id_correlativo AS id_per_motivo,
+    e2.valor_texto_1  AS vac_motivo,
+    sv.id_sist_vac	  AS id_sist,
+	e3.valor_texto_1  AS sistema,
+	sv.id_usuario_asignacion,
+    u.usuario AS usuario_asignacion,
+    DATE_FORMAT(sv.fecha_per_creacion, '%d/%m%/%Y  %H:%i') AS fecha_creacion
+FROM seguimiento_vacaciones	sv
+	INNER JOIN persona p  ON p.id = sv.id_persona
+	INNER JOIN entidad e  ON sv.id_per_estado = e.id_correlativo  AND e.id_tabla = 12
+    INNER JOIN entidad e2 ON sv.id_per_motivo = e2.id_correlativo AND e2.id_tabla = 11
+    INNER JOIN entidad e3 ON sv.id_sist_vac   = e3.id_correlativo AND e3.id_tabla = 10
+    INNER JOIN usuario u  ON sv.id_usuario_asignacion = u.id
+WHERE
+	 sv.id_vacaciones = @p_id_vacaciones
+ AND sv.eliminacion_logica = 1
+ORDER BY sv.idPeriodoVac;
+    "
+  },
+  {
+    "id": 129,
+    "type": 4,
+    "description": "Agregar periodo de vacaciones al persona",
+    "sql": "
+  CALL prc_ins_seguimiento_vacaciones(
+  @p_id_vacaciones,
+  @p_id_persona,
+  @p_fecha_per_ini,
+  @p_fecha_per_fin,
+  @p_id_per_estado,
+  @p_id_per_motivo,
+  @p_observacion,
+  @p_id_usuario_asignacion,
+  @p_fecha_per_creacion,
+  @p_id_sist_vac,
+  @CONFIG_USER_ID,
+  @CONFIG_OUT_MSG_ERROR,
+  @CONFIG_OUT_MSG_EXITO
+      ) "
+  },
+{
+    "id": 130,
+    "type": 1,
+    "description": "Buscar y listar LOS PERIODOS DE VACACIONES",
+    "sql": "
+SELECT  v.idVac,
+	CONCAT('VAC', LPAD(v.idVac, 5, '0')) AS cod_vac, -- VAC01336
+	 p.id AS id_persona,
+     p.nombres,
+     CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
+     p.apellido_paterno,
+     p.apellido_materno,
+     p.codigo_corporativo,
+     e3.id_correlativo AS id_proyecto,
+     e3.valor_texto_1  AS codigo_proyecto,
+     DATE_FORMAT(p.fecha_ingreso, '%d/%m/%Y') AS fecha_ingreso,
+	 e2.id_correlativo AS id_estado_vac,
+     e2.valor_texto_1  AS estado_vac,
+	 e.id_correlativo  AS id_sist_vac,
+     e.valor_texto_1   AS sist_vac,
+     DATE_FORMAT(v.fecha_ini_vac,'%d/%m/%Y') AS fecha_ini_vac,
+     DATE_FORMAT(v.fecha_fin_vac,'%d/%m/%Y') AS fecha_fin_vac,
+     DATEDIFF(fecha_fin_vac, fecha_ini_vac)+1 AS cant_dias_vac,
+     DATEDIFF(sv.fecha_per_fin, sv.fecha_per_ini)+1 AS dias_vac_planificado,
+     e4.valor_texto_1 AS estado_periodo,
+     sv.id_per_estado AS id_estado_periodo,
+	 CASE WHEN p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado_persona,
+     u.id,
+     u.usuario,
+	 CONCAT(u.nombre,' ', u.apellido) AS responsable,
+	 ((DATEDIFF(v.fecha_fin_vac, v.fecha_ini_vac)+1) - (DATEDIFF(sv.fecha_per_fin, sv.fecha_per_ini)+1))  AS vac_pendiente,
+     ((DATEDIFF(v.fecha_fin_vac, v.fecha_ini_vac)+1) AS vac_dias_completo,
+     v.eliminacion_logica
+FROM vacaciones v
+	LEFT JOIN persona p	  ON p.id = v.id_persona
+    LEFT JOIN entidad e3  ON e3.id_correlativo = p.id_proyecto	  AND e3.id_tabla = 1
+	LEFT JOIN entidad e   ON e.id_correlativo  = v.id_sist_vac 	  AND e.id_tabla  = 10
+	LEFT JOIN entidad e2  ON e2.id_correlativo = v.id_estado_vac  AND e2.id_tabla = 14
+    LEFT JOIN usuario u   ON u.id 	   = v.id_responsable
+    -- LEFT JOIN seguimiento_vacaciones sv ON sv.id_vacaciones = v.idVac
+    LEFT JOIN seguimiento_vacaciones sv ON sv.id_vacaciones = v.idVac
+    LEFT JOIN entidad e4  ON e4.id_correlativo = sv.id_per_estado  AND e4.id_tabla = 12
+WHERE
+	  (@nombre   IS NULL OR UPPER(CONCAT(p.nombres, ' ', p.apellido_paterno, ' ', p.apellido_materno)) LIKE CONCAT('%', @nombre, '%'))
+  AND (@cod_corp IS NULL OR p.codigo_corporativo LIKE CONCAT('%', @cod_corp, '%'))
+  AND (@id_estado_vac 	IS NULL OR v.id_estado_vac  = @id_estado_vac)
+  AND (@codigo_proyecto IS NULL OR p.id_proyecto    = @codigo_proyecto)
+  AND (@sist_vac 		IS NULL OR v.id_sist_vac    = @sist_vac)
+  AND (@id_responsable  IS NULL OR v.id_responsable = @id_responsable)
+
+  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+  AND DATE(v.fecha_crea_vac) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
+  AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+  AND DATE(v.fecha_crea_vac) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+  AND DATE(v.fecha_crea_vac) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+  AND v.eliminacion_logica = 1
+   -- AND (sv.id_per_estado = 2  OR sv.id_per_estado IS NULL)
+  ORDER BY v.idVac DESC;
+    "
+  },
+{
+  "id": 131,
+  "type": 5,
+  "description": "Actualizar Asignacion de Vacaciones",
+  "sql": "
+    CALL prc_update_seguimiento_vacaciones(
+    @p_idPeriodoVac,
+    @p_id_vacaciones,
+    @p_id_persona,
+    @p_fecha_per_ini,
+    @p_fecha_per_fin,
+    @p_id_per_estado,
+    @p_id_per_motivo,
+    @p_observacion,
+    @p_id_usuario_asignacion,
+    @p_fecha_per_creacion,
+    @p_id_sist_vac,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO
+    )"
+  },
+  {
+    "id": 132,
+    "type": 1,
+    "description": "Lista de Estados - VacacionesPeriodo, sin estado: REGISTRADO",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+  valor_texto_1,
+  valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 12  AND id_correlativo IN ( 1,2,3) AND estado = 1
+    ORDER BY valor_texto_1  ASC; "
+  },
+{
+    "id": 133,
+    "type": 1,
+    "description": "Buscar y listar VACACIONES APROBADAS DEL PERSONAL",
+    "sql": "
+SELECT DISTINCT (v.idVac),
+	CONCAT('VAC', LPAD(v.idVac, 5, '0')) AS cod_vac, -- VAC01336
+	 p.id AS id_persona,
+     p.nombres,
+     CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
+     p.apellido_paterno,
+     p.apellido_materno,
+     p.codigo_corporativo,
+     e3.id_correlativo AS id_proyecto,
+     e3.valor_texto_1  AS codigo_proyecto,
+     DATE_FORMAT(p.fecha_ingreso, '%d/%m/%Y') AS fecha_ingreso,
+	   e2.id_correlativo AS id_estado_vac,
+     e2.valor_texto_1  AS estado_vac,
+	   e.id_correlativo  AS id_sist_vac,
+     e.valor_texto_1   AS sist_vac,
+     DATE_FORMAT(v.fecha_ini_vac,'%d/%m/%Y') AS fecha_ini_vac,
+     DATE_FORMAT(v.fecha_fin_vac,'%d/%m/%Y') AS fecha_fin_vac,
+	   DATEDIFF(v.fecha_fin_vac, v.fecha_ini_vac)+1 AS cant_dias_vac,
+	   CASE WHEN p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado_persona,
+     u.id,
+     u.usuario,
+	 CONCAT(u.nombre,' ', u.apellido) AS responsable,
+	 SUM( CASE WHEN  sv.eliminacion_logica = 0 OR sv.id_per_estado != 2
+     THEN 0 ELSE (DATEDIFF(sv.fecha_per_fin, sv.fecha_per_ini)+1) END)  AS dias_planificado,
+
+     SUM( CASE WHEN  sv.eliminacion_logica = 0 OR sv.id_per_estado != 1
+     THEN 0 ELSE (DATEDIFF(sv.fecha_per_fin, sv.fecha_per_ini)+1) END)  AS dias_completados
+FROM vacaciones v
+	LEFT JOIN persona p	  ON p.id = v.id_persona
+  LEFT JOIN entidad e3  ON e3.id_correlativo = p.id_proyecto	  AND e3.id_tabla = 1
+	LEFT JOIN entidad e   ON e.id_correlativo  = v.id_sist_vac 	  AND e.id_tabla  = 10
+	LEFT JOIN entidad e2  ON e2.id_correlativo = v.id_estado_vac  AND e2.id_tabla = 12
+  LEFT JOIN usuario u   ON u.id 	   = v.id_responsable
+  LEFT JOIN seguimiento_vacaciones sv ON sv.id_vacaciones = v.idVac
+WHERE
+	  (@nombre   IS NULL OR UPPER(CONCAT(p.nombres, ' ', p.apellido_paterno, ' ', p.apellido_materno)) LIKE CONCAT('%', @nombre, '%'))
+  AND (@cod_corp IS NULL OR p.codigo_corporativo LIKE CONCAT('%', @cod_corp, '%'))
+  AND (@id_estado_vac 	 IS NULL OR v.id_estado_vac  = @id_estado_vac)
+  AND (@codigo_proyecto  IS NULL OR p.id_proyecto    = @codigo_proyecto)
+  AND (@sist_vac 		     IS NULL OR v.id_sist_vac    = @sist_vac)
+  AND (@id_responsable   IS NULL OR v.id_responsable = @id_responsable)
+
+  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+  AND DATE(v.fecha_crea_vac) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
+  AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+  AND DATE(v.fecha_crea_vac) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+  AND DATE(v.fecha_crea_vac) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 180 OR (@inicio IS NULL AND @fin IS NULL))
+  AND v.eliminacion_logica = 1
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+  ORDER BY v.idVac DESC;
+    "
+  },
+    {
+    "id": 134,
+    "type": 1,
+    "description": "Buscar y listar personas ACTIVAS",
+    "sql": "
+SELECT  p.id,
+     p.nombres,
+     CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
+     p.apellido_paterno,
+     p.apellido_materno,
+     p.codigo_corporativo,
+     e2.id_correlativo AS id_proyecto,
+     e2.valor_texto_1  AS codigo_proyecto,
+     DATE_FORMAT(p.fecha_ingreso,'%d/%m/%Y') AS fecha_ingreso,
+     CASE WHEN p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado_persona
+FROM persona p
+LEFT JOIN entidad e2  ON e2.id_correlativo = p.id_proyecto    AND e2.id_tabla = 1
+WHERE
+	  (@nombre IS NULL OR UPPER(CONCAT(p.nombres, ' ', p.apellido_paterno, ' ', p.apellido_materno)) LIKE CONCAT('%', @nombre, '%'))
+  AND (@cod_corp IS NULL OR p.codigo_corporativo LIKE CONCAT('%', @cod_corp, '%'))
+  AND p.eliminacion_logica = 1
+  AND p.estado = 1
+  ORDER BY p.id DESC;
+    "
+  },
+  {
+    "id": 135,
+    "type": 4,
+    "description": "Buscar y asignar persona a crear vacaciones",
+    "sql": "
+    CALL prc_asignar_persona_vacaciones(
+    @param_id_persona,
+    @param_id_recurso,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO )
+    "
+  },
+
+    {
+    "id": 136,
+    "type": 1,
+    "description": "Reporte VENTA DECLARADA - CERTIFICACION",
+    "sql": "
+SELECT f.idFactura AS ID_FACTURA,
+    DATE_FORMAT(f.periodo,'%Y/%m') AS PERIODO,
+    e2.valor_texto_1 AS PROYECTO,
+    e3.valor_texto_1 AS LIQUIDACION,
+    f.subServicio AS SUBSERVICIO,
+    CASE WHEN e4.valor_texto_1 IS NOT NULL THEN e4.valor_texto_1 ELSE f.gestor END AS GESTOR,
+    e1.valor_texto_1  AS ESTADO_LIQUID,
+    f.venta_declarada AS IMPORTE_LIQUI,
+        -- EXPORT VENTA DECLARADA
+	DATE_FORMAT(fvd.periodo, '%Y/%m') as PERIOD_VENTA_DECLARADA,
+    fvd.venta_declarada AS IMPORTE_DECLARADO,
+    -- fvd.comentario AS comentario_venta_declarada
+    fc.oc AS ORDEN_COMPRA,
+    fc.importe AS IMPORTE_FACTURADO,
+    fc.certificacion AS CERTIFICACION,
+    e5.valor_texto_1 AS ESTADO_FACTURACION,
+    fc.factura AS FACTURA,
+    DATE_FORMAT(fc.fecha_facturacion, '%d/%m/%Y') AS FECHA_FACTURACION
+    -- fc.comentario AS comentario_certificacion,
+
+FROM facturacion f
+	-- EXPORT CERTIFICACION
+    LEFT JOIN entidad e1 ON f.idEstado 		= e1.id AND e1.id_tabla = 7
+    LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
+    LEFT JOIN entidad e3 ON f.idLiquidacion = e3.id AND e3.id_tabla = 9
+    LEFT JOIN entidad e4 ON f.idGestor 		= e4.id AND e4.id_tabla = 8
+    LEFT JOIN facturacion_certificacion fc ON f.idFactura = fc.idFactura
+    LEFT JOIN entidad e5 ON fc.idEstado = e5.id AND e5.id_tabla = 7
+    -- EXPORT VENTA DECLARADA
+    left join facturacion_venta_declarada fvd on f.idFactura = fvd.idFactura
+WHERE ver_estado = 1
+ORDER BY f.idFactura DESC,
+f.periodo DESC;
+    "
+  },
+  {
+    "id": 137,
+    "type": 4,
+    "description": "Agregar vacaciones al persona",
+    "sql": "
+  CALL prc_ins_vacaciones(
+    @p_id_persona,
+    @p_id_sist_vac,
+    @p_fecha_ini_vac,
+    @p_fecha_fin_vac,
+    @p_id_estado_vac,
+    @p_id_responsable,
+    @p_fecha_crea_vac,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO
+      ) "
+  },
+  {
+    "id": 138,
+    "type": 5,
+    "description": "Actualizar Vacaciones",
+    "sql": "
+  CALL prc_update_vacaciones(
+     @p_idVac,
+     @p_id_persona,
+     @p_id_sist_vac,
+     @p_fecha_ini_vac,
+     @p_fecha_fin_vac,
+     @p_id_estado_vac,
+     @p_fecha_crea_vac,
+     @CONFIG_USER_ID,
+     @CONFIG_OUT_MSG_ERROR,
+     @CONFIG_OUT_MSG_EXITO
+      ) "
+  },
+  {
+    "id": 139,
+    "type": 1,
+    "description": "Historico cambios de ESTADO - VACACIONES",
+    "sql": "
+SELECT ve.id_vacaciones,
+	ve.id_estado,
+    e.valor_texto_1 AS estado_vacaciones,
+    e.id_correlativo AS id_vacaciones_estado,
+    DATE_FORMAT(ve.fecha_cambio,'%d-%m-%Y %H:%i') AS fecha_cambio,
+    id_usuario,
+    u.usuario AS usuario_responsable
+FROM vacaciones_estado ve
+    LEFT JOIN entidad e ON e.id_tabla = 12 AND e.id_correlativo = ve.id_estado
+    LEFT JOIN usuario u ON u.id = ve.id_usuario
+WHERE ve.id_vacaciones = @p_id_vacaciones; "
+  },
+  {
+    "id": 140,
+    "type": 4,
+    "description": "Insertar cambios de estado - vacaciones",
+    "sql": "
+  CALL prc_ins_vacaciones_estado(
+    @p_id_persona,
+    @p_id_sist_vac,
+    @p_fecha_ini_vac,
+    @p_fecha_fin_vac,
+    @p_id_estado_vac,
+    @p_id_responsable,
+    @p_fecha_crea_vac,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO
+      ) "
+  },
+{
+    "id": 141,
+    "type": 6,
+    "description": "Eliminar 1 Periodo de vacaciones",
+    "sql":"
+    CALL prc_eliminar_periodovacaciones(
+    @p_idPeriodoVac,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO
+    )"
+ },
+{
+    "id": 142,
+    "type": 5,
+    "description": "Eliminar vacaciones",
+    "sql":"
+    CALL prc_eliminar_vacaciones(
+    @p_idVac,
+    @CONFIG_USER_ID,
+    @CONFIG_OUT_MSG_ERROR,
+    @CONFIG_OUT_MSG_EXITO
+    )"
+ },
+]

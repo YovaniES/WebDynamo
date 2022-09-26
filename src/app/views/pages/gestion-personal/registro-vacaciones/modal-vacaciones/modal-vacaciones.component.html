@@ -81,8 +81,8 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
 
-                <mat-error *ngIf="vacacionesForm.controls['fechaInicVac'].hasError('matStartDateInvalid')">Invalid start date</mat-error>
-                <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                <mat-error *ngIf="vacacionesForm.controls['fechaInicVac'].hasError('matStartDateInvalid')">Fecha de inicio no válida</mat-error>
+                <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid')">Fecha de fin no válida</mat-error>
               </mat-form-field>
             </div>
 
@@ -186,9 +186,9 @@
                 <thead>
                   <tr class="bgc-turquey c-white">
                     <th>N°</th>
-                    <th>Sistema</th>
+                    <!-- <th>Sistema</th> -->
                     <th>Estado</th>
-                    <th>Días solicitados</th>
+                    <!-- <th>Días solicitados</th> -->
                     <th>Fecha de Cambio</th>
                     <th>Responsable</th>
                   </tr>
@@ -197,9 +197,9 @@
                 <tbody>
                   <tr *ngFor="let cambios of histCambiosEstado; let i = index">
                     <td>{{ i + 1 }}</td>
-                    <td>GABIN</td>
+                    <!-- <td>GABIN</td> -->
                     <td>{{cambios.estado_vacaciones}}</td>
-                    <td>20</td>
+                    <!-- <td>20</td> -->
                     <td>{{ cambios.fecha_cambio }}</td>
                     <td>{{ cambios.usuario_responsable }}</td>
                   </tr>

@@ -88,10 +88,10 @@ export class RegistroVacacionesComponent implements OnInit {
     });
   }
 
-  abrirEliminarLogico(id: number, ){
+  abrirEliminarLogico(id: number, cod_vac: string){
     Swal.fire({
       title: `Eliminar vacaciones?`,
-      text: `¿Desea eliminar la vacación: VAC000${id}?`,
+      text: `¿Desea eliminar la vacación: ${cod_vac}?`,
       icon: 'question',
       confirmButtonColor: '#20c997',
       cancelButtonColor : '#b2b5b4',
@@ -100,12 +100,12 @@ export class RegistroVacacionesComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((resp) => {
         if (resp.value) {
-          this.eliminacionLogica(id);
+          this.eliminacionLogica(id, cod_vac);
        }
       });
   }
 
-  eliminacionLogica(id: number){
+  eliminacionLogica(id: number, cod_vac: string){
     this.spinner.show();
     let parametro:any[] = [{
       "queryId" : 142,
@@ -122,14 +122,14 @@ export class RegistroVacacionesComponent implements OnInit {
       if (msj != '') {
         Swal.fire({
           title: 'Eliminar vacaciones',
-          text: `La vacación: ${id}, fue eliminado con éxito`,
+          text: `La vacación: ${cod_vac}, fue eliminado con éxito`,
           icon: 'success',
         });
 
       }else if (msj2 != ''){
         Swal.fire({
           title: `Eliminar vacaciones`,
-          text : `La vacación: ${id}, no pudo ser eliminado por que tiene vacaciones planificadas`,
+          text : `La vacación: ${cod_vac}, no pudo ser eliminado por que tiene vacaciones planificadas`,
           icon : 'error',
         });
       }else{
@@ -170,7 +170,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   listEstadoVacaciones: any[] = [];
   getListEstadoVacaciones(){
-  let parametro: any[] = [{ queryId: 132}];
+  let parametro: any[] = [{ queryId: 124}];
   this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listEstadoVacaciones = resp.list;
     console.log('VACAC-ESTADO', resp.list);

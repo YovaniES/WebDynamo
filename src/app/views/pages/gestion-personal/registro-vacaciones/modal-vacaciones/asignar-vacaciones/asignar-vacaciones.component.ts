@@ -35,7 +35,6 @@ export class AsignarVacacionesComponent implements OnInit {
     this.cargarVacacionesByID();
     this.getListEstadoVacaciones();
     this.getListMotivosVacaciones();
-    this.getListSistemaVacaciones();
     console.log('DATA_VACAC_PERIODO', this.DATA_VACAC, this.DATA_VACAC.vdForm);
     // console.log('ID_PERS_VACAC', this.DATA_VACAC.vacForm.idPersonal); //idPersonal= 496
   }
@@ -46,7 +45,7 @@ export class AsignarVacacionesComponent implements OnInit {
       fechaFin      : ['', [Validators.required]],
       id_estado     : [ 2, [Validators.required]],
       estado_periodo: ['Planificado'],
-      id_motivo     : [ 5, [Validators.required]],
+      id_motivo     : [ 5, [Validators.required]], //Motivo_5 : NINGUNO
       dias_periodo  : [''],
       observaciones : [''],
     })
@@ -71,7 +70,6 @@ export class AsignarVacacionesComponent implements OnInit {
           p_id_persona           : this.DATA_VACAC.vacForm.idVacaciones.id_persona ,
           p_fecha_per_ini        : moment.utc(formValues.fechaInicio).format('YYYY-MM-DD'),
           p_fecha_per_fin        : moment.utc(formValues.fechaFin).format('YYYY-MM-DD'),
-          // p_id_per_estado        : this.DATA_VACAC.vacForm.idVacaciones.id_estado_vac ,
           p_id_per_estado        : formValues.id_estado ,
           p_id_per_motivo        : formValues.id_motivo ,
           p_observacion          : formValues.observaciones ,
@@ -86,7 +84,7 @@ export class AsignarVacacionesComponent implements OnInit {
      console.log('VAOR_VACA', this.asigVacacionesForm.value , parametro);
     this.vacacionesService.agregarPeriodoVacaciones(parametro).subscribe((resp: any) => {
       Swal.fire({
-        title: 'Agregar vacaciones!',
+        title: 'Planificar vacaciones!',
         text : `La vacación fue planificado con éxito`,
         icon : 'success',
         confirmButtonText: 'Ok',
@@ -182,18 +180,9 @@ export class AsignarVacacionesComponent implements OnInit {
     }
   }
 
-  listSistemaVacaciones: any[] = [];
-  getListSistemaVacaciones(){
-  let parametro: any[] = [{ queryId: 126}];
-  this.vacacionesService.getListSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
-    this.listSistemaVacaciones = resp.list;
-    // console.log('SISTEMA-ASIG_VAC', resp.list);
-    })
-  }
-
   listVacacionesEstado: any[] = [];
   getListEstadoVacaciones(){
-  let parametro: any[] = [{ queryId: 124}];
+  let parametro: any[] = [{ queryId: 132}];
   this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listVacacionesEstado = resp.list;
     // console.log('VACAS-ESTADO', resp.list);
