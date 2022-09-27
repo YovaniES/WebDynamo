@@ -15,7 +15,6 @@
       <div class="mx-5 mt-2">
         <div class="pr-module-containerXZ">
           <div class="row" style="justify-content: space-between;">
-            <!-- account_circle / sensor_occupied-->
             <div class="input-group col-sm-4">
               <div class="input-group-text"><mat-icon>workspaces</mat-icon></div>
               <div class="info">{{vacacionesForm.controls['codCorp'].value}}</div>
@@ -51,13 +50,6 @@
                 <option [value]="sistema.id_correlativo" *ngFor="let sistema of listSistemaVacaciones">{{sistema.valor_texto_1}}</option>
               </select>
             </div>
-            <!-- <div class="col-sm-3 cli-form-element">
-              <label>Estado</label>
-              <select class="cli-input-white" formControlName="id_estado_vac">
-                <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="estado.id_correlativo" *ngFor="let estado of listEstadoVacacionesAprobadas">{{estado.valor_texto_1}}</option>
-              </select>
-            </div> -->
 
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Estado vacación</label>
@@ -72,12 +64,11 @@
             <div class="col-sm-4 cli-form-element">
               <label class="form-label">Fecha de vacaciones </label>
               <mat-form-field color="accent" appearance="outline">
-                <mat-date-range-input  [rangePicker]="picker"
-                [dateFilter]="filtroFecha">
+                <mat-date-range-input  [rangePicker]="picker">
+                <!-- [dateFilter]="filtroFecha" -->
                 <input matStartDate formControlName="fechaInicVac" [min]="minDate"  placeholder="Inicio vacaciones"   #diasIniVac (dateChange)="totalDiasVac()">
                 <input matEndDate   formControlName="fechaFinVac"  [max]="maxDate"  placeholder="Final de vacaciones" #diasFinVac (dateChange)="totalDiasVac()">
                 </mat-date-range-input>
-                <!-- <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
 
@@ -116,7 +107,6 @@
                     <tr class="bgc-blue-light c-white">
                       <th>Accíón</th>
                       <th>N°</th>
-                      <!-- <th>ID periodo</th> -->
                       <th>Fecha inicio</th>
                       <th>Fecha fin</th>
                       <th>Días periodo</th>
@@ -146,14 +136,13 @@
                         </div>
                       </td>
                       <td>{{i+1}}</td>
-                      <!-- <td>{{periodo.id_periodo}}</td> -->
                       <td>{{periodo.fecha_inicio}}</td>
                       <td>{{periodo.fecha_fin}}</td>
                       <td>{{periodo.cant_dias_periodo}} días</td>
                       <td style="width: 100px">
-                        <span *ngIf="periodo.vac_estado.toUpperCase() == 'COMPLETADO'"    class="w135 label estado-danger">{{ periodo.vac_estado | uppercase }}</span>
-                        <span *ngIf="periodo.vac_estado.toUpperCase() == 'PLANIFICADO'"   class="w135 label estado-planif">{{ periodo.vac_estado | uppercase }}</span>
-                        <span *ngIf="periodo.vac_estado.toUpperCase() == 'CANCELADO'"     class="w135 label estado-reg "  >{{ periodo.vac_estado | uppercase }}</span>
+                        <span *ngIf="periodo.vac_estado.toUpperCase() == 'COMPLETADO'"  class="w135 label estado-danger">{{ periodo.vac_estado | uppercase }}</span>
+                        <span *ngIf="periodo.vac_estado.toUpperCase() == 'PLANIFICADO'" class="w135 label estado-planif">{{ periodo.vac_estado | uppercase }}</span>
+                        <span *ngIf="periodo.vac_estado.toUpperCase() == 'CANCELADO'"   class="w135 label estado-reg "  >{{ periodo.vac_estado | uppercase }}</span>
                       </td>
                       <td>{{periodo.vac_motivo}}</td>
                       <td>{{periodo.usuario_asignacion}}</td>
@@ -162,14 +151,13 @@
                   </tbody>
                 </table>
                 <div class="cli-loader" *ngIf="loadingItem">
-                  <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
-                  cargando...
+                  <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
                 </div>
 
                 <div
                 *ngIf="!loadingItem && listVacacionesPeriodo.length == 0"
                 class="cli-loader mt-2"
-                style="color: #c9c9c9"
+                style="color: #c9c9c9; font-size: 12px;"
                 >Aquí se mostrará la Planificación de las Vacaciones ...
               </div>
             </div>
@@ -186,9 +174,7 @@
                 <thead>
                   <tr class="bgc-turquey c-white">
                     <th>N°</th>
-                    <!-- <th>Sistema</th> -->
                     <th>Estado</th>
-                    <!-- <th>Días solicitados</th> -->
                     <th>Fecha de Cambio</th>
                     <th>Responsable</th>
                   </tr>
@@ -197,23 +183,20 @@
                 <tbody>
                   <tr *ngFor="let cambios of histCambiosEstado; let i = index">
                     <td>{{ i + 1 }}</td>
-                    <!-- <td>GABIN</td> -->
-                    <td>{{cambios.estado_vacaciones}}</td>
-                    <!-- <td>20</td> -->
-                    <td>{{ cambios.fecha_cambio }}</td>
+                    <td>{{ cambios.estado_vacaciones }}</td>
+                    <td>{{ cambios.fecha_cambio      }}</td>
                     <td>{{ cambios.usuario_responsable }}</td>
                   </tr>
                 </tbody>
               </table>
               <div class="cli-loader" *ngIf="loadingItem">
-                <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
-                cargando...
+                <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
               </div>
 
               <div
                 *ngIf="!loadingItem && histCambiosEstado.length == 0"
                 class="cli-loader mt-2"
-                style="color: #c9c9c9"
+                style="color: #c9c9c9; font-size: 12px;"
                 >Aquí se mostrará el histórico de Vacaciones ...
               </div>
             </div>
@@ -227,7 +210,6 @@
         <mat-icon class="icon-18">cancel</mat-icon> Cancelar
       </button>
       <button class="cli-btn btn-m btn-blue" (click)="actualizarVacaciones()">
-        <!-- [disabled]="vacacionesForm.invalid" -->
         <mat-icon class="icon-18">save</mat-icon> Actualizar
       </button>
     </div>

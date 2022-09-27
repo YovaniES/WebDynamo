@@ -23,9 +23,6 @@ export class ModalVacacionesComponent implements OnInit {
   minDate = new Date();
   maxDate = new Date(2022, 9, 9);
 
-  dateStar = new Date('2022-09-09');
-  dateEnd  = new Date('2022-09-20');
-
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
@@ -78,12 +75,12 @@ export class ModalVacacionesComponent implements OnInit {
       })
      }
 
-  filtroFecha(calendario: Date): boolean {
-    // const dateIni = moment.utc(this.DATA_VACACIONES.fecha_ini_vac).format('YYYY-MM-DD')
-    // console.log('FECHA_START', dateIni);
-    const fechaInicial = '2022-09-25'
-    return calendario > new Date(fechaInicial);
-  }
+  // filtroFecha(calendario: Date): boolean {
+  //   // const dateIni = moment.utc(this.DATA_VACACIONES.fecha_ini_vac).format('YYYY-MM-DD')
+  //   // console.log('FECHA_START', dateIni);
+  //   const fechaInicial = '2022-09-25'
+  //   return calendario > new Date(fechaInicial);
+  // }
 
   getFechaIni(event: any){
     console.log('FECHA-INI-IMPUT', event.target.value);
@@ -105,7 +102,6 @@ export class ModalVacacionesComponent implements OnInit {
           p_id_sist_vac       : formValues.idSistema,
           p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
           p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
-          // p_id_estado_vac     : formValues.id_estado_vac,
           p_id_estado_vac     : estadoVacaciones? estadoVacaciones : formValues.id_estado_vac, // ENVIAR EL ESTADO DEL PERIODO CON ESTADO 'PLANIFICADO', COMPLETADO
           p_fecha_crea_vac    : '',
           CONFIG_USER_ID      : this.userID,
@@ -148,7 +144,6 @@ export class ModalVacacionesComponent implements OnInit {
       this.vacacionesForm.controls['total_dias_vac'].setValue(this.DATA_VACACIONES.cant_dias_vac);
       this.vacacionesForm.controls['fecha_ingreso' ].setValue(this.DATA_VACACIONES.fecha_ingreso);
 
-      // fecha_ini_vac = "01/10/2022"
       if (this.DATA_VACACIONES.fecha_ini_vac) {
         let fecha_x = this.DATA_VACACIONES.fecha_ini_vac
         const str   = fecha_x.split('/');
@@ -166,7 +161,6 @@ export class ModalVacacionesComponent implements OnInit {
         const date  = Number(str[0]);
         this.vacacionesForm.controls['fechaFinVac'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
-
       this.spinner.hide();
   }
 
