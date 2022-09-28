@@ -19,8 +19,8 @@
               <label class="form-label">Fecha de planificación *</label>
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControlName="fechaInicio" placeholder="Inicio vacaciones"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
-                  <input matEndDate   formControlName="fechaFin"    placeholder="Final de vacaciones"#fechaFinPlanif (dateChange)="totalDiasPlanificado()">
+                  <input matStartDate formControlName="fechaInicio" placeholder="Inicio periodo"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
+                  <input matEndDate   formControlName="fechaFin"    placeholder="Final periodo"#fechaFinPlanif (dateChange)="totalDiasPlanificado()">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>

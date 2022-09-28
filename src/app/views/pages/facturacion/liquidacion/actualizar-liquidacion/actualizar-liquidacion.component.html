@@ -118,7 +118,7 @@
                     <tr class="bgc-blue-light c-white">
                       <th>Acción</th>
                       <!-- <th>ID Venta declarada</th> -->
-                      <th style="width: 35px">#</th>
+                      <th style="width: 35px">N°</th>
                       <th>Periodo</th>
                       <th>Importe declarado</th>
                       <th>Saldo</th>
@@ -189,7 +189,7 @@
                     <tr class="bgc-blue-light c-white">
                       <th>Acción</th>
                       <!-- <th>ID Certificación</th> -->
-                      <th>#</th>
+                      <th>N°</th>
                       <th>Ord. Compra</th>
                       <th>Certificación</th>
                       <th>Estado</th>
@@ -228,7 +228,7 @@
                         <span *ngIf="factura.id_estado == 182"   class="label estado-succes">{{ factura.estado }}</span>
                         <span *ngIf="factura.id_estado == 183"   class="label estado-info">  {{ factura.estado }}</span>
                       </td>
-                      <td class="w100">{{ factura.factura }}</td>
+                      <td style="min-width:100px">{{ factura.factura }}</td>
                       <!-- <td>{{ factura.comentario | firstCapital}}</td> -->
                       <td><small style="font-weight: 200; margin-right:3px;">S/</small>{{ factura.importe }}</td>
                       <td>{{ factura.fecha_facturacion }}</td>

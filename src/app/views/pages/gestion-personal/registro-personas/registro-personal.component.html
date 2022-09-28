@@ -33,7 +33,7 @@
               <label class="form-label">Cód.Proyecto</label>
               <select class="form-select" formControlName="codProy">
                 <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="cod.id" *ngFor="let cod of listCodProy">{{cod.codigo}}</option>
+                <option [value]="cod.id_proyecto" *ngFor="let cod of listCodProy">{{cod.codigo}}</option>
               </select>
             </div>
 
@@ -45,7 +45,7 @@
                 formControlName="dni"/>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <!-- <div class="col-sm-3 cli-form-element">
               <div class="form-group">
                 <label>Fecha ingreso <span class="date-rango">(desde)</span></label>
                  <input
@@ -63,6 +63,19 @@
                   class="form-control"
                   formControlName="fechaIngresoFin"/>
               </div>
+            </div> -->
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Fecha de Ingreso</label>
+
+              <mat-form-field color="accent" appearance="outline">
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate formControlName="fechaIngresoInicio"  placeholder="Desde"   >
+                  <input matEndDate   formControlName="fechaIngresoFin"  placeholder="Hasta" >
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
             </div>
 
             <div class="cli-form-buttons" style="margin-top: 8px">
@@ -160,7 +173,7 @@
               </td>
               <!-- <td>{{ personal.id }}</td> -->
               <td class="w350" style="text-align:left"> {{ personal.apellidos |firstCapital}}, {{personal.nombres | firstCapital}}</td>
-              <td>{{ personal.correo }}</td>
+              <td style="text-align:left">{{ personal.correo }}</td>
               <td>{{ personal.perfil | firstCapital }}</td>
               <td>{{ personal.codigo_corporativo| uppercase }}</td>
               <td>{{ personal.codigo_proyecto | uppercase}}</td>

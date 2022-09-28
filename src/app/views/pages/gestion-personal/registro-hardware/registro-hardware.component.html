@@ -6,7 +6,15 @@
       <div class="card" style="border-radius: 2px; font-weight: 600">
         <div class="card-body" style="padding: 10px">
           <form class="row g-3" [formGroup]="filtroForm">
-            <div class="col-sm-3 cli-form-element">
+            <div class="col-sm-2 cli-form-element">
+              <label class="form-label">ID Hardware</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="id_hardware"/>
+            </div>
+
+            <div class="col-sm-2 cli-form-element">
               <label class="form-label">Tipo</label>
               <select class="form-select" formControlName="tipo">
                 <option [value]="0" disabled>- Seleccione -</option>
@@ -14,7 +22,7 @@
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <div class="col-sm-2 cli-form-element">
               <label class="form-label">Marca</label>
               <select class="form-select" formControlName="marca">
                 <option [value]="0" disabled>- Seleccione -</option>

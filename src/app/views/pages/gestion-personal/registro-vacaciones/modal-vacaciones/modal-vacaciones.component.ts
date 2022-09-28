@@ -178,10 +178,10 @@ export class ModalVacacionesComponent implements OnInit {
     }];
       Swal.fire({
         title: 'Eliminar periodo?',
-        text: `¿Estas seguro que desea Eliminar el periodo?`,
+        text: `¿Estas seguro que desea eliminar el periodo?`,
         icon: 'question',
-        confirmButtonColor: '#ec4756',
-        cancelButtonColor : '#0d6efd',
+        confirmButtonColor: '#20c997',
+        cancelButtonColor : '#b2b5b4',
         confirmButtonText : 'Si, Eliminar!',
         showCancelButton: true,
         cancelButtonText: 'Cancelar',

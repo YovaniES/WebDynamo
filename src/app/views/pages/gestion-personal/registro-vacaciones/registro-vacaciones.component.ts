@@ -88,10 +88,10 @@ export class RegistroVacacionesComponent implements OnInit {
     });
   }
 
-  abrirEliminarLogico(id: number, cod_vac: string){
+  abrirEliminarLogico(id: number, name: string, ap_paterno: string){
     Swal.fire({
       title: `Eliminar vacaciones?`,
-      text: `¿Desea eliminar la vacación: ${cod_vac}?`,
+      text: `¿Desea eliminar la vacación de: ${name} ${ap_paterno}?`,
       icon: 'question',
       confirmButtonColor: '#20c997',
       cancelButtonColor : '#b2b5b4',
@@ -100,12 +100,12 @@ export class RegistroVacacionesComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((resp) => {
         if (resp.value) {
-          this.eliminacionLogica(id, cod_vac);
+          this.eliminacionLogica(id, name, ap_paterno);
        }
       });
   }
 
-  eliminacionLogica(id: number, cod_vac: string){
+  eliminacionLogica(id: number, name: string, ap_paterno: string){
     this.spinner.show();
     let parametro:any[] = [{
       "queryId" : 142,
@@ -122,14 +122,14 @@ export class RegistroVacacionesComponent implements OnInit {
       if (msj != '') {
         Swal.fire({
           title: 'Eliminar vacaciones',
-          text: `La vacación: ${cod_vac}, fue eliminado con éxito`,
+          text: `La vacación de: ${name} ${ap_paterno}, fue eliminado con éxito`,
           icon: 'success',
         });
 
       }else if (msj2 != ''){
         Swal.fire({
           title: `Eliminar vacaciones`,
-          text : `La vacación: ${cod_vac}, no pudo ser eliminado por que tiene vacaciones planificadas`,
+          text : `La vacación de: ${name} ${ap_paterno}, no pudo ser eliminado por que tiene vacaciones planificadas o completadas`,
           icon : 'error',
         });
       }else{

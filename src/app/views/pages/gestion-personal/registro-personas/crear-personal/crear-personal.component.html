@@ -131,7 +131,7 @@
                 #selectList
                 (change)="getDescProy(selectList.value)"
                 ><option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="cod.id" *ngFor="let cod of listProyectos">{{ cod.codigo }}</option>
+                <option [value]="cod.id_proyecto" *ngFor="let cod of listProyectos">{{ cod.codigo }}</option>
               </select>
               <small class="text-alert" *ngIf="campoNoValido('codProy')">* El Código del Proyecto es obligatorio</small>
             </div>

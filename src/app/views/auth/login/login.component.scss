@@ -1,10 +1,11 @@
 .view-backgrond {
-  background-image: url("../../../../assets/images/background/fac2.webp");
+  background-image: url("../../../../assets/images/background/person5.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 1.7;
   width: 100%;
   height: 100%;
+  transform: scaleX(-1);
   // overflow-x: hidden;
   // padding-top: 20px;
 }
@@ -12,7 +13,7 @@
 .form-card {
   position: absolute;
   top: 0;
-  width: 25%;
+  width: 20%;
   bottom: 0;
   left: 0;
   z-index: 200;

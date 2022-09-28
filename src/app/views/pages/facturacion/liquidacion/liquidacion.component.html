@@ -38,24 +38,16 @@
               </select>
             </div>
 
-           <div class="col-sm-3 cli-form-elemen cli-form-element">
-              <div class="form-group">
-                <label>Fecha registro <span class="date-rango">(desde)</span></label>
-                 <input
-                  type="date"
-                  class="form-control"
-                  formControlName="fechaRegistroInicio"/>
-              </div>
-            </div>
-
             <div class="col-sm-3 cli-form-element">
-              <div class="form-group">
-                <label>Fecha registro <span class="date-rango">(hasta)</span></label>
-                <input
-                  type="date"
-                  class="form-control"
-                  formControlName="fechaRegistroFin"/>
-              </div>
+              <label class="form-label">Fecha de Registro</label>
+              <mat-form-field color="accent" appearance="outline">
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate formControlName="fechaRegistroInicio"  placeholder="Desde"   >
+                  <input matEndDate   formControlName="fechaRegistroFin"     placeholder="Hasta" >
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
             </div>
 
             <div class="col-sm-3 cli-form-element">
@@ -110,10 +102,8 @@
 
         <button
           class="cli-btn btn-cancel mx-1"
-          style="margin: 0"
-          type="button"
           (click)="actualizacionMasiva()"
-          ><mat-icon class="icon-18">edit</mat-icon>Act. masiva
+          ><mat-icon class="icon-18">edit_note</mat-icon>Act. masiva
         </button>
         <button
           matTooltip="Exportar filtro"
@@ -178,10 +168,10 @@
               </td>
               <td>{{ factura.idFactura }}</td>
               <td> {{ factura.periodo | date:"yyyy/MM" }}</td>
-              <td class="w155">{{ factura.gestor }}</td>
+              <td class="w155" style="text-align: left">{{ factura.gestor }}</td>
               <td>{{ factura.proyecto  | uppercase}}</td>
               <td class="w135">{{ factura.liquidacion }}</td>
-              <td class="w250">{{ factura.subServicio }}</td>
+              <td class="w155" style="text-align: left">{{ factura.subServicio }}</td>
               <td>{{ factura.estado }}</td>
               <td><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe}}</td>
               <td><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado }}</td>

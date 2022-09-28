@@ -46,13 +46,13 @@
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <!-- <div class="col-sm-3 cli-form-element">
               <label class="form-label">Responsables</label>
               <select class="form-select" formControlName="id_responsable">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="admin.id_correlativo" *ngFor="let admin of listAdminVacaciones">{{admin.valor_texto_1}}</option>
               </select>
-            </div>
+            </div> -->
 
              <div class="col-sm-3 cli-form-element">
               <label class="form-label">Fecha de registro vacaciones </label>
@@ -119,20 +119,21 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
-              <th>ID Vacaciones</th>
+              <!-- <th>ID Vacaciones</th> -->
               <!-- <th>ID Persona</th> -->
               <th>Código</th>
               <th style="text-align: left">Nombres y Apellidos</th>
               <th>Cód. Proyecto</th>
               <th>Sistema</th>
-              <th>Fecha Inicio</th>
-              <th>Fecha Fin</th>
-              <th style="text-align: left">Cant. días</th>
+              <th style="width: 200px">Fecha de vacaciones</th>
+              <!-- <th>Fecha Fin</th> -->
+              <th style="text-align: center">Cant. días</th>
               <th style="text-align:center">Responsable</th>
               <th>Estado</th>
-              <th>Planificado</th>
-              <th>Pendiente</th>
+              <th>Planificados</th>
+              <th>Pendientes</th>
               <th style="text-align: left">Completados</th>
+              <th style="width: 120px">Fecha Registro</th>
             </tr>
           </thead>
 
@@ -152,26 +153,35 @@
                   </button>
 
                   <button matTooltip="Eliminar"
-                    (click)="abrirEliminarLogico(vacaciones.idVac, vacaciones.cod_vac)"
+                    (click)="abrirEliminarLogico(vacaciones.idVac, vacaciones.nombres, vacaciones.apellido_paterno)"
                     class="icon-btn btn-trans c-fucsia"
                     ><mat-icon class="icon-18">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
-              <td>{{ vacaciones.cod_vac }}</td>
-              <!-- <td>{{ vacaciones.id_persona }}</td> -->
               <td>{{ vacaciones.codigo_corporativo }}</td>
-              <td class="w350" style="text-align: left"> {{ vacaciones.apellidos |firstCapital}}, {{vacaciones.nombres | firstCapital}}</td>
+              <td class="w400" style="text-align: left"> {{ vacaciones.apellidos |firstCapital}}, {{vacaciones.nombres | firstCapital}}</td>
               <td>{{ vacaciones.codigo_proyecto | uppercase}}</td>
               <td>{{vacaciones.sist_vac}}</td>
-              <td class="w100">{{ vacaciones.fecha_ini_vac }}</td>
-              <td>{{ vacaciones.fecha_fin_vac | firstCapital }}</td>
-              <td style="width: 100px; font-weight: 600;">
+              <td>
+                <div class="cli-table"
+                style="display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                background: none;
+                color: #6c757d;
+                border: solid 1px #c4c7ca;
+                min-width: 130px;
+                border-radius: 3px;">
+                  {{ vacaciones.f_ini_vac}}<mat-icon class="icon-18">trending_flat</mat-icon>{{ vacaciones.f_fin_vac }}
+                </div>
+              </td>
+              <td style="font-weight: 600;">
                 <div class="cli-table-dias">
                   {{vacaciones.cant_dias_vac}}
                 </div>
               </td>
-              <td class="w350x" style="text-align:left ">
+              <td style="text-align:left ">
                 <div class="cli-table-user">
                   <button
                     matTooltip={{vacaciones.responsable}}
@@ -182,7 +192,7 @@
                 </div>
               </td>
 
-              <td style="width: 100px">
+              <td style="width: 100px; height: 50px;">
                 <span *ngIf="vacaciones.estado_vac == 'En curso'"    class="label estado-info">  {{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="label estado-danger">{{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Planificado'" class="label estado-planif">{{ vacaciones.estado_vac | uppercase }}</span>
@@ -205,6 +215,7 @@
                   {{vacaciones.dias_completados}}
                 </div>
               </td>
+              <td style="min-width: 90px">{{ vacaciones.fecha_crea_vac }}</td>
               <!-- <td style="color: #696767; font-weight:600;">  {{vacaciones.dias_completados?  vacaciones.dias_completados : 0 }}<small> d</small></td> -->
             </tr>
           </tbody>

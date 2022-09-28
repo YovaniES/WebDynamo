@@ -43,11 +43,12 @@ export class RegistroHardwareComponent implements OnInit {
 
   newFilfroForm(){
     this.filtroForm = this.fb.group({
-      tipo  : ['', Validators.required],
-      marca : ['', Validators.required],
-      serie : [''],
-      imei  : [''],
-      estado: [''],
+      id_hardware: [''],
+      tipo       : ['', Validators.required],
+      marca      : ['', Validators.required],
+      serie      : [''],
+      imei       : [''],
+      estado     : [''],
     })
   }
 
@@ -64,11 +65,12 @@ export class RegistroHardwareComponent implements OnInit {
     let parametro: any[] = [{
       "queryId": 108,
       "mapValue": {
-        param_serie    : this.filtroForm.value.serie,
-        param_id_tipo  : this.filtroForm.value.tipo,
-        param_id_marca : this.filtroForm.value.marca,
-        param_id_estado: this.filtroForm.value.estado,
-        param_imei     : this.filtroForm.value.imei,
+        param_id_hardware: this.filtroForm.value.id_hardware,
+        param_serie      : this.filtroForm.value.serie,
+        param_id_tipo    : this.filtroForm.value.tipo,
+        param_id_marca   : this.filtroForm.value.marca,
+        param_id_estado  : this.filtroForm.value.estado,
+        param_imei       : this.filtroForm.value.imei,
       }
     }];
     this.personalService.cargarOBuscarHardware(parametro[0]).subscribe((resp: any) => {
