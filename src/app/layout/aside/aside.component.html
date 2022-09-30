@@ -47,9 +47,7 @@
   <!-- MENÚ -->
   <div
     [ngClass]="{ 'cli-aside-overflow': fixedAside }"
-    class="cli-aside-container"
-    >
-    <!-- *ngIf="hasPermission(menuList)" -->
+    class="cli-aside-container">
     <div style="height: 60px"></div>
     <ul class="cli-aside-menu">
       <li>
@@ -57,10 +55,7 @@
           (click)="clickLinkMenu()"
           class="menu-link"
           [routerLink]="'/home'"
-          routerLinkActive="active-link"
-        ><i class="submenu-icon">
-            <mat-icon>home</mat-icon>
-          </i>
+          routerLinkActive="active-link"><i class="submenu-icon"><mat-icon>home</mat-icon></i>
 
           <span *ngIf="fixedAside">{{ "Portal DynamoSupport" }}</span>
         </a>
@@ -79,14 +74,12 @@
 <ng-template #menuItem let-item="item" >
   <!-- MENUS CON SUB MENUS-->
   <li *ngIf="item.type=='PAREN'" class="cli-menu-item">
-    <div
+    <div *ngIf="hasPermission(item.roles)"
       (click)="clickToggleMenu(item)"
-      [ngClass]="{ 'menu-link-open': item.displayed }"
-      class="menu-link"
-    >
-      <i class="menu-icon"
-        ><mat-icon>{{ item.icon }}</mat-icon></i
-      >
+      [ngClass]="{'menu-link-open': item.displayed }"
+      class="menu-link">
+
+      <i class="menu-icon"><mat-icon>{{ item.icon }}</mat-icon></i>
       <span *ngIf="fixedAside">{{ item.text }}</span>
       <i
         *ngIf="fixedAside"
@@ -98,12 +91,12 @@
 
     <!-- SUB MENUS -->
     <ng-container
-      *ngIf="fixedAside && hasPermission(item.roles)"
+      *ngIf="fixedAside"
       [ngTemplateOutlet]="subMenuItems"
       [ngTemplateOutletContext]="{ item: item }"
     ></ng-container>
 
-    <ng-container *ngIf="!fixedAside hasPermission(item.roles) ">
+    <ng-container *ngIf="!fixedAside">
       <div class="aside-hover-menu">
         <ng-container
           [ngTemplateOutlet]="subMenuItemsHover"
@@ -145,8 +138,8 @@
 </ng-template>
 
 <!-- SUB MENU -->
-<ng-template #subMenuItem let-item="item">
-  <li>
+<ng-template #subMenuItem let-item="item" >
+  <li *ngIf="hasPermission(item.roles)">
     <a
       class="submenu-link"
       [routerLink]="item.link"

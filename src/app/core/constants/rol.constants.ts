@@ -9,18 +9,12 @@ export const ROL_GESTOR = {
 }
 
 export enum ROLES_ENUM {
-  SUPER_ADMIN = '105',
-  ADMIN       = '104',
   USER        = '101',
+  CORD_TDP    = '102',
+  ADMIN       = '104',
+  SUPER_ADMIN = '105',
   GESTOR      = '106',
-  CORD_TDP    = '102'
+  LIDER       = '107',
 }
 
 
-// 101	Usuario
-// 100	Usuario Soporte
-// 102	Coordinador Tdp
-// 103	Usuario Externo
-// 104	Admin
-// 105	Super Admin
-// 106	Gestor

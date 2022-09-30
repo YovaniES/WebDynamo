@@ -10,6 +10,8 @@ import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-pers
 import { ModalVacacionesComponent } from './modal-vacaciones/modal-vacaciones.component';
 import { CrearVacacionesComponent } from './crear-vacaciones/crear-vacaciones.component';
 import Swal from 'sweetalert2';
+import { ROLES_ENUM } from 'src/app/core/constants/rol.constants';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-registro-vacaciones',
@@ -30,6 +32,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   constructor(
     private personalService: PersonalService,
+    private authService: AuthService,
     private vacacionesService: VacacionesPersonalService,
     private exportExcellService: ExportExcellService,
     private fb: FormBuilder,
@@ -60,6 +63,13 @@ export class RegistroVacacionesComponent implements OnInit {
       fechaCreaVacFin: [''],
     })
   };
+
+  // hasPermission(r: ROLES_ENUM[]): boolean {
+  //   if (r) {
+  //     return this.authService.hasAccessToModule(r)
+  //   }
+  //   return true;
+  // }
 
   listaRegVacaciones: any[] = [];
   cargarOBuscarVacaciones(){

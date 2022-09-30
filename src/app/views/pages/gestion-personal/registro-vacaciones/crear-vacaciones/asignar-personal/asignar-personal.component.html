@@ -79,7 +79,7 @@
             <tr class="bgc-turquey c-white">
               <th style="width: 40px">Acción</th>
               <th style="width: 50px">Código</th>
-              <th style="min-width: 185px;">Nombres y Apellidos</th>
+              <th style="min-width: 185px; text-align: left;">Nombres y Apellidos</th>
               <th>Proyecto</th>
               <th>Fecha Ingreso</th>
             </tr>
@@ -103,7 +103,7 @@
                 </div>
               </td>
               <td>{{ personal.codigo_corporativo }}</td>
-              <td class="w350"> {{ personal.apellidos |firstCapital}}, {{personal.nombres | firstCapital}}</td>
+              <td style="text-align: left;"> {{ personal.apellidos |firstCapital}}, {{personal.nombres | firstCapital}}</td>
               <td>{{ personal.codigo_proyecto  | uppercase   }}</td>
               <td>{{ personal.fecha_ingreso }}</td>
             </tr>

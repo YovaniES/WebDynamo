@@ -34,7 +34,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
-          // roles: [ ROLES_ENUM.SUPER_ADMIN, ROLES_ENUM.ADMIN, ROLES_ENUM.USER],
+          roles: PERMISSION.SUBMENU_PERSONAS,
         },
         {
           code: 'MAN-002',
@@ -46,7 +46,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
-          roles: [ ROLES_ENUM.ADMIN, ROLES_ENUM.USER],
+          roles: PERMISSION.SUBMENU_VACACIONES,
         },
         {
           code: 'MAN-003',
@@ -58,6 +58,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
+          roles: PERMISSION.SUBMENU_HARDWARE,
         },
         {
           code: 'MAN-004',
@@ -69,6 +70,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
+          roles: PERMISSION.SUBMENU_CUENTA,
         },
       ],
     },
@@ -96,6 +98,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'PAS',
           displayed: false,
+          roles: PERMISSION.SUBMENU_ENTIDAD,
         },
       ],
     },
@@ -123,6 +126,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'PAS',
           displayed: false,
+          roles: PERMISSION.SUBMENU_LIQUIDACION,
         },
         {
           code: 'FAC-002',
@@ -134,12 +138,11 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'PAS',
           displayed: false,
-          roles:[ ROLES_ENUM.CORD_TDP]
+          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
         }
       ],
     },
   ];
-
 
   constructor(
     private authService: AuthService
@@ -156,14 +159,6 @@ export class AsideComponent implements OnInit {
       console.log('ROL_ID_USER', this.rolID);
     })
    }
-
-  // hasPermission(r: ROLES_ENUM[]): boolean {
-  //   if (r) {
-  //     return this.authService.hasAccessToModule(r)
-  //   }
-  //   return true;
-  // }
-
 
   hasPermission(r: ROLES_ENUM[]): boolean {
     if (r) {
