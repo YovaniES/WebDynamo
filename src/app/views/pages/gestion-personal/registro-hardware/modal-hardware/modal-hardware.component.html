@@ -99,7 +99,7 @@
               <table class="cli-table stripedtable underlinedtable">
                 <thead>
                   <tr class="bgc-turquey c-white">
-                    <th>#</th>
+                    <th>N°</th>
                     <!-- <th>ID Personal</th> -->
                     <th>Personal</th>
                     <th>Proyecto</th>
@@ -118,7 +118,7 @@
                     <td>{{ cambios.proyecto }}</td>
                     <td class="w100">{{ cambios.fecha_asignacion }}</td>
                     <td>{{ cambios.usuario_asignacion }}</td>
-                    <td class="w100">{{ cambios.fecha_liberacion }}</td>
+                    <td class="w100">{{ cambios.fecha_liberacion? cambios.fecha_liberacion : 'En Uso'}}</td>
                     <!-- <td>{{ cambios.usuario_asignacion }}</td> -->
                   </tr>
                 </tbody>

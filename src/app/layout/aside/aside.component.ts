@@ -1,4 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ROLES_ENUM } from 'src/app/core/constants/rol.constants';
+import { PERMISSION } from 'src/app/core/routes/internal.routes';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-aside',
@@ -19,6 +22,7 @@ export class AsideComponent implements OnInit {
       enable: false,
       module: 'Reporte',
       displayed: false,
+      roles: PERMISSION.MENU_PERSONAS,
       submenus: [
         {
           code: 'MAN-001',
@@ -30,6 +34,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
+          // roles: [ ROLES_ENUM.SUPER_ADMIN, ROLES_ENUM.ADMIN, ROLES_ENUM.USER],
         },
         {
           code: 'MAN-002',
@@ -41,6 +46,7 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
+          roles: [ ROLES_ENUM.ADMIN, ROLES_ENUM.USER],
         },
         {
           code: 'MAN-003',
@@ -78,6 +84,7 @@ export class AsideComponent implements OnInit {
       enable: false,
       module: 'administrador',
       displayed: false,
+      roles: PERMISSION.MENU_MANTENIMIENTO,
       submenus: [
         {
           code: 'PAS-001',
@@ -104,6 +111,7 @@ export class AsideComponent implements OnInit {
       enable: false,
       module: 'administrador',
       displayed: false,
+      roles: PERMISSION.MENU_FACTURACION,
       submenus: [
         {
           code: 'FAC-001',
@@ -126,16 +134,43 @@ export class AsideComponent implements OnInit {
           enable: false,
           module: 'PAS',
           displayed: false,
+          roles:[ ROLES_ENUM.CORD_TDP]
         }
       ],
     },
   ];
 
 
-  constructor() {}
+  constructor(
+    private authService: AuthService
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.getRolID()
+  }
 
+  rolID: number = 0;
+  getRolID(){
+    this.authService.getCurrentUser().subscribe( resp => {
+      this.rolID   = resp.user.rolId;
+      console.log('ROL_ID_USER', this.rolID);
+    })
+   }
+
+  // hasPermission(r: ROLES_ENUM[]): boolean {
+  //   if (r) {
+  //     return this.authService.hasAccessToModule(r)
+  //   }
+  //   return true;
+  // }
+
+
+  hasPermission(r: ROLES_ENUM[]): boolean {
+    if (r) {
+      return this.authService.hasAccessToModule(r)
+    }
+    return true;
+  }
 
   clickLinkMenu() {
     this.menuList.forEach((item) => {

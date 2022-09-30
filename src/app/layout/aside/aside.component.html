@@ -48,7 +48,8 @@
   <div
     [ngClass]="{ 'cli-aside-overflow': fixedAside }"
     class="cli-aside-container"
-  >
+    >
+    <!-- *ngIf="hasPermission(menuList)" -->
     <div style="height: 60px"></div>
     <ul class="cli-aside-menu">
       <li>
@@ -75,7 +76,7 @@
 </div>
 
 <!-- MENUS PRINC-->
-<ng-template #menuItem let-item="item">
+<ng-template #menuItem let-item="item" >
   <!-- MENUS CON SUB MENUS-->
   <li *ngIf="item.type=='PAREN'" class="cli-menu-item">
     <div
@@ -97,11 +98,12 @@
 
     <!-- SUB MENUS -->
     <ng-container
-      *ngIf="fixedAside"
+      *ngIf="fixedAside && hasPermission(item.roles)"
       [ngTemplateOutlet]="subMenuItems"
       [ngTemplateOutletContext]="{ item: item }"
     ></ng-container>
-    <ng-container *ngIf="!fixedAside">
+
+    <ng-container *ngIf="!fixedAside hasPermission(item.roles) ">
       <div class="aside-hover-menu">
         <ng-container
           [ngTemplateOutlet]="subMenuItemsHover"

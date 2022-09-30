@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
 export class LoginComponent  {
   loginForm: FormGroup = this.fb.group({
     username    : ['', [Validators.required]],
-    password    : ['', [Validators.required, Validators.minLength(6)]],
+    password    : ['', [Validators.required, Validators.minLength(4)]],
   });
 
   constructor(
@@ -22,26 +22,6 @@ export class LoginComponent  {
     private authService: AuthService,
     private spinner: NgxSpinnerService
   ) {}
-
-  // login() {
-  //   this.spinner.show();
-  //   this.authService.login(this.loginForm.value).subscribe((resp) => {
-  //     // console.log('CREDENCIALES', resp.user);
-
-  //     if (resp.user.aplicacion == 1 && resp.user.acceso == 1) {
-  //       this.spinner.hide();
-  //       Swal.fire(
-  //         'Inicio de Sesión',
-  //         'Bienvenid@ <br />' + `${resp.user.nombres} ${resp.user.apellidoPaterno}`,
-  //         'success'
-  //       );
-  //       this.router.navigateByUrl('home');
-  //     } else {
-  //       Swal.fire('Inicio de Sesión', 'Credenciales incorrectas', 'error');
-  //     }
-  //   });
-  // }
-
 
   login_b2b() {
     this.spinner.show();

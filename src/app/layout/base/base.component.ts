@@ -13,6 +13,7 @@ export class BaseComponent implements OnInit {
   message: string = 'Preparando contenido...';
   fullName: string = '';
   userAbbreviation = '';
+  rolId: number = 0;
 
   constructor(private authService: AuthService) {}
 
@@ -26,6 +27,10 @@ export class BaseComponent implements OnInit {
 
   initializeUser() {
     this.fullName = this.authService.getUsername();
+    this.rolId = this.authService.getRolID(); //Obtenemos el ROl_ID del usuario logeado: 101,102,103 (106: SUPER_ADMIN)
+
+    console.log('fullName', this.fullName, this.rolId);
+
     if (this.fullName) {
       const fullNameToArray = this.fullName.split(' ').map((item: string) => {
         return item.substring(0, 1).toUpperCase();

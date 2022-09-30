@@ -1,3 +1,5 @@
+import { ROLES_ENUM } from "../constants/rol.constants";
+
 export interface Menu {
   code: string;
   text: string;
@@ -8,5 +10,6 @@ export interface Menu {
   enable: boolean;
   module: string;
   displayed?: boolean;
+  roles?: ROLES_ENUM[];
   submenus: Menu[];
 }

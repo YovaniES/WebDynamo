@@ -151,15 +151,15 @@
               <td class="w55">{{ hardware.id_recurso }}</td>
               <td class="w250">{{ hardware.tipo   | firstCapital}}</td>
               <td>{{ hardware.marca  | uppercase }}</td>
-              <td class="w250">{{ hardware.equipo | firstCapital}}</td>
-              <td class="w375">{{ hardware.modelo | uppercase }}</td>
+              <td class="w200">{{ hardware.equipo | firstCapital}}</td>
+              <td class="w200">{{ hardware.modelo | uppercase }}</td>
               <td class="w250">{{ hardware.serie }}</td>
               <td>{{ hardware.imei }}</td>
               <td>{{ hardware.estado_recurso }}</td>
-              <td class="w250">{{ hardware.nombres | firstCapital}}</td>
+              <td class="w200" style="text-align: left">{{ hardware.nombres | firstCapital}}</td>
               <td>{{ hardware.codigo_corporativo }}</td>
               <td>{{ hardware.proyecto }}</td>
-              <td class="w250">{{ hardware.observacion | firstCapital}}</td>
+              <td class="w200" style="text-align: left">{{ hardware.observacion | firstCapital}}</td>
             </tr>
           </tbody>
         </table>
