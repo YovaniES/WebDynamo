@@ -11,7 +11,7 @@ export class ValidarTokenGuard implements CanActivate {
   constructor( private authService: AuthService,
                private router: Router){}
 
-  canActivatex(): Observable<boolean> | boolean  {
+  canActivate(): Observable<boolean> | boolean  {
 
     if (!this.authService.isLoggedIn()) {
       this.router.navigateByUrl('/auth')
@@ -20,22 +20,22 @@ export class ValidarTokenGuard implements CanActivate {
     return true;
   }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
+  // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean{
 
-      // const currentUser1 = localStorage.getItem('currentUser');
+  //     // const currentUser1 = localStorage.getItem('currentUser');
 
-      const currentUser = this.authService.getUsername();
-      console.log('USER_GUARD', currentUser);
-      if(currentUser){
-        if (next.data['rol_menu'] && !this.authService.hasAccessToModule(next.data['rol_menu'])) {
-          this.router.navigateByUrl('error/404')
-          return false
-        }
-        return true;
-      }
-      this.router.navigate(['auth'], { queryParams: { returnUrl: state.url }});
-      return false;
-  }
+  //     const currentUser = this.authService.getUsername();
+  //     console.log('USER_GUARD', currentUser);
+  //     if(currentUser){
+  //       if (next.data['rol_menu'] && !this.authService.hasAccessToModule(next.data['rol_menu'])) {
+  //         this.router.navigateByUrl('error/404')
+  //         return false
+  //       }
+  //       return true;
+  //     }
+  //     this.router.navigate(['auth'], { queryParams: { returnUrl: state.url }});
+  //     return false;
+  // }
 
 
 }

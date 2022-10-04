@@ -230,17 +230,14 @@
                       </td>
                       <td style="min-width:100px">{{ factura.factura }}</td>
                       <!-- <td>{{ factura.comentario | firstCapital}}</td> -->
-                      <td><small style="font-weight: 200; margin-right:3px;">S/</small>{{ factura.importe }}</td>
+                      <td style="text-align: end;"><small style="font-weight: 200; margin-right:3px;">S/</small>{{ factura.importe }}</td>
                       <td>{{ factura.fecha_facturacion }}</td>
                     </tr>
                   </tbody>
                 </table>
-                <ng-container >
-                  <div class="col-12 fact-total"><small style="font-weight: 300; margin-right:3px;">Total: S/</small>
-                    {{obtenerImporteTotal()}}
-                    <!-- <mat-icon class="icon-18">attach_money</mat-icon>{{obtenerImporteTotal()}} -->
-                  </div>
-                </ng-container>
+                <div class="col-12 fact-total"><small style="font-weight: 300; margin-right:3px; width: 52px;">Total: S/</small>
+                  {{obtenerImporteTotal()}}
+                </div>
 
                 <div class="cli-loader" *ngIf="loadingItem">
                   <mat-spinner

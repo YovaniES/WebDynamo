@@ -119,18 +119,16 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
-              <!-- <th>ID Vacaciones</th> -->
-              <!-- <th>ID Persona</th> -->
               <th>Código Corp.</th>
               <th style="text-align: left">Nombres y Apellidos</th>
               <th>Cód. Proyecto</th>
               <th>Sistema</th>
               <th style="width: 200px">Fecha de vacaciones</th>
-              <!-- <th>Fecha Fin</th> -->
               <th style="text-align: center">Cant. días</th>
               <th style="text-align:center">Responsable</th>
               <th>Estado</th>
               <th>Planificados</th>
+              <!-- <th>Planif. pend.</th> -->
               <th>Pendientes</th>
               <th style="text-align: left">Completados</th>
               <th style="width: 120px">Fecha Registro</th>
@@ -160,27 +158,22 @@
                 </div>
               </td>
               <td>{{ vacaciones.codigo_corporativo }}</td>
-              <td class="w400" style="text-align: left"> {{ vacaciones.apellidos |firstCapital}}, {{vacaciones.nombres | firstCapital}}</td>
+              <td class="w400" style="text-align: left">{{vacaciones.nombres | firstCapital}}, {{vacaciones.apellidos |firstCapital }}</td>
               <td>{{ vacaciones.codigo_proyecto | uppercase}}</td>
               <td>{{vacaciones.sist_vac}}</td>
               <td>
                 <div class="cli-table"
-                style="display: flex;
-                align-items: center;
-                justify-content: space-evenly;
-                background: none;
-                color: #6c757d;
-                border: solid 1px #c4c7ca;
-                min-width: 130px;
-                border-radius: 3px;">
+                style="display: flex; align-items: center; justify-content: space-evenly; background: none; color: #6c757d; border: solid 1px #c4c7ca; min-width: 150px; border-radius: 3px;">
                   {{ vacaciones.f_ini_vac}}<mat-icon class="icon-18">trending_flat</mat-icon>{{ vacaciones.f_fin_vac }}
                 </div>
               </td>
+
               <td style="font-weight: 600;">
                 <div class="cli-table-dias">
                   {{vacaciones.cant_dias_vac}}
                 </div>
               </td>
+
               <td style="text-align:left ">
                 <div class="cli-table-user">
                   <button
@@ -199,24 +192,32 @@
                 <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
               </td>
 
-
               <td style="color: #20c997; font-weight:600;">
                 <div *ngIf="vacaciones.dias_planificado">
-                  {{vacaciones.dias_planificado? vacaciones.dias_planificado: 0}}<small> días</small>
+                  {{vacaciones.dias_planificado? vacaciones.dias_planificado: 0}}<small> d</small>
                 </div>
               </td>
-              <td style="color: #f56c79; font-weight:600;">
+
+            <!-- DIAS PENDIENTES -->
+              <td style="width: 100px; font-weight: 600">
+                <div class="cli-table-diaspend" *ngIf="vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado">
+                  {{vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado}}
+                </div>
+              </td>
+
+              <!-- <td style="color: #f56c79; font-weight:600;">
                 <div *ngIf="(vacaciones.cant_dias_vac - vacaciones.dias_completados)">
-                  {{vacaciones.cant_dias_vac - vacaciones.dias_completados}}<small> días</small>
+                  {{vacaciones.cant_dias_vac - vacaciones.dias_completados}}<small> d</small>
                 </div>
-              </td>
+              </td> -->
+
               <td style="width: 100px; font-weight: 600;">
                 <div class="cli-table-diascompl" *ngIf="vacaciones.dias_completados">
                   {{vacaciones.dias_completados}}
                 </div>
               </td>
+
               <td style="min-width: 90px">{{ vacaciones.fecha_crea_vac }}</td>
-              <!-- <td style="color: #696767; font-weight:600;">  {{vacaciones.dias_completados?  vacaciones.dias_completados : 0 }}<small> d</small></td> -->
             </tr>
           </tbody>
         </table>

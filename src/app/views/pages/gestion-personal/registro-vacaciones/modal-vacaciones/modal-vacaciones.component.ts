@@ -103,7 +103,6 @@ export class ModalVacacionesComponent implements OnInit {
           p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
           p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
           p_id_estado_vac     : estadoVacaciones? estadoVacaciones : formValues.id_estado_vac, // ENVIAR EL ESTADO DEL PERIODO CON ESTADO 'PLANIFICADO', COMPLETADO
-          p_fecha_crea_vac    : '',
           CONFIG_USER_ID      : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
           CONFIG_OUT_MSG_EXITO: ''
@@ -119,7 +118,7 @@ export class ModalVacacionesComponent implements OnInit {
 
       Swal.fire({
         title: 'Actualizar Vacaciones!',
-        text : `La vacación:  VAC000${ this.DATA_VACACIONES.idVac }, fue actualizado con éxito`,
+        text : `La vacación de: ${ formValues.nombre } ${ formValues.apPaterno }, fue actualizado con éxito`,
         icon : 'success',
         confirmButtonText: 'Ok'
         })

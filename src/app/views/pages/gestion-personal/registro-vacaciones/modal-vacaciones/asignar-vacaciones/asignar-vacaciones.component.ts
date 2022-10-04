@@ -122,7 +122,7 @@ export class AsignarVacacionesComponent implements OnInit {
         this.close(true)
           Swal.fire({
             title: 'Actualizar periodo!',
-            text : `El Periodo: ${this.DATA_VACAC.id_periodo}, se actualizó con éxito`,
+            text : `El Periodo fue actualizado con éxito`,
             icon : 'success',
             confirmButtonText: 'Ok'
             });

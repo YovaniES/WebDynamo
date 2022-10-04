@@ -44,7 +44,7 @@ export class CrearLiquidacionComponent implements OnInit {
      id_gestor           : ['',[Validators.required]],
      venta_declarada     : ['',[Validators.required]],
      fechaPeriodo        : ['',[Validators.required]],
-     id_estado           : [ 177,[Validators.required]],
+     id_estado           : [ 178,[Validators.required]],
     //  id_estado           : ['',[Validators.required]],
      orden_compra        : [''],
      certificacion       : [''],

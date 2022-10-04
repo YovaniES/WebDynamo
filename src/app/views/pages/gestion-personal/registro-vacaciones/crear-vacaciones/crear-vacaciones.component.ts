@@ -66,7 +66,7 @@ export class CrearVacacionesComponent implements OnInit {
 // console.log('converted date', newDate2); // Sept 24, 2021
 
   crearVacaciones() {
-  this.spinner.show();
+    this.spinner.show();
     const formValues = this.vacacionesForm.getRawValue();
     let parametro: any =  {
     queryId: 137,
@@ -85,10 +85,11 @@ export class CrearVacacionesComponent implements OnInit {
   };
   console.log('VAOR_VACACIONES', this.vacacionesForm.value , parametro);
   this.vacacionesService.crearVacaciones(parametro).subscribe((resp: any) => {
+    console.log('CREAR_VAC', resp);
+
     Swal.fire({
       title: 'Crear vacaciones!',
-      text: `La vacación fue creado con éxito`,
-      // text: `La vacación de `${fullName}`, fue creado con éxito`,
+      text: `La vacación de: ${formValues.nombre} ${formValues.apPaterno}, fue creado con éxito`,
       icon: 'success',
       confirmButtonText: 'Ok',
       });
@@ -108,6 +109,30 @@ export class CrearVacacionesComponent implements OnInit {
       console.log('DIAS_PARAM', numDias);
     }
   }
+
+  fullName: string = '';
+  asignarDataPersona(persona: any){
+    console.log('DATA_ASIG_PERS', persona);
+    this.fullName = persona.nombres;
+
+    this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
+    this.vacacionesForm.controls['codCorp'      ].setValue(persona.codigo_corporativo)
+    this.vacacionesForm.controls['apPaterno'    ].setValue(persona.apellido_paterno)
+    this.vacacionesForm.controls['apMaterno'    ].setValue(persona.apellido_materno)
+    this.vacacionesForm.controls['nombre'       ].setValue(persona.nombres)
+    this.vacacionesForm.controls['proyecto'     ].setValue(persona.codigo_proyecto)
+    this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
+    this.vacacionesForm.controls['fecha_ingreso'].setValue(persona.fecha_ingreso)
+  }
+
+  campoNoValido(campo: string): boolean {
+    if ( this.vacacionesForm.get(campo)?.invalid && (this.vacacionesForm.get(campo)?.dirty || this.vacacionesForm.get(campo)?.touched) ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
   listSistemaVacaciones: any[] = [];
   getListSistemaVacaciones(){
@@ -134,41 +159,19 @@ export class CrearVacacionesComponent implements OnInit {
     this.dialogRef.close(succes);
   }
 
-  fullName: string = '';
-  asignarDataPersona(persona: any){
-    console.log('DATA_ASIG_PERS', persona);
-    this.fullName = persona.nombres;
-
-    console.log('NAME',this.fullName, this.vacacionesForm.controls['idPersonal']);
-
-    this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
-    this.vacacionesForm.controls['codCorp'      ].setValue(persona.codigo_corporativo)
-    this.vacacionesForm.controls['apPaterno'    ].setValue(persona.apellido_paterno)
-    this.vacacionesForm.controls['apMaterno'    ].setValue(persona.apellido_materno)
-    this.vacacionesForm.controls['nombre'       ].setValue(persona.nombres)
-    this.vacacionesForm.controls['proyecto'     ].setValue(persona.codigo_proyecto)
-    this.vacacionesForm.controls['idPersonal'   ].setValue(persona.id)
-    this.vacacionesForm.controls['fecha_ingreso'].setValue(persona.fecha_ingreso)
-  }
-
-  campoNoValido(campo: string): boolean {
-    if ( this.vacacionesForm.get(campo)?.invalid && (this.vacacionesForm.get(campo)?.dirty || this.vacacionesForm.get(campo)?.touched) ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   id_persona: number = 0;
+  name_person: string = '';
   asignarPersonal(){
     const dialogRef = this.dialog.open(AsignarPersonalComponent, { width:'35%', data: {vacForm: this.vacacionesForm.value, isCreation: true} });
 
-    dialogRef.afterClosed().subscribe(resp => {
+    dialogRef.afterClosed().subscribe((resp: any) => {
       console.log('PERS->M_CREAR', resp);
 
       if (resp) {
         this.id_persona = resp.id;
+        this.name_person = resp.nombres+ ' ' + resp.apellido_paterno;
         console.log('ID_P', this.id_persona);
+        console.log('PERSON_NAME', this.name_person);
 
         this.asignarDataPersona(resp);
       }
