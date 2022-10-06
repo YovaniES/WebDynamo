@@ -164,7 +164,7 @@
               <div
                 *ngIf="!loadingItem && listVentaDeclarada.length == 0"
                 class="cli-loader mt-2"
-                style="color: #c9c9c9"
+                style="color: #c9c9c9; font-size: 12px;"
                 >Aún no tiene venta declarada
               </div>
             </div>
@@ -249,7 +249,7 @@
               <div
                 *ngIf="!loadingItem && listFactura.length == 0"
                 class="cli-loader mt-2"
-                style="color: #c9c9c9"
+                style="color: #c9c9c9; font-size: 12px;"
                 >Aún no tiene factura agregada
               </div>
             </div>
@@ -286,6 +286,16 @@
               </tr>
             </tbody>
           </table>
+          <div class="cli-loader" *ngIf="loadingItem">
+            <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
+          </div>
+
+          <div
+            *ngIf="histCambiosEstado.length == 0"
+            class="cli-loader mt-5"
+            style="color: #c9c9c9; font-size: 12px;"
+            >Aquí se mostrará el histórico de estados...
+          </div>
         </div>
       </div>
     </div>

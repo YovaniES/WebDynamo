@@ -227,31 +227,30 @@ export class ActualizarLiquidacionComponent implements OnInit {
     this.spinner.hide();
   }
 
-  agregarFacturaCambios(){
-    if (this.estadoInicial != this.facturaForm.value.id_estado) {
+  // agregarFacturaCambios(){
+  //   if (this.estadoInicial != this.facturaForm.value.id_estado) {
 
-      let currentUser  = this.authService.getUsername();
+  //     let currentUser  = this.authService.getUsername();
 
-      let parametro: any[] = [{
-        queryId: 104,
-        mapValue: {
-        'p_idFactura'          : this.facturaForm.value.id_factura,
-        'p_idEstado'           : this.facturaForm.value.id_estado,
-        'p_venta_declarada'    : this.facturaForm.value.venta_declarada,
-        'p_idProyecto'         : this.facturaForm.value.codProy,
-        'p_dFecha'             : this.facturaForm.value.fecha_crea,
-        'p_usuario'            : currentUser,
-        'CONFIG_USER_ID'       : this.userID,
-        'CONFIG_OUT_MSG_EXITO' : '',
-        'CONFIG_OUT_MSG_ERROR' : '',
-        }
-      }];
-      // console.log('EST', this.estadoInicial, this.iniciativaEditForm.value);
-      this.facturacionService.agregarFacturaCambios(parametro[0]).subscribe( resp => {
-     })
-    }
-  }
-
+  //     let parametro: any[] = [{
+  //       queryId: 104,
+  //       mapValue: {
+  //       'p_idFactura'          : this.facturaForm.value.id_factura,
+  //       'p_idEstado'           : this.facturaForm.value.id_estado,
+  //       'p_venta_declarada'    : this.facturaForm.value.venta_declarada,
+  //       'p_idProyecto'         : this.facturaForm.value.codProy,
+  //       'p_dFecha'             : this.facturaForm.value.fecha_crea,
+  //       'p_usuario'            : currentUser,
+  //       'CONFIG_USER_ID'       : this.userID,
+  //       'CONFIG_OUT_MSG_EXITO' : '',
+  //       'CONFIG_OUT_MSG_ERROR' : '',
+  //       }
+  //     }];
+  //     console.log('EST', this.estadoInicial, this.facturaForm.value);
+  //     this.facturacionService.agregarFacturaCambios(parametro[0]).subscribe( resp => {
+  //    })
+  //   }
+  // }
 
   histCambiosEstado: any[] = [];
   getHistoricoCambiosEstado(id: number){
@@ -263,7 +262,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
 
     this.facturacionService.getHistoricoCambiosEstado(parametro[0]).subscribe((resp: any) => {
       this.histCambiosEstado = resp.list;
-      // console.log('HistCambIDFact', resp.list)
+      console.log('HistCambIDFact', resp.list)
     });
     this.spinner.hide();
   }

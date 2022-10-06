@@ -122,10 +122,6 @@ export class LiquidacionComponent implements OnInit {
     this.spinner.hide();
   }
 
-  duplicarLiquidacion(id: number){
-
-  }
-
   listEstados: any[] = [];
   getListEstados(){
     let parametro: any[] = [{queryId: 101}];
@@ -200,6 +196,16 @@ export class LiquidacionComponent implements OnInit {
   }
 
   crearLiquidacion(){
+    const dialogRef = this.dialog.open(CrearLiquidacionComponent, {width:'55%'});
+
+    dialogRef.afterClosed().subscribe(resp => {
+      if (resp) {
+        this.cargarOBuscarLiquidacion()
+      }
+    })
+  }
+
+  duplicarLiquidacion(id: number){
     const dialogRef = this.dialog.open(CrearLiquidacionComponent, {width:'55%'});
 
     dialogRef.afterClosed().subscribe(resp => {

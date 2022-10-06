@@ -44,7 +44,7 @@ export class CrearLiquidacionComponent implements OnInit {
      id_gestor           : ['',[Validators.required]],
      venta_declarada     : ['',[Validators.required]],
      fechaPeriodo        : ['',[Validators.required]],
-     id_estado           : [ 178,[Validators.required]], //Estado: ENVIADO
+     id_estado           : [ 177,[Validators.required]], //Estado 178: ENVIADO
     //  id_estado           : ['',[Validators.required]],
      orden_compra        : [''],
      certificacion       : [''],
@@ -85,7 +85,7 @@ export class CrearLiquidacionComponent implements OnInit {
           CONFIG_OUT_MSG_ERROR: '',
           CONFIG_OUT_MSG_EXITO: '',
         }};
-    //  console.log('VAOR', this.facturaForm.value , parametro);
+     console.log('VAOR', this.facturaForm.value , parametro);
     this.facturacionService.crearLiquidacion(parametro).subscribe((resp: any) => {
       Swal.fire({
         title: 'Crear liquidación!',
