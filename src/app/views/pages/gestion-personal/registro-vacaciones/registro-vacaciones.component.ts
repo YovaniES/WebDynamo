@@ -139,7 +139,7 @@ export class RegistroVacacionesComponent implements OnInit {
       }else if (msj2 != ''){
         Swal.fire({
           title: `Eliminar vacaciones`,
-          text : `La vacación de: ${name} ${ap_paterno}, no pudo ser eliminado por que tiene vacaciones planificadas o completadas`,
+          text : `La vacación de: ${name} ${ap_paterno}, no pudo ser eliminado por que tiene vacaciones planificadas y/o completadas`,
           icon : 'error',
         });
       }else{
@@ -234,7 +234,7 @@ export class RegistroVacacionesComponent implements OnInit {
   actualizarVacaciones(DATA: any) {
     console.log('DATA_PERSONA_VACACIONES', DATA);
     this.dialog
-      .open(ModalVacacionesComponent, {width: '55%', height: '90%', data: DATA})
+      .open(ModalVacacionesComponent, {width: '55%', height: '75%', data: DATA})
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.cargarOBuscarVacaciones();

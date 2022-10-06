@@ -76,11 +76,11 @@
           <thead>
             <tr class="bgc-turquey c-white">
               <th>Acción</th>
-              <th>ID Hardware</th>
+              <th style="min-width: 85px">ID Hardware</th>
               <th>Tipo</th>
               <th>Marca</th>
               <th>Descripción</th>
-              <th>Modelo</th>
+              <!-- <th>Modelo</th> -->
               <th>Serie</th>
               <th>Imei</th>
               <th>Observación</th>
@@ -107,7 +107,7 @@
               <td>{{ hardware.tipo   | firstCapital}}</td>
               <td>{{ hardware.marca  | uppercase   }}</td>
               <td class="w150">{{ hardware.equipo | firstCapital}}</td>
-              <td class="w150">{{ hardware.modelo | uppercase   }}</td>
+              <!-- <td class="w150">{{ hardware.modelo | uppercase   }}</td> -->
               <td>{{ hardware.serie }}</td>
               <td>{{ hardware.imei }}</td>
               <td class="w150">{{ hardware.observacion | firstCapital}}</td>

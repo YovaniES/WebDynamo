@@ -242,15 +242,30 @@ export class ModalVacacionesComponent implements OnInit {
     })
   }
 
+  buscarEstadoPorDescripcion(descripcion: string): any{
+    return this.listVacacionesEstado.find( estado => estado.valor_texto_1.toUpperCase() == descripcion)
+  }
+
   validarPeriodoVacaciones(listVacacionesPeriodo: any[]){
       const existePeriodoPlanificado = listVacacionesPeriodo.find(periodo => periodo.vac_estado.toUpperCase() == 'PLANIFICADO')
       console.log('PERIODO_PLANI', existePeriodoPlanificado, this.listVacacionesEstado);
 
       if (existePeriodoPlanificado) {
         this.validarEstadoPlanificado();
+      } else if (!existePeriodoPlanificado) {
+        this.validarEstadoRegistrado()
       } else {
         this.validarEstadoCompletado(listVacacionesPeriodo);
       }
+
+  }
+
+  validarEstadoRegistrado(){
+    const idEstadoRegistrado = this.buscarEstadoPorDescripcion('REGISTRADO');
+    if (idEstadoRegistrado) {
+      // console.log('ID_EST_PLANIF', idEstadoRegistrado);
+      this.actualizarVacaciones(idEstadoRegistrado.id_correlativo);
+    }
   }
 
   validarEstadoPlanificado(){
@@ -261,10 +276,6 @@ export class ModalVacacionesComponent implements OnInit {
     }
   }
 
-  buscarEstadoPorDescripcion(descripcion: string): any{
-    return this.listVacacionesEstado.find( estado => estado.valor_texto_1.toUpperCase() == descripcion)
-  }
-
   validarEstadoCompletado(listVacacionesPeriodo: any[]){
     const cantidadDiasCompletados = this.acumularDiasCompletados(listVacacionesPeriodo);
 
@@ -272,6 +283,8 @@ export class ModalVacacionesComponent implements OnInit {
     if (cantidadDiasCompletados == this.vacacionesForm.controls['total_dias_vac'].value) {
       console.log('DIAS');
     const idEstadoCompletado = this.buscarEstadoPorDescripcion('COMPLETADO');
+    // const idEstadoRegistrado = this.buscarEstadoPorDescripcion('REGISTRADO');
+
     this.actualizarVacaciones(idEstadoCompletado.id_correlativo);
     }
   }

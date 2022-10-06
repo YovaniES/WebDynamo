@@ -12,8 +12,7 @@
   <div class="cli-form newvac-wrapper">
     <div class="chart-draw">
       <!-- REGISTROS DEL PERSONAL---------------------------------------------------------------------->
-      <div class="mx-5 mt-2">
-        <div class="pr-module-containerXZ">
+        <div class="mx-4 mt-2">
           <div class="row" style="justify-content: space-between;">
             <div class="input-group col-sm-4">
               <div class="input-group-text"><mat-icon>workspaces</mat-icon></div>
@@ -36,7 +35,6 @@
             </div>
           </div>
         </div>
-      </div>
 
       <!-- DATOS DE LA EMPRESA ------------------------------------------------------------------------->
       <div class="pr-subtitle mt-2">Registro vacaciones</div>
@@ -158,7 +156,7 @@
                 *ngIf="!loadingItem && listVacacionesPeriodo.length == 0"
                 class="cli-loader mt-2"
                 style="color: #c9c9c9; font-size: 12px;"
-                >Aquí se mostrará la Planificación de las Vacaciones ...
+                >Aquí se mostrará las Vacaciones planificadas de {{vacacionesForm.controls['nombre'].value}} ...
               </div>
             </div>
           </div>
@@ -194,10 +192,10 @@
               </div>
 
               <div
-                *ngIf="!loadingItem && histCambiosEstado.length == 0"
+                *ngIf="histCambiosEstado.length == 0"
                 class="cli-loader mt-2"
                 style="color: #c9c9c9; font-size: 12px;"
-                >Aquí se mostrará el histórico de Vacaciones ...
+                >Aquí se mostrará el histórico de estados...
               </div>
             </div>
           </div>

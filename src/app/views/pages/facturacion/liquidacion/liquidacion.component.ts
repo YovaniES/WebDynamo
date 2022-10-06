@@ -122,6 +122,10 @@ export class LiquidacionComponent implements OnInit {
     this.spinner.hide();
   }
 
+  duplicarLiquidacion(id: number){
+
+  }
+
   listEstados: any[] = [];
   getListEstados(){
     let parametro: any[] = [{queryId: 101}];

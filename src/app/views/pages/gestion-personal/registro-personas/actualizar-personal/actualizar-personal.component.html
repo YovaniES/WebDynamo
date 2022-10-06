@@ -174,10 +174,10 @@
               </div>
             </div>
             <div
-              *ngIf="!loadingItem && listHardwareAsignado.length == 0"
+              *ngIf="listHardwareAsignado.length == 0"
               class="cli-loader mt-2"
               style="color: #c9c9c9"
-              >Aún no tiene recurso hardware
+              >{{DATA_PERSONAL.nombres}} {{DATA_PERSONAL.apellido_paterno}}, Aún no tiene recurso hardware
             </div>
           </div>
         </div>
@@ -238,7 +238,7 @@
               *ngIf="!loadingItem && listCuentaAsignado.length == 0"
               class="cli-loader mt-2"
               style="color: #c9c9c9"
-              >Aún no tiene recurso cuenta
+              >{{DATA_PERSONAL.nombres}} {{DATA_PERSONAL.apellido_paterno}}, Aún no tiene recurso cuenta
             </div>
           </div>
         </div>

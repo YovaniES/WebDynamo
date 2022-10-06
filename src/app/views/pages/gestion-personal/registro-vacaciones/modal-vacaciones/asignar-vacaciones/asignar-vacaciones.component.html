@@ -1,6 +1,6 @@
 <div style="display: flex">
   <div class="flex-1"></div>
-  <div class="modal-title c-male"> {{DATA_VACAC && DATA_VACAC.isCreation ? 'Planificar': 'Actualizar planificación de'}} vacaciones</div>
+  <div class="modal-title c-male"> {{DATA_VACAC && DATA_VACAC.isCreation ? 'Planificar': 'Actualizar la planificación de'}} vacaciones</div>
   <div class="flex-1"></div>
 
   <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">
@@ -20,7 +20,7 @@
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
                   <input matStartDate formControlName="fechaInicio" placeholder="Inicio periodo"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
-                  <input matEndDate   formControlName="fechaFin"    placeholder="Final periodo"#fechaFinPlanif (dateChange)="totalDiasPlanificado()">
+                  <input matEndDate   formControlName="fechaFin"    placeholder="Final periodo"   #fechaFinPlanif (dateChange)="totalDiasPlanificado()">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -39,7 +39,6 @@
                 class="form-control"
                 formControlName="dias_periodo"/>
             </div>
-
 
             <ng-container *ngIf="DATA_VACAC.isCreation">
               <div class="col-sm-6 cli-form-element">
@@ -81,7 +80,6 @@
                 placeholder="Escriba algún Comentario de sobre la Planificación de vacaciones..."
                 formControlName="observaciones"
                ></textarea>
-                <small class="form-text text-alert" *ngIf="campoNoValido('observaciones')">* Ingrese la Observación es obligatorio</small>
             </div>
           </div>
         </div>
