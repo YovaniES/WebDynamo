@@ -58,11 +58,12 @@
         <div class="pr-module-container">
           <div class="row g-3">
             <div class="col-sm-3 cli-form-element">
-              <label>Sistema</label>
+              <label>Sistema *</label>
               <select class="cli-input-white" formControlName="idSistema">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="sistema.id_correlativo" *ngFor="let sistema of listSistemaVacaciones">{{sistema.valor_texto_1}}</option>
               </select>
+              <small class="text-alert" *ngIf="campoNoValido('idSistema')">* El Sistema es obligatorio</small>
             </div>
 
           <div class="col-sm-6 cli-form-element">

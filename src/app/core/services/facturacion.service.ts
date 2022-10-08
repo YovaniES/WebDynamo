@@ -24,6 +24,10 @@ export class FacturacionService {
     return this.http.post(API_DYNAMO, obj);
   }
 
+  duplicarLiquidacion(obj: any) {
+    return this.http.post(API_DYNAMO, obj);
+  }
+
   agregarFacturaCambios(obj: any) {
     return this.http.post(API_DYNAMO, obj);
   }

@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
@@ -14,6 +15,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./crear-liquidacion.component.scss']
 })
 export class CrearLiquidacionComponent implements OnInit {
+  @BlockUI() blockUI!: NgBlockUI;
+
   userID: number = 0;
   facturaForm!: FormGroup;
 
@@ -25,16 +28,19 @@ export class CrearLiquidacionComponent implements OnInit {
     private utilService: UtilService,
     public datePipe: DatePipe,
     private dialogRef: MatDialogRef<CrearLiquidacionComponent>,
+    @Inject(MAT_DIALOG_DATA) public DATA_DUPLICIDAD: any
   ) { }
 
   ngOnInit(): void {
     this.newForm();
     this.getListProyectos();
     this.getUserID();
+    this.getListEstados();
     this.getListLiquidaciones();
     this.getListGestores();
+    this.cargarDuplicidadByID();
+    console.log('DUPLICAR',this.DATA_DUPLICIDAD );
   }
-
 
   newForm(){
     this.facturaForm = this.fb.group({
@@ -44,8 +50,7 @@ export class CrearLiquidacionComponent implements OnInit {
      id_gestor           : ['',[Validators.required]],
      venta_declarada     : ['',[Validators.required]],
      fechaPeriodo        : ['',[Validators.required]],
-     id_estado           : [ 177,[Validators.required]], //Estado 178: ENVIADO
-    //  id_estado           : ['',[Validators.required]],
+     id_estado           : [ 178,[Validators.required]], //Estado 178: ENVIADO
      orden_compra        : [''],
      certificacion       : [''],
      factura             : [''],
@@ -54,6 +59,61 @@ export class CrearLiquidacionComponent implements OnInit {
      gestor              : [''],
     })
    }
+
+  crearOduplicarLiquidacion(){
+    this.spinner.show();
+
+    if (!this.DATA_DUPLICIDAD) {
+      if (this.facturaForm.valid) {
+        this.crearLiquidacion()
+      } else {
+        this.duplicarLiquidacion();
+      }
+    }
+  }
+
+  duplicarLiquidacion(){
+    this.spinner.show();
+
+    const formValues = this.facturaForm.getRawValue();
+    let parametro: any = {
+      queryId: 117,
+      mapValue: {
+        p_periodo           : this.utilService.generarPeriodo(formValues.fechaPeriodo),
+        p_idProyecto        : formValues.id_proyecto,
+        p_idLiquidacion     : formValues.id_liquidacion,
+        p_subServicio       : formValues.subservicio,
+        p_gestor            : formValues.gestor,
+        p_idGestor          : formValues.id_gestor,
+        p_venta_declarada   : formValues.venta_declarada,
+        p_idEstado          : formValues.id_estado,
+        p_orden_compra      : formValues.orden_compra,
+        p_cod_certificacion : formValues.certificacion,
+        p_factura           : formValues.factura,
+        p_monto_facturado   : formValues.monto_facturado,
+        p_Comentarios       : formValues.comentarios,
+        p_idMotivo          : '',
+        p_idUsuarioCrea     : this.userID,
+        p_fechaCrea         : formValues.fecha_crea,
+        p_idUsuarioActualiza: '',
+        p_fechaActualiza    : '',
+        p_ver_estado        : '',
+        CONFIG_USER_ID      : this.userID,
+        CONFIG_OUT_MSG_ERROR: '',
+        CONFIG_OUT_MSG_EXITO: '',
+      }}
+
+    this.facturacionService.duplicarLiquidacion(parametro).subscribe((resp: any) => {
+      Swal.fire({
+        title: 'Duplicar liquidación!',
+        text : `La Liquidación, fue duplicado con éxito`,
+        icon : 'success',
+        confirmButtonText: 'Ok',
+      });
+      this.close(true);
+    });
+    this.spinner.hide();
+  }
 
   crearLiquidacion() {
     this.spinner.show();
@@ -86,6 +146,8 @@ export class CrearLiquidacionComponent implements OnInit {
           CONFIG_OUT_MSG_EXITO: '',
         }};
      console.log('VAOR', this.facturaForm.value , parametro);
+     console.log('PERIODO_1', formValues.fechaPeriodo, this.utilService.generarPeriodo(formValues.fechaPeriodo)); // PERIODO_1 => 2022-07 2022-07-01
+
     this.facturacionService.crearLiquidacion(parametro).subscribe((resp: any) => {
       Swal.fire({
         title: 'Crear liquidación!',
@@ -99,11 +161,54 @@ export class CrearLiquidacionComponent implements OnInit {
     this.spinner.hide();
   }
 
+  // moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
+  // DATE_FORMAT(F.periodo, '%Y-%m') AS periodo,
+  actionBtn: string = 'Crear';
+  cargarDuplicidadByID(){
+    if (this.DATA_DUPLICIDAD) {
+      this.actionBtn = 'Duplicar'
+        this.facturaForm.controls['id_proyecto'    ].setValue(this.DATA_DUPLICIDAD.id_proyecto)
+        this.facturaForm.controls['id_liquidacion' ].setValue(this.DATA_DUPLICIDAD.id_liquidacion)
+        this.facturaForm.controls['subservicio'    ].setValue(this.DATA_DUPLICIDAD.subServicio)
+        this.facturaForm.controls['id_gestor'      ].setValue(this.DATA_DUPLICIDAD.id_gestor)
+        this.facturaForm.controls['venta_declarada'].setValue(this.DATA_DUPLICIDAD.importe)
+        this.facturaForm.controls['id_estado'      ].setValue(this.DATA_DUPLICIDAD.id_estado)
+        // this.facturaForm.controls['fechaPeriodo'   ].setValue(this.DATA_DUPLICIDAD.periodo);
+        this.facturaForm.controls['fechaPeriodo'].setValue(this.formatPeriodo(this.DATA_DUPLICIDAD.periodo))
+
+        // if (this.DATA_DUPLICIDAD.periodo) {
+        //   let fecha_x = this.DATA_DUPLICIDAD.periodo
+        //   const str   = fecha_x.split('/');
+        //   const year  = Number(str[1]);
+        //   const month = Number(str[0]);
+        //   // const date  = Number(str[0]);
+        //   this.facturaForm.controls['fechaPeriodo'].setValue(this.formatPeriodo(this.DATA_DUPLICIDAD.periodo))
+        //   // this.facturaForm.controls['fechaPeriodo'].setValue(this.datePipe.transform(new Date(year, month-1), 'yyyy-MM'))
+        // }
+    }
+  };
+
+  formatPeriodo(fechaPeriodo: string){
+    const mesAndYear = fechaPeriodo.split('/');
+
+    return mesAndYear[1] + '-' + mesAndYear[0]
+  }
+
   getUserID(){
     this.authService.getCurrentUser().subscribe( resp => {
       this.userID   = resp.user.userId;
       // console.log('ID-USER', this.userID);
     })
+   }
+
+   listEstados: any[] = [];
+   getListEstados(){
+     let parametro: any[] = [{queryId: 101}];
+
+     this.facturacionService.getListEstados(parametro[0]).subscribe((resp: any) => {
+             this.listEstados = resp.list;
+             console.log('EST-FACT', resp);
+     });
    }
 
   listLiquidaciones: any[] = [];

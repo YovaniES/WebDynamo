@@ -1,6 +1,6 @@
 <div style="display: flex">
   <div class="flex-1"></div>
-  <div class="modal-title c-male"> Crear liquidación </div>
+  <div class="modal-title c-male"> {{ DATA_DUPLICIDAD? 'Duplicar' : 'Crear' }} liquidación </div>
     <div class="flex-1"></div>
 
     <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">
@@ -70,14 +70,14 @@
         <small class="form-text text-alert" *ngIf="campoNoValido('fechaPeriodo')">* Ingrese el Periodo es obligatorio</small>
       </div>
 
-      <!-- <div class="col-sm-4 cli-form-element">
+      <div class="col-sm-4 cli-form-element" *ngIf="DATA_DUPLICIDAD">
         <label class="form-label">Estado</label>
         <select class="form-select" formControlName="id_estado">
           <option [value]="0" disabled>-Seleccione-</option>
-          <option [value]="est.id_estado" *ngFor="let est of listEstados">{{est.nombre}}</option>
+          <option [value]="est.id" *ngFor="let est of listEstados">{{est.nombre}}</option>
         </select>
         <small class="form-text text-alert" *ngIf="campoNoValido('id_estado')">* Este campo es obligatorio</small>
-      </div> -->
+      </div>
     </div>
 
     <!-- --------------------------------------------BOTONES ------------------------------------------>
@@ -91,7 +91,7 @@
               (click)="crearLiquidacion()"
               [disabled]="facturaForm.invalid"
               >
-              <mat-icon class="icon-18">save</mat-icon> Registrar
+              <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
       </button>
     </div>
   </div>

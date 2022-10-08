@@ -22,11 +22,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { MatNativeDateModule } from '@angular/material/core';
-
 import { MatDatepickerModule } from '@angular/material/datepicker';
-// import { MatMomentDateModule, MomentDateModule } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
@@ -56,9 +53,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatDatepickerModule,
     MatInputModule,
 
-    // MatNativeDateModule,
     MatMomentDateModule,
-    // MomentDateModule
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es',  }, ],
 })

@@ -17,6 +17,7 @@ import { FacturacionService } from 'src/app/core/services/facturacion.service';
   templateUrl: './liquidacion.component.html',
   styleUrls: ['./liquidacion.component.scss']
 })
+
 export class LiquidacionComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
@@ -171,7 +172,6 @@ export class LiquidacionComponent implements OnInit {
     });
   }
 
-
   limpiarFiltro() {
     this.filtroForm.reset('', {emitEvent: false})
     this.newFilfroForm()
@@ -205,9 +205,10 @@ export class LiquidacionComponent implements OnInit {
     })
   }
 
-  duplicarLiquidacion(id: number){
-    const dialogRef = this.dialog.open(CrearLiquidacionComponent, {width:'55%'});
+  duplicarLiquidacion(DATA: any){
+    console.log('ENV_DATA', DATA);
 
+    const dialogRef = this.dialog.open(CrearLiquidacionComponent, {width:'55%', data: DATA});
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
         this.cargarOBuscarLiquidacion()
@@ -224,7 +225,6 @@ export class LiquidacionComponent implements OnInit {
       }
     })
   }
-
 
   actualizarFactura(DATA: any) {
     // console.log('DATA_LIQUID', DATA);
