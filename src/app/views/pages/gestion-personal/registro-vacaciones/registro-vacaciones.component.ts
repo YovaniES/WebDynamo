@@ -234,7 +234,7 @@ export class RegistroVacacionesComponent implements OnInit {
   actualizarVacaciones(DATA: any) {
     console.log('DATA_PERSONA_VACACIONES', DATA);
     this.dialog
-      .open(ModalVacacionesComponent, {width: '55%', height: '75%', data: DATA})
+      .open(ModalVacacionesComponent, {width: '55%', height: '85%', data: DATA})
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.cargarOBuscarVacaciones();

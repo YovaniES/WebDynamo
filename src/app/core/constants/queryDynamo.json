@@ -2514,8 +2514,9 @@ SELECT DISTINCT f.idFactura,
     f.cod_certificacion,
     f.factura,
     f.venta_declarada AS importe,
-    -- SUM(fc.importe)   AS facturado,
-    (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado
+    (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado,
+    (SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura ) AS facturado
+
 FROM facturacion f
     LEFT JOIN entidad e1 ON f.idEstado		= e1.id AND e1.id_tabla = 7
     LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
@@ -2523,17 +2524,18 @@ FROM facturacion f
     LEFT JOIN entidad e4 ON f.idGestor 		= e4.id AND e4.id_tabla = 8
     LEFT JOIN facturacion_certificacion fc ON f.idFactura = fc.idFactura
 WHERE
-      (@cod_fact 		IS NULL OR f.idFactura       = @cod_fact)
+      (@cod_fact 		IS NULL OR f.idFactura = @cod_fact)
   AND (@id_proy 		IS NULL OR e2.id = @id_proy)
   AND (@id_liquidacion 	IS NULL OR e3.id = @id_liquidacion)
   AND (@id_estado 		IS NULL OR e1.id = @id_estado)
   AND (@id_gestor 		IS NULL OR e4.id = @id_gestor)
-AND (@importe 		IS NULL OR f.venta_declarada LIKE CONCAT('%', @importe, '%'))
+  AND (@subservicio		IS NULL OR f.subServicio = @subservicio)
+  AND (@importe 		IS NULL OR f.venta_declarada LIKE CONCAT('%', @importe, '%'))
   AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
   AND DATE(f.fechaCrea) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
   AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
   AND DATE(f.fechaCrea) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
-  AND DATE(f.fechaCrea) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+  AND DATE(f.fechaCrea) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 180 OR (@inicio IS NULL AND @fin IS NULL))
   AND ver_estado = 1
 ORDER BY f.idFactura DESC;
     "
@@ -2548,7 +2550,7 @@ ORDER BY f.idFactura DESC;
 		idFactCertificacion = @p_idFactCertificacion;
       "
  },
-  {
+ {
     "id": 120,
     "type": 1,
     "description": "eliminar venta declarada",
@@ -2558,7 +2560,7 @@ ORDER BY f.idFactura DESC;
 		idFactVenta = @p_idFactVenta;
     "
   },
-    {
+ {
     "id": 121,
     "type": 1,
     "description": "Buscar y listar persona con total de RH y RC",
@@ -2616,8 +2618,7 @@ WHERE
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
     @CONFIG_OUT_MSG_EXITO
-    )
-    "
+    )"
  },
 {
   "id": 123,
@@ -2675,7 +2676,6 @@ FROM
     entidad WHERE id_tabla = 10 AND estado = 1
     ORDER BY valor_texto_1  ASC;"
   },
-
   {
     "id": 127,
     "type": 1,
@@ -2687,7 +2687,7 @@ FROM
   valor_texto_2 AS descripcion
 FROM
     entidad WHERE id_tabla = 13 AND estado = 1
-    ORDER BY valor_texto_1  ASC; "
+    ORDER BY valor_texto_1  ASC;"
   },
   {
     "id": 128,
@@ -2706,13 +2706,14 @@ SELECT
     e2.id_correlativo AS id_per_motivo,
     e2.valor_texto_1  AS vac_motivo,
     sv.id_sist_vac	  AS id_sist,
-	e3.valor_texto_1  AS sistema,
-	sv.id_usuario_asignacion,
+	  e3.valor_texto_1  AS sistema,
+	  sv.id_usuario_asignacion,
     u.usuario AS usuario_asignacion,
-    DATE_FORMAT(sv.fecha_per_creacion, '%d/%m%/%Y  %H:%i') AS fecha_creacion
+    DATE_FORMAT(sv.fecha_per_creacion, '%d/%m%/%Y  %H:%i') AS fecha_creacion,
+    sv.observacion
 FROM seguimiento_vacaciones	sv
-	INNER JOIN persona p  ON p.id = sv.id_persona
-	INNER JOIN entidad e  ON sv.id_per_estado = e.id_correlativo  AND e.id_tabla = 12
+	  INNER JOIN persona p  ON p.id = sv.id_persona
+	  INNER JOIN entidad e  ON sv.id_per_estado = e.id_correlativo  AND e.id_tabla = 12
     INNER JOIN entidad e2 ON sv.id_per_motivo = e2.id_correlativo AND e2.id_tabla = 11
     INNER JOIN entidad e3 ON sv.id_sist_vac   = e3.id_correlativo AND e3.id_tabla = 10
     INNER JOIN usuario u  ON sv.id_usuario_asignacion = u.id
@@ -2750,7 +2751,7 @@ ORDER BY sv.idPeriodoVac;
     "sql": "
 SELECT  v.idVac,
 	CONCAT('VAC', LPAD(v.idVac, 5, '0')) AS cod_vac, -- VAC01336
-	 p.id AS id_persona,
+	   p.id AS id_persona,
      p.nombres,
      CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
      p.apellido_paterno,
@@ -2759,9 +2760,9 @@ SELECT  v.idVac,
      e3.id_correlativo AS id_proyecto,
      e3.valor_texto_1  AS codigo_proyecto,
      DATE_FORMAT(p.fecha_ingreso, '%d/%m/%Y') AS fecha_ingreso,
-	 e2.id_correlativo AS id_estado_vac,
+	   e2.id_correlativo AS id_estado_vac,
      e2.valor_texto_1  AS estado_vac,
-	 e.id_correlativo  AS id_sist_vac,
+	   e.id_correlativo  AS id_sist_vac,
      e.valor_texto_1   AS sist_vac,
      DATE_FORMAT(v.fecha_ini_vac,'%d/%m/%Y') AS fecha_ini_vac,
      DATE_FORMAT(v.fecha_fin_vac,'%d/%m/%Y') AS fecha_fin_vac,
@@ -2777,10 +2778,10 @@ SELECT  v.idVac,
      ((DATEDIFF(v.fecha_fin_vac, v.fecha_ini_vac)+1) AS vac_dias_completo,
      v.eliminacion_logica
 FROM vacaciones v
-	LEFT JOIN persona p	  ON p.id = v.id_persona
+	  LEFT JOIN persona p	  ON p.id = v.id_persona
     LEFT JOIN entidad e3  ON e3.id_correlativo = p.id_proyecto	  AND e3.id_tabla = 1
-	LEFT JOIN entidad e   ON e.id_correlativo  = v.id_sist_vac 	  AND e.id_tabla  = 10
-	LEFT JOIN entidad e2  ON e2.id_correlativo = v.id_estado_vac  AND e2.id_tabla = 14
+	  LEFT JOIN entidad e   ON e.id_correlativo  = v.id_sist_vac 	  AND e.id_tabla  = 10
+	  LEFT JOIN entidad e2  ON e2.id_correlativo = v.id_estado_vac  AND e2.id_tabla = 14
     LEFT JOIN usuario u   ON u.id 	   = v.id_responsable
     -- LEFT JOIN seguimiento_vacaciones sv ON sv.id_vacaciones = v.idVac
     LEFT JOIN seguimiento_vacaciones sv ON sv.id_vacaciones = v.idVac
@@ -2845,7 +2846,7 @@ FROM
     "sql": "
 SELECT DISTINCT (v.idVac),
 	CONCAT('VAC', LPAD(v.idVac, 5, '0')) AS cod_vac, -- VAC01336
-	 p.id AS id_persona,
+	   p.id AS id_persona,
      p.nombres,
      CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
      p.apellido_paterno,
@@ -2854,9 +2855,9 @@ SELECT DISTINCT (v.idVac),
      e3.id_correlativo AS id_proyecto,
      e3.valor_texto_1  AS codigo_proyecto,
      DATE_FORMAT(p.fecha_ingreso, '%d/%m/%Y') AS fecha_ingreso,
-	 e2.id_correlativo AS id_estado_vac,
+	   e2.id_correlativo AS id_estado_vac,
      e2.valor_texto_1  AS estado_vac,
-	 e.id_correlativo  AS id_sist_vac,
+	   e.id_correlativo  AS id_sist_vac,
      e.valor_texto_1   AS sist_vac,
      DATE_FORMAT(v.fecha_ini_vac,'%d/%m/%Y') AS fecha_ini_vac,
      DATE_FORMAT(v.fecha_fin_vac,'%d/%m/%Y') AS fecha_fin_vac,
@@ -2935,8 +2936,7 @@ WHERE
     @CONFIG_OUT_MSG_EXITO )
     "
   },
-
-    {
+  {
     "id": 136,
     "type": 1,
     "description": "Reporte VENTA DECLARADA - CERTIFICACION",
@@ -3006,7 +3006,7 @@ f.periodo DESC;
      @p_fecha_ini_vac,
      @p_fecha_fin_vac,
      @p_id_estado_vac,
-     @p_fecha_crea_vac,
+    -- @p_fecha_crea_vac,
      @CONFIG_USER_ID,
      @CONFIG_OUT_MSG_ERROR,
      @CONFIG_OUT_MSG_EXITO

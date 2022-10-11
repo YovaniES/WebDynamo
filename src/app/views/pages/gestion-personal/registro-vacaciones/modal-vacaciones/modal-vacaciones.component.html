@@ -111,7 +111,7 @@
                       <th>Estado</th>
                       <th>Motivo</th>
                       <th>Planificado por:</th>
-                      <th>Fecha registro periodo</th>
+                      <th style="min-width: 95px">Fecha registro periodo</th>
                     </tr>
                   </thead>
 
@@ -142,7 +142,7 @@
                         <span *ngIf="periodo.vac_estado.toUpperCase() == 'PLANIFICADO'" class="w135 label estado-planif">{{ periodo.vac_estado | uppercase }}</span>
                         <span *ngIf="periodo.vac_estado.toUpperCase() == 'CANCELADO'"   class="w135 label estado-reg "  >{{ periodo.vac_estado | uppercase }}</span>
                       </td>
-                      <td>{{periodo.vac_motivo}}</td>
+                      <td style="min-width: 175px">{{periodo.vac_motivo}}</td>
                       <td>{{periodo.usuario_asignacion}}</td>
                       <td>{{periodo.fecha_creacion}}</td>
                     </tr>
