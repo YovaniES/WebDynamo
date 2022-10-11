@@ -117,12 +117,10 @@
                   <thead>
                     <tr class="bgc-blue-light c-white">
                       <th>Acción</th>
-                      <!-- <th>ID Venta declarada</th> -->
                       <th style="width: 35px">N°</th>
                       <th>Periodo</th>
                       <th>Importe</th>
                       <th>Saldo</th>
-                      <!-- <th>Comentario</th> -->
                     </tr>
                   </thead>
 
@@ -148,9 +146,7 @@
                       <td>{{ i + 1 }}</td>
                       <td>{{ vd.periodo }}</td>
                       <td style="font-weight: 600"><small style="font-weight: 200; margin-right:3px;">S/</small>{{ vd.venta_declarada }}</td>
-                      <!-- <td class="fact-saldo">{{ saldo }}</td> -->
                       <td class="fact-saldo"><small style="font-weight: 200; margin-right:3px;">S/</small>{{(vd.venta_declarada - importTotal).toFixed(2) }}</td>
-                      <!-- <td>{{ vd.comentario | firstCapital}}</td> -->
                     </tr>
                   </tbody>
                 </table>
@@ -194,9 +190,8 @@
                       <th>Certificación</th>
                       <th>Estado</th>
                       <th>Factura</th>
-                      <!-- <th>Comentario</th> -->
                       <th>Importe</th>
-                      <th>Fecha de facturación</th>
+                      <th>Fech. fact.</th>
                     </tr>
                   </thead>
 
@@ -229,7 +224,6 @@
                         <span *ngIf="factura.id_estado == 183"   class="label estado-info">  {{ factura.estado }}</span>
                       </td>
                       <td style="min-width:100px">{{ factura.factura }}</td>
-                      <!-- <td>{{ factura.comentario | firstCapital}}</td> -->
                       <td style="text-align: end;"><small style="font-weight: 200; margin-right:3px;">S/</small>{{ factura.importe }}</td>
                       <td>{{ factura.fecha_facturacion }}</td>
                     </tr>

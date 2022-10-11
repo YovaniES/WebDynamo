@@ -57,7 +57,8 @@ export class LiquidacionComponent implements OnInit {
       fechaRegistroInicio: [''],
       fechaRegistroFin   : [''],
       id_gestor          : [''],
-      importe            : ['']
+      importe            : [''],
+      subservicio        : ['']
     })
   };
 
@@ -73,6 +74,7 @@ export class LiquidacionComponent implements OnInit {
           id_estado      : this.filtroForm.value.id_estado,
           id_gestor      : this.filtroForm.value.id_gestor,
           importe        : this.filtroForm.value.importe,
+          subservicio    : this.filtroForm.value.subservicio,
           inicio         : this.datepipe.transform(this.filtroForm.value.fechaRegistroInicio,"yyyy/MM/dd"),
           fin            : this.datepipe.transform(this.filtroForm.value.fechaRegistroFin,"yyyy/MM/dd"),
       }
@@ -139,7 +141,7 @@ export class LiquidacionComponent implements OnInit {
 
     this.facturacionService.exportListVD_Fact(parametro[0]).subscribe((resp: any) => {
             this.listVD_Fact = resp.list;
-            console.log('EXPORT-VD_FACT', resp);
+            // console.log('EXPORT-VD_FACT', resp);
     });
   }
 

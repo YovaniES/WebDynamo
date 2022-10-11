@@ -22,7 +22,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
 
   userID: number = 0;
   facturaForm!: FormGroup;
-  factura_Id = this.DATA_LIQUID;
+  factura_Id = this.DATA_LIQUID.idFactura;
 
   constructor(
     private facturacionService: FacturacionService,
@@ -87,7 +87,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
     let parametro: any =  {
         queryId: 66,
         mapValue:{
-          p_idFactura         : this.DATA_LIQUID,
+          p_idFactura         : this.DATA_LIQUID.idFactura,
           p_periodo           : this.utilService.generarPeriodo(formValues.fechaPeriodo),
           p_idProyecto        : formValues.codProy,
           p_idLiquidacion     : formValues.id_liquidacion,
@@ -115,7 +115,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
     this.facturacionService.actualizarLiquidacion(parametro).subscribe((resp: any) => {
       Swal.fire({
         title: 'Actualizar Factura!',
-        text: `La Factura: ${this.DATA_LIQUID}, ha sido actualizado con éxito`,
+        text: `La Factura: ${this.DATA_LIQUID.idFactura}, ha sido actualizado con éxito`,
         icon: 'success',
         confirmButtonText: 'Ok',
       });
@@ -131,7 +131,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
 
     let parametro: any[] = [{
       queryId: 103,
-      mapValue: {'param_id_factura': this.DATA_LIQUID}
+      mapValue: {'param_id_factura': this.DATA_LIQUID.idFactura}
     }];
 
     this.facturacionService.cargarFacturaById(parametro[0]).subscribe( (resp: any) => {
@@ -232,7 +232,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
   this.spinner.show();
     let parametro: any[] = [{
       queryId: 67,
-      mapValue: {p_id: this.DATA_LIQUID}
+      mapValue: {p_id: this.DATA_LIQUID.idFactura}
     }];
 
     this.facturacionService.getHistoricoCambiosEstado(parametro[0]).subscribe((resp: any) => {
@@ -293,7 +293,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
     this.blockUI.start("Cargando lista...");
     let parametro: any[] = [{
       "queryId": 112,
-      "mapValue": { p_id : this.DATA_LIQUID }
+      "mapValue": { p_id : this.DATA_LIQUID.idFactura }
     }];
     this.facturacionService.cargarVentaDeclarada( parametro[0]).subscribe( (resp: any) => {
       this.blockUI.stop();
@@ -310,7 +310,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
     this.blockUI.start("Cargando lista...");
     let parametro: any[] = [{
       "queryId": 71,
-      "mapValue": { p_id : this.DATA_LIQUID }
+      "mapValue": { p_id : this.DATA_LIQUID.idFactura }
     }];
     this.facturacionService.cargarFactura( parametro[0]).subscribe( (resp: any) => {
       this.blockUI.stop();

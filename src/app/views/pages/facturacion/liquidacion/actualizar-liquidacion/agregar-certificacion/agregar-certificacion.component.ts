@@ -67,7 +67,7 @@ export class AgregarCertificacionComponent implements OnInit {
     let parametro: any =  {
         queryId: 111,
         mapValue: {
-          p_idFactura         : this.DATA_LIQUID.fForm.id_factura,
+          p_idFactura         : this.DATA_LIQUID.fForm.id_factura.idFactura,
           p_fecha_facturacion : formValues.fechaFact,
           p_importe           : formValues.importe,
           p_oc                : formValues.ordenCompra,
@@ -155,6 +155,7 @@ export class AgregarCertificacionComponent implements OnInit {
       // if (this.DATA_LIQUID.fecha_facturacion !='null' && this.DATA_LIQUID.fecha_facturacion != '') {
       //   this.facturaForm.controls['fechaFact'].setValue(this.DATA_LIQUID.fecha_facturacion)
       // }
+
       if (this.DATA_LIQUID.fecha_facturacion !='null' && this.DATA_LIQUID.fecha_facturacion != '') {
         let fechaF = this.DATA_LIQUID.fecha_facturacion
         const str   = fechaF.split('/');

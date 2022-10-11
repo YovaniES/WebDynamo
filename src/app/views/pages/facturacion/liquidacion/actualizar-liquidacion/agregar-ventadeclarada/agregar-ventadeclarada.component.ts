@@ -66,7 +66,7 @@ export class AgregarVentadeclaradaComponent implements OnInit {
     let parametro: any =  {
         queryId: 105,
         mapValue: {
-          p_idFactura       : this.DATA_LIQUID.vdForm.id_factura,
+          p_idFactura       : this.DATA_LIQUID.vdForm.id_factura.idFactura,
           p_periodo         : this.utilService.generarPeriodo(formValues.periodo),
           p_venta_declarada : formValues.ventaDeclarada, //this.DATA_LIQUID.vdForm.venta_declarada, //formValues.ventaDeclarada,
           p_comentario      : formValues.comentario,
@@ -77,11 +77,11 @@ export class AgregarVentadeclaradaComponent implements OnInit {
           // CONFIG_OUT_MSG_EXITO    : "",
         },
       };
-     console.log('VAOR_VD', this.ventaDeclaradaForm.value , parametro);
+     console.log('VAOR_VD', this.ventaDeclaradaForm.value , parametro, this.DATA_LIQUID.vdForm.id_factura.idFactura);
     this.facturacionService.agregarVentaDeclarada(parametro).subscribe((resp: any) => {
       Swal.fire({
         title: 'Agregar Venta Declarada!',
-        text : `La venta declarada: ${formValues.ventaDeclarada}, fue creado con éxito`,
+        text : `La venta declarada, fue creado con éxito`,
         icon : 'success',
         confirmButtonText: 'Ok',
       });
@@ -99,7 +99,6 @@ export class AgregarVentadeclaradaComponent implements OnInit {
           p_idFactVenta        : this.DATA_LIQUID.idFactVenta,
           p_idFactura          : this.DATA_LIQUID.idFactura,
           p_periodo            : this.utilService.generarPeriodo(formValues.periodo) ,
-          // p_venta_declarada    : this.DATA_LIQUID.vdForm.venta_declarada,
           p_venta_declarada    : formValues.ventaDeclarada ,
           p_comentario         : formValues.comentario ,
           p_dFecha             : formValues.fechaCrea,
@@ -115,7 +114,7 @@ export class AgregarVentadeclaradaComponent implements OnInit {
         this.close(true)
           Swal.fire({
             title: 'Actualizar venta declarada!',
-            text : `La Venta declarada: ${formValues.ventaDeclarada }, se actualizó con éxito`,
+            text : `La Venta declarada, se actualizó con éxito`,
             icon : 'success',
             confirmButtonText: 'Ok'
             });
@@ -139,11 +138,12 @@ export class AgregarVentadeclaradaComponent implements OnInit {
       this.ventaDeclaradaForm.controls['ventaDeclarada'].setValue(this.DATA_LIQUID.venta_declarada);
       this.ventaDeclaradaForm.controls['periodo'       ].setValue(this.formatPeriodo(this.DATA_LIQUID.periodo));
       this.ventaDeclaradaForm.controls['comentario'    ].setValue(this.DATA_LIQUID.comentario);
-      // this.ventaDeclaradaForm.controls['fechaCrea'     ].setValue(this.DATA_LIQUID.dFecha);
 
       if (this.DATA_LIQUID.dFecha !='null' && this.DATA_LIQUID.dFecha != '') {
         this.ventaDeclaradaForm.controls['fechaCrea'].setValue(this.DATA_LIQUID.dFecha)
         }
+      console.log('VD_PER', this.formatPeriodo(this.DATA_LIQUID.periodo)); // 2022-09
+
     }
   }
 
@@ -157,7 +157,7 @@ export class AgregarVentadeclaradaComponent implements OnInit {
    getUserID(){
     this.authService.getCurrentUser().subscribe( resp => {
       this.userID   = resp.user.userId;
-      console.log('ID-USER', this.userID);
+      // console.log('ID-USER', this.userID);
     })
    }
 

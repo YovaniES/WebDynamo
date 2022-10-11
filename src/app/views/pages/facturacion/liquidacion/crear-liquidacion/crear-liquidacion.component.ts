@@ -64,6 +64,7 @@ export class CrearLiquidacionComponent implements OnInit {
     this.spinner.show();
 
     if (!this.DATA_DUPLICIDAD) {
+
       if (this.facturaForm.valid) {
         this.crearLiquidacion()
       } else {
@@ -146,7 +147,7 @@ export class CrearLiquidacionComponent implements OnInit {
           CONFIG_OUT_MSG_EXITO: '',
         }};
      console.log('VAOR', this.facturaForm.value , parametro);
-     console.log('PERIODO_1', formValues.fechaPeriodo, this.utilService.generarPeriodo(formValues.fechaPeriodo)); // PERIODO_1 => 2022-07 2022-07-01
+     console.log('PERIODO_1', formValues.fechaPeriodo, this.utilService.generarPeriodo(formValues.fechaPeriodo)); // PERIODO_1 => 2022-07 / 2022-07-01
 
     this.facturacionService.crearLiquidacion(parametro).subscribe((resp: any) => {
       Swal.fire({
@@ -176,22 +177,14 @@ export class CrearLiquidacionComponent implements OnInit {
         // this.facturaForm.controls['fechaPeriodo'   ].setValue(this.DATA_DUPLICIDAD.periodo);
         this.facturaForm.controls['fechaPeriodo'].setValue(this.formatPeriodo(this.DATA_DUPLICIDAD.periodo))
 
-        // if (this.DATA_DUPLICIDAD.periodo) {
-        //   let fecha_x = this.DATA_DUPLICIDAD.periodo
-        //   const str   = fecha_x.split('/');
-        //   const year  = Number(str[1]);
-        //   const month = Number(str[0]);
-        //   // const date  = Number(str[0]);
-        //   this.facturaForm.controls['fechaPeriodo'].setValue(this.formatPeriodo(this.DATA_DUPLICIDAD.periodo))
-        //   // this.facturaForm.controls['fechaPeriodo'].setValue(this.datePipe.transform(new Date(year, month-1), 'yyyy-MM'))
-        // }
+        console.log('PER--DUP', this.formatPeriodo(this.DATA_DUPLICIDAD.periodo) ); // 08-2022
     }
   };
 
   formatPeriodo(fechaPeriodo: string){
     const mesAndYear = fechaPeriodo.split('/');
 
-    return mesAndYear[1] + '-' + mesAndYear[0]
+    return mesAndYear[0] + '-' + mesAndYear[1]
   }
 
   getUserID(){

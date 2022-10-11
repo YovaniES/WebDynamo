@@ -31,7 +31,6 @@
   margin: 0 5px;
   height: 30px;
   padding: 0 8px;
-  // font-family: "Webapp-Bold" !important;
   display: flex;
   align-items: center;
   & mat-icon {
@@ -75,22 +74,6 @@
     color: #FFF;
   }
 }
-
-//Cambiar color para actualizacion masiva
-// .btn-cancel {
-//   background-color: #FFF;
-//   transition: ease 0.3s;
-//   color: #007bff;
-//   border: solid 1px #007bff;
-//   &:hover:enabled {
-//     background-color: $color-grey-1;
-//   }
-//   &:hover:enabled:active {
-//     background-color: #5493ff;
-//     color: #FFF;
-//   }
-// }
-
 
 .btn-grey {
   background-color: $color-grey-2;

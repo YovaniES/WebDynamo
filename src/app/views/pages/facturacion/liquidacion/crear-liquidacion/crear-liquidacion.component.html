@@ -1,6 +1,6 @@
 <div style="display: flex">
   <div class="flex-1"></div>
-  <div class="modal-title c-male"> {{ DATA_DUPLICIDAD? 'Duplicar' : 'Crear' }} liquidación </div>
+  <div class="modal-title c-male"> {{ DATA_DUPLICIDAD? 'Duplicar' : 'Crear' }} liquidación <small *ngIf="DATA_DUPLICIDAD" style="color: #6c757da8">{{DATA_DUPLICIDAD.idFactura}}</small> </div>
     <div class="flex-1"></div>
 
     <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">

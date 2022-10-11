@@ -66,6 +66,14 @@
                 formControlName="importe"/>
             </div>
 
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">SubServicio</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="subservicio"/>
+            </div>
+
             <div class="cli-form-buttons" style="margin-top: 8px">
               <button
                 type="submit"
@@ -155,7 +163,7 @@
                   <button
                     matTooltip="Actualizar"
                     class="icon-btn btn-trans c-blue"
-                    (click)="actualizarFactura(factura.idFactura)"
+                    (click)="actualizarFactura(factura)"
                     ><mat-icon class="icon-13">edit</mat-icon>
                   </button>
                   <button
@@ -179,9 +187,9 @@
               <td class="w135">{{ factura.liquidacion }}</td>
               <td class="w155" style="text-align: left">{{ factura.subServicio }}</td>
               <td>{{ factura.estado }}</td>
-              <td><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe}}</td>
-              <td><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado }}</td>
-              <td>{{ factura.facturado }}</td>
+              <td style="font-weight: 600; text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe}}</td>
+              <td style="text-align: end;"><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado }}</td>
+              <td style="text-align: end;"><small *ngIf="factura.facturado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.facturado }}</td>
             </tr>
           </tbody>
         </table>
