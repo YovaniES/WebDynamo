@@ -28,14 +28,14 @@ export class AuthService {
   //Obtenemos el ROL_ID, desde el TOKEN: ROL_ID=101,102,103,..106 (ROL_ID=106 : SUPER_ADMIN)
   getRolID(){
     const decodedToken: any = this.decodeToken();
-    console.log('TOKEN-ROL_ID', decodedToken);
+    // console.log('TOKEN-ROL_ID', decodedToken);
     return decodedToken ? decodedToken.ROL_ID : '';
   }
 
   // Obtenemos desde el TOKEN: unique_name:"jysantiago"; También el ID_ROL=101,102,...106
   getUsername() {
       const decodedToken: any = this.decodeToken();
-      console.log('ROL_ID', decodedToken, decodedToken.ROL_ID);
+      // console.log('ROL_ID', decodedToken, decodedToken.ROL_ID);
       return decodedToken ? decodedToken.unique_name : '';
   }
 
@@ -46,7 +46,7 @@ export class AuthService {
 
   getUserNameByRol(){
     const usuarioLogeado: any = this.decodeToken();
-    console.log('ROL_ID_USUARIO', usuarioLogeado.ROL_ID);
+    // console.log('ROL_ID_USUARIO', usuarioLogeado.ROL_ID);
 
     if (!usuarioLogeado || usuarioLogeado.ROL_ID != ROL_USUARIO.rolID ) {
       return null

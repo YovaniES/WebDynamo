@@ -144,8 +144,8 @@
                       <!-- <td>{{ vd.idFactVenta }}</td> -->
                       <td>{{ i + 1 }}</td>
                       <td>{{ vd.periodo }}</td>
-                      <td style="font-weight: 600"><small style="font-weight: 200; margin-right:3px;">S/</small>{{ vd.venta_declarada }}</td>
-                      <td class="fact-saldo"><small style="font-weight: 200; margin-right:3px;">S/</small>{{(vd.venta_declarada - importTotal).toFixed(2) }}</td>
+                      <td style="font-weight: 600"><small style="font-weight: 200; margin-right:3px;">S/</small>{{ vd.venta_declarada | number : '1.0-2' }}</td>
+                      <td class="fact-saldo"><small style="font-weight: 200; margin-right:3px;">S/</small>{{(vd.venta_declarada - importTotal)| number : '1.0-2' }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -223,13 +223,13 @@
                         <span *ngIf="factura.id_estado == 183"   class="label estado-info">  {{ factura.estado }}</span>
                       </td>
                       <td style="min-width:100px">{{ factura.factura }}</td>
-                      <td style="text-align: end;"><small style="font-weight: 200; margin-right:3px;">S/</small>{{ factura.importe }}</td>
+                      <td style="text-align: end;"><small style="font-weight: 200; margin-right:3px;">S/</small>{{ factura.importe | number : '1.0-2' }}</td>
                       <td>{{ factura.fecha_facturacion }}</td>
                     </tr>
                   </tbody>
                 </table>
                 <div class="col-12 fact-total"><small style="font-weight: 300; margin-right:3px; width: 52px;">Total: S/</small>
-                  {{obtenerImporteTotal()}}
+                  {{obtenerImporteTotal() | number : '1.0-2'}}
                 </div>
 
                 <div class="cli-loader" *ngIf="loadingItem">

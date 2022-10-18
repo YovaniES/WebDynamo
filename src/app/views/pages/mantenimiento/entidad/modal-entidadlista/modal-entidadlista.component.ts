@@ -28,6 +28,7 @@ export class ModalEntidadlistaComponent implements OnInit {
   ngOnInit(): void {
     this.newEntidadForm();
     this.getListEntidades();
+    this.userId();
     this.cargarListaEntidadByID();
   }
 
@@ -98,7 +99,7 @@ export class ModalEntidadlistaComponent implements OnInit {
 
   userId() {
     this.authService.getCurrentUser().subscribe((resp) => {
-      this.userID = resp.userId;
+      this.userID = resp.user.userId;
       // console.log('ID-USER', this.userID);
     });
   }

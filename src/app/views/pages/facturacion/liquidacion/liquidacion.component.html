@@ -1,6 +1,6 @@
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Mantenimiento facturación</div>
+    <div class="modal-title c-male">Registro de Liquidaciones</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
       <div class="card" style="border-radius: 2px; font-weight: 600">
@@ -31,7 +31,7 @@
             </div>
 
             <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Liquidaciones</label>
+              <label class="form-label">Tipo Liquidaciones</label>
               <select class="form-select" formControlName="id_liquidacion">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="liq.id" *ngFor="let liq of listLiquidaciones">{{liq.nombre}}</option>
@@ -143,12 +143,13 @@
               <th class="w100">Periodo</th>
               <th>Gestor</th>
               <th>Proyecto</th>
-              <th>Liquidación</th>
+              <th>Tipo Liq.</th>
               <th>Subservicio</th>
               <th>Estado</th>
               <th>Importe</th>
               <th>Declarado</th>
               <th>Facturado</th>
+              <th>Pendiente</th>
             </tr>
           </thead>
 
@@ -187,9 +188,10 @@
               <td class="w135">{{ factura.liquidacion }}</td>
               <td class="w155" style="text-align: left">{{ factura.subServicio }}</td>
               <td>{{ factura.estado }}</td>
-              <td style="font-weight: 600; text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe}}</td>
-              <td style="text-align: end;"><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado }}</td>
-              <td style="text-align: end;"><small *ngIf="factura.facturado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.facturado }}</td>
+              <td style="font-weight: 600; text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe | number : '1.0-2'}}</td>
+              <td style="text-align: end;"><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado | number : '1.0-2'}}</td>
+              <td style="text-align: end;"><small *ngIf="factura.facturado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.facturado | number : '1.0-2'}}</td>
+              <td style="text-align: end;"><small *ngIf="factura.declarado && factura.facturado" style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.saldo? factura.saldo: factura.importe) | number : '1.0-2' }}</td>
             </tr>
           </tbody>
         </table>

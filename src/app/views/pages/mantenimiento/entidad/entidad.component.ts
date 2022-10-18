@@ -73,11 +73,27 @@ export class EntidadComponent implements OnInit {
     this.entidadService.cargarOBuscarEntidades(parametro[0]).subscribe((resp: any) => {
     this.blockUI.stop();
 
-    //  console.log('ID_TABLA_ENTIDAD', resp, resp.list, [resp.list.length]);
+     console.log('ID_TABLA_ENTIDAD', resp, resp.list, [resp.list.length]);
       this.listEntidadTabla = [];
       this.listEntidadTabla = resp.list;
     });
   }
+
+  // cargarOBuscarEntidades(idTabla: any){
+  //   this.blockUI.start("Cargando lista de entidades...");
+
+  //   let parametro: any[] = [{
+  //     "queryId": 54,
+  //     "mapValue": { param_id_tabla: idTabla }
+  //   }];
+  //   this.entidadService.cargarOBuscarEntidades(parametro[0]).subscribe((resp: any) => {
+  //   this.blockUI.stop();
+
+  //    console.log('ID_TABLA_ENTIDAD', resp, resp.list, [resp.list.length]);
+  //     this.listEntidadTabla = [];
+  //     this.listEntidadTabla = resp.list;
+  //   });
+  // }
 
   abrirEliminarEntidad(idTabla: number, idCorrelativo: number, nameEntidad: string){
     Swal.fire({
@@ -189,7 +205,7 @@ export class EntidadComponent implements OnInit {
    }
 
    actualizarEntidadTabla(DATA: any) {
-    // console.log('DATA_ENTIDAD',DATA);
+    console.log('DATA_ENTIDAD',DATA);
     this.dialog
       .open(ModalEntidadtablaComponent, { width: '25%', data: DATA})
       .afterClosed().subscribe((resp) => {

@@ -38,7 +38,7 @@
       <div class="pr-module-container mb-3 mt-4" *ngIf="filtroForm.controls['entidad'].value">
       <div class="title-entidad c-male"> Listado de {{nombre}}</div>
 
-      <!-- BOTON MODAL PARA CREAR PERSONAS ----------------------------------------------------->
+      <!-- BOTON MODAL PARA CREAR ENTIDADES ----------------------------------------------------->
       <div style="display: flex" class="mb-1">
         <button
           class="cli-btn btn-blue"
@@ -63,7 +63,7 @@
               <th>ID Tabla</th>
               <th>ID Correlativo</th>
               <th>Nombre</th>
-              <th>Descripción</th>
+              <th>Descri  pción</th>
               <th>Nombre Padre</th>
             </tr>
           </thead>
@@ -94,7 +94,7 @@
               <td class="w90">{{ entidad.id_tabla }}</td>
               <td class="w90">{{ entidad.id_correlativo }}</td>
               <td class="w150">{{ entidad.nombre }}</td>
-              <td>{{ entidad.descripcion | firstCapital    }}</td>
+              <td>{{ entidad.descripcion }}</td>
               <td>{{ entidad.nombrePadre | firstCapital }}</td>
             </tr>
           </tbody>

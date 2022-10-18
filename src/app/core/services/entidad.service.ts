@@ -31,5 +31,9 @@ export class EntidadService {
   cargarOBuscarEntidades(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
+
+  getListEntidadesLider(id: any) {
+    return this.http.post(API_DYNAMO, id);
+  }
 }
 

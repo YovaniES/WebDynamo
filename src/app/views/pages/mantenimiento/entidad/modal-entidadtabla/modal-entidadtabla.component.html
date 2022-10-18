@@ -65,12 +65,12 @@
         <select class="form-select" formControlName="idPadre">
           <option [value]="0" disabled>- Seleccione -</option>
           <option [value]="entidad.id"
-                  [id]="entidad.idPadre" *ngFor="let entidad of listEntidad">{{ entidad.nombre }}
+                   *ngFor="let entidad of entidadTabla">{{ entidad.nombre }}
           </option>
         </select>
       </div>
+      <!-- <pre> {{entidadTablaForm.value | json }}</pre> -->
     </div>
-
 
     <!-- --------------------------------------------BOTONES ------------------------------------------>
     <div class="cli-form-buttons" style="margin-top: 8%">

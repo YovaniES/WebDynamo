@@ -27,22 +27,50 @@ export class ModalEntidadtablaComponent implements OnInit {
 
   ngOnInit(): void {
     this.newForm();
-    this.getListEntidades();
+    this.userId();
     this.cargarTablaEntidadByID();
-    // this.cargarOBuscarEntidades(1);
-    // console.log('DATA_TABLA_E', this.DATA_ENTIDAD, this.DATA_ENTIDAD.eForm);
+    this.getListIdPadreTabla();
+    // console.log('DATA_TABLA_E', this.DATA_ENTIDAD, this.DATA_ENTIDAD.eForm, this.DATA_ENTIDAD.eForm.entidad);
+    console.log('ABC_DATA', this.DATA_ENTIDAD.idTablaEntidad, this.DATA_ENTIDAD.eForm.entidad);
   }
 
   newForm(){
     this.entidadTablaForm = this.fb.group({
-      id           : [''],
-      nombre       : ['', Validators.required],
-      descripcion  : [''],
-      entidad      : [''],
-      idPadre      : [''],
-      idCorrelativo: [''],
-      id_tabla     : ['']
+      id                : [''],
+      nombre            : ['', Validators.required],
+      descripcion       : [''],
+      entidad           : [''],
+      idPadre           : [''],
+      idCorrelativo     : [''],
+      id_tabla          : [''],
+
+      NombreTablaEntidad: [''],
+      nombrePadre       : [''],
+      idTablaEntidad    : ['']
     })
+  }
+
+  entidadTabla: any[]=[];
+  getListIdPadreTabla(idTabla?:any){
+    let arrayParametro:any[] = [{
+      "queryId": 55,
+      "mapValue": {
+        "param_id_tabla": this.DATA_ENTIDAD.idTablaEntidad
+      }
+    }];
+
+    this.entidadService.cargarOBuscarEntidades(arrayParametro[0]).subscribe(data => {
+      const arrayData:any[] = Array.of(data);
+      console.log('ARRAY', arrayData);
+
+      this.entidadTabla = [];
+      for (let index = 0; index < arrayData[0].list.length; index++) {
+        this.entidadTabla.push({
+          id:arrayData[0].list[index].idPadre,
+          nombre:arrayData[0].list[index].valor_texto_1
+        });
+      }
+    });
   }
 
   agregarOactualizarTablaEntidad(){
@@ -131,6 +159,8 @@ export class ModalEntidadtablaComponent implements OnInit {
 
   btnAction: string = 'Agregar'
   cargarTablaEntidadByID(){
+    console.log('DTA_BY_MODAL', this.DATA_ENTIDAD, this.DATA_ENTIDAD.idTablaEntidad);
+
     if (!this.DATA_ENTIDAD.isCreation) {
       this.btnAction = 'Actualizar'
         this.entidadTablaForm.controls['id'           ].setValue(this.DATA_ENTIDAD.id);
@@ -138,20 +168,18 @@ export class ModalEntidadtablaComponent implements OnInit {
         this.entidadTablaForm.controls['nombre'       ].setValue(this.DATA_ENTIDAD.nombre);
         this.entidadTablaForm.controls['descripcion'  ].setValue(this.DATA_ENTIDAD.descripcion);
         this.entidadTablaForm.controls['entidad'      ].setValue(this.DATA_ENTIDAD.entidad);
+        // this.entidadTablaForm.controls['id_tabla'     ].setValue(this.DATA_ENTIDAD.idTablaEntidad)
         this.entidadTablaForm.controls['id_tabla'     ].setValue(this.DATA_ENTIDAD.id_tabla)
         this.entidadTablaForm.controls['idPadre'      ].setValue(this.DATA_ENTIDAD.idPadre);
+        this.entidadTablaForm.controls['idPadre'      ].setValue(this.DATA_ENTIDAD.idPadre);
+        this.entidadTablaForm.controls['NombreTablaEntidad'      ].setValue(this.DATA_ENTIDAD.NombreTablaEntidad);
+        this.entidadTablaForm.controls['nombrePadre'      ].setValue(this.DATA_ENTIDAD.nombrePadre);
+        this.entidadTablaForm.controls['idTablaEntidad'      ].setValue(this.DATA_ENTIDAD.idTablaEntidad);
+
     }
   }
 
-  listEntidad: any[] = [];
-  getListEntidades(){
-    let parametro: any[] = [{queryId: 47}];
 
-    this.entidadService.getListEntidades(parametro[0]).subscribe((resp: any) => {
-      this.listEntidad = resp.list;
-      // console.log('List-Ent', this.listEntidad, this.listEntidad.length);
-    });
-  }
 
   campoNoValido(campo: string): boolean {
     if ( this.entidadTablaForm.get(campo)?.invalid && this.entidadTablaForm.get(campo)?.touched ) {
@@ -163,7 +191,7 @@ export class ModalEntidadtablaComponent implements OnInit {
 
   userId() {
     this.authService.getCurrentUser().subscribe((resp) => {
-      this.userID = resp.userId;
+      this.userID = resp.user.userId;
       // console.log('ID-USER', this.userID);
     });
   }
