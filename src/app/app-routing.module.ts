@@ -32,11 +32,12 @@ const routes: Routes = [
         // data: {rol_menu: [PERMISSION.MENU_MANTENIMIENTO]}
       },
       {
-        path:'facturacion',
+        path:'factura',
         loadChildren: () => import ('./views/pages/facturacion/facturacion.module').then((m)=>m.FacturacionModule),
         canActivate: [ValidarTokenGuard],
         // data: {rol_menu: [PERMISSION.MENU_FACTURACION]}
       },
+
       {path: '', redirectTo: 'home', pathMatch: 'full'},
       { path:'**', redirectTo:'/error/404' }
     ]

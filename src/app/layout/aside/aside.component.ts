@@ -110,7 +110,7 @@ export class AsideComponent implements OnInit {
       order: 1,
       icon: 'currency_exchange',
       type: 'PAREN',
-      link: 'facturacion',
+      link: 'factura',
       enable: false,
       module: 'administrador',
       displayed: false,
@@ -122,7 +122,7 @@ export class AsideComponent implements OnInit {
           order: 3,
           icon: 'paid',
           type: 'PAREN',
-          link: 'facturacion/ventas',
+          link: 'factura/liquidacion',
           enable: false,
           module: 'PAS',
           displayed: false,
@@ -134,7 +134,7 @@ export class AsideComponent implements OnInit {
           order: 3,
           icon: 'bar_chart',
           type: 'PAREN',
-          link: 'facturacion/reporte',
+          link: 'factura/reporte',
           enable: false,
           module: 'PAS',
           displayed: false,
@@ -142,6 +142,7 @@ export class AsideComponent implements OnInit {
         }
       ],
     },
+
   ];
 
   constructor(

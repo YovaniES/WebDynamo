@@ -5,5 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './reporte-liquidacion.component.html',
 })
 export class ReporteLiquidacionComponent {
+  isExpanded = false;
+
+  toggle() {
+    this.isExpanded = !this.isExpanded;
+  }
 
 }
