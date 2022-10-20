@@ -1,0 +1,17 @@
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
+}
+
+tr.mat-row.cdk-row { height: 28px; vertical-align: middle; }
+th.mat-header-cell.cdk-header-cell { text-align: center; font-weight: bold; }
+
+.mat-row:nth-child(n + 1) {
+  background-color: #f5f5f5;
+}
+.mat-row:not(:nth-child(2n + 1)) {
+  background-color: #ffffff;
+}

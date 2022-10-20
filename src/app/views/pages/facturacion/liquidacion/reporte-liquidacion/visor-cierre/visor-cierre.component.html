@@ -1,0 +1,250 @@
+<input
+  id="ckh2h"
+  (click)="filtrar(this)"
+  type="button"
+  style="height: 0px; width: 0px; visibility: hidden"/>
+<p *ngIf="!resultadoV"><em>Loading...</em></p>
+
+<div class="row">
+  <div class="col-lg-6 col-12">
+    <h3>Liquidación de Venta por Estado</h3>
+    <div class="chart-wrapper">
+      <canvas
+        baseChart
+        [data]="pieChartData"
+        [labels]="pieChartLabels"
+        [chartType]="pieChartType"
+        [options]="pieChartOptions"
+        [plugins]="pieChartPlugins"
+        [legend]="pieChartLegend">
+      </canvas>
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-12">
+    <h3>Liquidación de Venta por Proyecto</h3>
+    <div style="display: block">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [legend]="barChartLegend"
+        [chartType]="barChartType">
+      </canvas>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="card">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table mat-table
+          [dataSource]="dataSource"
+          class="table table-sm table-centered mb-0"
+          style="font-size: small">
+
+          <ng-container matColumnDef="periodo">
+            <th mat-header-cell *matHeaderCellDef>Periodo</th>
+            <td mat-cell *matCellDef="let element">
+              <span> {{ element.periodo | date: "yyyy-MM" }} </span>
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="proyecto">
+            <th mat-header-cell *matHeaderCellDef>Proyecto</th>
+            <td mat-cell *matCellDef="let element">{{ element.proyecto }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="importe">
+            <th mat-header-cell *matHeaderCellDef>Importe</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              {{ element.importe | number: "3.2-2" }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef style="text-align: center">
+              {{ total(1) | number: "3.2-2" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actas">
+            <th mat-header-cell *matHeaderCellDef>Avance</th>
+            <td mat-cell *matCellDef="let element">
+              <div class="progress-group">
+                <!-- <div class="progress progress-sm" (click)="open(content,element.proyecto,element.periodo,'LI')" (contextmenu)="open(content1,element.pr_id,element.tema)" title="Click para acceder al detalle">
+                  <div class="progress-bar bg-cyan" [ngStyle]="{'width': (100*element.avance / element.actas ) + '%' }"></div>
+                </div> -->
+              </div>
+            </td>
+            <td mat-footer-cell *matFooterCellDef>Total</td>
+          </ng-container>
+
+          <ng-container matColumnDef="avance">
+            <th mat-header-cell *matHeaderCellDef>Detalle</th>
+            <td mat-cell *matCellDef="let element">
+              <span>
+                <b>{{ ((100 * element.avance) / element.actas).toFixed(1)}}<sup style="font-size: 10px">%</sup></b>
+              </span>
+              ( {{ element.avance }}/{{ element.actas }} )
+            </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+
+          <ng-container matColumnDef="venta_declarada">
+            <th mat-header-cell *matHeaderCellDef>Declarado</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              <a (click)="open(content1, element.proyecto, element.periodo, 'VD')">{{ element.venta_declarada | number: "3.2-2" }}</a>
+            </td>
+            <td mat-footer-cell *matFooterCellDef style="text-align: center">{{ total(2) | number: "3.2-2" }}</td></ng-container>
+
+          <ng-container matColumnDef="facturado">
+            <th mat-header-cell *matHeaderCellDef>Facturado</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              <a (click)="open(content1, element.proyecto, element.periodo, 'FC')">{{ element.facturado | number: "3.2-2" }}</a>
+            </td>
+            <td mat-footer-cell *matFooterCellDef style="text-align: center">{{ total(3) | number: "3.2-2" }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="certificado">
+            <th mat-header-cell *matHeaderCellDef>Certificado</th>
+            <td mat-cell *matCellDef="let element" style="text-align: center">
+              <a (click)="open(content1, element.proyecto, element.periodo, 'CR')">{{ element.certificado | number: "3.2-2" }}</a>
+            </td>
+            <td mat-footer-cell *matFooterCellDef style="text-align: center">
+              {{ total(4) | number: "3.2-2" }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row
+            style="text-align: center"
+            *matHeaderRowDef="displayedColumns">
+          </tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr mat-footer-row
+            *matFooterRowDef="displayedColumns; sticky: true">
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title" id="modal-basic-title">
+      <span id="headertxt">Profile update</span>
+    </h6>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="!caspru"><em>Loading...</em></p>
+
+    <table class="table table-bordered table-sm" style="font-size:x-small" cellpadding="0">
+      <thead>
+        <tr>
+          <th>Gestor</th>
+          <th>Sub Servicio</th>
+          <th>Estado</th>
+          <th>Importe</th>
+          <th>Declarado</th>
+          <th>Facturado</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let x of casprux">
+        <tr>
+          <td [attr.rowspan]="x.requerimientos.length"><span>{{ x.torneo }}</span></td>
+          <td><span>{{x.requerimientos[0].subservicio}}</span></td>
+          <td><span [ngStyle]="{'color': (x.requerimientos[0].estado == 'En Elaboración') ? 'red' : (x.requerimientos[0].estado == 'Enviado') ? 'blue' : 'green'  }"> {{x.requerimientos[0].estado}} </span></td>
+          <td><span>{{x.requerimientos[0].importe  | number:'3.2-2'}}</span></td>
+          <td><span>{{x.requerimientos[0].declarado| number:'3.2-2'}}</span></td>
+          <td><span>{{x.requerimientos[0].facturado| number:'3.2-2'}}</span></td>
+        </tr>
+
+        <tr *ngFor="let item of x.requerimientos| slice:1; let i = index;">
+          <!-- <td><span>{{item.subservicio}}</span></td>
+          <td><span  [ngStyle]="{'color':  (item.estado == 'En Elaboración') ? 'red': (item.estado == 'Enviado') ? 'blue' : 'green'  }"> {{item.estado}} </span></td>
+          <td><span>{{item.importe  | number:'3.2-2'}}</span></td>
+          <td><span>{{item.declarado| number:'3.2-2'}}</span></td>
+          <td><span>{{item.facturado| number:'3.2-2'}}</span></td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')">
+      Cerrar
+    </button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #content1 let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title" id="modal-basic-title">
+      <span id="headertxt">Profile update</span>
+    </h6>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="!caspru"><em>Loading...</em></p>
+
+    <!-- <table class="table table-bordered table-sm" style="font-size:x-small" cellpadding="0">
+      <thead>
+        <tr>
+          <th>Gestor</th>
+          <th>Sub Servicio</th>
+          <th>Periodo Liquidado</th>
+          <th>Importe</th>
+
+        </tr>
+      </thead>
+      <tbody *ngFor="let x of casprux">
+        <tr>
+          <td [attr.rowspan]="x.requerimientos.length"><span>{{ x.torneo }}</span></td>
+          <td><span>{{x.requerimientos[0].subservicio}}</span></td>
+          <td>
+            <span > {{x.requerimientos[0].periodo}} </span>
+          </td>
+          <td><span>{{x.requerimientos[0].venta_declarada| number:'3.2-2' }}
+          </span></td>
+
+
+        </tr>
+        <tr *ngFor="let item of x.requerimientos| slice:1; let i = index;">
+          <td><span>{{item.subservicio}}</span></td>
+          <td>
+            <span   > {{item.periodo}} </span>
+          </td>
+          <td><span>{{item.venta_declarada| number:'3.2-2' }} </span></td>
+        </tr>
+      </tbody>
+    </table> -->
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')">
+      Cerrar
+    </button>
+  </div>
+</ng-template>

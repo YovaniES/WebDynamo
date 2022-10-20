@@ -2,29 +2,27 @@
   id="ckh2h"
   (click)="filtrar(this)"
   type="button"
-  style="height: 0px; width: 0px; visibility: hidden"
-/>
+  style="height: 0px; width: 0px; visibility: hidden"/>
 <p *ngIf="!resultadoV"><em>Loading...</em></p>
 
 <div class="row">
   <div class="col-lg-6 col-12">
-    <h3 style="font-size: 20px; font-weight: 500">Liquidaciones activas por Lider</h3>
-
+    <h3 style="font-size: 20px; font-weight: 500">Facturas por Periodo</h3>
     <div class="chart-wrapper">
       <canvas
         baseChart
         [data]="pieChartData"
         [labels]="pieChartLabels"
+        [chartType]="pieChartType"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
-        [legend]="pieChartLegend"
-        [chartType]="pieChartType">
+        [legend]="pieChartLegend">
       </canvas>
     </div>
   </div>
 
   <div class="col-lg-6 col-12">
-    <h3 style="font-size: 20px; font-weight: 500">Liquidaciones activas por Periodo</h3>
+    <h3 style="font-size: 20px; font-weight: 500">Facturas por Proyecto</h3>
     <div style="display: block">
       <canvas
         baseChart
@@ -32,7 +30,8 @@
         [labels]="barChartLabels"
         [options]="barChartOptions"
         [legend]="barChartLegend"
-        [chartType]="barChartType">
+        [chartType]="barChartType"
+        >
         <!-- [plugins]="barChartPlugins" -->
       </canvas>
     </div>
@@ -43,7 +42,7 @@
   <div class="card" style="padding: 10px">
     <div class="card-header border-transparent" style="display: flex" class="mt-2 mb-1">
       <h3 class="card-title">
-        <span id="titulo">Pendiente de Facturar :: ({{ sum | number: "5.2-2" }})</span>
+        <span id="titulo"> Facturado :: ({{ sum | number: "5.2-2" }})</span>
       </h3>
 
       <div class="flex-1"></div>
@@ -61,17 +60,18 @@
         <table
           id="tbRes"
           class="table table-sm table-centered mb-0"
-          style="font-size: small">
+          style="font-size: small"
+        >
           <thead>
             <tr>
+              <th>Periodo</th>
               <th>Proyecto</th>
               <th>Lider</th>
-              <th>Periodo</th>
               <th>Sub Servicio</th>
               <th>Estado</th>
-              <th>Importe</th>
-              <th>Facturado</th>
-              <th>DPF/ALO</th>
+              <th>Factura</th>
+              <th>Monto Facturado</th>
+              <th>OC - Certificacion</th>
             </tr>
           </thead>
           <tbody>
@@ -80,16 +80,17 @@
               currentPage : page,
               totalItems  : totalFacturas
             } ">
-              <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> -->
-                {{ cate.proyecto }}
+              <td>
+                <!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> -->
+                {{ cate.periodo }}
               </td>
+              <td>{{ cate.proyecto }}</td>
               <td>{{ cate.lider }}</td>
-              <td>{{ cate.periodo }}</td>
-              <td>{{ cate.subservicio }}</td>
+              <td>{{ cate.subServicio }}</td>
               <td>{{ cate.estado }}</td>
-              <td>{{ cate.importe | number: "3.2-2" }}</td>
+              <td>{{ cate.factura }}</td>
               <td>{{ cate.monto_facturado | number: "3.2-2" }}</td>
-              <td>{{ cate.monto_facturado - cate.importe | number: "3.2-2" }}</td>
+              <td>{{ cate.orden_compra + " - " + cate.cod_certificacion }}</td>
             </tr>
           </tbody>
         </table>

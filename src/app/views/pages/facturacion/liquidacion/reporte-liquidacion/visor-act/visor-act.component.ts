@@ -22,60 +22,57 @@ export class VisorActComponent implements OnInit {
 
   pieChartOptions: ChartOptions = {
       responsive: true,
+      onClick: function (e: any) {
+          // var element = this.getElementAtEvent(e);
 
-      // onClick: function (e: any) {
-      //     var element = this.getElementAtEvent(e);
-      //     if (element.length) {
-      //         (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-      //         document.getElementById('ckh2h').click();
-      //         console.log(element[0]._view.label)
-      //     }
-      // },
-
+          // if (element.length) {
+          //     (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+          //     (<HTMLInputElement>document.getElementById('ckh2h')).click();
+          //     console.log(element[0]._view.label)
+          // }
+      },
   };
-  public pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
-  public pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
-  public pieChartType: ChartType = 'pie';
-  public pieChartLegend = true;
-  public pieChartPlugins = [];
+
+    pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
+    pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
+    pieChartType: ChartType = 'pie';
+    pieChartLegend = true;
+    pieChartPlugins = [];
 
 
-  public barChartOptions: ChartOptions = {
+    barChartOptions: ChartOptions = {
       responsive: true,
-
       // onClick: function (e: any) {
       //     var element = this.getElementAtEvent(e);
       //     if (element.length) {
 
       //         (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-      //         document.getElementById('ckh2h').click();
+      //         (<HTMLInputElement>document.getElementById('ckh2h')).click();
       //         console.log(element[0]._view.label)
-
       //     }
       // },
 
-      // We use these empty structures as placeholders for dynamic theming.
-
       scales: {
-          xAxes: [{ stacked: true }], yAxes: [{
-              stacked: true
-          }]
+          xAxes: [{ stacked: true }],
+          yAxes: [{stacked: true}]
       },
+
       plugins: {
           datalabels: {
               anchor: 'center',
               align: 'center',
-            //   display: function (context: { dataset: { data: { [x: string]: number; }; }; dataIndex: string | number; }) {
-            //       return context.dataset.data[context.dataIndex] > 0;
-            //   },
+              // display: function (context: { dataset: { data: { [x: string]: number; }; }; dataIndex: string | number; }): boolean {
+              //     return context.dataset.data[context.dataIndex] > 0;
+              // },
           }
       }
   };
-  public barChartLabels: Label[] = [];
-  public barChartType: ChartType = 'bar';
-  public barChartLegend = true;
-  public barChartPlugins = [pluginDataLabels];
-  public barChartData: ChartDataSets[] = [
+
+    barChartLabels: Label[] = [];
+    barChartType: ChartType = 'bar';
+    barChartLegend = true;
+    barChartPlugins = [pluginDataLabels];
+    barChartData: ChartDataSets[] = [
       { data: [], label: '' }
   ];
 
@@ -85,21 +82,16 @@ export class VisorActComponent implements OnInit {
       const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
 
       const book: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(book, worksheet, 'Sheet1');
+      XLSX.utils.book_append_sheet(book, worksheet, 'Liq. Act');
 
       XLSX.writeFile(book, this.name);
     }
 
-  constructor(private http: HttpClient,
-      ) {
-
-
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.getDataReport();
   }
-
 
   getDataReport(){
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=3').subscribe((result: any[]) => {
@@ -122,9 +114,7 @@ export class VisorActComponent implements OnInit {
               }, {});
           }
 
-
           const groupedData = groupBy(this.resultadoV, 'periodo');
-
           const reducedData = [];
 
           for (let key in groupedData) {
@@ -148,12 +138,7 @@ export class VisorActComponent implements OnInit {
             label: 'Proyecto',
             data: reducedData.sort((a,b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Planificados"])
          },
-        //  {
-        //     label: 'Derivado',
-        //     data: reducedData.sort((a,b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Derivados"])
-        //  }
         ]
-
 
           this.barChartLabels = reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["fecha"]);
           console.log(res);
@@ -176,28 +161,24 @@ export class VisorActComponent implements OnInit {
           var res = [];
           for (var x in res0) {
               res0.hasOwnProperty(x) && res.push(x)
-
           }
           this.pieChartLabels = res;
 
       }, error => console.error(error));
   }
 
-
   // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
       console.log(event, active);
       alert("hola");
   }
 
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
       console.log(event, active);
       alert("hola");
   }
 
-  public filtrar(flt: any) {
-      // Only Change 3 values
-
+    filtrar(flt: any) {
       var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
       var arrayDeCadenas = inputValue.split("|");
 
@@ -210,16 +191,10 @@ export class VisorActComponent implements OnInit {
       }
       this.suma();
 
-      // document.getElementById('titulo').innerText = "Pendiente de Facturar:: " + arrayDeCadenas[0] + "(" + this.sum.toLocaleString('es-PE') + ")";
-
-
-
-
-      //document.getElementById('titulo').innerText = document.getElementById('titulo').innerText + "(" + this.sum + ")";
+      (<HTMLInputElement>document.getElementById('titulo')).innerText = "Pendiente de Facturar:: " + arrayDeCadenas[0] + "(" + this.sum.toLocaleString('es-PE') + ")";
   }
 
-  public suma()
-  {
+    suma(): void{
       this.sum = this.resultadoV.map((a: { importe: number; monto_facturado: number; }) => a.importe - a.monto_facturado).reduce(function(a: any, b: any)
       {
         return a + b;
@@ -230,17 +205,12 @@ export class VisorActComponent implements OnInit {
 
   totalfiltro = 0;
   cambiarPagina(event: number) {
-    let offset = event*10;
-    // this.spinner.show();
 
     if (this.totalfiltro != this.totalFacturas) {
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=3').subscribe((result: any[]) => {
       this.resultadoV = result;
     })
-  } else {
-      // this.spinner.hide();
     }
-      this.page = event;
+    this.page = event;
   }
-
 }
