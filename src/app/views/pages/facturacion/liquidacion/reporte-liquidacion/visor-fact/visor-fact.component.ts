@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
@@ -20,9 +20,18 @@ export class VisorFactComponent implements OnInit {
   resultadoNV: any;
   sum!: number;
 
-  pieChartOptions: ChartOptions = {
-      responsive: true,
-  };
+  pieChartOptions: any = {
+    responsive: true,
+
+    onClick: function (e: any) {
+      var element = this.getElementAtEvent(e);
+      if (element.length) {
+          (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+          (<HTMLInputElement>document.getElementById('ckh2h')).click();
+          console.log(element[0]._view.label)
+        }
+      },
+    };
 
   pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
   pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
@@ -31,9 +40,19 @@ export class VisorFactComponent implements OnInit {
   pieChartPlugins = [chartDataLabels];
 
 
-  barChartOptions: ChartOptions = {
-      responsive: true,
-  };
+  barChartOptions: any = {
+    responsive: true,
+
+    onClick: function (e: any) {
+      var element = this.getElementAtEvent(e);
+      if (element.length) {
+
+          (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
+          (<HTMLInputElement>document.getElementById('ckh2h')).click();
+          console.log(element[0]._view.label)
+      }
+    }
+   };
 
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
@@ -60,36 +79,6 @@ export class VisorFactComponent implements OnInit {
     this.getInitializerFact();
   }
 
-  dibujarPie(e: any){
-    console.log('DUBUJAR_PIE', e);
-
-    // this.chart.getElementAtEvent(e)
-    const chart = e.active[0]._chart;
-
-    console.log('CHART_PIE', chart);
-    var element: any = chart.getElementAtEvent(e.event);
-
-          if (element.length) {
-              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-              (<HTMLInputElement>document.getElementById('ckh2h')).click();
-              console.log(element[0]._view.label)
-          }
-    }
-
-  dibujarBar(e: any){
-    console.log('DUBUJAR_BAR', e);
-
-    const chart = e.active[0]._chart;
-
-    console.log('CHART_BAR', chart);
-    var element: any = chart.getElementAtEvent(e.event);
-
-          if (element.length) {
-              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-              (<HTMLInputElement>document.getElementById('ckh2h')).click();
-              console.log(element[0]._view.label)
-          }
-    }
   getInitializerFact(){
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=2').subscribe((result: any[]) => {
 
@@ -206,16 +195,12 @@ export class VisorFactComponent implements OnInit {
 
   totalfiltro = 0;
   cambiarPagina(event: number) {
-    let offset = event*10;
-    // this.spinner.show();
 
     if (this.totalfiltro != this.totalFacturas) {
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=2').subscribe((result: any[]) => {
       this.resultadoV = result;
     })
-  } else {
-      // this.spinner.hide();
-    }
-      this.page = event;
+  }
+    this.page = event;
   }
 }

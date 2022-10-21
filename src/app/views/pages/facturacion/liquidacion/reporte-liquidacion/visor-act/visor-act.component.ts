@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
@@ -15,13 +15,22 @@ export class VisorActComponent implements OnInit {
   totalFacturas: number = 0;
   pageSize = 10;
 
-  resultado!: any[];
-  resultadoV: any[] = [];
+  resultado  : any[] = [];
+  resultadoV : any[] = [];
   resultadoNV: any;
   sum!: number;
 
-  pieChartOptions: ChartOptions = {
-      responsive: true,
+  pieChartOptions: any = {
+    responsive: true,
+
+    onClick: function (e: any) {
+      var element = this.getElementAtEvent(e);
+      if (element.length) {
+          (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+          (<HTMLInputElement>document.getElementById('ckh2h')).click();
+          console.log(element[0]._view.label)
+        }
+      },
     };
 
     pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
@@ -31,9 +40,19 @@ export class VisorActComponent implements OnInit {
     pieChartPlugins = [chartDataLabels];
 
 
-    barChartOptions: ChartOptions = {
+    barChartOptions: any = {
       responsive: true,
-    };
+
+      onClick: function (e: any) {
+        var element = this.getElementAtEvent(e);
+        if (element.length) {
+
+            (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
+            (<HTMLInputElement>document.getElementById('ckh2h')).click();
+            console.log(element[0]._view.label)
+        }
+      }
+     };
 
     barChartLabels: Label[] = [];
     barChartType: ChartType = 'bar';
@@ -54,40 +73,10 @@ export class VisorActComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.getDataReport();
+    this.initializerDataAct();
   }
 
-  dibujarPie(e: any){
-    console.log('DUBUJAR_PIE', e);
-
-    const chart = e.active[0]._chart;
-
-    console.log('CHART_PIE', chart);
-    var element: any = chart.getElementAtEvent(e.event);
-
-          if (element.length) {
-              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-              (<HTMLInputElement>document.getElementById('ckh2h')).click();
-              console.log(element[0]._view.label)
-          }
-    }
-
-  dibujarBar(e: any){
-    console.log('DUBUJAR_BAR', e);
-
-    const chart = e.active[0]._chart;
-
-    console.log('CHART_BAR', chart);
-    var element: any = chart.getElementAtEvent(e.event);
-
-          if (element.length) {
-              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-              (<HTMLInputElement>document.getElementById('ckh2h')).click();
-              console.log(element[0]._view.label)
-          }
-    }
-
-  getDataReport(){
+  initializerDataAct(){
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=3').subscribe((result: any[]) => {
 
           this.resultado = result;
@@ -188,8 +177,7 @@ export class VisorActComponent implements OnInit {
     }
 
     suma(): void{
-      this.sum = this.resultadoV.map((a: { importe: number; monto_facturado: number; }) => a.importe - a.monto_facturado).reduce(function(a: any, b: any)
-      {
+      this.sum = this.resultadoV.map((a: { importe: number; monto_facturado: number; }) => a.importe - a.monto_facturado).reduce(function(a: any, b: any){
         return a + b;
       })
       console.log(this.sum);

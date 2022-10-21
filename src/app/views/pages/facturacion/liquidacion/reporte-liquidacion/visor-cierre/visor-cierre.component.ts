@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
-// import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
@@ -12,18 +11,29 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./visor-cierre.component.scss']
 })
 export class VisorCierreComponent implements OnInit {
+
   resultado  : any[] = [];
   resultadoV : any[] = [];
   resultadoR : any[] = [];
   resultadoVF: any[] = [];
   resultadoNV: any;
   sum!: number;
+
   caspru: any[] | null = [];
   casprux: { torneo: string; requerimientos: any[]; }[] = [];
   closeResult!: string;
 
-  pieChartOptions: ChartOptions = {
-      responsive: true,
+  pieChartOptions: any = {
+    responsive: true,
+
+    onClick: function (e: any) {
+      var element = this.getElementAtEvent(e);
+      if (element.length) {
+          (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+          (<HTMLInputElement>document.getElementById('ckh2h')).click();
+          console.log(element[0]._view.label)
+        }
+      },
     };
 
   pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
@@ -33,23 +43,32 @@ export class VisorCierreComponent implements OnInit {
   pieChartPlugins = [chartDataLabels];
 
 
-  barChartOptions: ChartOptions = {
-      responsive: true,
-      // scales: {
-      //     xAxes: [{ stacked: true }], yAxes: [{
-      //         stacked: true
-      //     }]
-      // },
-      // plugins: {
-      //     datalabels: {
-      //         anchor: 'center',
-      //         align: 'center',
-      //         display: function (context) {
-      //             return context.dataset.data[context.dataIndex] > 0;
-      //         },
-      //     }
-      // }
-  };
+  barChartOptions: any = {
+        responsive: true,
+
+        onClick: function (e: any) {
+            var element = this.getElementAtEvent(e);
+            if (element.length) {
+
+                (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
+                (<HTMLInputElement>document.getElementById('ckh2h')).click();
+                console.log(element[0]._view.label)
+            }
+        },
+
+        scales: {
+            xAxes: [{ stacked: true }], yAxes: [{
+                stacked: true
+            }]
+        },
+        plugins: {
+            datalabels: {
+                anchor: 'center',
+                align: 'center',
+                display: (context: any) => context.dataset.data[context.dataIndex] > 0,
+            }
+        }
+    };
 
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
@@ -67,38 +86,6 @@ export class VisorCierreComponent implements OnInit {
   ngOnInit() {
     this.getDataCierre();
   }
-
-  dibujarPie(e: any){
-    console.log('DUBUJAR_PIE', e);
-
-    // this.chart.getElementAtEvent(e)
-    const chart = e.active[0]._chart;
-
-    console.log('CHART_PIE', chart);
-    var element: any = chart.getElementAtEvent(e.event);
-
-          if (element.length) {
-              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-              (<HTMLInputElement>document.getElementById('ckh2h')).click();
-              console.log(element[0]._view.label)
-          }
-    }
-
-  dibujarBar(e: any){
-    console.log('DUBUJAR_BAR', e);
-
-    // this.chart.getElementAtEvent(e)
-    const chart = e.active[0]._chart;
-
-    console.log('CHART_BAR', chart);
-    var element: any = chart.getElementAtEvent(e.event);
-
-          if (element.length) {
-              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-              (<HTMLInputElement>document.getElementById('ckh2h')).click();
-              console.log(element[0]._view.label)
-          }
-    }
 
   getDataCierre(){
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=1').subscribe((result: any[]) => {
@@ -127,15 +114,15 @@ export class VisorCierreComponent implements OnInit {
 
       for (let key in groupedData) {
           let initialValue = 0;
-          let sum = groupedData[key].reduce((accumulator: number, currentValue: { grupo: string; }) => {
+          let sum = groupedData[key].reduce((accumulator: any, currentValue: any) => {
               return accumulator + (currentValue.grupo == "EyP" ? 1 : 0);
           }, initialValue)
 
-          let sumd = groupedData[key].reduce((accumulator: number, currentValue: { grupo: string; }) => {
+          let sumd = groupedData[key].reduce((accumulator: number, currentValue: any) => {
               return accumulator + (currentValue.grupo == "Controller" ? 1 : 0);
           }, initialValue)
 
-          let sumf = groupedData[key].reduce((accumulator: number, currentValue: { grupo: string; }) => {
+          let sumf = groupedData[key].reduce((accumulator: any, currentValue: any) => {
               return accumulator + (currentValue.grupo == "Facturación" ? 1 : 0);
           }, initialValue)
 
@@ -158,8 +145,8 @@ export class VisorCierreComponent implements OnInit {
           data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Facturar"])}
        ]
 
-      // this.barChartLabels = reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["fecha"]);
-      console.log(res);
+      this.barChartLabels = reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["fecha"]);
+      console.log('SUM_BAR', res);
 
       var res0 = [];
 
@@ -249,15 +236,15 @@ export class VisorCierreComponent implements OnInit {
     }
 
   // events
-  chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-      console.log(event, active);
-      alert("hola");
-  }
+  // chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  //     console.log(event, active);
+  //     alert("hola");
+  // }
 
-  chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-      console.log(event, active);
-      alert("hola");
-  }
+  // chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  //     console.log(event, active);
+  //     alert("hola");
+  // }
 
   // Titulo del modal
   filtrar(flt: any) {

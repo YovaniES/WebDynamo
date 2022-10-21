@@ -14,7 +14,6 @@
         [data]="pieChartData"
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
-        (chartClick)="dibujarPie($event)"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
         [legend]="pieChartLegend">
@@ -29,7 +28,6 @@
         baseChart
         [datasets]="barChartData"
         [labels]="barChartLabels"
-        (chartClick)="dibujarBar($event)"
         [options]="barChartOptions"
         [legend]="barChartLegend"
         [chartType]="barChartType"
@@ -44,7 +42,7 @@
   <div class="card" style="padding: 10px">
     <div class="card-header border-transparent" style="display: flex" class="mt-2 mb-1">
       <h3 class="card-title">
-        <span id="titulo"> Facturado :: ({{ sum | number: "5.2-2" }})</span>
+        <span style="font-weight: 600;" id="titulo"> Facturado :: ({{ sum | number: "5.2-2" }})</span>
       </h3>
 
       <div class="flex-1"></div>

@@ -17,7 +17,6 @@
         [labels]="pieChartLabels"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
-        (chartClick)="dibujarPie($event)"
         [legend]="pieChartLegend"
         [chartType]="pieChartType">
       </canvas>
@@ -34,7 +33,6 @@
         [options]="barChartOptions"
         [legend]="barChartLegend"
         [plugins]="barChartPlugins"
-        (chartClick)="dibujarBar($event)"
         [chartType]="barChartType">
       </canvas>
     </div>
@@ -45,7 +43,7 @@
   <div class="card" style="padding: 10px">
     <div class="card-header border-transparent" style="display: flex" class="mt-2 mb-1">
       <h3 class="card-title">
-        <span id="titulo">Pendiente de Facturar :: ({{ sum | number: "5.2-2" }})</span>
+        <span style="font-weight: 600;" id="titulo">Pendiente de Facturar :: ({{ sum | number: "5.2-2" }})</span>
       </h3>
 
       <div class="flex-1"></div>
