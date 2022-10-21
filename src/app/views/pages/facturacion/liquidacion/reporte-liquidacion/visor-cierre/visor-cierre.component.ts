@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import chartDataLabels from 'chartjs-plugin-datalabels';
+// import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-visor-cierre',
@@ -10,80 +12,93 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./visor-cierre.component.scss']
 })
 export class VisorCierreComponent implements OnInit {
-  resultado: any[] = [];
-  resultadoV: any[] = [];
-  resultadoR: any[] = [];
+  resultado  : any[] = [];
+  resultadoV : any[] = [];
+  resultadoR : any[] = [];
   resultadoVF: any[] = [];
   resultadoNV: any;
   sum!: number;
   caspru: any[] | null = [];
-  casprux: { torneo: string; requerimientos: any; }[] = [];
+  casprux: { torneo: string; requerimientos: any[]; }[] = [];
   closeResult!: string;
 
   pieChartOptions: ChartOptions = {
       responsive: true,
+    };
 
-      // onClick: function (e) {
-      //     var element = this.getElementAtEvent(e);
-      //     if (element.length) {
-      //         (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-      //         document.getElementById('ckh2h').click();
-      //         console.log(element[0]._view.label)
-      //     }
-      // },
-
-  };
   pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
   pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
   pieChartType: ChartType = 'pie';
   pieChartLegend = true;
-  pieChartPlugins = [];
+  pieChartPlugins = [chartDataLabels];
 
 
   barChartOptions: ChartOptions = {
       responsive: true,
-
-      // onClick: function (e) {
-      //     var element = this.getElementAtEvent(e);
-      //     if (element.length) {
-
-      //         (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-      //         document.getElementById('ckh2h').click();
-      //         console.log(element[0]._view.label)
-      //     }
+      // scales: {
+      //     xAxes: [{ stacked: true }], yAxes: [{
+      //         stacked: true
+      //     }]
       // },
-
-      scales: {
-          xAxes: [{ stacked: true }], yAxes: [{
-              stacked: true
-          }]
-      },
-      plugins: {
-          datalabels: {
-              anchor: 'center',
-              align: 'center',
-              // display: function (context) {
-              //     return context.dataset.data[context.dataIndex] > 0;
-              // },
-          }
-      }
+      // plugins: {
+      //     datalabels: {
+      //         anchor: 'center',
+      //         align: 'center',
+      //         display: function (context) {
+      //             return context.dataset.data[context.dataIndex] > 0;
+      //         },
+      //     }
+      // }
   };
+
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
   barChartLegend = true;
-  barChartPlugins = [pluginDataLabels];
+  barChartPlugins = [chartDataLabels];
   barChartData: ChartDataSets[] = [{ data: [], label: '' }];
 
   displayedColumns: string[] = [];
   dataSource: any[] = [];
 
   constructor(private http: HttpClient,
-      // private modalService: NgbModal,
+              private modalService: NgbModal,
       ) {}
 
   ngOnInit() {
     this.getDataCierre();
   }
+
+  dibujarPie(e: any){
+    console.log('DUBUJAR_PIE', e);
+
+    // this.chart.getElementAtEvent(e)
+    const chart = e.active[0]._chart;
+
+    console.log('CHART_PIE', chart);
+    var element: any = chart.getElementAtEvent(e.event);
+
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
+
+  dibujarBar(e: any){
+    console.log('DUBUJAR_BAR', e);
+
+    // this.chart.getElementAtEvent(e)
+    const chart = e.active[0]._chart;
+
+    console.log('CHART_BAR', chart);
+    var element: any = chart.getElementAtEvent(e.event);
+
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
 
   getDataCierre(){
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=1').subscribe((result: any[]) => {
@@ -112,40 +127,36 @@ export class VisorCierreComponent implements OnInit {
 
       for (let key in groupedData) {
           let initialValue = 0;
-          let sum = groupedData[key].reduce((accumulator: string | number, currentValue: { grupo: string; }) => {
-              return +accumulator + (currentValue.grupo == "EyP" ? 1 : 0);
+          let sum = groupedData[key].reduce((accumulator: number, currentValue: { grupo: string; }) => {
+              return accumulator + (currentValue.grupo == "EyP" ? 1 : 0);
           }, initialValue)
 
-          let sumd = groupedData[key].reduce((accumulator: string | number, currentValue: { grupo: string; }) => {
-              return +accumulator + (currentValue.grupo == "Controller" ? 1 : 0);
+          let sumd = groupedData[key].reduce((accumulator: number, currentValue: { grupo: string; }) => {
+              return accumulator + (currentValue.grupo == "Controller" ? 1 : 0);
           }, initialValue)
 
-          let sumf = groupedData[key].reduce((accumulator: string | number, currentValue: { grupo: string; }) => {
-              return +accumulator + (currentValue.grupo == "Facturación" ? 1 : 0);
+          let sumf = groupedData[key].reduce((accumulator: number, currentValue: { grupo: string; }) => {
+              return accumulator + (currentValue.grupo == "Facturación" ? 1 : 0);
           }, initialValue)
 
           reducedData.push({
-              Derivados: sumd,
+              Derivados   : sumd,
               Planificados: sum,
-              Facturar: sumf,
-              fecha: key
+              Facturar    : sumf,
+              fecha       : key
           });
       }
 
+      this.barChartData = [
+        { label: 'EyP',
+          data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Planificados"])},
 
-      this.barChartData = [{
-          label: 'EyP',
-          data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Planificados"])
-      },
-      {
-          label: 'Controller',
-          data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Derivados"])
-      }
-      ,
-      {
-          label: 'Facturación',
-          data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Facturar"])
-      }]
+        { label: 'Controller',
+          data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Derivados"])},
+
+        { label: 'Facturación',
+          data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Facturar"])}
+       ]
 
       // this.barChartLabels = reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["fecha"]);
       console.log(res);
@@ -190,13 +201,14 @@ export class VisorCierreComponent implements OnInit {
   }, error => console.error(error));
   }
 
-  open(content: any,proy: string,periodo: any,origen: string) {
+  open(content: any, proy: string, periodo: any, origen: string) {
+
       this.caspru = null;
-      // this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: any) => {
-      //   this.closeResult = `Closed with: ${result}`;
-      // }, (reason: any) => {
-      //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      // });
+      this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: any) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason: any) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
 
       if (origen=="LI")
       {
@@ -226,15 +238,15 @@ export class VisorCierreComponent implements OnInit {
       return false;
     }
 
-    // private getDismissReason(reason: any): string {
-    //   if (reason === ModalDismissReasons.ESC) {
-    //     return 'by pressing ESC';
-    //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-    //     return 'by clicking on a backdrop';
-    //   } else {
-    //     return `with: ${reason}`;
-    //   }
-    // }
+    private getDismissReason(reason: any): string {
+      if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+      } else {
+        return `with: ${reason}`;
+      }
+    }
 
   // events
   chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
@@ -255,9 +267,7 @@ export class VisorCierreComponent implements OnInit {
       this.resultadoV = this.resultado;
       if (arrayDeCadenas[1] == "e") {
           this.resultadoV = this.resultadoV.filter((task: { estado: string; }) => task.estado == arrayDeCadenas[0]);
-
-      }
-      else {
+      }else {
           this.resultadoV = this.resultadoV.filter((task: { proyecto: string; }) => task.proyecto == arrayDeCadenas[0]);
       }
       this.suma();
@@ -274,7 +284,7 @@ export class VisorCierreComponent implements OnInit {
   }
 
   total(vrv: number){
-  return vrv==1? this.resultadoR.reduce((accum: any, curr: { importe: any; }) => accum + curr.importe, 0) : vrv==3? this.resultadoR.reduce((accum: any, curr: { facturado: any; }) => accum + curr.facturado, 0) : vrv==4? this.resultadoR.reduce((accum: any, curr: { certificado: any; }) => accum + curr.certificado, 0) : this.resultadoR.reduce((accum: any, curr: { venta_declarada: any; }) => accum + curr.venta_declarada, 0);
+    return vrv==1? this.resultadoR.reduce((accum: any, curr: { importe: any; }) => accum + curr.importe, 0) : vrv==3? this.resultadoR.reduce((accum: any, curr: { facturado: any; }) => accum + curr.facturado, 0) : vrv==4? this.resultadoR.reduce((accum: any, curr: { certificado: any; }) => accum + curr.certificado, 0) : this.resultadoR.reduce((accum: any, curr: { venta_declarada: any; }) => accum + curr.venta_declarada, 0);
   }
 
 

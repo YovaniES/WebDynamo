@@ -3,8 +3,9 @@
   (click)="filtrar(this)"
   type="button"
   style="height: 0px; width: 0px; visibility: hidden"/>
-<p *ngIf="!resultadoV"><em>Loading...</em></p>
+  <p *ngIf="!resultadoV"><em>Loading...</em></p>
 
+  <!-- Graficas CIRCULAR-BAR -->
 <div class="row">
   <div class="col-lg-6 col-12">
     <h3>Liquidación de Venta por Estado</h3>
@@ -14,6 +15,7 @@
         [data]="pieChartData"
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
+        (chartClick)="dibujarPie($event)"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
         [legend]="pieChartLegend">
@@ -30,12 +32,15 @@
         [labels]="barChartLabels"
         [options]="barChartOptions"
         [legend]="barChartLegend"
+        (chartClick)="dibujarBar($event)"
+        [plugins]="barChartPlugins"
         [chartType]="barChartType">
       </canvas>
     </div>
   </div>
 </div>
 
+<!-- TABLA -->
 <div>
   <div class="card">
     <div class="card-body p-0">
@@ -73,9 +78,9 @@
             <th mat-header-cell *matHeaderCellDef>Avance</th>
             <td mat-cell *matCellDef="let element">
               <div class="progress-group">
-                <!-- <div class="progress progress-sm" (click)="open(content,element.proyecto,element.periodo,'LI')" (contextmenu)="open(content1,element.pr_id,element.tema)" title="Click para acceder al detalle">
+                <div class="progress progress-sm" (click)="open(content, element.proyecto, element.periodo,'LI')" (contextmenu)="open(content1, element.pr_id, element.tema, '')" title="Click para acceder al detalle">
                   <div class="progress-bar bg-cyan" [ngStyle]="{'width': (100*element.avance / element.actas ) + '%' }"></div>
-                </div> -->
+                </div>
               </div>
             </td>
             <td mat-footer-cell *matFooterCellDef>Total</td>
@@ -83,7 +88,7 @@
 
           <ng-container matColumnDef="avance">
             <th mat-header-cell *matHeaderCellDef>Detalle</th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element" style="text-align: center">
               <span>
                 <b>{{ ((100 * element.avance) / element.actas).toFixed(1)}}<sup style="font-size: 10px">%</sup></b>
               </span>
@@ -131,6 +136,9 @@
   </div>
 </div>
 
+
+
+<!-- MODAL 1 -->
 <ng-template #content let-modal>
   <div class="modal-header">
     <h6 class="modal-title" id="modal-basic-title">
@@ -169,11 +177,11 @@
         </tr>
 
         <tr *ngFor="let item of x.requerimientos| slice:1; let i = index;">
-          <!-- <td><span>{{item.subservicio}}</span></td>
+          <td><span>{{item.subservicio}}</span></td>
           <td><span  [ngStyle]="{'color':  (item.estado == 'En Elaboración') ? 'red': (item.estado == 'Enviado') ? 'blue' : 'green'  }"> {{item.estado}} </span></td>
           <td><span>{{item.importe  | number:'3.2-2'}}</span></td>
           <td><span>{{item.declarado| number:'3.2-2'}}</span></td>
-          <td><span>{{item.facturado| number:'3.2-2'}}</span></td> -->
+          <td><span>{{item.facturado| number:'3.2-2'}}</span></td>
         </tr>
       </tbody>
     </table>
@@ -189,7 +197,7 @@
 </ng-template>
 
 
-
+<!-- MODAL 2 -->
 <ng-template #content1 let-modal>
   <div class="modal-header">
     <h6 class="modal-title" id="modal-basic-title">
@@ -207,7 +215,7 @@
   <div class="modal-body">
     <p *ngIf="!caspru"><em>Loading...</em></p>
 
-    <!-- <table class="table table-bordered table-sm" style="font-size:x-small" cellpadding="0">
+    <table class="table table-bordered table-sm" style="font-size:x-small" cellpadding="0">
       <thead>
         <tr>
           <th>Gestor</th>
@@ -221,23 +229,16 @@
         <tr>
           <td [attr.rowspan]="x.requerimientos.length"><span>{{ x.torneo }}</span></td>
           <td><span>{{x.requerimientos[0].subservicio}}</span></td>
-          <td>
-            <span > {{x.requerimientos[0].periodo}} </span>
-          </td>
-          <td><span>{{x.requerimientos[0].venta_declarada| number:'3.2-2' }}
-          </span></td>
-
-
+          <td><span > {{x.requerimientos[0].periodo}} </span></td>
+          <td><span>{{x.requerimientos[0].venta_declarada| number:'3.2-2' }}</span></td>
         </tr>
         <tr *ngFor="let item of x.requerimientos| slice:1; let i = index;">
-          <td><span>{{item.subservicio}}</span></td>
-          <td>
-            <span   > {{item.periodo}} </span>
-          </td>
-          <td><span>{{item.venta_declarada| number:'3.2-2' }} </span></td>
+          <!-- <td><span>{{item.subservicio}}</span></td>
+          <td><span> {{item.periodo}} </span></td>
+          <td><span>{{item.venta_declarada| number:'3.2-2' }} </span></td> -->
         </tr>
       </tbody>
-    </table> -->
+    </table>
   </div>
   <div class="modal-footer">
     <button

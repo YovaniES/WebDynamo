@@ -17,6 +17,7 @@
         [labels]="pieChartLabels"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
+        (chartClick)="dibujarPie($event)"
         [legend]="pieChartLegend"
         [chartType]="pieChartType">
       </canvas>
@@ -32,8 +33,9 @@
         [labels]="barChartLabels"
         [options]="barChartOptions"
         [legend]="barChartLegend"
+        [plugins]="barChartPlugins"
+        (chartClick)="dibujarBar($event)"
         [chartType]="barChartType">
-        <!-- [plugins]="barChartPlugins" -->
       </canvas>
     </div>
   </div>

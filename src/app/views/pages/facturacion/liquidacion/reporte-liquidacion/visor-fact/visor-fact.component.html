@@ -14,6 +14,7 @@
         [data]="pieChartData"
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
+        (chartClick)="dibujarPie($event)"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
         [legend]="pieChartLegend">
@@ -28,11 +29,12 @@
         baseChart
         [datasets]="barChartData"
         [labels]="barChartLabels"
+        (chartClick)="dibujarBar($event)"
         [options]="barChartOptions"
         [legend]="barChartLegend"
         [chartType]="barChartType"
+        [plugins]="barChartPlugins"
         >
-        <!-- [plugins]="barChartPlugins" -->
       </canvas>
     </div>
   </div>

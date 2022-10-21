@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import chartDataLabels from 'chartjs-plugin-datalabels';
 import { SingleDataSet, Label } from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -21,56 +21,22 @@ export class VisorDeclaradaComponent implements OnInit {
 
   pieChartOptions: ChartOptions = {
     responsive: true,
+    };
 
-    onClick: function (e) {
-      // var element = this.getElementAtEvent(e);
-      // if (element.length) {
-      //     (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-      //     document.getElementById('ckh2h').click();
-      //     console.log(element[0]._view.label)
-      // }
-    },
-  };
   pieChartLabels: Label[] = ['Loading.','Loading..','Loading...','Loading...','Loading...','Loading...',];
   pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
   pieChartType: ChartType = 'pie';
   pieChartLegend = true;
-  pieChartPlugins = [];
+  pieChartPlugins = [chartDataLabels];
 
   barChartOptions: ChartOptions = {
     responsive: true,
+   };
 
-    onClick: function (e) {
-      // var element = this.getElementAtEvent(e);
-      // if (element.length) {
-      //     (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-      //     document.getElementById('ckh2h').click();
-      //     console.log(element[0]._view.label)
-      // }
-    },
-
-    scales: {
-      xAxes: [{ stacked: true }],
-      yAxes: [
-        {
-          stacked: true,
-        },
-      ],
-    },
-    plugins: {
-      datalabels: {
-        anchor: 'center',
-        align: 'center',
-        // display: function (context) {
-        //     return context.dataset.data[context.dataIndex] > 0;
-        // },
-      },
-    },
-  };
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
   barChartLegend = true;
-  barChartPlugins = [pluginDataLabels];
+  barChartPlugins = [chartDataLabels];
   barChartData: ChartDataSets[] = [{ data: [], label: '' }];
 
   constructor(private http: HttpClient) { }
@@ -78,6 +44,27 @@ export class VisorDeclaradaComponent implements OnInit {
   ngOnInit() {
     this.initializerDataDeclarada()
   }
+
+  dibujarPie(e: any){
+    const chart = e.active[0]._chart;
+    var element: any = chart.getElementAtEvent(e.event);
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
+
+  dibujarBar(e: any){
+    const chart = e.active[0]._chart;
+    var element: any = chart.getElementAtEvent(e.event);
+
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
 
   initializerDataDeclarada(){
     this.http
@@ -219,8 +206,6 @@ export class VisorDeclaradaComponent implements OnInit {
   }
 
   filtrar(flt: any) {
-    // Only Change 3 values
-
     var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
     var arrayDeCadenas = inputValue.split('|');
 
@@ -239,9 +224,7 @@ export class VisorDeclaradaComponent implements OnInit {
 
     (<HTMLInputElement>document.getElementById('titulo')).innerText =
       'Liquidaciones:: ' + arrayDeCadenas[0] + '(' + this.sum.toLocaleString('es-PE') + ')';
-
-    //document.getElementById('titulo').innerText = document.getElementById('titulo').innerText + "(" + this.sum + ")";
-  }
+    }
 
   suma() {
     this.sum = this.resultadoV
@@ -256,16 +239,11 @@ export class VisorDeclaradaComponent implements OnInit {
 
   totalfiltro = 0;
   cambiarPagina(event: number) {
-    let offset = event*10;
-    // this.spinner.show();
-
     if (this.totalfiltro != this.totalFacturas) {
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=4').subscribe((result: any[]) => {
       this.resultadoV = result;
     })
-  } else {
-      // this.spinner.hide();
-    }
+  }
       this.page = event;
   }
 }

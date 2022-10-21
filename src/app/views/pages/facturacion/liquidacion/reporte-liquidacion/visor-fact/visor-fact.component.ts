@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -24,56 +22,23 @@ export class VisorFactComponent implements OnInit {
 
   pieChartOptions: ChartOptions = {
       responsive: true,
-
-      onClick: function (e) {
-          // var element = this.getElementAtEvent(e);
-          // if (element.length) {
-          //     (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-          //     document.getElementById('ckh2h').click();
-          //     console.log(element[0]._view.label)
-          // }
-      },
-
   };
+
   pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
   pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
   pieChartType: ChartType = 'pie';
   pieChartLegend = true;
-  pieChartPlugins = [];
+  pieChartPlugins = [chartDataLabels];
 
 
   barChartOptions: ChartOptions = {
       responsive: true,
-
-      onClick: function (e) {
-          // var element = this.getElementAtEvent(e);
-          // if (element.length) {
-
-          //     (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-          //     (<HTMLInputElement>document.getElementById('ckh2h')).click();
-          //     console.log(element[0]._view.label)
-          // }
-      },
-
-      scales: {
-          xAxes: [{ stacked: true }], yAxes: [{
-              stacked: true
-          }]
-      },
-      plugins: {
-          datalabels: {
-              anchor: 'center',
-              align: 'center',
-              // display: function (context) {
-              //     return context.dataset.data[context.dataIndex] > 0;
-              // },
-          }
-      }
   };
+
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
   barChartLegend = true;
-  barChartPlugins = [pluginDataLabels];
+  barChartPlugins = [chartDataLabels];
   barChartData: ChartDataSets[] = [
       { data: [], label: '' }
   ];
@@ -89,13 +54,42 @@ export class VisorFactComponent implements OnInit {
       XLSX.writeFile(book, this.name);
     }
 
-  constructor(private http: HttpClient)
-      {}
+  constructor(private http: HttpClient){}
 
   ngOnInit() {
     this.getInitializerFact();
   }
 
+  dibujarPie(e: any){
+    console.log('DUBUJAR_PIE', e);
+
+    // this.chart.getElementAtEvent(e)
+    const chart = e.active[0]._chart;
+
+    console.log('CHART_PIE', chart);
+    var element: any = chart.getElementAtEvent(e.event);
+
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
+
+  dibujarBar(e: any){
+    console.log('DUBUJAR_BAR', e);
+
+    const chart = e.active[0]._chart;
+
+    console.log('CHART_BAR', chart);
+    var element: any = chart.getElementAtEvent(e.event);
+
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
   getInitializerFact(){
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=2').subscribe((result: any[]) => {
 
@@ -135,7 +129,6 @@ export class VisorFactComponent implements OnInit {
               fecha: key
           });
       }
-
 
       this.barChartData = [{
         label: 'Proyecto',

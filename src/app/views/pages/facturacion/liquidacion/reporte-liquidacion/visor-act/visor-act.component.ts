@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
-import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 
@@ -22,59 +22,24 @@ export class VisorActComponent implements OnInit {
 
   pieChartOptions: ChartOptions = {
       responsive: true,
-      onClick: function (e: any) {
-          // var element = this.getElementAtEvent(e);
-
-          // if (element.length) {
-          //     (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-          //     (<HTMLInputElement>document.getElementById('ckh2h')).click();
-          //     console.log(element[0]._view.label)
-          // }
-      },
-  };
+    };
 
     pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
     pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
     pieChartType: ChartType = 'pie';
     pieChartLegend = true;
-    pieChartPlugins = [];
+    pieChartPlugins = [chartDataLabels];
 
 
     barChartOptions: ChartOptions = {
       responsive: true,
-      // onClick: function (e: any) {
-      //     var element = this.getElementAtEvent(e);
-      //     if (element.length) {
-
-      //         (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-      //         (<HTMLInputElement>document.getElementById('ckh2h')).click();
-      //         console.log(element[0]._view.label)
-      //     }
-      // },
-
-      scales: {
-          xAxes: [{ stacked: true }],
-          yAxes: [{stacked: true}]
-      },
-
-      plugins: {
-          datalabels: {
-              anchor: 'center',
-              align: 'center',
-              // display: function (context: { dataset: { data: { [x: string]: number; }; }; dataIndex: string | number; }): boolean {
-              //     return context.dataset.data[context.dataIndex] > 0;
-              // },
-          }
-      }
-  };
+    };
 
     barChartLabels: Label[] = [];
     barChartType: ChartType = 'bar';
     barChartLegend = true;
-    barChartPlugins = [pluginDataLabels];
-    barChartData: ChartDataSets[] = [
-      { data: [], label: '' }
-  ];
+    barChartPlugins = [chartDataLabels];
+    barChartData: ChartDataSets[] = [{ data: [], label: '' }];
 
   name = 'dwdALODPF.xlsx';
   exportToExcel(): void {
@@ -83,7 +48,6 @@ export class VisorActComponent implements OnInit {
 
       const book: XLSX.WorkBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(book, worksheet, 'Liq. Act');
-
       XLSX.writeFile(book, this.name);
     }
 
@@ -92,6 +56,36 @@ export class VisorActComponent implements OnInit {
   ngOnInit() {
     this.getDataReport();
   }
+
+  dibujarPie(e: any){
+    console.log('DUBUJAR_PIE', e);
+
+    const chart = e.active[0]._chart;
+
+    console.log('CHART_PIE', chart);
+    var element: any = chart.getElementAtEvent(e.event);
+
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
+
+  dibujarBar(e: any){
+    console.log('DUBUJAR_BAR', e);
+
+    const chart = e.active[0]._chart;
+
+    console.log('CHART_BAR', chart);
+    var element: any = chart.getElementAtEvent(e.event);
+
+          if (element.length) {
+              (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
+              (<HTMLInputElement>document.getElementById('ckh2h')).click();
+              console.log(element[0]._view.label)
+          }
+    }
 
   getDataReport(){
     this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=3').subscribe((result: any[]) => {
@@ -119,11 +113,11 @@ export class VisorActComponent implements OnInit {
 
           for (let key in groupedData) {
               let initialValue = 0;
-              let sum = groupedData[key].reduce((accumulator: any | number, currentValue: { estado_proyecto: string; }) => {
+              let sum = groupedData[key].reduce((accumulator: number, currentValue: { estado_proyecto: string; }) => {
                 return accumulator + (currentValue.estado_proyecto!="Derivado"?1:0);
             },initialValue)
 
-            let sumd = groupedData[key].reduce((accumulator: any | number, currentValue: { estado_proyecto: string; }) => {
+            let sumd = groupedData[key].reduce((accumulator: number, currentValue: { estado_proyecto: string; }) => {
               return accumulator + (currentValue.estado_proyecto=="Derivado"?1:0);
           },initialValue)
 
@@ -154,7 +148,6 @@ export class VisorActComponent implements OnInit {
           var res = [];
           for (var x in res0) {
               res0.hasOwnProperty(x) && res.push(res0[x])
-
           }
           this.pieChartData = res;
 
@@ -171,12 +164,12 @@ export class VisorActComponent implements OnInit {
     chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
       console.log(event, active);
       alert("hola");
-  }
+    }
 
     chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
       console.log(event, active);
       alert("hola");
-  }
+    }
 
     filtrar(flt: any) {
       var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
@@ -192,7 +185,7 @@ export class VisorActComponent implements OnInit {
       this.suma();
 
       (<HTMLInputElement>document.getElementById('titulo')).innerText = "Pendiente de Facturar:: " + arrayDeCadenas[0] + "(" + this.sum.toLocaleString('es-PE') + ")";
-  }
+    }
 
     suma(): void{
       this.sum = this.resultadoV.map((a: { importe: number; monto_facturado: number; }) => a.importe - a.monto_facturado).reduce(function(a: any, b: any)

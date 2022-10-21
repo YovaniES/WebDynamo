@@ -13,6 +13,7 @@
         baseChart
         [data]="pieChartData"
         [labels]="pieChartLabels"
+        (chartClick)="dibujarPie($event)"
         [chartType]="pieChartType"
         [options]="pieChartOptions"
         [plugins]="pieChartPlugins"
@@ -30,8 +31,9 @@
         [labels]="barChartLabels"
         [options]="barChartOptions"
         [legend]="barChartLegend"
+        (chartClick)="dibujarBar($event)"
+        [plugins]="barChartPlugins"
         [chartType]="barChartType">
-        <!-- [plugins]="barChartPlugins" -->
       </canvas>
     </div>
   </div>
