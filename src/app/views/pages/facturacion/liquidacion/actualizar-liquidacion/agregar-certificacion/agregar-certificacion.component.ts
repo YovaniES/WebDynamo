@@ -3,7 +3,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Usuario } from 'src/app/core/interfaces/auth.interface';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';

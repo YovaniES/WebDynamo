@@ -6,7 +6,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { CrearPersonalComponent } from 'src/app/views/pages/gestion-personal/registro-personas/crear-personal/crear-personal.component';
 import Swal from 'sweetalert2';
 
 @Component({

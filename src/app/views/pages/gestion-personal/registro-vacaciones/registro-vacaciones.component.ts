@@ -10,7 +10,6 @@ import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-pers
 import { ModalVacacionesComponent } from './modal-vacaciones/modal-vacaciones.component';
 import { CrearVacacionesComponent } from './crear-vacaciones/crear-vacaciones.component';
 import Swal from 'sweetalert2';
-import { ROLES_ENUM } from 'src/app/core/constants/rol.constants';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({

@@ -8,7 +8,6 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { CoreModule } from 'src/app/core/core.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ChartsModule } from 'ng2-charts';
-// import { NgChartsModule, NgChartsConfiguration } from 'ng2-charts';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AgregarVentadeclaradaComponent } from './liquidacion/actualizar-liquidacion/agregar-ventadeclarada/agregar-ventadeclarada.component';
 import { LiquidacionComponent } from './liquidacion/liquidacion.component';
@@ -46,11 +45,8 @@ import { VisorCierreComponent } from './liquidacion/reporte-liquidacion/visor-ci
     NgxPaginationModule,
     NgxSpinnerModule,
     ChartsModule,
-    // NgChartsModule,
   ],
-  providers: [DatePipe,
-    // { provide: NgChartsConfiguration, useValue: { generateColors: false }}
-  ],
+  providers: [DatePipe,],
   bootstrap: [LiquidacionComponent]
 
 })
