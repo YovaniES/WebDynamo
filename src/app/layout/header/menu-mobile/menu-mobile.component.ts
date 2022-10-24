@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Menu } from 'src/app/core/models/menu.models';
+import { PERMISSION } from 'src/app/core/routes/internal.routes';
 import { MenuService } from 'src/app/core/services/menu.service';
 
 @Component({
@@ -18,8 +19,8 @@ export class MenuMobileComponent implements OnInit {
   menuList = [
     {
       id: 1,
-      code: 'MAN',
-      text: 'Gestión Personal',
+      code: 'GES',
+      text: 'GESTIÓN PERSONAL',
       order: 1,
       icon: 'people',
       type: 'PAREN',
@@ -27,6 +28,7 @@ export class MenuMobileComponent implements OnInit {
       enable: false,
       module: 'Reporte',
       displayed: false,
+      roles: PERMISSION.MENU_PERSONAS,
       submenus: [
         {
           code: 'MAN-001',
@@ -38,9 +40,22 @@ export class MenuMobileComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
+          roles: PERMISSION.SUBMENU_PERSONAS,
         },
         {
           code: 'MAN-002',
+          text: 'Registro vacaciones',
+          order: 20,
+          icon: 'surfing',
+          type: 'PAREN',
+          link: 'gestion/vacaciones',
+          enable: false,
+          module: 'MAN',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_VACACIONES,
+        },
+        {
+          code: 'MAN-003',
           text: 'Recurso Hardware',
           order: 20,
           icon: 'phonelink',
@@ -49,9 +64,10 @@ export class MenuMobileComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
+          roles: PERMISSION.SUBMENU_HARDWARE,
         },
         {
-          code: 'MAN-002',
+          code: 'MAN-004',
           text: 'Recurso Cuenta',
           order: 20,
           icon: 'lock_clock',
@@ -60,14 +76,15 @@ export class MenuMobileComponent implements OnInit {
           enable: false,
           module: 'MAN',
           displayed: false,
+          roles: PERMISSION.SUBMENU_CUENTA,
         },
       ],
     },
 
     {
       id: 2,
-      code: 'HER',
-      text: 'Mantenimiento',
+      code: 'MAN',
+      text: 'MANTENIMIENTO',
       order: 1,
       icon: 'settings_suggest',
       type: 'PAREN',
@@ -75,6 +92,7 @@ export class MenuMobileComponent implements OnInit {
       enable: false,
       module: 'administrador',
       displayed: false,
+      roles: PERMISSION.MENU_MANTENIMIENTO,
       submenus: [
         {
           code: 'PAS-001',
@@ -86,35 +104,99 @@ export class MenuMobileComponent implements OnInit {
           enable: false,
           module: 'PAS',
           displayed: false,
+          roles: PERMISSION.SUBMENU_ENTIDAD,
         },
       ],
     },
 
     {
       id: 3,
-      code: 'HER',
-      text: 'Factorización',
+      code: 'FAC',
+      text: 'FACTURACIÓN',
       order: 1,
       icon: 'currency_exchange',
       type: 'PAREN',
-      link: 'factorizacion',
+      link: 'factura',
       enable: false,
       module: 'administrador',
       displayed: false,
+      roles: PERMISSION.MENU_FACTURACION,
       submenus: [
         {
-          code: 'PAS-001',
-          text: 'Venta declarada',
+          code: 'FAC-001',
+          text: 'Liquidación',
           order: 3,
           icon: 'paid',
           type: 'PAREN',
-          link: 'factorizacion/ventas',
+          link: 'factura/liquidacion',
           enable: false,
           module: 'PAS',
           displayed: false,
+          roles: PERMISSION.SUBMENU_LIQUIDACION,
         },
+        // {
+        //   code: 'FAC-002',
+        //   text: 'Reporte',
+        //   order: 3,
+        //   icon: 'bar_chart',
+        //   type: 'PAREN',
+        //   link: 'factura/reporte',
+        //   enable: false,
+        //   module: 'PAS',
+        //   displayed: false,
+        //   roles: PERMISSION.SUBMENU_REPORTE_LIQ,
+        // },
+        {
+          code: 'FAC-003',
+          text: 'Facturas',
+          order: 3,
+          icon: 'show_chart',
+          type: 'PAREN',
+          link: 'factura/visorfact',
+          enable: false,
+          module: 'PAS',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
+        },
+        {
+          code: 'FAC-003',
+          text: 'Liquidaciones periodo',
+          order: 3,
+          icon: 'bar_chart',
+          type: 'PAREN',
+          link: 'factura/visorcierre',
+          enable: false,
+          module: 'PAS',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
+        },
+        {
+          code: 'FAC-003',
+          text: 'Venta declarada',
+          order: 3,
+          icon: 'stacked_bar_chart',
+          type: 'PAREN',
+          link: 'factura/visordec',
+          enable: false,
+          module: 'PAS',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
+        },
+        {
+          code: 'FAC-003',
+          text: 'Liquidaciones activas',
+          order: 3,
+          icon: 'pie_chart',
+          type: 'PAREN',
+          link: 'factura/visoract',
+          enable: false,
+          module: 'PAS',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
+        }
       ],
     },
+
   ];
   constructor(private menuService: MenuService, private router: Router) {}
 

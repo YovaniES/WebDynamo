@@ -1,94 +1,105 @@
-<input
-  id="ckh2h"
-  (click)="filtrar(this)"
-  type="button"
-  style="height: 0px; width: 0px; visibility: hidden"/>
-<p *ngIf="!resultadoV"><em>Loading...</em></p>
+<div class="modal-title-inic mt-5">Venta declarada</div>
+<div class="cli-content">
+  <div class="cli-card-body">
+    <input
+      id="ckh2h"
+      (click)="filtrar(this)"
+      type="button"
+      style="height: 0px; width: 0px; visibility: hidden"/>
+    <p *ngIf="!resultadoV"><em>Loading...</em></p>
 
-<div class="row">
-  <div class="col-lg-6 col-12">
-    <h3 style="font-size: 20px; font-weight: 500">Liquidación de Venta por Estado</h3>
-    <div class="chart-wrapper">
-      <!-- (chartClick)="dibujarPie($event)" -->
-      <canvas
-        baseChart
-        [data]="pieChartData"
-        [labels]="pieChartLabels"
-        [chartType]="pieChartType"
-        [options]="pieChartOptions"
-        [plugins]="pieChartPlugins"
-        [legend]="pieChartLegend">
-      </canvas>
-    </div>
-  </div>
+    <div class="row">
+      <div class="col-lg-6 col-12">
+        <h3 style="font-size: 20px; font-weight: 500">
+          Liquidación de Venta por Estado
+        </h3>
+        <div class="chart-wrapper">
+          <canvas
+            baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            [legend]="pieChartLegend"
+          >
+          </canvas>
+        </div>
+      </div>
 
-  <div class="col-lg-6 col-12">
-    <h3 style="font-size: 20px; font-weight: 500">Liquidación de Venta por Proyecto</h3>
-    <div style="display: block">
-      <canvas
-        baseChart
-        [datasets]="barChartData"
-        [labels]="barChartLabels"
-        [options]="barChartOptions"
-        [legend]="barChartLegend"
-        [plugins]="barChartPlugins"
-        [chartType]="barChartType">
-      </canvas>
-    </div>
-  </div>
-</div>
-
-<div>
-  <div class="card" style="padding: 10px">
-    <div class="card-header border-transparent" style="display: flex" class="mt-2 mb-1">
-      <h3 class="card-title">
-        <span style="font-weight: 600;" id="titulo">Venta Declarada :: ({{ sum | number: "5.2-2" }})</span>
-      </h3>
-    </div>
-
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table
-          class="table table-sm table-centered mb-0"
-          style="font-size: small">
-          <thead>
-            <tr>
-              <th style="background:#f4f5f6">Periodo</th>
-              <th style="background:#f4f5f6">Proyecto</th>
-              <th style="background:#f4f5f6">Sub Servicio</th>
-              <th style="background:#f4f5f6">Estado</th>
-              <th style="background:#f4f5f6">Gestor</th>
-              <th style="background:#f4f5f6">Importe</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let cate of resultadoV | paginate:
-                    { itemsPerPage: pageSize,
-                      currentPage : page,
-                      totalItems  : totalFacturas
-                    } ">
-              <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> -->
-                {{ cate.periodo | date: "yyyy-MM" }}
-              </td>
-              <td>{{ cate.proyecto }}</td>
-              <td>{{ cate.subservicio }}</td>
-              <td>
-                <span [ngStyle]="{color: cate.estado == 'En Elaboración'? 'red': cate.estado == 'Enviado'? 'blue': 'green'}">{{ cate.estado }}</span>
-              </td>
-              <td>{{ cate.gestor }}</td>
-              <td>{{ cate.venta_declarada | number: "3.2-2" }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="col-lg-6 col-12">
+        <h3 style="font-size: 20px; font-weight: 500">
+          Liquidación de Venta por Proyecto
+        </h3>
+        <div style="display: block">
+          <canvas
+            baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [plugins]="barChartPlugins"
+            [chartType]="barChartType"
+          >
+          </canvas>
+        </div>
       </div>
     </div>
-    <div class="card-footer pb-0 pt-3">
-      <pagination-controls
-        previousLabel="Anterior"
-        nextLabel="Siguiente"
-        [responsive]="false"
-        (pageChange)="cambiarPagina($event)">
-      </pagination-controls>
+
+    <div>
+      <div class="card" style="padding: 10px">
+        <div
+          class="card-header border-transparent"
+          style="display: flex"
+          class="mt-2 mb-1">
+          <h3 class="card-title"><span style="font-weight: 600" id="titulo">Venta Declarada :: ({{ sum | number: "5.2-2" }})</span></h3>
+        </div>
+
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table
+              class="table table-sm table-centered mb-0"
+              style="font-size: small">
+              <thead>
+                <tr>
+                  <th style="background: #f4f5f6">Periodo</th>
+                  <th style="background: #f4f5f6">Proyecto</th>
+                  <th style="background: #f4f5f6">Sub Servicio</th>
+                  <th style="background: #f4f5f6">Estado</th>
+                  <th style="background: #f4f5f6">Gestor</th>
+                  <th style="background: #f4f5f6">Importe</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cate of resultadoV | paginate: {
+                            itemsPerPage: pageSize,
+                            currentPage: page,
+                            totalItems: totalFacturas }">
+                  <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> -->
+                    {{ cate.periodo | date: "yyyy-MM" }}
+                  </td>
+                  <td>{{ cate.proyecto }}</td>
+                  <td>{{ cate.subservicio }}</td>
+                  <td>
+                    <span
+                      [ngStyle]="{color:cate.estado == 'En Elaboración'? 'red': cate.estado == 'Enviado'? 'blue': 'green'}">{{ cate.estado }}</span>
+                  </td>
+                  <td>{{ cate.gestor }}</td>
+                  <td>{{ cate.venta_declarada | number: "3.2-2" }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer pb-0 pt-3">
+          <pagination-controls
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            [responsive]="false"
+            (pageChange)="cambiarPagina($event)">
+          </pagination-controls>
+        </div>
+      </div>
     </div>
   </div>
 </div>
