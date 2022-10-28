@@ -185,11 +185,10 @@
               </td>
 
               <td style="width: 100px; height: 50px;">
-                <span *ngIf="vacaciones.estado_vac == 'En curso'"    class="label estado-info">  {{ vacaciones.estado_vac | uppercase }}</span>
-                <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="label estado-danger">{{ vacaciones.estado_vac | uppercase }}</span>
+                <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="label estado-compl"> {{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Planificado'" class="label estado-planif">{{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
-                <span *ngIf="vacaciones.estado_vac == 'Pendiente'"   class="label estado-pend "> {{ vacaciones.estado_vac | uppercase }}</span>
+                <span *ngIf="vacaciones.estado_vac == 'En gestión'"  class="label estado-pend "> {{ vacaciones.estado_vac | uppercase }}</span>
               </td>
 
               <td style="color: #20c997; font-weight:600;">

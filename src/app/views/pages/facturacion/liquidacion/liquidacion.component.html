@@ -191,7 +191,7 @@
               <td style="font-weight: 600; text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe | number : '1.0-2'}}</td>
               <td style="text-align: end;"><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado | number : '1.0-2'}}</td>
               <td style="text-align: end;"><small *ngIf="factura.facturado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.facturado | number : '1.0-2'}}</td>
-              <td style="text-align: end;"><small *ngIf="factura.declarado && factura.facturado" style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.saldo? factura.saldo: factura.importe) | number : '1.0-2' }}</td>
+              <td style="text-align: end;"><small  style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.saldo? factura.saldo: factura.importe) | number : '1.0-2' }}</td>
             </tr>
           </tbody>
         </table>

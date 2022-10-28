@@ -79,11 +79,6 @@ export class AsignarHardwareComponent implements OnInit {
     });
   }
 
-  // buscarRecurso(id_recurso: number){
-  //   this.nameHardware = this.listaHardwareDisp.find((rh: any) => rh.id_recurso == id_recurso)
-  //     console.log('HARD_NAME', this.nameHardware);
-  // }
-
   asignarHardware(idRecurso: number, nameModelo: string){
     this.spinner.show();
 
@@ -108,7 +103,6 @@ export class AsignarHardwareComponent implements OnInit {
           icon : 'success',
         });
       })
-
     } else {
     Swal.fire({
         title: 'Asignar recurso hardware',

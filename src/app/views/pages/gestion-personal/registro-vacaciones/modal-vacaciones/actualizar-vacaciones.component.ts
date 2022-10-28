@@ -13,11 +13,11 @@ import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacacio
 
 @Component({
   selector: 'app-modal-vacaciones',
-  templateUrl: './modal-vacaciones.component.html',
-  styleUrls: ['./modal-vacaciones.component.scss']
+  templateUrl: './actualizar-vacaciones.component.html',
+  styleUrls: ['./actualizar-vacaciones.component.scss']
 })
 
-export class ModalVacacionesComponent implements OnInit {
+export class ActualizarVacacionesComponent implements OnInit {
   // moment().format("L"); 16/02/2021
   listVacacionesPeriodo: any[]= [];
 
@@ -36,7 +36,7 @@ export class ModalVacacionesComponent implements OnInit {
     private spinner: NgxSpinnerService,
     public datePipe: DatePipe,
     private dialog: MatDialog,
-    private dialogRef: MatDialogRef<ModalVacacionesComponent>,
+    private dialogRef: MatDialogRef<ActualizarVacacionesComponent>,
     @Inject(MAT_DIALOG_DATA) public DATA_VACACIONES: any
   ) { }
 
@@ -76,13 +76,6 @@ export class ModalVacacionesComponent implements OnInit {
       })
      }
 
-  // filtroFecha(calendario: Date): boolean {
-  //   // const dateIni = moment.utc(this.DATA_VACACIONES.fecha_ini_vac).format('YYYY-MM-DD')
-  //   // console.log('FECHA_START', dateIni);
-  //   const fechaInicial = '2022-09-25'
-  //   return calendario > new Date(fechaInicial);
-  // }
-
   getFechaIni(event: any){
     console.log('FECHA-INI-IMPUT', event.target.value);
   }
@@ -112,8 +105,6 @@ export class ModalVacacionesComponent implements OnInit {
     this.vacacionesService.actualizarVacaciones(parametro[0]).subscribe( resp => {
       this.spinner.hide();
       // console.log('DATA_ACTUALIZADO', resp);
-      // console.log('FECHA_INI',moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD') );
-
       this.cargarVacacionesById();
       this.close(true)
 
@@ -139,7 +130,6 @@ export class ModalVacacionesComponent implements OnInit {
       this.vacacionesForm.controls['estado_persona'].setValue(this.DATA_VACACIONES.estado_persona);
       this.vacacionesForm.controls['id_estado_vac' ].setValue(this.DATA_VACACIONES.id_estado_vac);
       this.vacacionesForm.controls['estado_vac'    ].setValue(this.DATA_VACACIONES.estado_vac);
-
       this.vacacionesForm.controls['idSistema'     ].setValue(this.DATA_VACACIONES.id_sist_vac);
       this.vacacionesForm.controls['total_dias_vac'].setValue(this.DATA_VACACIONES.cant_dias_vac);
       this.vacacionesForm.controls['fecha_ingreso' ].setValue(this.DATA_VACACIONES.fecha_ingreso);
@@ -229,7 +219,7 @@ export class ModalVacacionesComponent implements OnInit {
 
     this.vacacionesService.cargarPeriodoVacaciones(parametro[0]).subscribe( (resp: any) => {
       this.listVacacionesPeriodo = resp.list;
-      console.log('PERIODOS-PLANIFICADAS', resp.list);
+      // console.log('PERIODOS-PLANIFICADAS', resp.list);
 
         if (validarEstadosPeriodos) {
           this.validarEstadoPeriodo(this.listVacacionesPeriodo)
@@ -276,9 +266,7 @@ export class ModalVacacionesComponent implements OnInit {
 
     this.actualizarVacaciones(idEstadoCompletado.id_correlativo);
     } else {
-      console.log('PENDIENTE');
-
-      this.validarEstadoPorDescripcion('Pendiente')
+      this.validarEstadoPorDescripcion('En Gestión')
     }
   }
 
@@ -311,7 +299,7 @@ export class ModalVacacionesComponent implements OnInit {
 
     this.vacacionesService.getHistoricoCambiosEstado(parametro[0]).subscribe((resp: any) => {
       this.histCambiosEstado = resp.list;
-      console.log('HistCambEstado', resp.list)
+      // console.log('HistCambEstado', resp.list)
     });
     this.spinner.hide();
   }
@@ -345,13 +333,6 @@ export class ModalVacacionesComponent implements OnInit {
     }
   }
 
-  asignarPeriodoEstAvacaciones(dataPeriodo: any){
-    console.log('data_periodo_asignado', dataPeriodo);
-
-    this.vacacionesForm.controls['estado_vac'   ].setValue(dataPeriodo.vac_estado)
-    this.vacacionesForm.controls['id_estado_vac'].setValue(dataPeriodo.id_per_estado)
-  }
-
   asignarVacaciones(){
     const diasVacaciones = this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value);
     // console.log('FORMULARIO', this.vacacionesForm.value, this.utilService.calcularDifDias(this.vacacionesForm.controls['fechaFinVac'].value, this.vacacionesForm.controls['fechaInicVac'].value));
@@ -359,7 +340,6 @@ export class ModalVacacionesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
-
         this.cargarPeriodoVacaciones()
       }
     })

@@ -1,6 +1,6 @@
 <div style="display: flex">
   <div class="flex-1"></div>
-  <div class="modal-title c-male"> {{DATA_VACAC && DATA_VACAC.isCreation ? 'Planificar': 'Actualizar la planificación de'}} vacaciones</div>
+  <div class="modal-title c-male"> {{DATA_VACAC && DATA_VACAC.isCreation ? 'Planificar': 'Actualizar'}} periodo</div>
   <div class="flex-1"></div>
 
   <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">
@@ -18,7 +18,7 @@
             <div class="col-sm-6 cli-form-element">
               <label class="form-label">Fecha de planificación *</label>
               <mat-form-field color="accent" appearance="outline">
-                <mat-date-range-input [disabled]="esEstadoCompletado()" [rangePicker]="picker">
+                <mat-date-range-input [disabled]="esEstadoCompletado() || isEstadoCancelado()" [rangePicker]="picker">
                   <input matStartDate formControlName="fechaInicio" placeholder="Inicio periodo"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
                   <input matEndDate   formControlName="fechaFin"    placeholder="Final periodo"   #fechaFinPlanif (dateChange)="totalDiasPlanificado()">
                 </mat-date-range-input>
@@ -54,7 +54,7 @@
             <ng-container *ngIf="!DATA_VACAC.isCreation">
               <div class="col-sm-6 cli-form-element">
                 <label>Estado *</label>
-                <select class="cli-input-white" formControlName="id_estado" (ngModelChange)="selectEstadoCompletado()">
+                <select class="cli-input-white" formControlName="id_estado" (ngModelChange)="selectEstadoCancelado()">
                   <option [value]="0" disabled>- Seleccione -</option>
                   <option [value]="estado.id_correlativo" *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
                 </select>
@@ -66,12 +66,12 @@
               <label>Motivo *</label>
               <select class="cli-input-white" formControlName="id_motivo">
                 <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="motivo.id_correlativo" *ngFor="let motivo of listVacacionesMotivo">{{motivo.valor_texto_1}}</option>
+                <option [value]="motivo.id_correlativo" [disabled]="selectEstadoCancelado()" *ngFor="let motivo of listVacacionesMotivo">{{motivo.valor_texto_1}}</option>
               </select>
                 <small class="form-text text-alert" *ngIf="campoNoValido('id_motivo')">* Ingrese el Motivo es obligatorio</small>
             </div>
 
-            <div *ngIf="selectEstadoCompletado()" class="row my-2 pr-module-containerXY">
+            <div class="row my-2 pr-module-containerXY">
               <div class="col-sm-6 cli-form-element">
                 <div class="form-check form-check-inline mx-2">
                   <input class="form-check-input"
@@ -115,7 +115,7 @@
       <button
         class="cli-btn btn-m btn-blue"
         [disabled]="asigVacacionesForm.invalid"
-        (click)="agregarOactualizarPlanificacionVacaciones()">
+        (click)="agregarOactualizarPeriodo()">
         <mat-icon class="icon-18">save</mat-icon> {{titleBtn}}
       </button>
     </div>

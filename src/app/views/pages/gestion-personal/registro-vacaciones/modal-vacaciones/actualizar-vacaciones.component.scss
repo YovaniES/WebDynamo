@@ -42,6 +42,7 @@
     padding: 4px;
     font-weight: 300 !important;
     text-align: center;
+    font-size: 11px;
   }
   & td {
     vertical-align: middle;
@@ -60,12 +61,8 @@
   }
 }
 
-.estado-act {
-  color: #20c997;
-}
-
-.estado-danger {
-  color: #ff0000;
+.estado-compl {
+  background-color: #47deb1;
 }
 
 .h-divider {
@@ -168,16 +165,12 @@
   width: 190px;
 }
 
-.estado-danger {
+.estado-compl {
   background-color: #ff727f;
 }
 
 .estado-planif {
   background-color: #0daef4;
-}
-
-.estado-info {
-  background-color: #20c997;
 }
 
 

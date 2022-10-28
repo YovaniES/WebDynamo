@@ -32,7 +32,7 @@ export class AsignarVacacionesComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.getUserID();
-    this.cargarVacacionesByID();
+    this.cargarPeriodosByID();
     this.getListEstadoVacaciones();
     this.getListMotivosVacaciones();
     console.log('DATA_VACAC_PERIODO', this.DATA_VACAC, this.DATA_VACAC.vdForm);
@@ -61,17 +61,27 @@ export class AsignarVacacionesComponent implements OnInit {
        estadoCompletado = estCompletado.id_correlativo == this.asigVacacionesForm.controls['id_estado'].value;
     }
     // console.log('EST_COMP', estCompletado, estadoCompletado);
-    return estadoCompletado
+    return estadoCompletado;
    }
 
+   selectEstadoCancelado(): boolean{
+    let estadoCancelado = false;
 
-   agregarOactualizarPlanificacionVacaciones(){
+    const estCancelado = this.listVacacionesEstado.find(est => est.valor_texto_1.toUpperCase() == 'CANCELADO' )
+    if (estCancelado) {
+      estadoCancelado = estCancelado.id_correlativo == this.asigVacacionesForm.controls['id_estado'].value; //estadoCancelado == 3
+    }
+    // console.log('EST_CANCELADO', estadoCancelado, estCancelado);
+    return estadoCancelado;
+   };
+
+   agregarOactualizarPeriodo(){
     if (!this.DATA_VACAC) {return}
 
     if (this.DATA_VACAC.isCreation) {
       if (this.asigVacacionesForm.valid) { this.agregarPeriodoVacaciones()}
     } else {
-      this.actualizarPlanificacionVacaciones();
+      this.actualizarPeriodo();
     }
    }
 
@@ -90,36 +100,42 @@ export class AsignarVacacionesComponent implements OnInit {
           p_id_usuario_asignacion: this.userID ,
           p_fecha_per_creacion   : '' ,
           p_id_sist_vac          : this.DATA_VACAC.vacForm.idVacaciones.id_sist_vac,
-          p_jira                 : formValues.jira,
-          p_dedicaciones         : formValues.dedicaciones ,
+          p_jira                 : formValues.jira? 1 : 0,
+          p_dedicaciones         : formValues.dedicaciones? 1 : 0 ,
           CONFIG_USER_ID         : this.userID ,
           CONFIG_OUT_MSG_ERROR   : '' ,
           CONFIG_OUT_MSG_EXITO   : ''
         },
       };
-     console.log('VAOR_VACA', this.asigVacacionesForm.value , parametro);
+    //  console.log('VAOR_VACA', this.asigVacacionesForm.value , parametro);
     this.vacacionesService.agregarPeriodoVacaciones(parametro).subscribe((resp: any) => {
+    this.spinner.hide();
+
       Swal.fire({
         title: 'Planificar vacaciones!',
         text : `La vacación fue planificado con éxito`,
         icon : 'success',
         confirmButtonText: 'Ok',
       });
+
       this.close(true);
     });
-    this.spinner.hide();
+  }
+
+  isEstadoCancelado(): boolean{
+    const estadoCancelado = this.listVacacionesEstado.find(e => e.valor_texto_1.toUpperCase() == 'CANCELADO')
+    return estadoCancelado && estadoCancelado.id_correlativo == this.asigVacacionesForm.controls['id_estado'].value;
   }
 
 
   esEstadoCompletado(): boolean{
    const estadoCompletado =  this.listVacacionesEstado.find(estado => estado.valor_texto_1.toUpperCase() == 'COMPLETADO');
-    console.log('EST_COMPLETADO', estadoCompletado);
+    // console.log('EST_COMPLETADO', estadoCompletado);
 
    return estadoCompletado && estadoCompletado.id_correlativo == this.asigVacacionesForm.controls['id_estado'].value
-
   }
 
-  actualizarPlanificacionVacaciones() {
+  actualizarPeriodo() {
     this.spinner.show();
 
     const formValues = this.asigVacacionesForm.getRawValue();
@@ -138,15 +154,17 @@ export class AsignarVacacionesComponent implements OnInit {
           p_id_usuario_asignacion: this.userID ,
           p_fecha_per_creacion   : '' ,
           p_id_sist_vac          : this.DATA_VACAC.id_sist,
-          p_jira                 : formValues.jira && this.esEstadoCompletado()?  1: 0 ,
-          p_dedicaciones         : formValues.dedicaciones && this.esEstadoCompletado()? 1: 0 ,
+          p_jira                 : formValues.jira?  1: 0 ,
+          // p_jira                 : formValues.jira && this.esEstadoCompletado()?  1: 0 ,
+          p_dedicaciones         : formValues.dedicaciones? 1: 0 ,
           CONFIG_USER_ID         : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
           CONFIG_OUT_MSG_EXITO: ''
         },
       }];
-     this.vacacionesService.actualizarPlanificacionVacaciones(parametro[0]).subscribe({next: (res) => {
+     this.vacacionesService.actualizarPeriodo(parametro[0]).subscribe({next: (res) => {
         this.spinner.hide();
+        this.cargarPeriodosByID();
 
         this.close(true)
           Swal.fire({
@@ -181,13 +199,13 @@ export class AsignarVacacionesComponent implements OnInit {
   }
 
   titleBtn: string = 'Agregar';
-  cargarVacacionesByID(){
+  cargarPeriodosByID(){
     if (!this.DATA_VACAC.isCreation) {
       this.titleBtn = 'Actualizar'
       this.asigVacacionesForm.controls['id_motivo'    ].setValue(this.DATA_VACAC.id_per_motivo);
       this.asigVacacionesForm.controls['id_estado'    ].setValue(this.DATA_VACAC.id_per_estado);
-      this.asigVacacionesForm.controls['jira'         ].setValue(this.DATA_VACAC.jira? 1 : 0);
-      this.asigVacacionesForm.controls['dedicaciones' ].setValue(this.DATA_VACAC.dedicaciones? 1 : 0);
+      this.asigVacacionesForm.controls['jira'         ].setValue(this.DATA_VACAC.jira);
+      this.asigVacacionesForm.controls['dedicaciones' ].setValue(this.DATA_VACAC.dedicaciones);
       this.asigVacacionesForm.controls['observaciones'].setValue(this.DATA_VACAC.observacion);
       this.asigVacacionesForm.controls['dias_periodo' ].setValue(this.DATA_VACAC.cant_dias_periodo);
 
@@ -248,17 +266,6 @@ export class AsignarVacacionesComponent implements OnInit {
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
-  categoriaSelectedArray: any[] = [];
-onCategoriaPressed(categoriaSelected: any, checked: boolean){
-  if (checked) { //Si el elemento fue seleccionado
-    //Agregamos la categoría seleccionada al arreglo de categorías seleccionadas
-    this.categoriaSelectedArray.push(categoriaSelected);
-  } else { //Si el elemento fue deseleccionado
-    //Removemos la categoría seleccionada del arreglo de categorías seleccionadas
-    this.categoriaSelectedArray.splice(this.categoriaSelectedArray.indexOf(categoriaSelected), 1);
-  }
-}
 }
 
 

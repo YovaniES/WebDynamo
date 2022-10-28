@@ -99,7 +99,7 @@ export class ActualizarPersonalComponent implements OnInit {
       }];
     this.personalService.actualizarPersonal(parametro[0]).subscribe( resp => {
       this.spinner.hide();
-      console.log('DATA_ACTUALIZADO', resp);
+      // console.log('DATA_ACTUALIZADO', resp);
 
       this.cargarPersonalById();
       this.close(true)
