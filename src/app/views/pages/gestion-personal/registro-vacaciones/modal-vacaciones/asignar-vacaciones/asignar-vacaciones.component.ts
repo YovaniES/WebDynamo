@@ -47,9 +47,23 @@ export class AsignarVacacionesComponent implements OnInit {
       estado_periodo: ['Planificado'],
       id_motivo     : [ 5, [Validators.required]], //Motivo_5 : NINGUNO
       dias_periodo  : [''],
+      jira          : [''],
+      dedicaciones  : [''],
       observaciones : [''],
     })
    }
+
+   selectEstadoCompletado(): boolean{
+    let  estadoCompletado = false;
+
+    const estCompletado = this.listVacacionesEstado.find(estado => estado.valor_texto_1.toUpperCase() == 'COMPLETADO');
+    if (estCompletado) {
+       estadoCompletado = estCompletado.id_correlativo == this.asigVacacionesForm.controls['id_estado'].value;
+    }
+    // console.log('EST_COMP', estCompletado, estadoCompletado);
+    return estadoCompletado
+   }
+
 
    agregarOactualizarPlanificacionVacaciones(){
     if (!this.DATA_VACAC) {return}
@@ -76,6 +90,8 @@ export class AsignarVacacionesComponent implements OnInit {
           p_id_usuario_asignacion: this.userID ,
           p_fecha_per_creacion   : '' ,
           p_id_sist_vac          : this.DATA_VACAC.vacForm.idVacaciones.id_sist_vac,
+          p_jira                 : formValues.jira,
+          p_dedicaciones         : formValues.dedicaciones ,
           CONFIG_USER_ID         : this.userID ,
           CONFIG_OUT_MSG_ERROR   : '' ,
           CONFIG_OUT_MSG_EXITO   : ''
@@ -94,10 +110,21 @@ export class AsignarVacacionesComponent implements OnInit {
     this.spinner.hide();
   }
 
+
+  esEstadoCompletado(): boolean{
+   const estadoCompletado =  this.listVacacionesEstado.find(estado => estado.valor_texto_1.toUpperCase() == 'COMPLETADO');
+    console.log('EST_COMPLETADO', estadoCompletado);
+
+   return estadoCompletado && estadoCompletado.id_correlativo == this.asigVacacionesForm.controls['id_estado'].value
+
+  }
+
   actualizarPlanificacionVacaciones() {
     this.spinner.show();
 
     const formValues = this.asigVacacionesForm.getRawValue();
+    console.log('EST', this.asigVacacionesForm.value);
+
     let parametro: any[] = [{ queryId: 131,
         mapValue: {
           p_idPeriodoVac         : this.DATA_VACAC.id_periodo,
@@ -111,6 +138,8 @@ export class AsignarVacacionesComponent implements OnInit {
           p_id_usuario_asignacion: this.userID ,
           p_fecha_per_creacion   : '' ,
           p_id_sist_vac          : this.DATA_VACAC.id_sist,
+          p_jira                 : formValues.jira && this.esEstadoCompletado()?  1: 0 ,
+          p_dedicaciones         : formValues.dedicaciones && this.esEstadoCompletado()? 1: 0 ,
           CONFIG_USER_ID         : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
           CONFIG_OUT_MSG_EXITO: ''
@@ -157,6 +186,8 @@ export class AsignarVacacionesComponent implements OnInit {
       this.titleBtn = 'Actualizar'
       this.asigVacacionesForm.controls['id_motivo'    ].setValue(this.DATA_VACAC.id_per_motivo);
       this.asigVacacionesForm.controls['id_estado'    ].setValue(this.DATA_VACAC.id_per_estado);
+      this.asigVacacionesForm.controls['jira'         ].setValue(this.DATA_VACAC.jira? 1 : 0);
+      this.asigVacacionesForm.controls['dedicaciones' ].setValue(this.DATA_VACAC.dedicaciones? 1 : 0);
       this.asigVacacionesForm.controls['observaciones'].setValue(this.DATA_VACAC.observacion);
       this.asigVacacionesForm.controls['dias_periodo' ].setValue(this.DATA_VACAC.cant_dias_periodo);
 
@@ -217,6 +248,17 @@ export class AsignarVacacionesComponent implements OnInit {
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
+
+  categoriaSelectedArray: any[] = [];
+onCategoriaPressed(categoriaSelected: any, checked: boolean){
+  if (checked) { //Si el elemento fue seleccionado
+    //Agregamos la categoría seleccionada al arreglo de categorías seleccionadas
+    this.categoriaSelectedArray.push(categoriaSelected);
+  } else { //Si el elemento fue deseleccionado
+    //Removemos la categoría seleccionada del arreglo de categorías seleccionadas
+    this.categoriaSelectedArray.splice(this.categoriaSelectedArray.indexOf(categoriaSelected), 1);
+  }
+}
 }
 
 

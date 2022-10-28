@@ -15,7 +15,7 @@
         <div class="mx-4 mt-2">
           <div class="row" style="justify-content: space-between;">
             <div class="input-group col-sm-4">
-              <div class="input-group-text"><mat-icon>workspaces</mat-icon></div>
+              <div matTooltip="Código corporativo" class="input-group-text"><mat-icon>workspaces</mat-icon></div>
               <div class="info">{{vacacionesForm.controls['codCorp'].value}}</div>
             </div>
 
@@ -30,7 +30,7 @@
             </div>
 
             <div class="input-group col-sm-4">
-              <div class="input-group-text"><mat-icon>calendar_month</mat-icon></div>
+              <div matTooltip="Fecha de Ingreso" class="input-group-text"><mat-icon>calendar_month</mat-icon></div>
               <div class="info">{{vacacionesForm.controls['fecha_ingreso'].value}}</div>
             </div>
           </div>
@@ -111,7 +111,9 @@
                       <th>Estado</th>
                       <th>Motivo</th>
                       <th>Planificado por:</th>
-                      <th style="min-width: 95px">Fecha registro periodo</th>
+                      <th style="min-width: 95px">Fecha reg. Periodo</th>
+                      <th>Jira</th>
+                      <th>Dedic.</th>
                     </tr>
                   </thead>
 
@@ -145,6 +147,24 @@
                       <td style="min-width: 175px">{{periodo.vac_motivo}}</td>
                       <td>{{periodo.usuario_asignacion}}</td>
                       <td>{{periodo.fecha_creacion}}</td>
+                      <td>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input"
+                                 type="checkbox"
+                                 id="inlineCheckbox1"
+                                 disabled
+                                 [checked]="periodo.jira">
+                        </div>
+                      </td>
+                      <td>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input"
+                                 type="checkbox"
+                                 id="inlineCheckbox2"
+                                 disabled
+                                 [checked]="periodo.dedicaciones">
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

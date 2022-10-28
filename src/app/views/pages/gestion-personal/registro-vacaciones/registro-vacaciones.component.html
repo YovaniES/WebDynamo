@@ -128,7 +128,6 @@
               <th style="text-align:center">Responsable</th>
               <th>Estado</th>
               <th>Planificados</th>
-              <!-- <th>Planif. pend.</th> -->
               <th>Pendientes</th>
               <th style="text-align: left">Completados</th>
               <th style="width: 120px">Fecha Registro</th>
@@ -190,6 +189,7 @@
                 <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="label estado-danger">{{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Planificado'" class="label estado-planif">{{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
+                <span *ngIf="vacaciones.estado_vac == 'Pendiente'"   class="label estado-pend "> {{ vacaciones.estado_vac | uppercase }}</span>
               </td>
 
               <td style="color: #20c997; font-weight:600;">
@@ -204,12 +204,6 @@
                   {{vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado}}
                 </div>
               </td>
-
-              <!-- <td style="color: #f56c79; font-weight:600;">
-                <div *ngIf="(vacaciones.cant_dias_vac - vacaciones.dias_completados)">
-                  {{vacaciones.cant_dias_vac - vacaciones.dias_completados}}<small> d</small>
-                </div>
-              </td> -->
 
               <td style="width: 100px; font-weight: 600;">
                 <div class="cli-table-diascompl" *ngIf="vacaciones.dias_completados">

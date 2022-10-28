@@ -19,6 +19,7 @@ import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacacio
 
 export class ModalVacacionesComponent implements OnInit {
   // moment().format("L"); 16/02/2021
+  listVacacionesPeriodo: any[]= [];
 
   minDate = new Date();
   maxDate = new Date(2022, 9, 9);
@@ -102,7 +103,7 @@ export class ModalVacacionesComponent implements OnInit {
           p_id_sist_vac       : formValues.idSistema,
           p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
           p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
-          p_id_estado_vac     : estadoVacaciones? estadoVacaciones : formValues.id_estado_vac, // ENVIAR EL ESTADO DEL PERIODO CON ESTADO 'PLANIFICADO', COMPLETADO
+          p_id_estado_vac     : estadoVacaciones? estadoVacaciones : formValues.id_estado_vac,
           CONFIG_USER_ID      : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
           CONFIG_OUT_MSG_EXITO: ''
@@ -110,8 +111,8 @@ export class ModalVacacionesComponent implements OnInit {
       }];
     this.vacacionesService.actualizarVacaciones(parametro[0]).subscribe( resp => {
       this.spinner.hide();
-      console.log('DATA_ACTUALIZADO', resp);
-      console.log('FECHA_INI',moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD') );
+      // console.log('DATA_ACTUALIZADO', resp);
+      // console.log('FECHA_INI',moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD') );
 
       this.cargarVacacionesById();
       this.close(true)
@@ -186,15 +187,18 @@ export class ModalVacacionesComponent implements OnInit {
         cancelButtonText: 'Cancelar',
       }).then((resp) => {
         if (resp.value) {
-          this.vacacionesService.eliminarPeriodoVacaciones(parametro[0]).subscribe(resp => {
-            this.cargarPeriodoVacaciones();
+          this.vacacionesService.eliminarPeriodoVacaciones(parametro[0]).subscribe((resp: any) => {
+
+            if (resp && resp.exitoMessage) {
+              this.cargarPeriodoVacaciones();
 
               Swal.fire({
                 title: 'Eliminar periodo',
                 text : `El periodo fue eliminado con éxito`,
                 icon : 'success',
               });
-            });
+            }
+          });
         }
     });
     this.spinner.hide();
@@ -212,17 +216,7 @@ export class ModalVacacionesComponent implements OnInit {
     }
   }
 
-  listVacacionesEstado: any[] = [];
-  getListEstadoVacaciones(){
-  let parametro: any[] = [{ queryId: 124}];
-  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
-    this.listVacacionesEstado = resp.list;
-    // console.log('VACAS-ESTADO', resp.list);
-    })
-  }
-
-  listVacacionesPeriodo: any[]= [];
-  cargarPeriodoVacaciones(validadEstadosPeriodos: boolean = true){
+  cargarPeriodoVacaciones(validarEstadosPeriodos: boolean = true){
     this.listVacacionesPeriodo = [];
 
     this.spinner.show();
@@ -236,8 +230,9 @@ export class ModalVacacionesComponent implements OnInit {
     this.vacacionesService.cargarPeriodoVacaciones(parametro[0]).subscribe( (resp: any) => {
       this.listVacacionesPeriodo = resp.list;
       console.log('PERIODOS-PLANIFICADAS', resp.list);
-        if (validadEstadosPeriodos) {
-          this.validarPeriodoVacaciones(this.listVacacionesPeriodo)
+
+        if (validarEstadosPeriodos) {
+          this.validarEstadoPeriodo(this.listVacacionesPeriodo)
         }
     })
   }
@@ -246,46 +241,44 @@ export class ModalVacacionesComponent implements OnInit {
     return this.listVacacionesEstado.find( estado => estado.valor_texto_1.toUpperCase() == descripcion)
   }
 
-  validarPeriodoVacaciones(listVacacionesPeriodo: any[]){
+  existeItemNoCancelado(listVacacionesPeriodo: any[]): boolean{
+    return listVacacionesPeriodo.find(periodo => periodo.vac_estado.toUpperCase() != 'CANCELADO')
+  }
+
+  validarEstadoPeriodo(listVacacionesPeriodo: any[]){
       const existePeriodoPlanificado = listVacacionesPeriodo.find(periodo => periodo.vac_estado.toUpperCase() == 'PLANIFICADO')
-      console.log('PERIODO_PLANI', existePeriodoPlanificado, this.listVacacionesEstado);
+
+      // console.log('PERIODO_PLANI', existePeriodoPlanificado, this.listVacacionesEstado);
 
       if (existePeriodoPlanificado) {
-        this.validarEstadoPlanificado();
-      } else if (!existePeriodoPlanificado) {
-        this.validarEstadoRegistrado()
+        this.validarEstadoPorDescripcion('Planificado');
+      } else if ( !this.existeItemNoCancelado(listVacacionesPeriodo) || this.listVacacionesPeriodo.length == 0 ) {
+        this.validarEstadoPorDescripcion('Registrado')
       } else {
         this.validarEstadoCompletado(listVacacionesPeriodo);
       }
-
   }
 
-  validarEstadoRegistrado(){
-    const idEstadoRegistrado = this.buscarEstadoPorDescripcion('REGISTRADO');
+  validarEstadoPorDescripcion(descripcion: string){
+    const idEstadoRegistrado = this.buscarEstadoPorDescripcion(descripcion.toUpperCase());
     if (idEstadoRegistrado) {
       // console.log('ID_EST_PLANIF', idEstadoRegistrado);
       this.actualizarVacaciones(idEstadoRegistrado.id_correlativo);
     }
   }
 
-  validarEstadoPlanificado(){
-    const idEstadoPlanificado = this.buscarEstadoPorDescripcion('PLANIFICADO');
-    if (idEstadoPlanificado) {
-      // console.log('ID_EST_PLANIF', idEstadoPlanificado);
-      this.actualizarVacaciones(idEstadoPlanificado.id_correlativo);
-    }
-  }
-
   validarEstadoCompletado(listVacacionesPeriodo: any[]){
     const cantidadDiasCompletados = this.acumularDiasCompletados(listVacacionesPeriodo);
 
-    console.log('DIAS_COMPL', cantidadDiasCompletados, this.vacacionesForm.controls['total_dias_vac'].value);
+    // console.log('DIAS_COMPL', cantidadDiasCompletados, this.vacacionesForm.controls['total_dias_vac'].value);
     if (cantidadDiasCompletados == this.vacacionesForm.controls['total_dias_vac'].value) {
-      console.log('DIAS');
     const idEstadoCompletado = this.buscarEstadoPorDescripcion('COMPLETADO');
-    // const idEstadoRegistrado = this.buscarEstadoPorDescripcion('REGISTRADO');
 
     this.actualizarVacaciones(idEstadoCompletado.id_correlativo);
+    } else {
+      console.log('PENDIENTE');
+
+      this.validarEstadoPorDescripcion('Pendiente')
     }
   }
 
@@ -297,6 +290,15 @@ export class ModalVacacionesComponent implements OnInit {
       }
     });
     return cantidadDiasCompletados;
+  }
+
+  listVacacionesEstado: any[] = [];
+  getListEstadoVacaciones(){
+  let parametro: any[] = [{ queryId: 124}];
+  this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
+    this.listVacacionesEstado = resp.list;
+    // console.log('VACAS-ESTADO', resp.list);
+    })
   }
 
   histCambiosEstado: any[] = [];
@@ -359,7 +361,6 @@ export class ModalVacacionesComponent implements OnInit {
       if (resp) {
 
         this.cargarPeriodoVacaciones()
-        // this.asignarPeriodoEstAvacaciones(resp)
       }
     })
   };

@@ -18,7 +18,7 @@
             <div class="col-sm-6 cli-form-element">
               <label class="form-label">Fecha de planificación *</label>
               <mat-form-field color="accent" appearance="outline">
-                <mat-date-range-input [rangePicker]="picker">
+                <mat-date-range-input [disabled]="esEstadoCompletado()" [rangePicker]="picker">
                   <input matStartDate formControlName="fechaInicio" placeholder="Inicio periodo"  #fechaIniPlanif (dateChange)="totalDiasPlanificado()">
                   <input matEndDate   formControlName="fechaFin"    placeholder="Final periodo"   #fechaFinPlanif (dateChange)="totalDiasPlanificado()">
                 </mat-date-range-input>
@@ -54,7 +54,7 @@
             <ng-container *ngIf="!DATA_VACAC.isCreation">
               <div class="col-sm-6 cli-form-element">
                 <label>Estado *</label>
-                <select class="cli-input-white" formControlName="id_estado">
+                <select class="cli-input-white" formControlName="id_estado" (ngModelChange)="selectEstadoCompletado()">
                   <option [value]="0" disabled>- Seleccione -</option>
                   <option [value]="estado.id_correlativo" *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
                 </select>
@@ -71,6 +71,28 @@
                 <small class="form-text text-alert" *ngIf="campoNoValido('id_motivo')">* Ingrese el Motivo es obligatorio</small>
             </div>
 
+            <div *ngIf="selectEstadoCompletado()" class="row my-2 pr-module-containerXY">
+              <div class="col-sm-6 cli-form-element">
+                <div class="form-check form-check-inline mx-2">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         id="jir"
+                         formControlName="jira">
+                <label class="form-check-label" for="jir">Jira</label>
+                </div>
+              </div>
+
+              <div class="col-sm-6 cli-form-element">
+                <div class="form-check form-check-inline mx-2">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         id="ded"
+                         formControlName="dedicaciones">
+                <label class="form-check-label" for="ded">Dedicaciones</label>
+                </div>
+              </div>
+            </div>
+
             <div class="cli-form-element mb-2">
               <label>Obervaciones</label>
               <textarea
@@ -78,8 +100,8 @@
                 style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
                 rows="3"
                 placeholder="Escriba algún Comentario de sobre la Planificación de vacaciones..."
-                formControlName="observaciones"
-               ></textarea>
+                formControlName="observaciones">
+              </textarea>
             </div>
           </div>
         </div>
