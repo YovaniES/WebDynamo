@@ -135,4 +135,8 @@ export class PersonalService {
   crearOactualizarCuenta(obj: any) {
     return this.http.post(API_DYNAMO, obj);
   }
+
+  exportRecursoHard(obj: any) {
+    return this.http.post(API_DYNAMO, obj);
+  }
 }

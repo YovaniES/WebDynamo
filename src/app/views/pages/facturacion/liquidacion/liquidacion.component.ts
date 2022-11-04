@@ -82,7 +82,7 @@ export class LiquidacionComponent implements OnInit {
     this.facturacionService.cargarOBuscarLiquidacion(parametro[0]).subscribe((resp: any) => {
     this.blockUI.stop();
 
-     console.log('Lista-Liquidaciones', resp.list, resp.list.length);
+    //  console.log('Lista-Liquidaciones', resp.list, resp.list.length);
       this.listaLiquidacion = [];
       this.listaLiquidacion = resp.list;
 

@@ -33,7 +33,6 @@ export class ModalHardwareComponent implements OnInit {
     this.getUsuario();
     this.cargarHardwareByID();
     this.getHistoricoHarwareByPersonal(this.DATA_HARDWARE);
-
     // console.log('DATA_HARDWARE', this.DATA_HARDWARE);
   }
 
@@ -42,12 +41,31 @@ export class ModalHardwareComponent implements OnInit {
      tipo        : ['', [Validators.required]],
      marca       : ['', [Validators.required]],
      modelo      : ['', [Validators.required]],
-     serie       : ['', [Validators.required]],
+     serie       : [''],
      imei        : [''],
      observacion : [''],
      equipo      : [''],
+     hostname    : [''],
     })
    }
+
+  selectLaptop(): boolean{
+    const selectLaptop = this.listTipos.find(h => h.nombre.toUpperCase() == 'LAPTOP')
+
+    return selectLaptop && selectLaptop.id == this.hardwareForm.controls['tipo'].value;
+  }
+
+  selectModem(): boolean{
+    const selectModem = this.listTipos.find(h => h.nombre.toUpperCase() == 'MODEM')
+
+    return selectModem && selectModem.id == this.hardwareForm.controls['tipo'].value;
+  }
+
+  selectMovil(): boolean{
+    const selectMovil = this.listTipos.find(h => h.nombre.toUpperCase() == 'EQUIPO MÓVIL')
+
+    return selectMovil && selectMovil.id == this.hardwareForm.controls['tipo'].value;
+  }
 
   crearOactualizarHardware() {
     this.spinner.show();
@@ -58,7 +76,6 @@ export class ModalHardwareComponent implements OnInit {
       }
     } else {
       this.actualizarHardware();
-      // this.cargarHardwareByID();
     }
     this.spinner.hide();
   }
@@ -75,6 +92,7 @@ export class ModalHardwareComponent implements OnInit {
           param_serie         : formValues.serie,
           param_imei          : formValues.imei,
           param_observacion   : formValues.observacion,
+          param_hostname      : formValues.hostname,
           CONFIG_USER_ID      : this.userID,
           CONFIG_OUT_MSG_ERROR: "",
           CONFIG_OUT_MSG_EXITO: "",
@@ -108,6 +126,7 @@ export class ModalHardwareComponent implements OnInit {
           param_serie         : formValues.serie,
           param_imei          : formValues.imei,
           param_observacion   : formValues.observacion,
+          param_hostname      : formValues.hostname,
           CONFIG_USER_ID      : this.userID,
           CONFIG_OUT_MSG_ERROR: "",
           CONFIG_OUT_MSG_EXITO: "",
@@ -147,6 +166,7 @@ export class ModalHardwareComponent implements OnInit {
         this.hardwareForm.controls['serie'      ].setValue(this.DATA_HARDWARE.serie);
         this.hardwareForm.controls['imei'       ].setValue(this.DATA_HARDWARE.imei);
         this.hardwareForm.controls['observacion'].setValue(this.DATA_HARDWARE.observacion);
+        this.hardwareForm.controls['hostname'   ].setValue(this.DATA_HARDWARE.hostname);
     }
   }
 
@@ -165,7 +185,6 @@ export class ModalHardwareComponent implements OnInit {
     this.spinner.hide();
   }
 
-
   campoNoValido(campo: string): boolean {
     if ( this.hardwareForm.get(campo)?.invalid && this.hardwareForm.get(campo)?.touched ) {
       return true;
@@ -181,7 +200,11 @@ export class ModalHardwareComponent implements OnInit {
 
     this.hardwareForm.get('serie')?.valueChanges.subscribe((valor: string) => {
       this.hardwareForm.patchValue( {serie: valor.toUpperCase()}, {emitEvent: false});
-    })
+    });
+
+    this.hardwareForm.get('hostname')?.valueChanges.subscribe((valor: string) => {
+      this.hardwareForm.patchValue( {hostname: valor.toUpperCase()}, {emitEvent: false});
+    });
   }
 
   getUsuario(){

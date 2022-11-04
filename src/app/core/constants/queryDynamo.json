@@ -336,6 +336,7 @@ WHERE id_tabla = 1 AND estado = 1 and id = @param_id_proyecto;
     @param_serie,
     @param_imei,
     @param_observacion,
+    @param_hostname,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
     @CONFIG_OUT_MSG_EXITO )
@@ -355,6 +356,7 @@ WHERE id_tabla = 1 AND estado = 1 and id = @param_id_proyecto;
     @param_serie,
     @param_imei,
     @param_observacion,
+    @param_hostname,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
     @CONFIG_OUT_MSG_EXITO )
@@ -1033,7 +1035,7 @@ ORDER BY r.id DESC; "
     "type": 1,
     "description": "Info tabla",
     "sql": "
-      SELECT
+SELECT
       e.id,
       e.id_tabla,
       e.id_correlativo AS id,
@@ -1042,7 +1044,8 @@ ORDER BY r.id DESC; "
       e.idPadre,
       (SELECT ent.valor_texto_1 nombre FROM entidad ent WHERE ent.id = e.idPadre) AS nombrePadre
       FROM entidad e
-      WHERE e.id_tabla = @param_id_tabla AND estado = 1
+      WHERE e.id_tabla =  @param_id_tabla
+      AND estado = 1
       ORDER BY e.id_correlativo ASC;
     "
   },
@@ -1080,14 +1083,11 @@ ORDER BY r.id DESC; "
     "type": 1,
     "description": "Desplegable entidad",
     "sql": "
-    select id_correlativo
-    id,
+select id_correlativo AS id,
     valor_texto_1 nombre
-    from entidad
-    where id_tabla
-    = 0
-    and estado
-    = 1;
+from entidad
+where id_tabla = 0
+    and estado = 1;
     "
   },
   {
@@ -1095,13 +1095,12 @@ ORDER BY r.id DESC; "
     "type": 1,
     "description": "Desplegable por entidad",
     "sql": "
-    select id,
-    valor_texto_1 nombre
-    from entidad
-    where id_tabla
-    = @param_id_tabla
-    and estado
-    = 1;
+select id,
+	valor_texto_1 nombre
+from entidad
+where id_tabla =  @param_id_tabla
+and estado = 1
+ORDER BY valor_texto_1 DESC;
     "
   },
   {
@@ -1122,50 +1121,20 @@ ORDER BY r.id DESC; "
     "type": 1,
     "description": "Get one info entidad",
     "sql": "
-    select e.id,
+SELECT e.id,
     e.id_tabla idTabla,
     e.id_correlativo idInfo,
     e.valor_texto_1 nombre,
     e.valor_texto_2 descripcion,
-    (select ent.id
-    from entidad
-    ent where
-    ent.id =
-    e.idPadre) idPadre,
-    (select ent.valor_texto_1
-    from entidad
-    ent where
-    ent.id =
-    e.idPadre) nombrePadre,
-    (select ent.id_tabla
-    from entidad
-    ent where
-    ent.id =
-    e.idPadre) idTablaEntidad,
-    (select ent.valor_texto_1
-    from entidad
-    ent where
-    ent.id_correlativo =
-    (select ent.id_tabla
-    from entidad
-    ent where
-    ent.id =
-    e.idPadre) and
-    ent.id_tabla =
-    0) NombreTablaEntidad,
-    (select ent.id_correlativo
-    from entidad
-    ent where
-    ent.id =
-    e.idPadre) idCorrelativoPadre
-    from entidad
-    e where
-    e.id_tabla =
-    @param_id_tabla and
-    e.id_correlativo =
-    @param_id_correlativo and
-    e.estado =
-    1; "
+    (SELECT ent.id FROM entidad ent WHERE ent.id = e.idPadre) AS idPadre,
+    (SELECT ent.valor_texto_1 FROM entidad ent WHERE ent.id = e.idPadre) AS nombrePadre,
+    (SELECT ent.id_tabla FROM entidad ent WHERE ent.id = e.idPadre) AS idTablaEntidad,
+    (SELECT ent.valor_texto_1  FROM entidad ent WHERE ent.id_correlativo = (SELECT ent.id_tabla FROM entidad ent WHERE ent.id = e.idPadre) AND ent.id_tabla = 0) AS NombreTablaEntidad,
+    (SELECT ent.id_correlativo FROM entidad ent WHERE ent.id = e.idPadre) AS idCorrelativoPadre
+FROM entidad e
+WHERE e.id_tabla =  @param_id_tabla
+    AND e.id_correlativo = @param_id_correlativo
+AND e.estado = 1; "
   },
   {
     "id": 55,
@@ -2265,34 +2234,46 @@ WHERE
  "description": "Cargar y Buscar Lista Recurso Hardware",
  "sql": "
 SELECT r.id	AS id_recurso,
-	tipo.id_correlativo	AS id_tipo,
+	tipo.id_correlativo	 AS id_tipo,
     tipo.valor_texto_1   AS tipo,
     marca.valor_texto_1  AS marca,
     marca.id_correlativo AS id_marca,
-    rh.descripcion 		AS equipo,
-    rh.modelo 			  AS modelo,
-    rh.serie 			    AS serie,
-    rh.imei 			    AS imei,
-    (SELECT CONCAT(p.apellido_paterno, ' ', p.apellido_materno, ',', p.nombres) nombres
-FROM recurso_hardware rhd
+    rh.descripcion 		 AS equipo,
+    rh.modelo 			 AS modelo,
+    rh.serie 			 AS serie,
+    rh.imei 			 AS imei,
+    (SELECT CONCAT(p.apellido_paterno, ' ', p.apellido_materno, ',', p.nombres) nombres FROM recurso_hardware rhd
 INNER JOIN persona_recursos pr 	ON rhd.id 		   = pr.id_recurso
-INNER JOIN persona p 			      ON pr.id_persona = p.id
-INNER JOIN entidad marcaent   	ON rhd.id_tipo 	 = marcaent.id_correlativo
-WHERE    rhd.id =  rh.id  AND  marcaent.id_tabla =  4
-AND  pr.fecha_liberacion IS NULL) nombres,
-    CASE WHEN    r.estado = 0 THEN 'Reservado' ELSE 'Disponible' END  AS estado_recurso, rh.observacion
+INNER JOIN persona p 	        ON pr.id_persona = p.id
+INNER JOIN entidad marcaent   	ON rhd.id_tipo 	 = marcaent.id_correlativo WHERE rhd.id =  rh.id  AND  marcaent.id_tabla =  4 AND  pr.fecha_liberacion IS NULL) nombres,
+
+(SELECT p.codigo_corporativo FROM recurso_hardware rhd
+INNER JOIN persona_recursos pr 	ON rhd.id 		 = pr.id_recurso
+INNER JOIN persona p 	        ON pr.id_persona = p.id
+ INNER JOIN entidad e		   	ON rhd.id_tipo 	 = e.id_correlativo WHERE rhd.id =  rh.id  AND  e.id_tabla =  4 AND  pr.fecha_liberacion IS NULL) AS cod_corp,
+
+((SELECT p.id_proyecto FROM recurso_hardware rhd
+ INNER JOIN persona_recursos pr ON rhd.id 	 = pr.id_recurso
+ INNER JOIN persona p 	        ON pr.id_persona = p.id
+ INNER JOIN entidad e2		   	ON rhd.id_tipo 	 = e2.id_correlativo WHERE rhd.id =  rh.id  AND  e2.id_tabla =  1 AND pr.fecha_liberacion IS NULL)) AS id_proyecto, -- PROYECTO
+
+CASE WHEN  r.estado = 0 THEN 'Reservado' ELSE 'Disponible' END  AS estado_recurso,
+	rh.observacion,
+	rh.hostname
+
 FROM  recurso r
     INNER JOIN recurso_hardware rh  ON r.id = rh.id
     INNER JOIN entidad AS tipo  ON  rh.id_tipo = tipo.id_correlativo  AND tipo.id_tabla = 3
     INNER JOIN entidad AS marca ON rh.id_marca = marca.id_correlativo AND marca.id_tabla = 4
 WHERE (@param_id_hardware 	IS NULL OR r.id  = @param_id_hardware)
 AND (@param_serie 	  IS NULL OR rh.serie  LIKE CONCAT('%', @param_serie, '%'))
-AND (@param_id_tipo 	IS NULL OR tipo.id_correlativo = @param_id_tipo)
-AND (@param_id_marca	IS NULL OR marca.id_correlativo = @param_id_marca)
+AND (@param_id_tipo   IS NULL OR tipo.id_correlativo = @param_id_tipo)
+AND (@param_id_marca  IS NULL OR marca.id_correlativo = @param_id_marca)
 AND (@param_id_estado IS NULL OR r.estado = @param_id_estado)
-AND (@param_imei 		  IS NULL OR rh.imei = @param_imei)
+AND (@param_imei 	  IS NULL OR rh.imei = @param_imei)
 AND  r.eliminacion_logica = 1
-ORDER BY r.id DESC;"
+ORDER BY r.id DESC;
+;"
   },
   {
     "id": 109,
@@ -2424,17 +2405,20 @@ AND X.estado = 1; "
     "type": 1,
     "description": "Listado de la lista Entidad para la tabla",
     "sql": "
-      SELECT
+SELECT
       e.id,
       e.id_tabla,
       e.id_correlativo,
       e.valor_texto_1  AS nombre,
       e.valor_texto_2  AS descripcion,
-      e.idPadre,
-      (SELECT ent.valor_texto_1 nombre FROM entidad ent WHERE ent.id = e.idPadre) AS nombrePadre
-      FROM entidad e
-      WHERE e.id_tabla = @param_id_tabla AND estado = 1
-      ORDER BY e.id_correlativo ASC;
+      (SELECT ent.id FROM entidad ent WHERE ent.id = e.idPadre) AS idPadre,
+      (SELECT ent.valor_texto_1 FROM entidad ent WHERE ent.id = e.idPadre) AS nombrePadre,
+      (SELECT ent.id_tabla FROM entidad ent WHERE ent.id = e.idPadre) AS idTablaEntidad,
+      (SELECT ent.valor_texto_1  FROM entidad ent WHERE ent.id_correlativo = (SELECT ent.id_tabla FROM entidad ent WHERE ent.id = e.idPadre) AND ent.id_tabla = 0) AS NombreTablaEntidad,
+      (SELECT ent.id_correlativo FROM entidad ent WHERE ent.id = e.idPadre) AS idCorrelativoPadre
+FROM entidad e
+WHERE e.id_tabla = @param_id_tabla AND estado = 1
+ORDER BY e.id_correlativo ASC;
     "
   },
 
@@ -2497,32 +2481,31 @@ FROM persona_recursos PR
   {
     "id": 118,
     "type": 1,
-    "description": "Listado y busqueda del registro Liquidacion",
+    "description": "Listado y busqueda del registro Liquidacion, Saldo, Duplicidad, Lideres",
     "sql": "
 SELECT DISTINCT f.idFactura,
     DATE_FORMAT(f.periodo, '%Y/%m') AS periodo,
     e2.valor_texto_1 AS proyecto,
-    e2.id AS id_proyecto,
+    (SELECT ent.valor_texto_1 AS nombre FROM entidad ent WHERE ent.id = e2.idPadre) AS lider,
     e3.valor_texto_1 AS liquidacion,
-    e3.id AS id_liquidacion,
     f.subServicio,
-    e4.id AS id_gestor,
-    CASE WHEN e4.valor_texto_1 IS NOT NULL  THEN e4.valor_texto_1  ELSE f.gestor END AS  gestor,
     e1.valor_texto_1 AS estado,
-    e1.id AS id_estado,
-    f.orden_compra,
-    f.cod_certificacion,
-    f.factura,
+    CASE WHEN e4.valor_texto_1 IS NOT NULL  THEN e4.valor_texto_1  ELSE f.gestor END AS  gestor,
     f.venta_declarada AS importe,
     (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado,
-    (SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura ) AS facturado
+	(SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura ) AS facturado,
+    ((SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura) - (SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura)) AS saldo,
 
+    e3.id AS id_liquidacion,
+    e4.id AS id_gestor,
+    e1.id AS id_estado,
+    e2.id AS id_proyecto
 FROM facturacion f
     LEFT JOIN entidad e1 ON f.idEstado		= e1.id AND e1.id_tabla = 7
     LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
     LEFT JOIN entidad e3 ON f.idLiquidacion = e3.id AND e3.id_tabla = 9
     LEFT JOIN entidad e4 ON f.idGestor 		= e4.id AND e4.id_tabla = 8
-    LEFT JOIN facturacion_certificacion fc ON f.idFactura = fc.idFactura
+    LEFT JOIN entidad e5 ON e5.id = f.idProyecto AND e5.id_tabla = 13
 WHERE
       (@cod_fact 		IS NULL OR f.idFactura = @cod_fact)
   AND (@id_proy 		IS NULL OR e2.id = @id_proy)
@@ -2709,7 +2692,9 @@ SELECT
 	  e3.valor_texto_1  AS sistema,
 	  sv.id_usuario_asignacion,
     u.usuario AS usuario_asignacion,
-    DATE_FORMAT(sv.fecha_per_creacion, '%d/%m%/%Y  %H:%i') AS fecha_creacion,
+    DATE_FORMAT(sv.fecha_per_creacion, '%d/%m%/%Y') AS fecha_creacion,
+    sv.jira,
+    sv.dedicaciones,
     sv.observacion
 FROM seguimiento_vacaciones	sv
 	  INNER JOIN persona p  ON p.id = sv.id_persona
@@ -2739,6 +2724,8 @@ ORDER BY sv.idPeriodoVac;
   @p_id_usuario_asignacion,
   @p_fecha_per_creacion,
   @p_id_sist_vac,
+  @p_jira,
+  @p_dedicaciones,
   @CONFIG_USER_ID,
   @CONFIG_OUT_MSG_ERROR,
   @CONFIG_OUT_MSG_EXITO
@@ -2747,7 +2734,7 @@ ORDER BY sv.idPeriodoVac;
 {
     "id": 130,
     "type": 1,
-    "description": "Buscar y listar LOS PERIODOS DE VACACIONES",
+    "description": "Listar LOS PERIODOS DE VACACIONES",
     "sql": "
 SELECT  v.idVac,
 	CONCAT('VAC', LPAD(v.idVac, 5, '0')) AS cod_vac, -- VAC01336
@@ -2807,7 +2794,7 @@ WHERE
 {
   "id": 131,
   "type": 5,
-  "description": "Actualizar Asignacion de Vacaciones",
+  "description": "Actualizar periodo de Vacaciones",
   "sql": "
     CALL prc_update_seguimiento_vacaciones(
     @p_idPeriodoVac,
@@ -2821,6 +2808,8 @@ WHERE
     @p_id_usuario_asignacion,
     @p_fecha_per_creacion,
     @p_id_sist_vac,
+    @p_jira,
+    @p_dedicaciones,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
     @CONFIG_OUT_MSG_EXITO
@@ -3059,16 +3048,64 @@ WHERE ve.id_vacaciones = @p_id_vacaciones; "
     @CONFIG_OUT_MSG_EXITO
     )"
  },
-{
+  {
     "id": 142,
     "type": 5,
     "description": "Eliminar vacaciones",
-    "sql":"
+    "sql": "
     CALL prc_eliminar_vacaciones(
     @p_idVac,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
-    @CONFIG_OUT_MSG_EXITO
-    )"
- },
+    @CONFIG_OUT_MSG_EXITO )"
+  },
+    {
+    "id": 143,
+    "type": 1,
+    "description": "Get all Lideres de Servicio",
+    "sql": "
+SELECT id_correlativo ,
+		valor_texto_1 AS nombrePadre ,
+		valor_texto_2 as descripcion
+	FROM entidad
+WHERE id_tabla = @param_id_tabla AND estado = 1; "
+  },
+  {
+    "id": 144,
+    "type": 1,
+    "description": "Reporte RECURSO HARDWARE - PERSONA",
+    "sql": "
+SELECT (SELECT CONCAT(p.apellido_paterno, ' ', p.apellido_materno, ',', p.nombres) AS nombres FROM recurso_hardware RX
+	INNER JOIN persona_recursos pr 	ON RX.id 		 = pr.id_recurso
+	INNER JOIN persona p 	          ON pr.id_persona = p.id
+   WHERE RX.id =  RH.id AND  pr.fecha_liberacion IS NULL) AS PERSONA,
+
+(SELECT p.codigo_corporativo FROM recurso_hardware RX
+	INNER JOIN persona_recursos pr 	ON RX.id 		 = pr.id_recurso
+	INNER JOIN persona p 	        ON pr.id_persona = p.id
+   WHERE RX.id =  RH.id  AND  pr.fecha_liberacion IS NULL) AS CODIGO_CORP,
+-- 	r.id	AS id_recurso,
+    tipo.valor_texto_1   AS TIPO,
+    marca.valor_texto_1  AS MARCA,
+    RH.descripcion 		   AS EQUIPO,
+    RH.modelo 			     AS MODELO,
+    RH.serie 			       AS SERIE,
+    RH.imei 			       AS IMEI,
+(SELECT p.id_proyecto FROM recurso_hardware RX
+	INNER JOIN persona_recursos pr  ON RX.id 	 	 = pr.id_recurso
+	INNER JOIN persona p 	        ON pr.id_persona = p.id
+ WHERE RX.id =  RH.id  AND  pr.fecha_liberacion IS NULL) AS ID_PROY, -- PROYECTO
+
+CASE WHEN  r.estado = 0 THEN 'Reservado' ELSE 'Disponible' END  AS ESTADO_REC,
+	RH.observacion AS OBSERVACION,
+	RH.hostname AS HOSTNAME
+FROM  recurso r
+    INNER JOIN recurso_hardware RH  ON r.id = RH.id
+    INNER JOIN entidad AS tipo  ON  RH.id_tipo = tipo.id_correlativo  AND tipo.id_tabla  = 3
+    INNER JOIN entidad AS marca ON RH.id_marca = marca.id_correlativo AND marca.id_tabla = 4
+WHERE r.eliminacion_logica = 1
+AND r.estado = 0
+ORDER BY PERSONA;
+    "
+  },
 ]

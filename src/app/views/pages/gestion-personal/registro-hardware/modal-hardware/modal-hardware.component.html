@@ -17,7 +17,6 @@
       <div class="pr-section mb-3">
         <div class="pr-module-container">
           <div class="row g-3">
-
             <div class="col-sm-4 cli-form-element">
               <label>Tipo *</label>
               <select class="cli-input-white" formControlName="tipo">
@@ -47,16 +46,16 @@
               </div>
             </div>
 
-            <div class="col-sm-4 cli-form-element">
-              <label>Serie *</label>
+            <div class="col-sm-4 cli-form-element" *ngIf="selectMovil() || selectLaptop()">
+              <label>Serie</label>
               <input
                 type="text"
                 class="form-control cli-input-white"
                 formControlName="serie"/>
-                <small class="text-alert" *ngIf="campoNoValido('serie')">* Ingrese la Serie es obligatorio</small>
+                <!-- <small class="text-alert" *ngIf="campoNoValido('serie')">* Ingrese la Serie es obligatorio</small> -->
             </div>
 
-            <div class="col-sm-4 cli-form-element">
+            <div class="col-sm-4 cli-form-element" *ngIf="selectMovil() || selectModem()">
               <label>IMEI</label>
               <input
                 type="text"
@@ -64,6 +63,18 @@
                 formControlName="imei"/>
             </div>
 
+            <div class="col-sm-4 cli-form-element" *ngIf="selectLaptop()">
+              <label>HostName</label>
+              <input
+                type="text"
+                class="form-control cli-input-white"
+                formControlName="hostname">
+            </div>
+          </div>
+        </div>
+
+        <div class="pr-module-container">
+          <div class="row g-3">
             <div class="col-sm-6 cli-form-element mb-2">
               <label>Descripción</label>
               <textarea
@@ -85,7 +96,7 @@
                 formControlName="observacion">
               </textarea>
             </div>
-            </div>
+          </div>
         </div>
       </div>
 

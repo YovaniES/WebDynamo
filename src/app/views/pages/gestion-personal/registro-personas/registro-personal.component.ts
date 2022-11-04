@@ -40,6 +40,7 @@ export class RegistroPersonalComponent implements OnInit {
     this.newFilfroForm();
     this.cargarOBuscarPersonal();
     this.getListProyectos();
+    this.getListExportRecursoHard();
   }
 
     newFilfroForm(){
@@ -260,7 +261,21 @@ export class RegistroPersonalComponent implements OnInit {
       });
   }
 
+  listRecursoHard: any[] = [];
+  getListExportRecursoHard(){
+    let parametro: any[] = [{queryId: 144}];
+
+    this.personalService.exportRecursoHard(parametro[0]).subscribe((resp: any) => {
+        this.listRecursoHard = resp.list;
+            // console.log('EXPORT-RH', resp);
+    });
+  }
+
   exportarRegistro() {
-    this.exportExcellService.exportarExcel(this.listaPersonal, 'Persoal');
+    this.exportExcellService.exportarExcel(this.listaPersonal, 'PERSONAS');
+  };
+
+  exportarRecursoHardware(){
+    this.exportExcellService.exportarExcel(this.listRecursoHard, 'RECURSO_HARDWARE')
   }
 }

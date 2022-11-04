@@ -92,11 +92,18 @@
           </button>
 
           <button
-            matTooltip="Descargar registro"
-            class="icon-btn btn-trans c-green-export mx-1"
+            matTooltip="Exportar filtro"
+            class="icon-btn btn-trans c-green-export"
             (click)="exportarRegistro()"
-          ><mat-icon class="icon-18">file_download</mat-icon>Exportar
+            ><mat-icon class="icon-18">file_download</mat-icon>
           </button>
+
+          <button
+          matTooltip="Exportar RH"
+          class="icon-btn btn-trans c-cyan-export"
+          (click)="exportarRecursoHardware()"
+          ><mat-icon class="icon-18">file_download</mat-icon>
+        </button>
 
         <div class="flex-1"></div>
         <div class="mt-2" style="color: #345df3; font-weight: 600;">
