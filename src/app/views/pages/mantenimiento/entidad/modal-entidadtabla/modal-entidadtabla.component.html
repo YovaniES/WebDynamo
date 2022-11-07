@@ -38,7 +38,7 @@
         </div>
       </ng-container>
 
-      <div class="cli-form-element">
+      <div class="col-sm-8 li-form-element">
         <div class="form-group">
           <label>Nombre *</label>
           <input
@@ -46,6 +46,20 @@
             class="form-control cli-input-white"
             formControlName="nombre"/>
           <small class="text-alert" *ngIf="campoNoValido('nombre')">* El Nombre es obligatorio</small>
+        </div>
+      </div>
+
+      <!-- *ngIf="this.DATA_ENTIDAD.eForm.entidad == 1 || this.entidadTablaForm.controls['id_tabla'].value == 1" -->
+      <div class="col-sm-4 li-form-element">
+        <div class="form-group">
+          <label>Valor Num</label>
+          <input
+            style="text-align: center"
+            type="number"
+            min="0"
+            max="1"
+            class="form-control cli-input-white"
+            formControlName="val_num"/>
         </div>
       </div>
 

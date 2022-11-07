@@ -31,7 +31,7 @@ export class ModalEntidadtablaComponent implements OnInit {
     this.cargarTablaEntidadByID();
     this.getListIdPadreTabla();
     // console.log('DATA_TABLA_E', this.DATA_ENTIDAD, this.DATA_ENTIDAD.eForm, this.DATA_ENTIDAD.eForm.entidad);
-    console.log('ABC_DATA', this.DATA_ENTIDAD.idTablaEntidad, this.DATA_ENTIDAD.eForm.entidad);
+    // console.log('ABC_DATA', this.DATA_ENTIDAD.idTablaEntidad, this.DATA_ENTIDAD.eForm.entidad);
   }
 
   newForm(){
@@ -46,7 +46,8 @@ export class ModalEntidadtablaComponent implements OnInit {
 
       NombreTablaEntidad: [''],
       nombrePadre       : [''],
-      idTablaEntidad    : ['']
+      idTablaEntidad    : [''],
+      val_num           : ['']
     })
   }
 
@@ -95,6 +96,7 @@ export class ModalEntidadtablaComponent implements OnInit {
         mapValue: {
           "param_nombre"        : formValues.nombre,
           "param_descripcion"   : formValues.descripcion,
+          "param_val_num"       : formValues.val_num,
           "param_id_padre"      : formValues.idPadre,
           "param_id_tabla"      : this.DATA_ENTIDAD.eForm.entidad,
           "CONFIG_USER_ID"      : this.userID,
@@ -129,6 +131,7 @@ export class ModalEntidadtablaComponent implements OnInit {
           "param_correlativo": formValues.idCorrelativo,
           "param_nombre"     : formValues.nombre,
           "param_descripcion": formValues.descripcion,
+          "param_val_num"    : formValues.val_num,
           "param_padre"      : formValues.idPadre,
           "CONFIG_USER_ID"   : this.userID,
           "CONFIG_OUT_MSG_ERROR":'',
@@ -163,23 +166,21 @@ export class ModalEntidadtablaComponent implements OnInit {
 
     if (!this.DATA_ENTIDAD.isCreation) {
       this.btnAction = 'Actualizar'
-        this.entidadTablaForm.controls['id'           ].setValue(this.DATA_ENTIDAD.id);
-        this.entidadTablaForm.controls['idCorrelativo'].setValue(this.DATA_ENTIDAD.id_correlativo);
-        this.entidadTablaForm.controls['nombre'       ].setValue(this.DATA_ENTIDAD.nombre);
-        this.entidadTablaForm.controls['descripcion'  ].setValue(this.DATA_ENTIDAD.descripcion);
-        this.entidadTablaForm.controls['entidad'      ].setValue(this.DATA_ENTIDAD.entidad);
+        this.entidadTablaForm.controls['id'                ].setValue(this.DATA_ENTIDAD.id);
+        this.entidadTablaForm.controls['idCorrelativo'     ].setValue(this.DATA_ENTIDAD.id_correlativo);
+        this.entidadTablaForm.controls['nombre'            ].setValue(this.DATA_ENTIDAD.nombre);
+        this.entidadTablaForm.controls['descripcion'       ].setValue(this.DATA_ENTIDAD.descripcion);
+        this.entidadTablaForm.controls['val_num'           ].setValue(this.DATA_ENTIDAD.val_num);
+        this.entidadTablaForm.controls['entidad'           ].setValue(this.DATA_ENTIDAD.entidad);
         // this.entidadTablaForm.controls['id_tabla'     ].setValue(this.DATA_ENTIDAD.idTablaEntidad)
-        this.entidadTablaForm.controls['id_tabla'     ].setValue(this.DATA_ENTIDAD.id_tabla)
-        this.entidadTablaForm.controls['idPadre'      ].setValue(this.DATA_ENTIDAD.idPadre);
-        this.entidadTablaForm.controls['idPadre'      ].setValue(this.DATA_ENTIDAD.idPadre);
-        this.entidadTablaForm.controls['NombreTablaEntidad'      ].setValue(this.DATA_ENTIDAD.NombreTablaEntidad);
-        this.entidadTablaForm.controls['nombrePadre'      ].setValue(this.DATA_ENTIDAD.nombrePadre);
-        this.entidadTablaForm.controls['idTablaEntidad'      ].setValue(this.DATA_ENTIDAD.idTablaEntidad);
-
+        this.entidadTablaForm.controls['id_tabla'          ].setValue(this.DATA_ENTIDAD.id_tabla)
+        this.entidadTablaForm.controls['idPadre'           ].setValue(this.DATA_ENTIDAD.idPadre);
+        this.entidadTablaForm.controls['idPadre'           ].setValue(this.DATA_ENTIDAD.idPadre);
+        this.entidadTablaForm.controls['NombreTablaEntidad'].setValue(this.DATA_ENTIDAD.NombreTablaEntidad);
+        this.entidadTablaForm.controls['nombrePadre'       ].setValue(this.DATA_ENTIDAD.nombrePadre);
+        this.entidadTablaForm.controls['idTablaEntidad'    ].setValue(this.DATA_ENTIDAD.idTablaEntidad);
     }
   }
-
-
 
   campoNoValido(campo: string): boolean {
     if ( this.entidadTablaForm.get(campo)?.invalid && this.entidadTablaForm.get(campo)?.touched ) {

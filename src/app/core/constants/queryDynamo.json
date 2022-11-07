@@ -1071,6 +1071,7 @@ SELECT
     CALL prc_ins_info_entidad(
     @param_nombre,
     @param_descripcion,
+    @param_val_num,
     @param_id_padre,
     @param_id_tabla,
     @CONFIG_USER_ID,
@@ -1162,6 +1163,7 @@ AND e.estado = 1; "
     @param_correlativo,
     @param_nombre,
     @param_descripcion,
+    @param_val_num,
     @param_padre,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
@@ -2411,13 +2413,15 @@ SELECT
       e.id_correlativo,
       e.valor_texto_1  AS nombre,
       e.valor_texto_2  AS descripcion,
+      e.valor_numerico_1 AS val_num,
       (SELECT ent.id FROM entidad ent WHERE ent.id = e.idPadre) AS idPadre,
       (SELECT ent.valor_texto_1 FROM entidad ent WHERE ent.id = e.idPadre) AS nombrePadre,
       (SELECT ent.id_tabla FROM entidad ent WHERE ent.id = e.idPadre) AS idTablaEntidad,
       (SELECT ent.valor_texto_1  FROM entidad ent WHERE ent.id_correlativo = (SELECT ent.id_tabla FROM entidad ent WHERE ent.id = e.idPadre) AND ent.id_tabla = 0) AS NombreTablaEntidad,
       (SELECT ent.id_correlativo FROM entidad ent WHERE ent.id = e.idPadre) AS idCorrelativoPadre
 FROM entidad e
-WHERE e.id_tabla = @param_id_tabla AND estado = 1
+WHERE e.id_tabla = @param_id_tabla
+AND estado = 1
 ORDER BY e.id_correlativo ASC;
     "
   },

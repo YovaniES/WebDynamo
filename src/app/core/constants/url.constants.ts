@@ -26,6 +26,4 @@ export const AUTH_SESSION_B2B = AUTH_B2B + '/login';
 // REGISTRO
 export const API_DYNAMO = MAIN_PATH_NET + 'ExecuteQuery';
 
-
-
-    // MAIN_PATH_NET  = 'http://backsupport.indratools.com/api/configurador/';
+// MAIN_PATH_NET  = 'http://backsupport.indratools.com/api/configurador/';

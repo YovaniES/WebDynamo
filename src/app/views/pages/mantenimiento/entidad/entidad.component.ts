@@ -42,7 +42,7 @@ export class EntidadComponent implements OnInit {
     this.filtroForm = this.fb.group({
       entidad  : [''],
     })
-  }
+  };
 
   totaltablas = {
     id: "",
@@ -78,22 +78,6 @@ export class EntidadComponent implements OnInit {
       this.listEntidadTabla = resp.list;
     });
   }
-
-  // cargarOBuscarEntidades(idTabla: any){
-  //   this.blockUI.start("Cargando lista de entidades...");
-
-  //   let parametro: any[] = [{
-  //     "queryId": 54,
-  //     "mapValue": { param_id_tabla: idTabla }
-  //   }];
-  //   this.entidadService.cargarOBuscarEntidades(parametro[0]).subscribe((resp: any) => {
-  //   this.blockUI.stop();
-
-  //    console.log('ID_TABLA_ENTIDAD', resp, resp.list, [resp.list.length]);
-  //     this.listEntidadTabla = [];
-  //     this.listEntidadTabla = resp.list;
-  //   });
-  // }
 
   abrirEliminarEntidad(idTabla: number, idCorrelativo: number, nameEntidad: string){
     Swal.fire({
@@ -176,7 +160,7 @@ export class EntidadComponent implements OnInit {
     this.entidadService.getListEntidades(parametro[0]).subscribe((resp: any) => {
       this.listEntidad = resp.list;
 
-      // console.log('List-Ent', this.listEntidad, this.listEntidad.length);
+      console.log('List-Ent', this.listEntidad, this.listEntidad.length);
 
       this.nombreEntidad = resp.list.map((n:any) => n.id);
       // console.log('NAME_ENT',this.nombreEntidad);
@@ -185,7 +169,7 @@ export class EntidadComponent implements OnInit {
   }
 
   crearEntidadLista(){
-    this.dialog.open(ModalEntidadlistaComponent, {width:'25%'})
+    this.dialog.open(ModalEntidadlistaComponent, {width:'30%'})
                .afterClosed().subscribe(resp => {
       if (resp) {
         // this.cargarOBuscarEntidades()
@@ -195,7 +179,7 @@ export class EntidadComponent implements OnInit {
   }
 
   agregarEntidadTabla(){
-    this.dialog.open(ModalEntidadtablaComponent, {width:'25%', data: {eForm: this.filtroForm.value, isCreation: true}})
+    this.dialog.open(ModalEntidadtablaComponent, {width:'30%', data: {eForm: this.filtroForm.value, isCreation: true}})
                .afterClosed().subscribe(resp => {
             if (resp) {
               this.cargarOBuscarEntidades(this.filtroForm.controls['entidad'].value)
@@ -207,7 +191,7 @@ export class EntidadComponent implements OnInit {
    actualizarEntidadTabla(DATA: any) {
     console.log('DATA_ENTIDAD',DATA);
     this.dialog
-      .open(ModalEntidadtablaComponent, { width: '25%', data: DATA})
+      .open(ModalEntidadtablaComponent, { width: '30%', data: DATA})
       .afterClosed().subscribe((resp) => {
         if (resp == 'Actualizar') {
           this.cargarOBuscarEntidades(DATA.id_tabla);
