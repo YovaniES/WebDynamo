@@ -106,13 +106,13 @@
                       matTooltip="Actualizar"
                       class="icon-btn btn-trans c-blue"
                       (click)="actualizarCuenta(cuenta)"
-                      ><mat-icon class="icon-18">edit</mat-icon>
+                      ><mat-icon class="icon-13">edit</mat-icon>
                     </button>
                     <button
                       matTooltip="Eliminar"
                       class="icon-btn btn-trans c-fucsia"
                       (click)="abrirEliminarCuenta(cuenta.id, cuenta.estado, cuenta.usuario)"
-                      ><mat-icon class="icon-18">delete_forever</mat-icon>
+                      ><mat-icon class="icon-13">delete_forever</mat-icon>
                     </button>
                   </div>
               </td>
@@ -121,7 +121,11 @@
               <td class="w135">{{ cuenta.password}}</td>
               <td>{{ cuenta.tipo }}</td>
               <td class="w135" style="text-align: left">{{ cuenta.nombres | firstCapital }}</td>
-              <td>{{ cuenta.estado }}</td>
+              <!-- <td>{{ cuenta.estado }}</td> -->
+              <td style="width: 100px; height: 50px;">
+                <span *ngIf="cuenta.estado == 'Reservado'"  class="label est-res"> {{ cuenta.estado | uppercase }}</span>
+                <span *ngIf="cuenta.estado == 'Disponible'" class="label est-disp">{{ cuenta.estado | uppercase }}</span>
+              </td>
               <td>{{ cuenta.fechaUltimaRenovacion }}</td>
               <td>{{ cuenta.fechaProximaRenovacion }}</td>
             </tr>

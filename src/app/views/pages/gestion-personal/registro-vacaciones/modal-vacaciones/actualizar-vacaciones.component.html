@@ -71,7 +71,7 @@
                 <mat-date-range-picker #picker></mat-date-range-picker>
 
                 <mat-error *ngIf="vacacionesForm.controls['fechaInicVac'].hasError('matStartDateInvalid')">Fecha de inicio no válida</mat-error>
-                <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid')">Fecha de fin no válida</mat-error>
+                <mat-error *ngIf="vacacionesForm.controls['fechaFinVac' ].hasError('matEndDateInvalid'  )">Fecha de fin no válida</mat-error>
               </mat-form-field>
             </div>
 
@@ -172,6 +172,7 @@
                   <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
                 </div>
 
+
                 <div
                 *ngIf="!loadingItem && listVacacionesPeriodo.length == 0"
                 class="cli-loader mt-2"
@@ -179,6 +180,9 @@
                 >Aquí se mostrará las Vacaciones planificadas de {{vacacionesForm.controls['nombre'].value}} ...
               </div>
             </div>
+            <h5 style="color: #0daef4; margin: 15px 0 0;" *ngIf="DATA_VACACIONES.estado_vac.toUpperCase()== 'PLANIFICADO'">NOTA: <small>Cuando el Estado de los periodo(s) son todos COMPLETADOS y la sumatoria de sus días son igual a {{DATA_VACACIONES.cant_dias_vac}} Días, habrá finalizado con éxito</small></h5>
+            <h5 style="color: #47deb1; margin: 15px 0 0;" *ngIf="DATA_VACACIONES.estado_vac.toUpperCase()== 'COMPLETADO'"> NOTA: <small>Excelente! Completó con éxito los {{DATA_VACACIONES.cant_dias_vac}} días solicitados </small></h5>
+            <h5 style="color: #d63384; margin: 15px 0 0;" *ngIf="DATA_VACACIONES.estado_vac.toUpperCase()== 'EN GESTIÓN'"> NOTA: <small>Aún tienes periodos por Planificar, ten en cuenta que tienes que completar los {{DATA_VACACIONES.cant_dias_vac}} días solicitados </small></h5>
           </div>
         </div>
       </div>

@@ -7,6 +7,27 @@
   text-align: left;
 }
 
+.label {
+  // padding: 3px 10px;
+  padding: 1px 6px;
+  line-height: 13px;
+  color: #fff;
+  font-weight: 400;
+  border-radius: 4px;
+  font-size: 75%;
+  background-color: #398bf7;
+  width: 190px;
+}
+
+.est-disp {
+  background-color: #47deb1;
+}
+
+.est-res {
+  background-color: #ff727f;
+}
+
+
 .total {
   color: #97999b;
   font-size: 18px;

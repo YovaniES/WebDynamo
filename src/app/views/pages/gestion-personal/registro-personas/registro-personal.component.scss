@@ -83,13 +83,12 @@
   width: 190px;
 }
 
-.estado-danger {
+.est-inact {
   background-color: #ff727f;
 }
-.estado-info {
-  background-color: #20c997;
+.est-act {
+  background-color: #47deb1;
 }
-
 
 // estilos para el rango de fechas
 .input-group {

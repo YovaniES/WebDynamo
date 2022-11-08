@@ -6,7 +6,7 @@
       <div class="card" style="border-radius: 2px; font-weight: 600">
         <div class="card-body" style="padding: 10px">
           <form class="row g-3" [formGroup]="filtroForm">
-            <div class="col-sm-2 cli-form-element">
+            <div class="col-sm-3 cli-form-element">
               <label class="form-label">ID Hardware</label>
               <input
                 type="number"
@@ -14,7 +14,7 @@
                 formControlName="id_hardware"/>
             </div>
 
-            <div class="col-sm-2 cli-form-element">
+            <div class="col-sm-3 cli-form-element">
               <label class="form-label">Tipo</label>
               <select class="form-select" formControlName="tipo">
                 <option [value]="0" disabled>- Seleccione -</option>
@@ -22,7 +22,7 @@
               </select>
             </div>
 
-            <div class="col-sm-2 cli-form-element">
+            <div class="col-sm-3 cli-form-element">
               <label class="form-label">Marca</label>
               <select class="form-select" formControlName="marca">
                 <option [value]="0" disabled>- Seleccione -</option>
@@ -30,7 +30,7 @@
               </select>
             </div>
 
-            <div class="col-sm-2 cli-form-element">
+            <div class="col-sm-3 cli-form-element">
               <label class="form-label">Serie</label>
               <input
                 type="text"
@@ -38,7 +38,7 @@
                 formControlName="serie"/>
             </div>
 
-            <div class="col-sm-2 cli-form-element">
+            <div class="col-sm-3 cli-form-element">
               <label class="form-label">IMEI</label>
               <input
                 type="text"
@@ -46,7 +46,7 @@
                 formControlName="imei"/>
             </div>
 
-            <div class="col-sm-2 cli-form-element">
+            <div class="col-sm-3 cli-form-element">
               <label class="form-label">Estado</label>
               <select class="form-select" formControlName="estado">
                 <option [value]="" disabled>-Seleccione-</option>
@@ -138,13 +138,13 @@
                     matTooltip="Actualizar"
                     class="icon-btn btn-trans c-blue"
                     (click)="actualizarHardware(hardware)"
-                  ><mat-icon class="icon-18">edit</mat-icon>
+                  ><mat-icon class="icon-13">edit</mat-icon>
                   </button>
                   <button
                     matTooltip="Eliminar"
                     class="icon-btn btn-trans c-fucsia"
                     (click)="abrirEliminarHardware(hardware.id_recurso, hardware.estado_recurso, hardware.modelo)"
-                  ><mat-icon class="icon-18">delete_forever</mat-icon>
+                  ><mat-icon class="icon-13">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>

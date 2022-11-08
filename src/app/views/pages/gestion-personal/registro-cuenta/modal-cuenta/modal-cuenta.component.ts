@@ -34,7 +34,7 @@ export class ModalCuentaComponent implements OnInit {
   newForm(){
    this.cuentaForm = this.fb.group({
     usuario : ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    password: [''],
     idTipo  : ['', [Validators.required]],
    })
   }

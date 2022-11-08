@@ -95,14 +95,14 @@
             matTooltip="Exportar filtro"
             class="icon-btn btn-trans c-green-export"
             (click)="exportarRegistro()"
-            ><mat-icon class="icon-18">file_download</mat-icon>
+            ><mat-icon class="icon-18">file_download</mat-icon>Exportar Filtro
           </button>
 
           <button
-          matTooltip="Exportar RH"
+          matTooltip="Exportar Recursos-Hardware"
           class="icon-btn btn-trans c-cyan-export"
           (click)="exportarRecursoHardware()"
-          ><mat-icon class="icon-18">file_download</mat-icon>
+          ><mat-icon class="icon-18">file_download</mat-icon>Exportar Recurso
         </button>
 
         <div class="flex-1"></div>
@@ -142,19 +142,19 @@
                   <button matTooltip="Actualizar"
                     class="icon-btn btn-trans c-blue"
                     (click)="actualizarPersonal(personal)"
-                    ><mat-icon class="icon-18">manage_accounts</mat-icon>
+                    ><mat-icon class="icon-13">manage_accounts</mat-icon>
                   </button>
 
                   <button matTooltip="Eliminar"
                     class="icon-btn btn-trans c-fucsia"
                     (click)="abrirEliminarLogico(personal.id, personal.codigo_corporativo, '', personal.nombres)"
-                    ><mat-icon class="icon-18">person_remove</mat-icon>
+                    ><mat-icon class="icon-13">person_remove</mat-icon>
                   </button>
 
                   <button matTooltip ="{{ tooltipActivoInactivo }}"
                     class="icon-btn btn-trans c-grey"
                     (click)="abrirEliminar(personal.id, personal.codigo_corporativo, personal.estado, personal.nombres)"
-                    ><mat-icon class="icon-18">person_off</mat-icon>
+                    ><mat-icon class="icon-13">person_off</mat-icon>
                   </button>
                 </div>
               </td>
@@ -191,8 +191,8 @@
 
               <td>{{ personal.dni }}</td>
               <td>
-                <span *ngIf="personal.estado == 'Activo'"   class="w135 label estado-info">  {{ personal.estado | uppercase }}</span>
-                <span *ngIf="personal.estado == 'Inactivo'" class="w135 label estado-danger">{{ personal.estado | uppercase }}</span>
+                <span *ngIf="personal.estado == 'Activo'"   class="w135 label est-act">  {{ personal.estado | uppercase }}</span>
+                <span *ngIf="personal.estado == 'Inactivo'" class="w135 label est-inact">{{ personal.estado | uppercase }}</span>
               </td>
               <td class="w100">{{ personal.fecha_ingreso }}</td>
             </tr>

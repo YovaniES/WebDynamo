@@ -136,7 +136,6 @@
 }
 
 ::ng-deep input.mat-input-element {
-  // margin-top: -0.0625em;
   color: #212529;
 }
 
@@ -154,25 +153,27 @@
 
 // ESTILO A LOS ESTADOS PERIODO
 .label {
-  // padding: 3px 10px;
   padding: 1px 6px;
   line-height: 13px;
   color: #fff;
   font-weight: 400;
   border-radius: 4px;
-  font-size: 75%;
+  font-size: 60%;
   background-color: #398bf7;
-  width: 190px;
+  // width: 190px;
 }
 
 .estado-compl {
-  background-color: #ff727f;
+  background-color: #47deb1;
 }
 
 .estado-planif {
-  background-color: #0daef4;
+  background-color: #1dbafe;
 }
 
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0.1500em;
+}
 
 @media (max-width: 768px) {
   .modal-title {

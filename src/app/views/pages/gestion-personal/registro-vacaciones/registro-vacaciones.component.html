@@ -146,13 +146,13 @@
                     matTooltip='Actualizar'
                     class="icon-btn btn-trans c-darkcyan"
                     (click)="actualizarVacaciones(vacaciones)"
-                    ><mat-icon class="icon-18">hail</mat-icon>
+                    ><mat-icon class="icon-13">hail</mat-icon>
                   </button>
 
                   <button matTooltip="Eliminar"
                     (click)="abrirEliminarLogico(vacaciones.idVac, vacaciones.nombres, vacaciones.apellido_paterno)"
                     class="icon-btn btn-trans c-fucsia"
-                    ><mat-icon class="icon-18">delete_forever</mat-icon>
+                    ><mat-icon class="icon-13">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
@@ -163,7 +163,7 @@
               <td>
                 <div class="cli-table"
                 style="display: flex; align-items: center; justify-content: space-evenly; background: none; color: #6c757d; border: solid 1px #c4c7ca; min-width: 150px; border-radius: 3px;">
-                  {{ vacaciones.f_ini_vac}}<mat-icon class="icon-18">trending_flat</mat-icon>{{ vacaciones.f_fin_vac }}
+                  {{ vacaciones.f_ini_vac}}<mat-icon class="icon-13">trending_flat</mat-icon>{{ vacaciones.f_fin_vac }}
                 </div>
               </td>
 
@@ -191,22 +191,22 @@
                 <span *ngIf="vacaciones.estado_vac == 'En gestión'"  class="label estado-pend "> {{ vacaciones.estado_vac | uppercase }}</span>
               </td>
 
-              <td style="color: #20c997; font-weight:600;">
-                <div *ngIf="vacaciones.dias_planificado">
-                  {{vacaciones.dias_planificado? vacaciones.dias_planificado: 0}}<small> d</small>
+              <td>
+                <div *ngIf="(vacaciones.cant_dias_vac == vacaciones.dias_completados)"><mat-icon class="icon-13 icon-btn" style="color: #0daef4">done</mat-icon></div>
+                <div style="color: #20c997; font-weight:600;" *ngIf="vacaciones.dias_planificado">{{vacaciones.dias_planificado}} d</div>
+              </td>
+
+              <td style="width: 100px;">
+                <div *ngIf="vacaciones.cant_dias_vac == vacaciones.dias_completados"><mat-icon class="icon-13 icon-btn" style="color: #0daef4">done</mat-icon></div>
+                <div class="cli-table-diaspend" *ngIf="(vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado)">
+                  {{(vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado)}}
                 </div>
               </td>
 
-              <td style="width: 100px; font-weight: 600">
-                <div class="cli-table-diaspend" *ngIf="vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado">
-                  {{vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado}}
-                </div>
-              </td>
-
-              <td style="width: 100px; font-weight: 600;">
-                <div class="cli-table-diascompl" *ngIf="vacaciones.dias_completados">
-                  {{vacaciones.dias_completados}}
-                </div>
+              <td>
+                <!-- <div [ngClass]="(vacaciones.dias_completados == vacaciones.cant_dias_vac) ? 'cli-table-dias' : 'cli-table-diascompl'"> {{vacaciones.dias_completados? vacaciones.dias_completados: '*'}}</div> -->
+                <div *ngIf="vacaciones.dias_completados == vacaciones.cant_dias_vac" class="cli-table-dias">{{vacaciones.dias_completados}}</div>
+                <div *ngIf="vacaciones.dias_completados && vacaciones.dias_completados != vacaciones.cant_dias_vac" class="cli-table-diascompl">{{vacaciones.dias_completados}}</div>
               </td>
 
               <td style="min-width: 90px">{{ vacaciones.fecha_crea_vac }}</td>
