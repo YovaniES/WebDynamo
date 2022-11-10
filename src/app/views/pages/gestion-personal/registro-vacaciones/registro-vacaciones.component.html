@@ -205,7 +205,8 @@
 
               <td>
                 <!-- <div [ngClass]="(vacaciones.dias_completados == vacaciones.cant_dias_vac) ? 'cli-table-dias' : 'cli-table-diascompl'"> {{vacaciones.dias_completados? vacaciones.dias_completados: '*'}}</div> -->
-                <div *ngIf="vacaciones.dias_completados == vacaciones.cant_dias_vac" class="cli-table-dias">{{vacaciones.dias_completados}}</div>
+                <div *ngIf="vacaciones.dias_completados == vacaciones.cant_dias_vac"><mat-icon class="icon-13 icon-btn" style="color: #0daef4">done</mat-icon></div>
+                <!-- <div *ngIf="vacaciones.dias_completados == vacaciones.cant_dias_vac" class="cli-table-dias">{{vacaciones.dias_completados}}</div> -->
                 <div *ngIf="vacaciones.dias_completados && vacaciones.dias_completados != vacaciones.cant_dias_vac" class="cli-table-diascompl">{{vacaciones.dias_completados}}</div>
               </td>
 

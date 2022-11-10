@@ -129,9 +129,9 @@
                 class="cli-input-white"
                 formControlName="codProy"
                 #selectList
-                (change)="getDescProy(selectList.value)"
-                ><option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="cod.id_proyecto" *ngFor="let cod of listProyectos">{{ cod.codigo }}</option>
+                (change)="getDescProy(selectList.value)">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="proyecto.id_correlativo" *ngFor="let proyecto of listProyectos">{{ proyecto.valor_texto_1 }}</option>
               </select>
               <small class="text-alert" *ngIf="campoNoValido('codProy')">* El Código del Proyecto es obligatorio</small>
             </div>

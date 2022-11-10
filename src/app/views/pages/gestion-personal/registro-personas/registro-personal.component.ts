@@ -9,6 +9,7 @@ import { ActualizarPersonalComponent } from './actualizar-personal/actualizar-pe
 import { CrearPersonalComponent } from './crear-personal/crear-personal.component';
 import { DatePipe } from '@angular/common';
 import { ExportExcellService } from 'src/app/core/services/export-excell.service';
+import { debounceTime, pipe } from 'rxjs';
 
 @Component({
   selector: 'app-registro-personas',
@@ -61,6 +62,7 @@ export class RegistroPersonalComponent implements OnInit {
     let parametro: any[] = [{
       "queryId": 121,
       "mapValue": {
+          // nombre         : this.filtroForm.value.nombres + " " + this.filtroForm.value.apellidos?.valueChanges.pipe(debounceTime(1000)).subscribe(),
           nombre         : this.filtroForm.value.nombres + " " + this.filtroForm.value.apellidos,
           dni            : this.filtroForm.value.dni,
           codigo_proyecto: this.filtroForm.value.codProy,

@@ -117,12 +117,12 @@ export class CrearPersonalComponent implements OnInit {
     });
   }
 
-  descProyecto: any;
+  descProyecto: string ='';
   getDescProy(id: any) {
     let parametro: any[] = [{ queryId: 2, mapValue: { param_id_proyecto: id }}];
 
     this.personalService.getDescProy(parametro[0]).subscribe((resp: any) => {
-      this.descProyecto = resp.list.map((d: any) => d.descripcion)
+      this.descProyecto = resp.list.map((d: any) => d.valor_texto_2)
 
       console.log('DESC-PROYX', this.descProyecto);
     });
