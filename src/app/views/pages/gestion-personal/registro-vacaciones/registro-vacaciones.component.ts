@@ -191,7 +191,7 @@ export class RegistroVacacionesComponent implements OnInit {
   let parametro: any[] = [{ queryId: 127}];
   this.vacacionesService.getListAdminVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listAdminVacaciones = resp.list;
-    // console.log('ADMIN-VACAS', resp.list);
+    console.log('ADMIN-VACAS', resp.list);
     })
   }
 
@@ -233,7 +233,7 @@ export class RegistroVacacionesComponent implements OnInit {
   actualizarVacaciones(DATA: any) {
     console.log('DATA_PERSONA_VACACIONES', DATA);
     this.dialog
-      .open(ActualizarVacacionesComponent, {width: '55%', height: '85%', data: DATA})
+      .open(ActualizarVacacionesComponent, {width: '55%', height: '75%', data: DATA})
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.cargarOBuscarVacaciones();
