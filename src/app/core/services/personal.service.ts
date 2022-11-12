@@ -139,4 +139,8 @@ export class PersonalService {
   exportRecursoHard(obj: any) {
     return this.http.post(API_DYNAMO, obj);
   }
+
+  getListCategorias(obj: any) {
+    return this.http.post(API_DYNAMO, obj);
+  }
 }

@@ -5,9 +5,9 @@
     "description": "Get all projects",
     "sql": "
  SELECT id,
-	  id_correlativo AS id_proyecto,
-    valor_texto_1 AS codigo,
-    valor_texto_2 AS descripcion
+	  id_correlativo, -- AS id_proyecto,
+    valor_texto_1, --  AS codigo,
+    valor_texto_2 -- AS descripcion
 FROM
     entidad WHERE id_tabla = 1 AND estado = 1
     ORDER BY valor_texto_1  ASC;
@@ -19,11 +19,11 @@ FROM
     "description": "Get one project",
     "sql": "
 SELECT id,
-	id_correlativo,
-    valor_texto_1 as codigo,
-    valor_texto_2 as descripcion
+  	id_correlativo,
+    valor_texto_1,  -- as codigo,
+    valor_texto_2 --  as descripcion
 FROM entidad
-WHERE id_tabla = 1 AND estado = 1 and id = @param_id_proyecto;
+WHERE id_tabla = 1 AND estado = 1 and id_correlativo = @param_id_proyecto;
      "
   },
   {
@@ -130,6 +130,7 @@ WHERE id_tabla = 1 AND estado = 1 and id = @param_id_proyecto;
     @param_fecha_nacimiento,
     @param_id_proyecto,
     @param_id_perfil,
+    -- @param_id_categoria,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
     @CONFIG_OUT_MSG_EXITO )
@@ -153,6 +154,7 @@ WHERE id_tabla = 1 AND estado = 1 and id = @param_id_proyecto;
     @param_id_proyecto,
     @param_id_perfil,
     @param_estado,
+    @param_id_categoria,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
     @CONFIG_OUT_MSG_EXITO )
@@ -650,53 +652,26 @@ WHERE
     "type": 1,
     "description": "Get one persona",
     "sql": "
-    SELECT p.id,
+SELECT p.id,
     p.nombres,
     p.apellido_paterno,
     p.apellido_materno,
     p.correo,
     p.dni,
     p.codigo_corporativo,
-    perfil.valor_texto_1 AS
-    perfil,
-    p.id_perfil AS
-    id_perfil,
-    proyecto.valor_texto_1 AS
-    codigo_proyecto,
-    p.id_proyecto AS
-    id_codigo_proyecto,
-    proyecto.valor_texto_2 AS
-    proyecto_descripcion,
-    DATE_FORMAT(p.fecha_ingreso,
-    '%d/%m/%Y') AS
-    fecha_ingreso,
-    DATE_FORMAT(p.fecha_nacimiento,
-    '%d/%m/%Y') AS
-    fecha_nacimiento,
-    CASE WHEN
-    p.estado =
-    1 THEN
-    'Activo' ELSE
-    'Inactivo' END
-    AS estado
-    FROM persona
-    p LEFT
-    JOIN entidad
-    proyecto ON
-    p.id_proyecto =
-    proyecto.id_correlativo AND
-    proyecto.id_tabla =
-    1 LEFT
-    JOIN entidad
-    perfil ON
-    p.id_perfil =
-    perfil.id_correlativo AND
-    perfil.id_tabla =
-    2 WHERE
-    p.id =
-    @param_id_persona AND
-    p.eliminacion_logica =
-    1; "
+    perfil.valor_texto_1 AS perfil,
+    p.id_perfil AS id_perfil,
+    proyecto.valor_texto_1 AS codigo_proyecto,
+    p.id_proyecto AS id_codigo_proyecto,
+    proyecto.valor_texto_2 AS proyecto_descripcion,
+    DATE_FORMAT(p.fecha_ingreso,'%d/%m/%Y') AS fecha_ingreso,
+    DATE_FORMAT(p.fecha_nacimiento,'%d/%m/%Y') AS fecha_nacimiento,
+    CASE WHEN p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado
+FROM persona p
+	LEFT JOIN entidad proyecto ON p.id_proyecto = proyecto.id_correlativo AND proyecto.id_tabla = 1
+    LEFT JOIN entidad perfil ON p.id_perfil = perfil.id_correlativo AND perfil.id_tabla = 2
+WHERE p.id =  @param_id_persona
+	AND p.eliminacion_logica =1"
   },
   {
     "id": 32,
@@ -2244,7 +2219,7 @@ SELECT r.id	AS id_recurso,
     rh.modelo 			 AS modelo,
     rh.serie 			 AS serie,
     rh.imei 			 AS imei,
-    (SELECT CONCAT(p.apellido_paterno, ' ', p.apellido_materno, ',', p.nombres) nombres FROM recurso_hardware rhd
+    (SELECT CONCAT(p.apellido_paterno, ' ', p.apellido_materno, ', ', p.nombres) nombres FROM recurso_hardware rhd
 INNER JOIN persona_recursos pr 	ON rhd.id 		   = pr.id_recurso
 INNER JOIN persona p 	        ON pr.id_persona = p.id
 INNER JOIN entidad marcaent   	ON rhd.id_tipo 	 = marcaent.id_correlativo WHERE rhd.id =  rh.id  AND  marcaent.id_tabla =  4 AND  pr.fecha_liberacion IS NULL) nombres,
@@ -2561,20 +2536,24 @@ SELECT  p.id,
      p.dni,
      p.codigo_corporativo,
      E.valor_texto_1   AS perfil,
-     E.id_correlativo  AS id_perfil,
-     E2.id_correlativo AS id_proyecto,
      E2.valor_texto_1  AS codigo_proyecto,
      E2.valor_texto_2  AS proyecto_descripcion,
      DATE_FORMAT(p.fecha_ingreso,'%d/%m/%Y') AS fecha_ingreso,
-     CASE WHEN
-     p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado,
+     DATE_FORMAT(p.fecha_nacimiento,'%d/%m/%Y') AS fecha_nacimiento,
+     CASE WHEN p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado,
+     E3.valor_texto_1 AS categoria,
     count(rh.id) AS total_rh,
-    count(rc.id) AS total_rc
-FROM persona p
-left join entidad E   on E.id_correlativo = p.id_perfil 	  and E.id_tabla  = 2
-left join entidad E2  on E2.id_correlativo = p.id_proyecto    and E2.id_tabla = 1
+    count(rc.id) AS total_rc,
+    E.id_correlativo  AS id_perfil,
+    E2.id_correlativo AS id_proyecto,
+    E3.id_correlativo AS id_categoria
 
- LEFT JOIN persona_recursos pr 	ON pr.id_persona = p.id OR pr.id_persona is null -- AND PR.id_recurso is not null
+FROM persona p
+LEFT JOIN entidad E   ON E.id_correlativo = p.id_perfil 	  AND E.id_tabla  = 2
+LEFT JOIN entidad E2  ON E2.id_correlativo = p.id_proyecto    AND E2.id_tabla = 1
+LEFT JOIN entidad E3  ON E3.id_correlativo = p.id_categoria   AND E3.id_tabla = 14
+
+ INNER JOIN persona_recursos pr 	ON pr.id_persona = p.id OR pr.id_persona is null -- AND PR.id_recurso is not null
  LEFT JOIN recurso r 			ON r.id = pr.id_recurso
  LEFT JOIN recurso_hardware rh 	ON r.id = rh.id
  LEFT JOIN recurso_cuenta rc 	ON r.id = rc.id
@@ -2582,6 +2561,7 @@ WHERE
 	  (@nombre IS NULL OR UPPER(CONCAT(p.nombres, ' ', p.apellido_paterno, ' ', p.apellido_materno)) LIKE CONCAT('%', @nombre, '%'))
   AND (@dni IS NULL OR p.dni LIKE CONCAT('%', @dni, '%'))
   AND (@id_estado 	IS NULL OR p.estado = @id_estado)
+  AND (@id_categoria IS NULL OR p.id_categoria = @id_categoria)
   AND (@codigo_proyecto IS NULL OR p.id_proyecto = @codigo_proyecto)
   AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
   AND DATE(p.fecha_ingreso) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
@@ -2593,6 +2573,7 @@ WHERE
   AND p.eliminacion_logica = 1
   GROUP BY 1, 2, 3, 4,5,6,7,8,9,10,11
   ORDER BY p.id DESC;
+
     "
   },
   {
@@ -2666,15 +2647,15 @@ FROM
   {
     "id": 127,
     "type": 1,
-    "description": "Lista de ADMINISTRADORES - Vacaciones Personal",
+    "description": "Lista de RESPONSABLES - Vacaciones Personal",
     "sql": "
- SELECT id,
-	id_correlativo,
-  valor_texto_1,
-  valor_texto_2 AS descripcion
-FROM
-    entidad WHERE id_tabla = 13 AND estado = 1
-    ORDER BY valor_texto_1  ASC;"
+SELECT id,
+	   usuario AS username,
+	   concat(nombre, ', ', apellido) AS fullname
+FROM usuario
+WHERE id IN (341, 343, 436, 269, 339, 30, 108, 168, 345 )
+AND generico = 1
+ORDER BY usuario ASC; "
   },
   {
     "id": 128,
@@ -3063,7 +3044,7 @@ WHERE ve.id_vacaciones = @p_id_vacaciones; "
     @CONFIG_OUT_MSG_ERROR,
     @CONFIG_OUT_MSG_EXITO )"
   },
-    {
+  {
     "id": 143,
     "type": 1,
     "description": "Get all Lideres de Servicio",
@@ -3111,5 +3092,63 @@ WHERE r.eliminacion_logica = 1
 AND r.estado = 0
 ORDER BY PERSONA;
     "
+  },
+    {
+    "id": 145,
+    "type": 1,
+    "description": "Lista de CATEGORIAS - Personal",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+      valor_texto_1
+ FROM entidad WHERE id_tabla = 14 AND estado = 1
+    ORDER BY valor_texto_1  ASC; "
+  },
+  {
+    "id": 146,
+    "type": 1,
+    "description": "Modal vacaciones  - Data by ID",
+    "sql": "
+     SELECT DISTINCT (v.idVac),
+	 p.id AS id_persona,
+     p.nombres,
+     CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
+     p.apellido_paterno,
+     p.apellido_materno,
+     p.codigo_corporativo,
+     e3.id_correlativo AS id_proyecto,
+     e3.valor_texto_1  AS codigo_proyecto,
+     DATE_FORMAT(p.fecha_ingreso, '%d/%m/%Y') AS fecha_ingreso,
+	   e2.id_correlativo AS id_estado_vac,
+     e2.valor_texto_1  AS estado_vac,
+	   e.id_correlativo  AS id_sist_vac,
+     e.valor_texto_1   AS sist_vac,
+     DATE_FORMAT(v.fecha_ini_vac,'%d/%m/%Y') AS fecha_ini_vac,
+     DATE_FORMAT(v.fecha_fin_vac,'%d/%m/%Y') AS fecha_fin_vac,
+     DATE_FORMAT(v.fecha_ini_vac,'%d %b') AS f_ini_vac,
+     DATE_FORMAT(v.fecha_fin_vac,'%d %b %Y') AS f_fin_vac,
+	 DATEDIFF(v.fecha_fin_vac, v.fecha_ini_vac)+1 AS cant_dias_vac,
+	 CASE WHEN p.estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado_persona,
+     u.id,
+     u.usuario,
+	 CONCAT(u.nombre,' ', u.apellido) AS responsable,
+	 SUM( CASE WHEN  sv.eliminacion_logica = 0 OR sv.id_per_estado != 2
+     THEN 0 ELSE (DATEDIFF(sv.fecha_per_fin, sv.fecha_per_ini)+1) END)  AS dias_planificado,
+
+     SUM( CASE WHEN  sv.eliminacion_logica = 0 OR sv.id_per_estado != 1
+     THEN 0 ELSE (DATEDIFF(sv.fecha_per_fin, sv.fecha_per_ini)+1) END)  AS dias_completados,
+     DATE_FORMAT(v.fecha_crea_vac, '%d-%m-%Y') AS fecha_crea_vac
+FROM vacaciones v
+  LEFT JOIN persona p	ON p.id = v.id_persona
+  LEFT JOIN entidad e3  ON e3.id_correlativo = p.id_proyecto   AND e3.id_tabla = 1
+  LEFT JOIN entidad e   ON e.id_correlativo  = v.id_sist_vac   AND e.id_tabla  = 10
+  LEFT JOIN entidad e2  ON e2.id_correlativo = v.id_estado_vac AND e2.id_tabla = 12
+  LEFT JOIN usuario u   ON u.id 	   = v.id_responsable
+  LEFT JOIN seguimiento_vacaciones sv ON sv.id_vacaciones = v.idVac
+WHERE
+	  v.idVac = @param_id_vacaciones
+  AND v.eliminacion_logica = 1
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+  ORDER BY v.idVac DESC;"
   },
 ]

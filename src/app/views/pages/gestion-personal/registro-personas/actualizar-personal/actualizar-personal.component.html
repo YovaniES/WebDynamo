@@ -79,13 +79,21 @@
       <div class="pr-section mb-3">
         <div class="pr-module-container">
           <div class="row g-3">
-            <div class="col-sm-4 cli-form-element">
+            <div class="col-sm-2 cli-form-element">
               <label>Cód. Corporativo</label>
               <input
                 type="number"
                 maxlength="6"
                 class="form-control cli-input-white"
                 formControlName="codCorp"/>
+            </div>
+
+            <div class="col-sm-2 cli-form-element">
+              <label>Categoria</label>
+              <select class="cli-input-white" formControlName="categoria">
+                <option [value]="0">- Seleccione -</option>
+                <option [value]="cat.id_correlativo" *ngFor="let cat of listCategorias">{{ cat.valor_texto_1 }}</option>
+              </select>
             </div>
 
             <div class="col-sm-2 cli-form-element">
@@ -100,7 +108,7 @@
               <label>Cód. Proyecto</label>
               <select class="cli-input-white" formControlName="id_proyecto">
                 <option [value]="0">- Seleccione -</option>
-                <option [value]="cod.id_proyecto" *ngFor="let cod of listProyectos">{{ cod.codigo }}</option>
+                <option [value]="cod.id_correlativo" *ngFor="let cod of listProyectos">{{ cod.valor_texto_1 }}</option>
               </select>
             </div>
 

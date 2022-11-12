@@ -34,7 +34,7 @@
               <label class="form-label">Cód.Proyecto</label>
               <select class="form-select" formControlName="id_cod_proy">
                 <option [value]="0" disabled>- Seleccione -</option>
-                <option [value]="cod.id_proyecto" *ngFor="let cod of listCodProy">{{cod.codigo}}</option>
+                <option [value]="cod.id_correlativo" *ngFor="let cod of listCodProy">{{cod.valor_texto_1}}</option>
               </select>
             </div>
 

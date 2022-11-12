@@ -63,13 +63,6 @@ export class RegistroVacacionesComponent implements OnInit {
     })
   };
 
-  // hasPermission(r: ROLES_ENUM[]): boolean {
-  //   if (r) {
-  //     return this.authService.hasAccessToModule(r)
-  //   }
-  //   return true;
-  // }
-
   listaRegVacaciones: any[] = [];
   cargarOBuscarVacaciones(){
     this.blockUI.start("Cargando Registro de Vacaciones...");
@@ -89,7 +82,7 @@ export class RegistroVacacionesComponent implements OnInit {
     this.vacacionesService.cargarOBuscarVacaciones(parametro[0]).subscribe((resp: any) => {
     this.blockUI.stop();
 
-     console.log('Lista-VACACIONES-APROB', resp, resp.list.length);
+    //  console.log('Lista-VACACIONES-APROB', resp, resp.list.length);
       this.listaRegVacaciones = [];
       this.listaRegVacaciones = resp.list;
 
@@ -182,7 +175,7 @@ export class RegistroVacacionesComponent implements OnInit {
   let parametro: any[] = [{ queryId: 124}];
   this.vacacionesService.getListEstadoVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listEstadoVacaciones = resp.list;
-    console.log('VACAC-ESTADO', resp.list);
+    // console.log('VACAC-ESTADO', resp.list);
     })
   }
 
@@ -191,7 +184,7 @@ export class RegistroVacacionesComponent implements OnInit {
   let parametro: any[] = [{ queryId: 127}];
   this.vacacionesService.getListAdminVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listAdminVacaciones = resp.list;
-    console.log('ADMIN-VACAS', resp.list);
+    // console.log('RESPONSABLES-VACAS', resp.list);
     })
   }
 
@@ -231,13 +224,15 @@ export class RegistroVacacionesComponent implements OnInit {
   }
 
   actualizarVacaciones(DATA: any) {
-    console.log('DATA_PERSONA_VACACIONES', DATA);
+    // console.log('DATA_PERSONA_VACACIONES', DATA);
     this.dialog
-      .open(ActualizarVacacionesComponent, {width: '55%', height: '75%', data: DATA})
+      .open(ActualizarVacacionesComponent, {width: '55%', height: '75%', data: DATA, disableClose: true})
       .afterClosed().subscribe((resp) => {
-        if (resp) {
+        // if (resp) {
+        //   this.cargarOBuscarVacaciones();
+        // }
           this.cargarOBuscarVacaciones();
-        }
+
       });
   }
 

@@ -41,6 +41,7 @@ export class RegistroPersonalComponent implements OnInit {
     this.newFilfroForm();
     this.cargarOBuscarPersonal();
     this.getListProyectos();
+    this.getListCategorias();
     this.getListExportRecursoHard();
   }
 
@@ -53,6 +54,7 @@ export class RegistroPersonalComponent implements OnInit {
       estado            : [''],
       fechaIngresoInicio: [''],
       fechaIngresoFin   : [''],
+      categoria         : ['']
     })
   };
 
@@ -67,6 +69,7 @@ export class RegistroPersonalComponent implements OnInit {
           dni            : this.filtroForm.value.dni,
           codigo_proyecto: this.filtroForm.value.codProy,
           id_estado      : this.filtroForm.value.estado,
+          id_categoria   : this.filtroForm.value.categoria,
           inicio         : this.datepipe.transform(this.filtroForm.value.fechaIngresoInicio,"yyyy/MM/dd"),
           fin            : this.datepipe.transform(this.filtroForm.value.fechaIngresoFin,"yyyy/MM/dd"),
       }
@@ -206,10 +209,19 @@ export class RegistroPersonalComponent implements OnInit {
   getListProyectos() {
     let arrayParametro: any[] = [{ queryId: 1 }];
 
-    this.personalService
-      .getListProyectos(arrayParametro[0]).subscribe((resp: any) => {
+    this.personalService.getListProyectos(arrayParametro[0]).subscribe((resp: any) => {
         this.listCodProy = resp.list;
         // console.log('COD_PROY', resp);
+      });
+  }
+
+  listCategorias: any[] = [];
+  getListCategorias() {
+    let arrayParametro: any[] = [{ queryId: 145 }];
+
+    this.personalService.getListProyectos(arrayParametro[0]).subscribe((resp: any) => {
+        this.listCategorias = resp.list;
+        console.log('CATEGORIAS', resp);
       });
   }
 

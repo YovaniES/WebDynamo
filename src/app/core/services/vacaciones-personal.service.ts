@@ -72,5 +72,10 @@ export class VacacionesPersonalService {
   eliminarVacaciones(id: any) {
     return this.http.post(API_DYNAMO, id);
   }
+
+
+  cargarVacacionesById(id: any) {
+    return this.http.post(API_DYNAMO, id);
+  }
 }
 

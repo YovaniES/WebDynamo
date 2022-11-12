@@ -38,6 +38,7 @@ export class ActualizarPersonalComponent implements OnInit {
     this.getListPerfiles();
     this.getHistoricoCambiosProyecto(this.DATA_PERSONAL);
     this.getUsuario();
+    this.getListCategorias();
     this.ListaHardwareAsignado();
     this.ListaCuentaAsignado();
     console.log('DATA_PERSONA', this.DATA_PERSONAL);
@@ -62,6 +63,7 @@ export class ActualizarPersonalComponent implements OnInit {
        estado         : [''],
        perfil         : [''],
        proyecto       : [''],
+       categoria      : ['']
       })
      }
 
@@ -92,6 +94,7 @@ export class ActualizarPersonalComponent implements OnInit {
           param_id_proyecto       : formValues.id_proyecto,
           param_id_perfil         : formValues.codPerfil,
           param_estado            : 1,
+          param_id_categoria      : formValues.categoria,
           CONFIG_USER_ID          : this.userID,
           CONFIG_OUT_MSG_ERROR    : "",
           CONFIG_OUT_MSG_EXITO    : "",
@@ -127,6 +130,7 @@ export class ActualizarPersonalComponent implements OnInit {
         this.personalForm.controls['proyecto'   ].setValue(this.DATA_PERSONAL.codigo_proyecto);
         this.personalForm.controls['id_proyecto'].setValue(this.DATA_PERSONAL.id_proyecto);
         this.personalForm.controls['descProy'   ].setValue(this.DATA_PERSONAL.proyecto_descripcion);
+        this.personalForm.controls['categoria'  ].setValue(this.DATA_PERSONAL.id_categoria);
 
         this.personalForm.controls['estado'].setValue(this.DATA_PERSONAL.estado);
 
@@ -263,7 +267,18 @@ export class ActualizarPersonalComponent implements OnInit {
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
+  };
+
+  listCategorias: any[] = [];
+  getListCategorias() {
+    let arrayParametro: any[] = [{ queryId: 145 }];
+
+    this.personalService.getListProyectos(arrayParametro[0]).subscribe((resp: any) => {
+        this.listCategorias = resp.list;
+        console.log('CATEGORIAS', resp);
+      });
   }
+
 
   campoNoValido(campo: string): boolean {
     if ( this.personalForm.get(campo)?.invalid && (this.personalForm.get(campo)?.dirty || this.personalForm.get(campo)?.touched) ) {

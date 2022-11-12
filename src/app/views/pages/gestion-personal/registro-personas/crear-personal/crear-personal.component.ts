@@ -46,6 +46,7 @@ export class CrearPersonalComponent implements OnInit {
      fechaIngreso   : ['', [Validators.required]],
      codProy        : ['', [Validators.required]],
      descProy       : [''],
+    //  categoria      : ['']
     })
    }
 
@@ -73,6 +74,7 @@ export class CrearPersonalComponent implements OnInit {
           param_fecha_nacimiento  : formValues.fechaNacimiento,
           param_id_proyecto       : formValues.codProy,
           param_id_perfil         : formValues.codPerfil,
+          // param_id_categoria      : '',
           CONFIG_USER_ID          : this.userID,
           CONFIG_OUT_MSG_ERROR    : "",
           CONFIG_OUT_MSG_EXITO    : "",

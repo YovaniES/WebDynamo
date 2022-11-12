@@ -46,11 +46,12 @@ export class ActualizarVacacionesComponent implements OnInit {
     this.getListEstadoVacaciones();
     this.getLstSistemaVacaciones();
     this.cargarPeriodoVacaciones(false);
-    this.cargarVacacionesById();
     this.getHistoricoCambiosEstado(this.DATA_VACACIONES);
-    console.log('DATA_VACACIONES', this.DATA_VACACIONES);
-    console.log('ID_DATA_VACACIONES', this.DATA_VACACIONES.id_vacaciones);
+    // console.log('DATA_VACACIONES', this.DATA_VACACIONES);
+    // console.log('ID_DATA_VACACIONES', this.DATA_VACACIONES.id_vacaciones);
     this.vacacionesForm.controls['idVacaciones'].setValue(this.DATA_VACACIONES)
+
+    this.cargarVacacionesById()
     // console.log('FECHA_1', moment(this.DATA_VACACIONES.fecha_ini_vac).format("YYYY-MM-DD hh:mm A"));
     // console.log('FECHA_123', moment(Date.now()).format('YYYY-MM-DD hh:mm A'));
   }
@@ -88,6 +89,7 @@ export class ActualizarVacacionesComponent implements OnInit {
     this.spinner.show();
 
     const formValues = this.vacacionesForm.getRawValue();
+
     let parametro: any[] = [{
         queryId: 138,
         mapValue: {
@@ -106,7 +108,6 @@ export class ActualizarVacacionesComponent implements OnInit {
       this.spinner.hide();
       // console.log('DATA_ACTUALIZADO', resp);
       this.cargarVacacionesById();
-      this.close(true)
 
       Swal.fire({
         title: 'Actualizar Vacaciones!',
@@ -114,28 +115,41 @@ export class ActualizarVacacionesComponent implements OnInit {
         icon : 'success',
         confirmButtonText: 'Ok'
         })
+
+        if (!estadoVacaciones) {
+          this.close(true);
+        }else{
+        this.getHistoricoCambiosEstado(this.DATA_VACACIONES);
+        }
     });
   };
 
-  actionBtn: string = 'Registrar';
   cargarVacacionesById(){
     this.spinner.show();
 
-      this.vacacionesForm.controls['nombre'        ].setValue(this.DATA_VACACIONES.nombres);
-      this.vacacionesForm.controls['apPaterno'     ].setValue(this.DATA_VACACIONES.apellido_paterno);
-      this.vacacionesForm.controls['apMaterno'     ].setValue(this.DATA_VACACIONES.apellido_materno);
-      this.vacacionesForm.controls['codCorp'       ].setValue(this.DATA_VACACIONES.codigo_corporativo);
-      this.vacacionesForm.controls['proyecto'      ].setValue(this.DATA_VACACIONES.codigo_proyecto);
-      this.vacacionesForm.controls['id_proyecto'   ].setValue(this.DATA_VACACIONES.id_proyecto);
-      this.vacacionesForm.controls['estado_persona'].setValue(this.DATA_VACACIONES.estado_persona);
-      this.vacacionesForm.controls['id_estado_vac' ].setValue(this.DATA_VACACIONES.id_estado_vac);
-      this.vacacionesForm.controls['estado_vac'    ].setValue(this.DATA_VACACIONES.estado_vac);
-      this.vacacionesForm.controls['idSistema'     ].setValue(this.DATA_VACACIONES.id_sist_vac);
-      this.vacacionesForm.controls['total_dias_vac'].setValue(this.DATA_VACACIONES.cant_dias_vac);
-      this.vacacionesForm.controls['fecha_ingreso' ].setValue(this.DATA_VACACIONES.fecha_ingreso);
+    let arrayParametro:any[] = [{
+      "queryId": 146,
+      "mapValue": {
+        "param_id_vacaciones": this.DATA_VACACIONES.idVac
+      }
+    }];
+    this.vacacionesService.cargarVacacionesById(arrayParametro[0]).subscribe((resp: any) => {
+      console.log('DATA_BY_ID', resp.list);
+      this.vacacionesForm.controls['nombre'        ].setValue(resp.list[0].nombres);
+      this.vacacionesForm.controls['apPaterno'     ].setValue(resp.list[0].apellido_paterno);
+      this.vacacionesForm.controls['apMaterno'     ].setValue(resp.list[0].apellido_materno);
+      this.vacacionesForm.controls['codCorp'       ].setValue(resp.list[0].codigo_corporativo);
+      this.vacacionesForm.controls['proyecto'      ].setValue(resp.list[0].codigo_proyecto);
+      this.vacacionesForm.controls['id_proyecto'   ].setValue(resp.list[0].id_proyecto);
+      this.vacacionesForm.controls['estado_persona'].setValue(resp.list[0].estado_persona);
+      this.vacacionesForm.controls['id_estado_vac' ].setValue(resp.list[0].id_estado_vac);
+      this.vacacionesForm.controls['estado_vac'    ].setValue(resp.list[0].estado_vac);
+      this.vacacionesForm.controls['idSistema'     ].setValue(resp.list[0].id_sist_vac);
+      this.vacacionesForm.controls['total_dias_vac'].setValue(resp.list[0].cant_dias_vac);
+      this.vacacionesForm.controls['fecha_ingreso' ].setValue(resp.list[0].fecha_ingreso);
 
-      if (this.DATA_VACACIONES.fecha_ini_vac) {
-        let fecha_x = this.DATA_VACACIONES.fecha_ini_vac
+      if (resp.list[0].fecha_ini_vac) {
+        let fecha_x = resp.list[0].fecha_ini_vac
         const str   = fecha_x.split('/');
         const year  = Number(str[2]);
         const month = Number(str[1]);
@@ -143,16 +157,17 @@ export class ActualizarVacacionesComponent implements OnInit {
         this.vacacionesForm.controls['fechaInicVac'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
 
-      if (this.DATA_VACACIONES.fecha_fin_vac) {
-        let fecha_x = this.DATA_VACACIONES.fecha_fin_vac
+      if (resp.list[0].fecha_fin_vac) {
+        let fecha_x = resp.list[0].fecha_fin_vac
         const str   = fecha_x.split('/');
         const year  = Number(str[2]);
         const month = Number(str[1]);
         const date  = Number(str[0]);
         this.vacacionesForm.controls['fechaFinVac'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
-      this.spinner.hide();
-  }
+    this.spinner.hide();
+    }
+  )}
 
   eliminarPeriodoVacaciones(id: number){
     this.spinner.show();
@@ -219,7 +234,7 @@ export class ActualizarVacacionesComponent implements OnInit {
 
     this.vacacionesService.cargarPeriodoVacaciones(parametro[0]).subscribe( (resp: any) => {
       this.listVacacionesPeriodo = resp.list;
-      // console.log('PERIODOS-PLANIFICADAS', resp.list);
+      console.log('PERIODOS-PLANIFICADAS', resp.list);
 
         if (validarEstadosPeriodos) {
           this.validarEstadoPeriodo(this.listVacacionesPeriodo)
@@ -339,7 +354,10 @@ export class ActualizarVacacionesComponent implements OnInit {
     const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: {vacForm: this.vacacionesForm.value, isCreation: true, diasVacaciones: diasVacaciones} });
 
     dialogRef.afterClosed().subscribe(resp => {
+      console.log('CLOSE', resp);
+
       if (resp) {
+
         this.cargarPeriodoVacaciones()
       }
     })

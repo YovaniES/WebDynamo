@@ -40,7 +40,7 @@ export class ModalHardwareComponent implements OnInit {
     this.hardwareForm = this.fb.group({
      tipo        : ['', [Validators.required]],
      marca       : ['', [Validators.required]],
-     modelo      : ['', [Validators.required]],
+     modelo      : [''],
      serie       : [''],
      imei        : [''],
      observacion : [''],

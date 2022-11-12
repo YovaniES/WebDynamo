@@ -25,7 +25,7 @@
             <label>Proyecto</label>
             <select class="cli-input-white" formControlName="codProy">
               <option [value]="0" disabled>- Seleccione -</option>
-              <option [value]="cod.id" *ngFor="let cod of listProyectos">{{ cod.codigo }}</option>
+              <option [value]="cod.id_correlativo" *ngFor="let cod of listProyectos">{{ cod.valor_texto_1 }}</option>
             </select>
           </div>
 

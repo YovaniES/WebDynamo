@@ -104,7 +104,7 @@
                   <thead>
                     <tr class="bgc-blue-light c-white">
                       <th>Accíón</th>
-                      <th>N°</th>
+                      <th>Periodo</th>
                       <th>Fecha inicio</th>
                       <th>Fecha fin</th>
                       <th>Días</th>
@@ -135,7 +135,7 @@
                           </button>
                         </div>
                       </td>
-                      <td>{{i+1}}</td>
+                      <td style="min-width: 65px">PER-0{{i+1}}</td>
                       <td>{{periodo.fecha_inicio}}</td>
                       <td>{{periodo.fecha_fin}}</td>
                       <td style="min-width: 68px;">{{periodo.cant_dias_periodo}} días</td>
@@ -172,7 +172,6 @@
                   <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
                 </div>
 
-
                 <div
                 *ngIf="!loadingItem && listVacacionesPeriodo.length == 0"
                 class="cli-loader mt-2"
@@ -188,7 +187,7 @@
       </div>
 
       <!-- HISTORICO DE PERIODOS DE VACACIONES---------------------------------------------------------- -->
-        <div class="pr-subtitle mt-2">Histórico Vacaciones registradas</div>
+        <div class="pr-subtitle mt-2">Histórico de Estados Vacaciones</div>
         <div class="pr-section">
           <div class="pr-module-container">
             <div style="overflow: auto; min-height: 100px; max-height: 160px;">
