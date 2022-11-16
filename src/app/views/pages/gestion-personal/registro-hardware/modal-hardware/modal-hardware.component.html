@@ -79,8 +79,8 @@
               <label>Descripción</label>
               <textarea
                 class="form-control"
-                style="background-image: none; border-color: #a5a4a4; font-size: 14px;"
-                rows="3"
+                style="background-image: none; border-color: #a5a4a4; font-size: 12px;"
+                rows="2"
                 placeholder="Describa el tipo, marca o modelo ..."
                 formControlName="equipo">
               </textarea>
@@ -90,8 +90,8 @@
               <label>Observación</label>
               <textarea
                 class="form-control"
-                style="background-image: none; border-color: #a5a4a4; font-size: 14px;"
-                rows="3"
+                style="background-image: none; border-color: #a5a4a4; font-size: 12px;"
+                rows="2"
                 placeholder="Describa alguna observación del equipo hardware"
                 formControlName="observacion">
               </textarea>
@@ -127,9 +127,9 @@
                     <!-- <td>{{ cambios.id_persona }}</td> -->
                     <td class="w300">{{ cambios.persona }}</td>
                     <td>{{ cambios.proyecto }}</td>
-                    <td class="w100">{{ cambios.fecha_asignacion }}</td>
+                    <td style="min-width: 118px">{{ cambios.fecha_asignacion }}</td>
                     <td>{{ cambios.usuario_asignacion }}</td>
-                    <td class="w100">{{ cambios.fecha_liberacion? cambios.fecha_liberacion : 'En Uso'}}</td>
+                    <td style="min-width: 118px">{{ cambios.fecha_liberacion? cambios.fecha_liberacion : 'En Uso'}}</td>
                     <!-- <td>{{ cambios.usuario_asignacion }}</td> -->
                   </tr>
                 </tbody>

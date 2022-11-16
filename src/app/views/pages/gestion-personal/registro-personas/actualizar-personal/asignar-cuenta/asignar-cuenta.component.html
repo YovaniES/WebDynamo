@@ -65,8 +65,8 @@
               <th>Username</th>
               <th>Password</th>
               <th>Tipo</th>
-              <th>Fecha Última Renovación</th>
-              <th>Fecha Próxima Renovación</th>
+              <th>Fecha Últ. Renovación</th>
+              <th>Fecha Próx. Renovación</th>
             </tr>
           </thead>
 
@@ -86,12 +86,12 @@
                   </button>
                 </div>
               </td>
-              <td>{{ cuenta.id }}</td>
-              <td>{{ cuenta.usuario }}</td>
+              <td style="min-width: 68px">{{ cuenta.id }}</td>
+              <td style="min-width: 50px">{{ cuenta.usuario }}</td>
               <td>{{ cuenta.password }}</td>
               <td>{{ cuenta.tipo | firstCapital }}</td>
-              <td>{{ cuenta.fechaUltimaRenovacion  }}</td>
-              <td>{{ cuenta.fechaProximaRenovacion }}</td>
+              <td style="min-width: 145px">{{ cuenta.fechaUltimaRenovacion  }}</td>
+              <td style="min-width: 160px">{{ cuenta.fechaProximaRenovacion }}</td>
             </tr>
           </tbody>
         </table>

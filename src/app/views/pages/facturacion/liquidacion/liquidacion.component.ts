@@ -232,7 +232,7 @@ export class LiquidacionComponent implements OnInit {
     // console.log('DATA_LIQUID', DATA);
 
     this.dialog
-      .open(ActualizarLiquidacionComponent, { width: '70%', height: '95%', data: DATA })
+      .open(ActualizarLiquidacionComponent, { width: '70%', height: '80%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.cargarOBuscarLiquidacion();

@@ -71,7 +71,7 @@
       </div>
 
       <!-- TABLA DE HARDWARE ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 300px">
+      <div style="overflow: auto; min-height: 180px">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-turquey c-white">
@@ -104,7 +104,7 @@
                 </div>
               </td>
               <td>{{ hardware.id_recurso }}</td>
-              <td>{{ hardware.tipo   | firstCapital}}</td>
+              <td style="min-width: 80px">{{ hardware.tipo   | firstCapital}}</td>
               <td>{{ hardware.marca  | uppercase   }}</td>
               <td class="w150">{{ hardware.equipo | firstCapital}}</td>
               <!-- <td class="w150">{{ hardware.modelo | uppercase   }}</td> -->

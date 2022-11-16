@@ -203,12 +203,12 @@
                 <span *ngIf="personal.estado == 'Activo'"   class="w135 label est-act">  {{ personal.estado | uppercase }}</span>
                 <span *ngIf="personal.estado == 'Inactivo'" class="w135 label est-inact">{{ personal.estado | uppercase }}</span>
               </td>
-              <td class="w100" style="text-align:left; color: #888888;">
+              <td style="text-align:left; color: #888888; min-width: 80px;">
                 <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'AM'"   ><mat-icon class="icon-13 icon-btn" style="margin-right: 5px; display: flex; color: #ae7cff;">webhook</mat-icon>{{ personal.categoria}}</span>
                 <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'NO AM'"><mat-icon class="icon-13 icon-btn" style="margin-right: 5px; display: flex; color: #71e7ff;">radio_button_checked</mat-icon>{{ personal.categoria}}</span>
                 <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'OTROS'"><mat-icon class="icon-13 icon-btn" style="margin-right: 5px; display: flex; color: #fec622;">workspaces_outline</mat-icon>{{ personal.categoria}}</span>
               </td>
-              <td class="w100">{{ personal.fecha_ingreso }}</td>
+              <td style="min-width: 105px">{{ personal.fecha_ingreso }}</td>
             </tr>
           </tbody>
         </table>

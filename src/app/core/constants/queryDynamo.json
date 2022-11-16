@@ -994,16 +994,13 @@ ORDER BY r.id DESC; "
     "type": 1,
     "description": "Todas las tablas",
     "sql": "
-    select id_correlativo
-    id,
-    valor_texto_1 nombre,
-    valor_texto_2 descripcion,
-    idPadre from
-    entidad where
-    id_tabla =
-    0 and
-    estado =
-    1; "
+    SELECT id_correlativo AS id,
+      valor_texto_1 AS nombre,
+      valor_texto_2 AS descripcion,
+      idPadre
+   FROM entidad
+   WHERE id_tabla = 0 and estado = 1
+   ORDER BY valor_texto_1 ASC;"
   },
   {
     "id": 48,
@@ -2265,7 +2262,7 @@ ORDER BY r.id DESC;
       tipo.id_correlativo AS id_tipo,
       rc.fecha_ultima_renovacion,
       rc.fecha_proxima_renovacion,
-    (SELECT DISTINCT(CONCAT(p.apellido_paterno,' ',p.apellido_materno,',',p.nombres)) nombres
+    (SELECT DISTINCT(CONCAT(p.apellido_paterno,' ',p.apellido_materno,', ',p.nombres)) nombres
       FROM recurso_cuenta rcd
         INNER JOIN persona_recursos pr ON rcd.id 	    = pr.id_recurso
         INNER JOIN persona p 	   	   ON pr.id_persona = p.id
