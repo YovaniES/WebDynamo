@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { API_DYNAMO } from '../constants/url.constants';
+import { API_CORREO, API_DYNAMO } from '../constants/url.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -73,9 +73,12 @@ export class VacacionesPersonalService {
     return this.http.post(API_DYNAMO, id);
   }
 
-
   cargarVacacionesById(id: any) {
     return this.http.post(API_DYNAMO, id);
+  }
+
+  enviarCorreo(body: any){
+    return this.http.post(API_CORREO, body)
   }
 }
 

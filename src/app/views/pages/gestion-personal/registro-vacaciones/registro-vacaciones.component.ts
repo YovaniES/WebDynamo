@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { ExportExcellService } from 'src/app/core/services/export-excell.service';
 import { VacacionesPersonalService } from 'src/app/core/services/vacaciones-personal.service';
-import { ActualizarVacacionesComponent } from './modal-vacaciones/actualizar-vacaciones.component';
+import { ActualizarVacacionesComponent } from './actualizar-vacaciones/actualizar-vacaciones.component';
 import { CrearVacacionesComponent } from './crear-vacaciones/crear-vacaciones.component';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/core/services/auth.service';

@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 import { AsignarVacacionesComponent } from './asignar-vacaciones/asignar-vacaciones.component';
 
 @Component({
-  selector: 'app-modal-vacaciones',
+  selector: 'app-actualizar-vacaciones',
   templateUrl: './actualizar-vacaciones.component.html',
   styleUrls: ['./actualizar-vacaciones.component.scss']
 })
@@ -52,8 +52,6 @@ export class ActualizarVacacionesComponent implements OnInit {
     this.vacacionesForm.controls['idVacaciones'].setValue(this.DATA_VACACIONES)
 
     this.cargarVacacionesById()
-    // console.log('FECHA_1', moment(this.DATA_VACACIONES.fecha_ini_vac).format("YYYY-MM-DD hh:mm A"));
-    // console.log('FECHA_123', moment(Date.now()).format('YYYY-MM-DD hh:mm A'));
   }
 
     newForm(){
@@ -74,6 +72,7 @@ export class ActualizarVacacionesComponent implements OnInit {
        fecha_ingreso : [''],
        total_dias_vac: [''],
        idVacaciones  : [''],
+       correo        : [''],
       })
      }
 
@@ -137,6 +136,7 @@ export class ActualizarVacacionesComponent implements OnInit {
       console.log('DATA_BY_ID', resp.list);
       this.vacacionesForm.controls['nombre'        ].setValue(resp.list[0].nombres);
       this.vacacionesForm.controls['apPaterno'     ].setValue(resp.list[0].apellido_paterno);
+      this.vacacionesForm.controls['correo'        ].setValue(resp.list[0].correo);
       this.vacacionesForm.controls['apMaterno'     ].setValue(resp.list[0].apellido_materno);
       this.vacacionesForm.controls['codCorp'       ].setValue(resp.list[0].codigo_corporativo);
       this.vacacionesForm.controls['proyecto'      ].setValue(resp.list[0].codigo_proyecto);
@@ -365,8 +365,14 @@ export class ActualizarVacacionesComponent implements OnInit {
 
   actualizarPeriodoVacaciones(DATA: any){
     console.log('DATA_VACACIONES', DATA);
-    // const DATA = this.facturaForm.value
-    const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: DATA});
+
+    const dataForm = {...DATA, correo: this.vacacionesForm.value.correo}
+    console.log('DATA_FOR', dataForm);
+
+    // dataForm.correo = this.vacacionesForm.value.correo;
+
+    const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: dataForm});
+
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {

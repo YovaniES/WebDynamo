@@ -15,10 +15,11 @@ import { AsignarCuentaComponent } from './registro-personas/actualizar-personal/
 import { ModalHardwareComponent } from './registro-hardware/modal-hardware/modal-hardware.component';
 import { ModalCuentaComponent } from './registro-cuenta/modal-cuenta/modal-cuenta.component';
 import { RegistroVacacionesComponent } from './registro-vacaciones/registro-vacaciones.component';
-import { ActualizarVacacionesComponent } from './registro-vacaciones/modal-vacaciones/actualizar-vacaciones.component';
-import { AsignarVacacionesComponent } from './registro-vacaciones/modal-vacaciones/asignar-vacaciones/asignar-vacaciones.component';
+import { ActualizarVacacionesComponent } from './registro-vacaciones/actualizar-vacaciones/actualizar-vacaciones.component';
+// import { AsignarVacacionesComponent } from './registro-vacaciones/actualizar-vacaciones/asignar-vacaciones/asignar-vacaciones.component';
 import { AsignarPersonalComponent } from './registro-vacaciones/crear-vacaciones/asignar-personal/asignar-personal.component';
 import { CrearVacacionesComponent } from './registro-vacaciones/crear-vacaciones/crear-vacaciones.component';
+import { AsignarVacacionesComponent } from './registro-vacaciones/actualizar-vacaciones/asignar-vacaciones/asignar-vacaciones.component';
 
 @NgModule({
   declarations: [

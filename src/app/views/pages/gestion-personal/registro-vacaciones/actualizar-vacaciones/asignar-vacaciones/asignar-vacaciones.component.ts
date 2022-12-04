@@ -50,6 +50,8 @@ export class AsignarVacacionesComponent implements OnInit {
       jira          : [''],
       dedicaciones  : [''],
       observaciones : [''],
+      destinatario  : [''],
+      mensaje       : [''],
     })
    }
 
@@ -64,6 +66,7 @@ export class AsignarVacacionesComponent implements OnInit {
     return estadoCompletado;
    }
 
+
    selectEstadoCancelado(): boolean{
     let estadoCancelado = false;
 
@@ -74,6 +77,17 @@ export class AsignarVacacionesComponent implements OnInit {
     // console.log('EST_CANCELADO', estadoCancelado, estCancelado);
     return estadoCancelado;
    };
+
+   enviarCorreo(){
+    if (this.asigVacacionesForm.controls['mensaje'].value) {
+      const body = {
+        from : 'abc@gmail.com',
+        to   : this.asigVacacionesForm.controls['destinatario'].value,
+        body : this.asigVacacionesForm.controls['mensaje'].value
+      }
+      this.vacacionesService.enviarCorreo(body).subscribe();
+    }
+   }
 
    agregarOactualizarPeriodo(){
     if (!this.DATA_VACAC) {return}
@@ -87,6 +101,8 @@ export class AsignarVacacionesComponent implements OnInit {
 
    agregarPeriodoVacaciones() {
     this.spinner.show();
+    this.enviarCorreo();
+
     const formValues = this.asigVacacionesForm.getRawValue();
 
     let parametro: any =  {queryId: 129, mapValue: {
@@ -137,6 +153,7 @@ export class AsignarVacacionesComponent implements OnInit {
 
   actualizarPeriodo() {
     this.spinner.show();
+    this.enviarCorreo();
 
     const formValues = this.asigVacacionesForm.getRawValue();
     console.log('EST', this.asigVacacionesForm.value);
@@ -198,16 +215,39 @@ export class AsignarVacacionesComponent implements OnInit {
     }
   }
 
+  setearMsjAobligatorio(){
+    this.asigVacacionesForm.controls['mensaje'].setValidators(Validators.required);
+    this.asigVacacionesForm.controls['mensaje'].updateValueAndValidity();
+  }
+  setearMsjNoObligatorio(){
+    this.asigVacacionesForm.controls['mensaje'].clearValidators();
+    this.asigVacacionesForm.controls['mensaje'].updateValueAndValidity();
+  }
+
+  cambiarEstado(){
+    if (this.asigVacacionesForm.controls['id_estado'].value != this.estadoInicial) {
+      this.setearMsjAobligatorio();
+    }else{
+      this.setearMsjNoObligatorio();
+    }
+  }
+
+  estadoInicial: any;
   titleBtn: string = 'Agregar';
   cargarPeriodosByID(){
     if (!this.DATA_VACAC.isCreation) {
       this.titleBtn = 'Actualizar'
       this.asigVacacionesForm.controls['id_motivo'    ].setValue(this.DATA_VACAC.id_per_motivo);
       this.asigVacacionesForm.controls['id_estado'    ].setValue(this.DATA_VACAC.id_per_estado);
+
+      this.estadoInicial = this.DATA_VACAC.id_per_estado;
+
       this.asigVacacionesForm.controls['jira'         ].setValue(this.DATA_VACAC.jira);
       this.asigVacacionesForm.controls['dedicaciones' ].setValue(this.DATA_VACAC.dedicaciones);
       this.asigVacacionesForm.controls['observaciones'].setValue(this.DATA_VACAC.observacion);
       this.asigVacacionesForm.controls['dias_periodo' ].setValue(this.DATA_VACAC.cant_dias_periodo);
+      this.asigVacacionesForm.controls['destinatario' ].setValue(this.DATA_VACAC.correo);
+      this.setearMsjNoObligatorio()
 
       if (this.DATA_VACAC.fecha_inicio !='null' && this.DATA_VACAC.fecha_inicio != '') {
           let fecha_x = this.DATA_VACAC.fecha_inicio
@@ -226,6 +266,12 @@ export class AsignarVacacionesComponent implements OnInit {
         const date  = Number(str[0]);
         this.asigVacacionesForm.controls['fechaFin'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
+    } else {
+    this.asigVacacionesForm.controls['destinatario' ].setValue(this.DATA_VACAC.vacForm.correo);
+
+    this.setearMsjAobligatorio();
+
+    console.log('DATOS', this.asigVacacionesForm.value);
     }
   }
 
