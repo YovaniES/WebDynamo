@@ -81,10 +81,16 @@ export class AsignarVacacionesComponent implements OnInit {
    enviarCorreo(){
     if (this.asigVacacionesForm.controls['mensaje'].value) {
       const body = {
-        from : 'abc@gmail.com',
-        to   : this.asigVacacionesForm.controls['destinatario'].value,
-        body : this.asigVacacionesForm.controls['mensaje'].value
-      }
+        from: 'abc@gmail.com',
+        to  : this.asigVacacionesForm.controls['destinatario'].value,
+        // body :"<div class=\"col-sm-6 cli-form-element\"> <label class=\"form-label\">Días planificado</label> <input style=\"font-weight: 600; text-align:center\" type=\"number\" readonly=\"true\" class=\"form-control\" formControlName=\"dias_periodo\"/> </div>"
+        body: `<html lang=\"es\"> <head> <meta charset=\"utf-8\" /> <title>REGISTRAR VACACIONES</title> </head><body style=\"background-color: #f8f9fa\"> <table style=\"max-width: 600px; padding: 10px; margin: 0 auto; border-collapse: collapse;\">
+              <tr> <td style=\"padding: 0\"> <img style=\"padding: 0; display: block\" src=\"assets/images/background/vacaciones-msj.png\" width=\"100%\" height=\"10%\"/> </td> </tr> <tr> <td style=\"background-color: #FFF\">
+              <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify; font-family: sans-serif;\"> <h2 style=\"color: #ffc107; margin: 0 0 7px\"> ALERTA PREVENTIVA </h2>
+              <p style=\"margin: 2px; font-size: 14px; color: #a6a6a6;\"> ${this.asigVacacionesForm.controls['destinatario'].value} Comunicarle que sus vacaciones ya fueron planificados desde el 1/12/2022 hasta el 23/12/2022. Por favor tener en cuenta. si en caso no realizó dicha petición comunicarse con su jefe directo. <br /> <br /> gracias.
+              ${this.asigVacacionesForm.controls['mensaje'].value}
+              </p> <p style=\" color: #b3b3b3; font-size: 12px; text-align: center; margin: 30px 0 0;\"> Copyright © INDRA 2022 </p> </div> </td> </tr> </table> </body> </html>`
+       }
       this.vacacionesService.enviarCorreo(body).subscribe();
     }
    }
@@ -313,5 +319,4 @@ export class AsignarVacacionesComponent implements OnInit {
     this.dialogRef.close(succes);
   }
 }
-
 

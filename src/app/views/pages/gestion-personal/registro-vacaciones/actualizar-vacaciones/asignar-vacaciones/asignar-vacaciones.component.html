@@ -109,7 +109,7 @@
 
 
     <!-- Envio de CORREO -->
-    <div class="chart-draw" >
+    <div class="chart-draw" *ngIf="DATA_VACAC.isCreation || esEstadoCompletado() || isEstadoCancelado()">
       <div class="pr-subtitle">Notificación por Correo</div>
       <div class="pr-module-container">
         <div class="row g-3">
@@ -135,7 +135,7 @@
               formControlName="mensaje">
             </textarea>
           </div>
-          <!-- <h5 style="color: #f45572; margin:1px 0 0;">NOTA: <small>El mensaje es obligatorio</small></h5> -->
+          <h5 *ngIf="!DATA_VACAC.isCreation" style="color: #f45572; margin:1px 0 0;">NOTA: <small>El campo Mensaje es obligatorio, Cuando el Estado cambia.</small></h5>
           </div>
         </div>
     </div>
@@ -153,4 +153,5 @@
     </div>
   </div>
 </form>
+
 

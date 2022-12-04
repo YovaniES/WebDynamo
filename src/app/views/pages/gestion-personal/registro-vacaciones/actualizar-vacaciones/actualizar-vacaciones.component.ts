@@ -357,7 +357,6 @@ export class ActualizarVacacionesComponent implements OnInit {
       console.log('CLOSE', resp);
 
       if (resp) {
-
         this.cargarPeriodoVacaciones()
       }
     })
@@ -366,13 +365,10 @@ export class ActualizarVacacionesComponent implements OnInit {
   actualizarPeriodoVacaciones(DATA: any){
     console.log('DATA_VACACIONES', DATA);
 
-    const dataForm = {...DATA, correo: this.vacacionesForm.value.correo}
+    const dataForm = {...DATA, correo: this.vacacionesForm.value.correo, fullName: this.vacacionesForm.value.nombres}
     console.log('DATA_FOR', dataForm);
 
-    // dataForm.correo = this.vacacionesForm.value.correo;
-
     const dialogRef = this.dialog.open(AsignarVacacionesComponent, { width:'35%', data: dataForm});
-
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
