@@ -50,8 +50,8 @@ export class AsignarVacacionesComponent implements OnInit {
       jira          : [''],
       dedicaciones  : [''],
       observaciones : [''],
-      destinatario  : [''],
-      mensaje       : [''],
+      // destinatario  : [''],
+      // mensaje       : [''],
     })
    }
 
@@ -78,22 +78,21 @@ export class AsignarVacacionesComponent implements OnInit {
     return estadoCancelado;
    };
 
-   enviarCorreo(){
-    if (this.asigVacacionesForm.controls['mensaje'].value) {
-      const body = {
-        from: 'abc@gmail.com',
-        to  : this.asigVacacionesForm.controls['destinatario'].value,
-        // body :"<div class=\"col-sm-6 cli-form-element\"> <label class=\"form-label\">Días planificado</label> <input style=\"font-weight: 600; text-align:center\" type=\"number\" readonly=\"true\" class=\"form-control\" formControlName=\"dias_periodo\"/> </div>"
-        body: `<html lang=\"es\"> <head> <meta charset=\"utf-8\" /> <title>REGISTRAR VACACIONES</title> </head><body style=\"background-color: #f8f9fa\"> <table style=\"max-width: 600px; padding: 10px; margin: 0 auto; border-collapse: collapse;\">
-              <tr> <td style=\"padding: 0\"> <img style=\"padding: 0; display: block\" src=\"assets/images/background/vacaciones-msj.png\" width=\"100%\" height=\"10%\"/> </td> </tr> <tr> <td style=\"background-color: #FFF\">
-              <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify; font-family: sans-serif;\"> <h2 style=\"color: #ffc107; margin: 0 0 7px\"> ALERTA PREVENTIVA </h2>
-              <p style=\"margin: 2px; font-size: 14px; color: #a6a6a6;\"> ${this.asigVacacionesForm.controls['destinatario'].value} Comunicarle que sus vacaciones ya fueron planificados desde el 1/12/2022 hasta el 23/12/2022. Por favor tener en cuenta. si en caso no realizó dicha petición comunicarse con su jefe directo. <br /> <br /> gracias.
-              ${this.asigVacacionesForm.controls['mensaje'].value}
-              </p> <p style=\" color: #b3b3b3; font-size: 12px; text-align: center; margin: 30px 0 0;\"> Copyright © INDRA 2022 </p> </div> </td> </tr> </table> </body> </html>`
-       }
-      this.vacacionesService.enviarCorreo(body).subscribe();
-    }
-   }
+  //  enviarCorreo(){
+  //   if (this.asigVacacionesForm.controls['mensaje'].value) {
+  //     const body = {
+  //       from: 'abc@gmail.com',
+  //       to  : this.asigVacacionesForm.controls['destinatario'].value,
+  //       body: `<html lang=\"es\"> <head> <meta charset=\"utf-8\" /> <title>REGISTRAR VACACIONES</title> </head><body style=\"background-color: #f8f9fa\"> <table style=\"max-width: 600px; padding: 10px; margin: 0 auto; border-collapse: collapse;\">
+  //             <tr> <td style=\"padding: 0\"> <img style=\"padding: 0; display: block\" src=\"assets/images/background/vacaciones-msj.png\" width=\"100%\" height=\"10%\"/> </td> </tr> <tr> <td style=\"background-color: #FFF\">
+  //             <div style=\"color: #34495e; margin: 4% 10% 2%; text-align: justify; font-family: sans-serif;\"> <h2 style=\"color: #ffc107; margin: 0 0 7px\"> ALERTA PREVENTIVA </h2>
+  //             <p style=\"margin: 2px; font-size: 14px; color: #a6a6a6;\"> ${this.asigVacacionesForm.controls['destinatario'].value} Comunicarle que sus vacaciones ya fueron planificados desde el 1/12/2022 hasta el 23/12/2022. Por favor tener en cuenta. si en caso no realizó dicha petición comunicarse con su jefe directo. <br /> <br /> gracias.
+  //             ${this.asigVacacionesForm.controls['mensaje'].value}
+  //             </p> <p style=\" color: #b3b3b3; font-size: 12px; text-align: center; margin: 30px 0 0;\"> Copyright © INDRA 2022 </p> </div> </td> </tr> </table> </body> </html>`
+  //      }
+  //     this.vacacionesService.enviarCorreo(body).subscribe();
+  //   }
+  //  }
 
    agregarOactualizarPeriodo(){
     if (!this.DATA_VACAC) {return}
@@ -107,7 +106,7 @@ export class AsignarVacacionesComponent implements OnInit {
 
    agregarPeriodoVacaciones() {
     this.spinner.show();
-    this.enviarCorreo();
+    // this.enviarCorreo();
 
     const formValues = this.asigVacacionesForm.getRawValue();
 
@@ -159,7 +158,7 @@ export class AsignarVacacionesComponent implements OnInit {
 
   actualizarPeriodo() {
     this.spinner.show();
-    this.enviarCorreo();
+    // this.enviarCorreo();
 
     const formValues = this.asigVacacionesForm.getRawValue();
     console.log('EST', this.asigVacacionesForm.value);
@@ -221,22 +220,22 @@ export class AsignarVacacionesComponent implements OnInit {
     }
   }
 
-  setearMsjAobligatorio(){
-    this.asigVacacionesForm.controls['mensaje'].setValidators(Validators.required);
-    this.asigVacacionesForm.controls['mensaje'].updateValueAndValidity();
-  }
-  setearMsjNoObligatorio(){
-    this.asigVacacionesForm.controls['mensaje'].clearValidators();
-    this.asigVacacionesForm.controls['mensaje'].updateValueAndValidity();
-  }
+  // setearMsjAobligatorio(){
+  //   this.asigVacacionesForm.controls['mensaje'].setValidators(Validators.required);
+  //   this.asigVacacionesForm.controls['mensaje'].updateValueAndValidity();
+  // }
+  // setearMsjNoObligatorio(){
+  //   this.asigVacacionesForm.controls['mensaje'].clearValidators();
+  //   this.asigVacacionesForm.controls['mensaje'].updateValueAndValidity();
+  // }
 
-  cambiarEstado(){
-    if (this.asigVacacionesForm.controls['id_estado'].value != this.estadoInicial) {
-      this.setearMsjAobligatorio();
-    }else{
-      this.setearMsjNoObligatorio();
-    }
-  }
+  // cambiarEstado(){
+  //   if (this.asigVacacionesForm.controls['id_estado'].value != this.estadoInicial) {
+  //     this.setearMsjAobligatorio();
+  //   }else{
+  //     this.setearMsjNoObligatorio();
+  //   }
+  // }
 
   estadoInicial: any;
   titleBtn: string = 'Agregar';
@@ -252,8 +251,8 @@ export class AsignarVacacionesComponent implements OnInit {
       this.asigVacacionesForm.controls['dedicaciones' ].setValue(this.DATA_VACAC.dedicaciones);
       this.asigVacacionesForm.controls['observaciones'].setValue(this.DATA_VACAC.observacion);
       this.asigVacacionesForm.controls['dias_periodo' ].setValue(this.DATA_VACAC.cant_dias_periodo);
-      this.asigVacacionesForm.controls['destinatario' ].setValue(this.DATA_VACAC.correo);
-      this.setearMsjNoObligatorio()
+      // this.asigVacacionesForm.controls['destinatario' ].setValue(this.DATA_VACAC.correo);
+      // this.setearMsjNoObligatorio()
 
       if (this.DATA_VACAC.fecha_inicio !='null' && this.DATA_VACAC.fecha_inicio != '') {
           let fecha_x = this.DATA_VACAC.fecha_inicio
@@ -273,9 +272,8 @@ export class AsignarVacacionesComponent implements OnInit {
         this.asigVacacionesForm.controls['fechaFin'].setValue(this.datePipe.transform(new Date(year, month-1, date), 'yyyy-MM-dd'))
       }
     } else {
-    this.asigVacacionesForm.controls['destinatario' ].setValue(this.DATA_VACAC.vacForm.correo);
-
-    this.setearMsjAobligatorio();
+    // this.asigVacacionesForm.controls['destinatario' ].setValue(this.DATA_VACAC.vacForm.correo);
+    // this.setearMsjAobligatorio();
 
     console.log('DATOS', this.asigVacacionesForm.value);
     }

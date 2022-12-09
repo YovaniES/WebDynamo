@@ -74,7 +74,7 @@
                 type="submit"
                 class="cli-btn btn-cancel"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="limpiarFiltro()"
+                (click)="limpiarFiltrox()"
                 ><mat-icon class="icon-18">rotate_left</mat-icon>
                 Limpiar
               </button>
@@ -106,6 +106,12 @@
             (click)="exportarRegistro()"
           ><mat-icon class="icon-18">file_download</mat-icon>Exportar
           </button>
+          <button
+          matTooltip="Enviar correo"
+          class="icon-btn btn-trans btn-correo"
+          (click)="enviarCorreo()"
+        ><mat-icon class="icon-18">mail</mat-icon>Enviar correo
+        </button>
 
         <div class="flex-1"></div>
         <div class="mt-2" style="color: #345df3; font-weight: 600;">

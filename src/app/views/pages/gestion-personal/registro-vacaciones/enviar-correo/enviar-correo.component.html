@@ -1,0 +1,241 @@
+<div style="display: flex">
+  <div class="flex-1"></div>
+  <div class="modal-title c-male">Enviar correo</div>
+  <div class="flex-1"></div>
+
+  <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div class="cli-card">
+  <div style="padding: 2px 2px">
+    <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
+    <div class="buscar">
+      <form class="row g-3" [formGroup]="mailForm">
+        <div class="col-sm-5 cli-form-element">
+          <label class="form-label">Responsable</label>
+          <select class="form-select" formControlName="id_responsable"
+                  (ngModelChange)="asignarCorreo()">
+            <option [value]="0" disabled>- Seleccione -</option>
+            <option [value]="responsable.id"
+              *ngFor="let responsable of listAdminVacaciones">
+              {{ responsable.fullname }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-sm-4 cli-form-element">
+          <label class="form-label">Estado</label>
+          <select class="form-select" formControlName="id_estado_per">
+            <option [value]="0" disabled>- Seleccione -</option>
+            <option [value]="estado.id_correlativo"
+              *ngFor="let estado of listEstadoVacaciones">
+              {{ estado.valor_texto_1 }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-sm-3">
+          <div style="margin-top: 18px; display: flex">
+            <button
+              type="button"
+              matTooltip="Buscar"
+              class="btn-hardware btn-blue-light"
+              style="border-radius: 2px"
+              [disabled]="mailForm.invalid"
+              (click)="cargarOBuscarCorreoLider()">
+              <mat-icon class="icon-18">search</mat-icon>Buscar
+            </button>
+            <button
+              type="submit"
+              matTooltip="Limpiar"
+              class="btn-hardware btn-cancel"
+              style="border-radius: 2px"
+              (click)="limpiarFiltro()">
+              <mat-icon class="icon-18">rotate_left</mat-icon>Limpiar
+            </button>
+          </div>
+        </div>
+
+        <ng-container
+          *ngIf="listLiderMail.length > 0">
+          <!-- TOTAL PERIODO POR LIDER----------------------------------------------------->
+          <div style="display: flex">
+            <div class="flex-1"></div>
+            <div style="color: #345df3">
+              Total :
+              <span class="total">{{ listLiderMail.length }} Periodos</span>
+            </div>
+          </div>
+
+          <!-- TABLA DE LISTADO PERSONAL ------------------------------------------------------------------>
+          <div style="overflow: auto; min-height: 150px; margin-top: 1px;">
+            <table class="cli-table stripedtable underlinedtable">
+              <thead>
+                <tr class="bgc-turquey c-white">
+                  <th style="width: 40px">N°</th>
+                  <th style="width: 50px">Colaborador</th>
+                  <th style="min-width: 185px; text-align: center">Correo responsable</th>
+                  <th>Fecha Inicio</th>
+                  <th>Fecha Fin</th>
+                  <th>Días</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let lider of listLiderMail; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td style="min-width: 174px; text-align: left">{{ lider.colaborador }}</td>
+                  <td>{{ lider.correo }}</td>
+                  <td>{{ lider.fecha_ini }}</td>
+                  <td>{{ lider.fecha_fin }}</td>
+                  <td>{{ lider.dias }}</td>
+                  <td>{{ lider.estado }}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="cli-loader" *ngIf="loadingItem">
+              <mat-spinner
+                style="margin-right: 20px"
+                diameter="20"
+              ></mat-spinner>cargando...
+            </div>
+
+            <div *ngIf="!loadingItem && listLiderMail.length == 0"
+              class="cli-loader mt-5"
+              style="color: #f83434">
+              No hay periodos disponibles para mostrar
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="cli-form mail-wrapper">
+          <!-- Envio de CORREO -->
+          <div class="chart-draw">
+            <div class="pr-subtitle">Notificación por Correo</div>
+            <div class="pr-module-container">
+              <div class="row g-3">
+                <div class="col-sm-12 cli-form-element">
+                  <label>Para:<small style="color: #f45572; margin: 1px 0 0">*</small></label>
+                  <input style="font-weight: 500;text-align: center;font-size: 14px;"
+                    type="text"
+                    placeholder="example@indracompany.com"
+                    class="form-control"
+                    formControlName="destinatario"
+                  />
+                </div>
+<!--
+                <div class="cli-form-element mb-2">
+                  <label>Mensaje:<small style="color: #f45572; margin: 1px 0 0">*</small></label>
+                  <textarea
+                    class="form-control"
+                    style="background-image: none;
+                      border-color: #bdbdbd;
+                      font-size: 14px;"
+                    rows="3"
+                    placeholder="Escriba un mensaje al remitente..."
+                    formControlName="mensaje">
+                  </textarea>
+                </div> -->
+              </div>
+            </div>
+          </div>
+
+          <!-- --------------------------------------------BOTONES ------------------------------------------>
+          <div class="cli-form-buttons" style="margin-top: 2%">
+            <button
+              class="cli-btn btn-m btn-cancel"
+              type="submit"
+              (click)="close()">
+              <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+            </button>
+            <button
+
+              class="cli-btn btn-m btn-blue"
+              (click)="enviarCorreo()"
+              [disabled]="mailForm.invalid || !listLiderMail.length">
+              <mat-icon class="icon-18">save</mat-icon>Enviar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- <div class="card-footer pb-0 pt-3">
+      <pagination-controls
+        previousLabel="Anterior"
+        nextLabel="Siguiente"
+        [responsive]="false"
+        id="persona"
+        (pageChange)="cambiarPagina($event)">
+      </pagination-controls>
+    </div> -->
+</div>
+
+
+    <!-- <table
+      #tabla
+      style="max-width: 2000px;padding: 10px;margin: 0 auto;border-collapse: collapse;">
+      <tr>
+        <td style="color: #fff; background: darkgray">
+          <div class="row g-3" style="text-align: center; height: 10%">
+            <div class="col-sm-3" style="background: #267d7d; padding: 4px">
+              Registro de vacaciones
+            </div>
+            <div class="col-sm-9"><mat-icon></mat-icon></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td style="background-color: #fff">
+          <div style="color: #34495e;margin: 4% 10% 2%;text-align: justify;font-family: sans-serif;">
+            <h2 style="color: #ffc107; margin: 0 0 7px">RECORDATORIO</h2>
+            <p style="margin: 2px; font-size: 14px; color: #a6a6a6">
+              Los siguientes colaboradores aún no registran sus vacaciones en
+              Jira y/o Dedicaciones:
+              <br />
+            </p>
+
+            <p style="margin: 2px; font-size: 14px; color: #297272"></p>
+            <table style="width: 100%; background-color: #fff">
+              <thead>
+                <tr style="background: #0daef4; color: #fff">
+                  <th style="width: 40px;padding: 3px;font-weight: 300;text-align: center;font-size: 11px;">N°</th>
+                  <th style="width: 50px;padding: 3px;font-weight: 300;text-align: center;font-size: 11px;">Colaborador</th>
+                  <th style="min-width: 185px;text-align: center;font-size: 11px;padding: 3px;font-weight: 300;text-align: center;font-size: 11px;">Correo responsable</th>
+                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 11px;">Fecha Inicio</th>
+                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 11px;">Fecha Fin</th>
+                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 11px;">Días</th>
+                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 11px;">Estado</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let lider of listLiderMail; let i = index">
+                  <td style="font-size: 11px">{{ i + 1 }}</td>
+                  <td style="font-size: 11px; min-width: 174px; text-align: left">{{ lider.colaborador }}</td>
+                  <td style="font-size: 11px">{{ lider.correo }}</td>
+                  <td style="font-size: 11px">{{ lider.fecha_ini }}</td>
+                  <td style="font-size: 11px">{{ lider.fecha_fin }}</td>
+                  <td style="font-size: 11px; text-align: center">{{ lider.dias }}</td>
+                  <td style="font-size: 11px">{{ lider.estado }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <br/>
+            <p style="margin: 2px; font-size: 14px; color: #a6a6a6">gracias.</p>
+            <p style="color: #fff;
+                font-size: 14px;
+                text-align: center;
+                background: #267d7d;
+                margin: 30px 0 0;">
+              Copyright © INDRA 2022
+            </p>
+          </div>
+        </td>
+      </tr>
+    </table> -->

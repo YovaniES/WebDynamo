@@ -88,7 +88,7 @@ export class AsignarPersonalComponent implements OnInit {
     this.cargarOBuscarPersonalActivo();
   };
 
-  listaHardwareDisp: any[] = [];
+  listPageDisp: any[] = [];
   totalfiltro = 0;
   cambiarPagina(event: number) {
     let offset = event*10;
@@ -96,7 +96,7 @@ export class AsignarPersonalComponent implements OnInit {
 
     if (this.totalfiltro != this.totalPersonal) {
       this.vacacionesService.cargarOBuscarPersonalActivo(offset.toString()).subscribe( (resp: any) => {
-            this.listaHardwareDisp = resp.list;
+            this.listPageDisp = resp.list;
             this.spinner.hide();
           });
     } else {

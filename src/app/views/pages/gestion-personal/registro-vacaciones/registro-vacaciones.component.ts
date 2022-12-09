@@ -11,6 +11,7 @@ import { ActualizarVacacionesComponent } from './actualizar-vacaciones/actualiza
 import { CrearVacacionesComponent } from './crear-vacaciones/crear-vacaciones.component';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { EnviarCorreoComponent } from './enviar-correo/enviar-correo.component';
 
 @Component({
   selector: 'app-registro-vacaciones',
@@ -46,6 +47,7 @@ export class RegistroVacacionesComponent implements OnInit {
     this.getListProyectos();
     this.getListEstadoVacaciones();
     this.getListAdminVacaciones();
+    this.cargarOBuscarCorreoLider();
     this.getCantDias();
   }
 
@@ -142,8 +144,7 @@ export class RegistroVacacionesComponent implements OnInit {
     this.spinner.hide();
   }
 
-
-   difference(date1: any, date2: any) {
+  difference(date1: any, date2: any) {
     const date1utc = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
     const date2utc = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
     const day = 1000*60*60*24;
@@ -159,6 +160,33 @@ export class RegistroVacacionesComponent implements OnInit {
     this.cantDias = this.difference(date1 , date2)
   }
 
+    listLiderMail: any[] = [];
+  cargarOBuscarCorreoLider(){
+    this.blockUI.start("Cargando periodos...");
+    let parametro: any[] = [{
+      "queryId": 147,
+      "mapValue": {
+        p_id_responsable: this.filtroForm.value.id_responsable,
+        p_id_per_estado : this.filtroForm.value.id_estado_per,
+      }
+    }];
+    this.vacacionesService.cargarOBuscarCorreoLider(parametro[0]).subscribe((resp: any) => {
+    this.blockUI.stop();
+
+     console.log('LISTA DE PERIOX', resp, resp.list.length);
+      this.listLiderMail = [];
+      this.listLiderMail = resp.list;
+
+      this.spinner.hide();
+    });
+  }
+
+  limpiarFiltrox() {
+    this.filtroForm.reset('', {emitEvent: false})
+    this.newFilfroForm();
+
+    this.cargarOBuscarCorreoLider();
+  };
 
   listCodProy: any[] = [];
   getListProyectos() {
@@ -188,14 +216,6 @@ export class RegistroVacacionesComponent implements OnInit {
     })
   }
 
-
-  limpiarFiltro() {
-    this.filtroForm.reset('', { emitEvent: false });
-    this.newFilfroForm();
-
-    this.cargarOBuscarVacaciones();
-  }
-
   totalfiltro = 0;
   cambiarPagina(event: number) {
     let offset = event * 10;
@@ -211,6 +231,15 @@ export class RegistroVacacionesComponent implements OnInit {
       this.spinner.hide();
     }
     this.page = event;
+  }
+
+  enviarCorreo() {
+    const dialogRef = this.dialog.open(EnviarCorreoComponent, { width: '45%',});
+    dialogRef.afterClosed().subscribe((resp) => {
+      if (resp) {
+        // this.cargarOBuscarEvento();
+      }
+    });
   }
 
   crearVacaciones() {
@@ -232,7 +261,6 @@ export class RegistroVacacionesComponent implements OnInit {
         //   this.cargarOBuscarVacaciones();
         // }
           this.cargarOBuscarVacaciones();
-
       });
   }
 

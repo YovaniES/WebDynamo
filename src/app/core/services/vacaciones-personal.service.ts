@@ -80,5 +80,11 @@ export class VacacionesPersonalService {
   enviarCorreo(body: any){
     return this.http.post(API_CORREO, body)
   }
+
+
+  cargarOBuscarCorreoLider(body: any){
+    return this.http.post(API_DYNAMO, body)
+  }
+
 }
 

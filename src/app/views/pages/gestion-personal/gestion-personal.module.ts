@@ -20,6 +20,7 @@ import { ActualizarVacacionesComponent } from './registro-vacaciones/actualizar-
 import { AsignarPersonalComponent } from './registro-vacaciones/crear-vacaciones/asignar-personal/asignar-personal.component';
 import { CrearVacacionesComponent } from './registro-vacaciones/crear-vacaciones/crear-vacaciones.component';
 import { AsignarVacacionesComponent } from './registro-vacaciones/actualizar-vacaciones/asignar-vacaciones/asignar-vacaciones.component';
+import { EnviarCorreoComponent } from './registro-vacaciones/enviar-correo/enviar-correo.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AsignarVacacionesComponent } from './registro-vacaciones/actualizar-vac
     ActualizarVacacionesComponent,
     AsignarVacacionesComponent,
     AsignarPersonalComponent,
-    CrearVacacionesComponent
+    CrearVacacionesComponent,
+    EnviarCorreoComponent
   ],
   imports: [
     GestionPersonalRoutingModule,

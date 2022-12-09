@@ -54,7 +54,8 @@
             <ng-container *ngIf="!DATA_VACAC.isCreation">
               <div class="col-sm-6 cli-form-element">
                 <label>Estado <small style="color: #f45572; margin:1px 0 0;">*</small></label>
-                <select class="cli-input-white" formControlName="id_estado" (ngModelChange)="cambiarEstado()" >
+                <!-- (ngModelChange)="cambiarEstado()" ingresar en el Select-->
+                <select class="cli-input-white" formControlName="id_estado">
                   <option [value]="0" disabled>- Seleccione -</option>
                   <option [value]="estado.id_correlativo" *ngFor="let estado of listVacacionesEstado">{{estado.valor_texto_1}}</option>
                 </select>
@@ -109,7 +110,7 @@
 
 
     <!-- Envio de CORREO -->
-    <div class="chart-draw" *ngIf="DATA_VACAC.isCreation || esEstadoCompletado() || isEstadoCancelado()">
+    <!-- <div class="chart-draw" *ngIf="DATA_VACAC.isCreation || esEstadoCompletado() || isEstadoCancelado()">
       <div class="pr-subtitle">Notificación por Correo</div>
       <div class="pr-module-container">
         <div class="row g-3">
@@ -138,8 +139,8 @@
           <h5 *ngIf="!DATA_VACAC.isCreation" style="color: #f45572; margin:1px 0 0;">NOTA: <small>El campo Mensaje es obligatorio, Cuando el Estado cambia.</small></h5>
           </div>
         </div>
-    </div>
-    <!-- --------------------------------------------BOTONES ------------------------------------------>
+    </div> -->
+
     <div class="cli-form-buttons" style="margin-top: 8%">
       <button class="cli-btn btn-m btn-cancel" type="submit" (click)="close()">
         <mat-icon class="icon-18">cancel</mat-icon> Cancelar
@@ -153,5 +154,4 @@
     </div>
   </div>
 </form>
-
 
