@@ -74,7 +74,7 @@
                 type="submit"
                 class="cli-btn btn-cancel"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="limpiarFiltrox()"
+                (click)="limpiarFiltro()"
                 ><mat-icon class="icon-18">rotate_left</mat-icon>
                 Limpiar
               </button>
@@ -110,7 +110,7 @@
           matTooltip="Enviar correo"
           class="icon-btn btn-trans btn-correo"
           (click)="enviarCorreo()"
-        ><mat-icon class="icon-18">mail</mat-icon>Enviar correo
+        ><mat-icon class="icon-18">mail</mat-icon>Enviar Notificación
         </button>
 
         <div class="flex-1"></div>
@@ -233,8 +233,6 @@
         </div>
       </div>
     </div>
-    <!-- DISEÑO ENVIO DE CORREO -->
-
 
     <div class="card-footer pb-0 pt-3">
       <pagination-controls

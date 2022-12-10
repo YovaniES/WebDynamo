@@ -47,7 +47,6 @@ export class RegistroVacacionesComponent implements OnInit {
     this.getListProyectos();
     this.getListEstadoVacaciones();
     this.getListAdminVacaciones();
-    this.cargarOBuscarCorreoLider();
     this.getCantDias();
   }
 
@@ -160,34 +159,6 @@ export class RegistroVacacionesComponent implements OnInit {
     this.cantDias = this.difference(date1 , date2)
   }
 
-    listLiderMail: any[] = [];
-  cargarOBuscarCorreoLider(){
-    this.blockUI.start("Cargando periodos...");
-    let parametro: any[] = [{
-      "queryId": 147,
-      "mapValue": {
-        p_id_responsable: this.filtroForm.value.id_responsable,
-        p_id_per_estado : this.filtroForm.value.id_estado_per,
-      }
-    }];
-    this.vacacionesService.cargarOBuscarCorreoLider(parametro[0]).subscribe((resp: any) => {
-    this.blockUI.stop();
-
-     console.log('LISTA DE PERIOX', resp, resp.list.length);
-      this.listLiderMail = [];
-      this.listLiderMail = resp.list;
-
-      this.spinner.hide();
-    });
-  }
-
-  limpiarFiltrox() {
-    this.filtroForm.reset('', {emitEvent: false})
-    this.newFilfroForm();
-
-    this.cargarOBuscarCorreoLider();
-  };
-
   listCodProy: any[] = [];
   getListProyectos() {
     let arrayParametro: any[] = [{ queryId: 1 }];
@@ -216,6 +187,7 @@ export class RegistroVacacionesComponent implements OnInit {
     })
   }
 
+
   totalfiltro = 0;
   cambiarPagina(event: number) {
     let offset = event * 10;
@@ -233,8 +205,19 @@ export class RegistroVacacionesComponent implements OnInit {
     this.page = event;
   }
 
+  limpiarFiltro() {
+    this.filtroForm.reset('', {emitEvent: false})
+    this.newFilfroForm();
+
+    this.cargarOBuscarVacaciones();
+  };
+
+  exportarRegistro() {
+    this.exportExcellService.exportarExcel(this.listaRegVacaciones, 'Vacaciones');
+  }
+
   enviarCorreo() {
-    const dialogRef = this.dialog.open(EnviarCorreoComponent, { width: '45%',});
+    const dialogRef = this.dialog.open(EnviarCorreoComponent, { width: '55%', });
     dialogRef.afterClosed().subscribe((resp) => {
       if (resp) {
         // this.cargarOBuscarEvento();
@@ -262,10 +245,6 @@ export class RegistroVacacionesComponent implements OnInit {
         // }
           this.cargarOBuscarVacaciones();
       });
-  }
-
-  exportarRegistro() {
-    this.exportExcellService.exportarExcel(this.listaRegVacaciones, 'Vacaciones');
   }
 }
 

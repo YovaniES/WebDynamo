@@ -66,6 +66,7 @@
   transition: ease 0.3s;
   color: #007bff;
   border: solid 1px #007bff;
+  // min-width: 90px;
   &:hover:enabled {
     background-color: $color-grey-1;
   }
@@ -137,10 +138,14 @@
   color: #fff;
   transition: ease 0.3s;
   &:hover:enabled {
-    background-color: #009aff5e;
+    background-color: #c8e7f8;
   }
   &:hover:enabled:active {
     background-color: #257cfdd9;
+  }
+  &:disabled{
+   background: #00b0ff70;
+   color:#fff
   }
 }
 
