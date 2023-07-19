@@ -110,7 +110,7 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
-              <th>ID Hardware</th>
+              <th style="min-width: 82px;">ID Hardware</th>
               <th>Tipo</th>
               <th>Marca</th>
               <!-- <th>Modelo</th> -->
@@ -118,9 +118,9 @@
               <th>Imei</th>
               <th>HostName</th>
               <th>Descripción</th>
-              <th>Estado Hardware</th>
+              <th style="min-width: 110px;">Estado Hardware</th>
               <th>Persona Asignada</th>
-              <th>Cód. Copporativo</th>
+              <th style="min-width: 108px;">Cód. Copporativo</th>
               <th>Proyecto</th>
               <th>Observación</th>
             </tr>
@@ -148,23 +148,23 @@
                   </button>
                 </div>
               </td>
-              <td class="w55">{{ hardware.id_recurso }}</td>
-              <td class="w250">{{ hardware.tipo   | firstCapital}}</td>
+              <td>{{ hardware.id_recurso }}</td>
+              <td>{{ hardware.tipo   | firstCapital}}</td>
               <td>{{ hardware.marca  | uppercase }}</td>
               <!-- <td class="w200">{{ hardware.modelo | uppercase }}</td> -->
-              <td class="w250">{{ hardware.serie? hardware.serie : '-' }}</td>
+              <td>{{ hardware.serie? hardware.serie : '-' }}</td>
               <td>{{ hardware.imei? hardware.imei: '-' }}</td>
               <td>{{ hardware.hostname? hardware.hostname : '-'  }}</td>
-              <td class="w200">{{ hardware.equipo | firstCapital}}</td>
-              <td style="width: 100px; height: 50px;">
+              <td>{{ hardware.equipo | firstCapital}}</td>
+              <td style="width: 100px; height: 40px;">
                 <span *ngIf="hardware.estado_recurso == 'Reservado'"  class="label est-res"> {{ hardware.estado_recurso | uppercase }}</span>
                 <span *ngIf="hardware.estado_recurso == 'Disponible'" class="label est-disp">{{ hardware.estado_recurso | uppercase }}</span>
               </td>
 
-              <td class="w200" style="text-align: left">{{ hardware.nombres | firstCapital}}</td>
+              <td style="text-align: left">{{ hardware.nombres | firstCapital}}</td>
               <td>{{ hardware.cod_corp }}</td>
               <td>{{ hardware.proyecto }}</td>
-              <td class="w200" style="text-align: left">{{ hardware.observacion | firstCapital}}</td>
+              <td style="text-align: left">{{ hardware.observacion | firstCapital}}</td>
             </tr>
           </tbody>
         </table>

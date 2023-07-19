@@ -104,14 +104,14 @@
             matTooltip="Descargar registro"
             class="icon-btn btn-trans c-green-export"
             (click)="exportarRegistro()"
-          ><mat-icon class="icon-18">file_download</mat-icon>Exportar
+            ><mat-icon class="icon-18">file_download</mat-icon>Exportar
           </button>
-          <button
-          matTooltip="Enviar correo"
-          class="icon-btn btn-trans btn-correo"
-          (click)="enviarCorreo()"
-        ><mat-icon class="icon-18">mail</mat-icon>Enviar Notificación
-        </button>
+          <!-- <button
+            matTooltip="Enviar correo"
+            class="icon-btn btn-trans btn-correo"
+            (click)="enviarCorreo()"
+            ><mat-icon class="icon-18">mail</mat-icon>Enviar Notificación
+          </button> -->
 
         <div class="flex-1"></div>
         <div class="mt-2" style="color: #345df3; font-weight: 600;">
@@ -120,23 +120,23 @@
       </div>
 
       <!-- TABLA DE VACACIONES DEL PERSONAL ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 300px">
+      <div style="overflow: auto; min-height: 406px; color:#337ab7;">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
-              <th>Código Corp.</th>
-              <th style="text-align: left">Nombres y Apellidos</th>
-              <th>Cód. Proyecto</th>
-              <th>Sistema</th>
+              <th style="min-width: 82px;">Código Corp.</th>
+              <th style="text-align: left; min-width: 202px;">Nombres y Apellidos</th>
+              <th style="min-width: 90px;">Cód. Proyecto</th>
+              <th style="min-width: 82px;">Sistema</th>
               <th style="width: 200px">Fecha de vacaciones</th>
-              <th style="text-align: center">Cant. días</th>
+              <th style="text-align: center; min-width: 68px;">Cant. días</th>
               <th style="text-align:center">Responsable</th>
               <th>Estado</th>
               <th>Planificados</th>
               <th>Pendientes</th>
               <th style="text-align: left">Completados</th>
-              <th style="width: 120px">Fecha Registro</th>
+              <th style="min-width: 95px;">Fecha Registro</th>
             </tr>
           </thead>
 
@@ -146,7 +146,7 @@
                         currentPage : page,
                         totalItems  : totalVacaciones
                       } ">
-              <td class="w50">
+              <td>
                 <div class="cli-table-actions">
                   <button
                     matTooltip='Actualizar'
@@ -163,12 +163,11 @@
                 </div>
               </td>
               <td>{{ vacaciones.codigo_corporativo }}</td>
-              <td class="w400" style="text-align: left">{{vacaciones.nombres | firstCapital}}, {{vacaciones.apellidos |firstCapital }}</td>
+              <td style="text-align: left">{{vacaciones.nombres | firstCapital}}, {{vacaciones.apellidos |firstCapital }}</td>
               <td>{{ vacaciones.codigo_proyecto | uppercase}}</td>
               <td>{{vacaciones.sist_vac}}</td>
               <td>
-                <div class="cli-table"
-                style="display: flex; align-items: center; justify-content: space-evenly; background: none; color: #6c757d; border: solid 1px #c4c7ca; min-width: 150px; border-radius: 3px;">
+                <div class="cli-table" style="display: flex; align-items: center; justify-content: space-evenly; background: none; color: #6c757d; border: solid 1px #c4c7ca; min-width: 150px; border-radius: 3px;">
                   {{ vacaciones.f_ini_vac}}<mat-icon class="icon-13">trending_flat</mat-icon>{{ vacaciones.f_fin_vac }}
                 </div>
               </td>
@@ -190,7 +189,7 @@
                 </div>
               </td>
 
-              <td style="width: 100px; height: 50px;">
+              <td style="height: 36px;">
                 <span *ngIf="vacaciones.estado_vac == 'Completado'"  class="label estado-compl"> {{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Planificado'" class="label estado-planif">{{ vacaciones.estado_vac | uppercase }}</span>
                 <span *ngIf="vacaciones.estado_vac == 'Registrado'"  class="label estado-reg ">  {{ vacaciones.estado_vac | uppercase }}</span>
@@ -202,7 +201,7 @@
                 <div style="color: #20c997; font-weight:600;" *ngIf="vacaciones.dias_planificado">{{vacaciones.dias_planificado}} d</div>
               </td>
 
-              <td style="width: 100px;">
+              <td>
                 <div *ngIf="vacaciones.cant_dias_vac == vacaciones.dias_completados"><mat-icon class="icon-13 icon-btn" style="color: #0daef4">done</mat-icon></div>
                 <div class="cli-table-diaspend" *ngIf="(vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado)">
                   {{(vacaciones.cant_dias_vac - vacaciones.dias_completados - vacaciones.dias_planificado)}}
@@ -216,7 +215,7 @@
                 <div *ngIf="vacaciones.dias_completados && vacaciones.dias_completados != vacaciones.cant_dias_vac" class="cli-table-diascompl">{{vacaciones.dias_completados}}</div>
               </td>
 
-              <td style="min-width: 90px">{{ vacaciones.fecha_crea_vac }}</td>
+              <td>{{ vacaciones.fecha_crea_vac }}</td>
             </tr>
           </tbody>
         </table>

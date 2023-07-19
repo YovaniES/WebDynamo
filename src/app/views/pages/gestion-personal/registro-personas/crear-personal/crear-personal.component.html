@@ -107,6 +107,18 @@
               <small class="text-alert" *ngIf="campoNoValido('codPerfil')">* El Código del Perfil es obligatorio</small>
             </div>
 
+
+            <!-- <div class="col-sm-4 cli-form-element">
+              <label>Líder</label>
+              <select
+                class="cli-input-white"
+                formControlName="codPerfil">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="lider.id_correlativo" *ngFor="let lider of listLideres">{{ lider.lider }}</option>
+              </select>
+              <small class="text-alert" *ngIf="campoNoValido('codPerfil')">* El Líder es obligatorio</small>
+            </div> -->
+
             <div class="col-sm-4 cli-form-element mb-2">
               <label>Descripción del Perfil</label>
               <label style="color:#20c997">{{ descPerfil }}</label>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { MenuService } from 'src/app/core/services/menu.service';
 
@@ -15,9 +14,8 @@ export class HeaderComponent implements OnInit {
   phtouri = "NONE";
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private menuService: MenuService,
-    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -25,11 +23,15 @@ export class HeaderComponent implements OnInit {
     this.userFullName();
   }
 
-  currentUser: string = ''
+  currentUser: string = '';
+  userRolName: string = '';
   userFullName() {
     this.authService.getCurrentUser().subscribe((resp) => {
           this.currentUser = resp.user.nombres + ' '+ resp.user.apellidoPaterno ;
-          // console.log('USER-NEW', this.currentUser);
+          this.userRolName = resp.user.rolName;
+          console.log('USER-NEW =>', resp, this.currentUser, resp.user.rolName);
+          console.log('ROL_USUARIO', this.userRolName);
+
         })
       }
 

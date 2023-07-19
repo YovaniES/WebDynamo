@@ -11,20 +11,10 @@ const routes: Routes = [
     path: '',
     children: [
       { path: 'liquidacion', component: LiquidacionComponent },
-      // { path: 'reporte', component: HomeVisorComponent,
-      //   data: { title: 'First Component' },
-      //   children: [{ path: 'visoract', component: VisorActComponent },
-      //              { path: 'visorcierre', component: VisorCierreComponent },
-      //              { path: 'visordec', component: VisorDeclaradaComponent },
-      //              { path: 'visorfact', component: VisorFactComponent }
-      //             ]
-      // },
       { path: 'visoract', component: VisorActComponent },
       { path: 'visorfact', component: VisorFactComponent },
       { path: 'visorcierre', component: VisorCierreComponent },
       { path: 'visordec', component: VisorDeclaradaComponent },
-
-
       { path: '**', redirectTo: '' },
     ],
   },

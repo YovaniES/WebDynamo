@@ -5,17 +5,18 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { PersonalService } from 'src/app/core/services/personal.service';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { ActualizarPersonalComponent } from './actualizar-personal/actualizar-personal.component';
-import { CrearPersonalComponent } from './crear-personal/crear-personal.component';
+// import { ActualizarPersonalComponent } from './actualizar-personal/actualizar-personal.component';
+// import { CrearPersonalComponent } from './crear-personal/crear-personal.component';
 import { DatePipe } from '@angular/common';
 import { ExportExcellService } from 'src/app/core/services/export-excell.service';
 
 @Component({
-  selector: 'app-registro-personas',
-  templateUrl: './registro-personal.component.html',
-  styleUrls: ['./registro-personal.component.scss'],
+  selector: 'app-inc-abiertas',
+  templateUrl: './inc-abiertas.component.html',
+  styleUrls: ['./inc-abiertas.component.scss']
 })
-export class RegistroPersonalComponent implements OnInit {
+export class IncAbiertasComponent implements OnInit {
+
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   userId!: number;
@@ -59,7 +60,7 @@ export class RegistroPersonalComponent implements OnInit {
 
   listaPersonal: any[] = [];
   cargarOBuscarPersonal(){
-    this.blockUI.start("Cargando personal...");
+    this.blockUI.start("Cargando incidencias abiertas...");
     let parametro: any[] = [{
       "queryId": 121,
       "mapValue": {
@@ -78,7 +79,7 @@ export class RegistroPersonalComponent implements OnInit {
 
      console.log('Lista-Personal', resp, resp.list.length);
       this.listaPersonal = [];
-      this.listaPersonal = resp.list;
+      this.listaPersonal = [] //resp.list;
 
       this.spinner.hide();
     });
@@ -249,30 +250,30 @@ export class RegistroPersonalComponent implements OnInit {
     this.page = event;
   }
 
-  crearPersonal() {
-    const dialogRef = this.dialog.open(CrearPersonalComponent, {
-      width: '55%',
-    });
+  // crearPersonal() {
+  //   const dialogRef = this.dialog.open(CrearPersonalComponent, {
+  //     width: '55%',
+  //   });
 
-    dialogRef.afterClosed().subscribe((resp) => {
-      if (resp) {
-        this.cargarOBuscarPersonal();
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe((resp) => {
+  //     if (resp) {
+  //       this.cargarOBuscarPersonal();
+  //     }
+  //   });
+  // }
 
-  actualizarPersonal(DATA: any) {
-    // console.log('DATA_PERSONA_HC', DATA);
+  // actualizarPersonal(DATA: any) {
+  //   // console.log('DATA_PERSONA_HC', DATA);
 
-    this.dialog
-      .open(ActualizarPersonalComponent, {width: '55%', height: '90%', data: DATA})
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          this.cargarOBuscarPersonal();
-        }
-      });
-  }
+  //   this.dialog
+  //     .open(ActualizarPersonalComponent, {width: '55%', height: '90%', data: DATA})
+  //     .afterClosed()
+  //     .subscribe((resp) => {
+  //       if (resp) {
+  //         this.cargarOBuscarPersonal();
+  //       }
+  //     });
+  // }
 
   listRecursoHard: any[] = [];
   getListExportRecursoHard(){
@@ -291,4 +292,5 @@ export class RegistroPersonalComponent implements OnInit {
   exportarRecursoHardware(){
     this.exportExcellService.exportarExcel(this.listRecursoHard, 'RECURSO_HARDWARE')
   }
+
 }

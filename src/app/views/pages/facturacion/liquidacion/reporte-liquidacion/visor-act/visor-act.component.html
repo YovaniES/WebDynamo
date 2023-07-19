@@ -47,9 +47,7 @@
         <h3 class="card-title">
           <span style="font-weight: 600;" id="titulo">Pendiente de Facturar :: ({{ sum | number: "5.2-2" }})</span>
         </h3>
-
         <div class="flex-1"></div>
-
           <button
             class="icon-btn btn-trans c-green-export"
             matTooltip="Exportar"
@@ -85,10 +83,10 @@
                 <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> -->
                   {{ cate.proyecto }}
                 </td>
-                <td>{{ cate.lider }}</td>
-                <td>{{ cate.periodo }}</td>
+                <td>{{ cate.lider       }}</td>
+                <td>{{ cate.periodo     }}</td>
                 <td>{{ cate.subservicio }}</td>
-                <td>{{ cate.estado }}</td>
+                <td>{{ cate.estado      }}</td>
                 <td>{{ cate.importe | number: "3.2-2" }}</td>
                 <td>{{ cate.monto_facturado | number: "3.2-2" }}</td>
                 <td>{{ cate.monto_facturado - cate.importe | number: "3.2-2" }}</td>

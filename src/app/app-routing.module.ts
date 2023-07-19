@@ -32,6 +32,10 @@ const routes: Routes = [
         // data: {rol_menu: [PERMISSION.MENU_MANTENIMIENTO]}
       },
       {
+        path:'seguridad',
+        loadChildren: () => import ('./views/pages/seguridad/seguridad.module').then((m)=>m.SeguridadModule),
+      },
+      {
         path:'factura',
         loadChildren: () => import ('./views/pages/facturacion/facturacion.module').then((m)=>m.FacturacionModule),
         canActivate: [ValidarTokenGuard],

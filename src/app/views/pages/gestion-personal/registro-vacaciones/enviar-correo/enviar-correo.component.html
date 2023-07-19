@@ -174,36 +174,34 @@
 <!-- OCULTAMOS LA TABLA PARA LA VISTA Y ESTA TABLA ES EL CUERPO DEL MSJ PARA EL ENVIO DE CORREO-->
     <table
       #tabla
-      style="max-width: 2000px;padding: 10px;margin: 0 auto;border-collapse: collapse;">
-      <tr style="display: none;">
+      style="padding: 10px;margin: 0 auto;border-collapse: collapse;">
+      <tr>
         <td style="color: #fff; background: darkgray">
-          <div class="row g-3" style="text-align: center; height: 10%">
-            <div class="col-sm-3" style="background: #267d7d; padding: 4px; color:#fff">
-              Registro de vacaciones
+          <div style="text-align: center; height: 10%">
+            <div style="background: #267d7d; padding: 4px; color:#fff">
+              Seguimiento de vacaciones planificadas
             </div>
-            <div class="col-sm-9"><mat-icon></mat-icon></div>
           </div>
         </td>
       </tr>
-      <tr style="display: none;">
-        <td style="background-color: #fff">
+
+      <tr >
+        <td style="background-color: #fff;" >
           <div style="color: #34495e;margin: 4% 10% 2%;text-align: justify;font-family: sans-serif;">
             <h2 style="color: #ffc107; margin: 0 0 7px">RECORDATORIO</h2>
             <p style="margin: 2px; font-size: 14px; color: #a6a6a6">
-              Los siguientes colaboradores aún no registran sus vacaciones en
-              Jira y/o Dedicaciones:
-              <br />
+              Estimado lider, Los siguientes colaboradores aún tienen vacaciones PLANIFICADAS en la web, tener en cuenta:
+              <br /><br />
             </p>
 
-            <p style="margin: 2px; font-size: 14px; color: #297272"></p>
-            <table style="width: 100%; background-color: #fff">
+            <table style="background-color: #fff">
               <thead>
                 <tr style="background: #0daef4; color: #fff">
                   <th style="width: 40px;padding: 3px;font-weight: 300;text-align: center;font-size: 12px;">N°</th>
                   <th style="width: 50px;padding: 3px;font-weight: 300;text-align: center;font-size: 12px;">Colaborador</th>
-                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px;min-width: 125px;text-align: center; font-size: 12px;">Correo responsable</th>
-                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px;">Fecha Inicio</th>
-                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px;">Fecha Fin</th>
+                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px;min-width: 125px;">Correo Colaborador</th>
+                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px; min-width: 100px;">Fecha Inicio</th>
+                  <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px;min-width: 100px">Fecha Fin</th>
                   <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px;">Días</th>
                   <th style="padding: 3px;font-weight: 300;text-align: center;font-size: 12px;">Estado</th>
                 </tr>
@@ -214,7 +212,7 @@
                   <td style="font-size: 12px; text-align: center">{{ i + 1 }}</td>
                   <td style="font-size: 12px; text-align: left; min-width: 190px;">{{ lider.colaborador }}</td>
                   <td style="font-size: 12px; text-align: center">{{ lider.correo }}</td>
-                  <td style="font-size: 12px; text-align: center">{{ lider.fecha_ini }}</td>
+                  <td style="font-size: 12px; text-align: center; ">{{ lider.fecha_ini }}</td>
                   <td style="font-size: 12px; text-align: center">{{ lider.fecha_fin }}</td>
                   <td style="font-size: 12px; text-align: center">{{ lider.dias }}</td>
                   <td style="font-size: 12px; text-align: center">{{ lider.estado }}</td>
@@ -222,15 +220,18 @@
               </tbody>
             </table>
             <br/>
-            <p style="margin: 2px; font-size: 14px; color: #a6a6a6">gracias.</p>
+            <p style="margin: 2px; font-size: 14px; color: #a6a6a6">Gracias.</p>
+          </div>
+
             <p style="color: #fff;
                 font-size: 14px;
                 text-align: center;
                 background: #267d7d;
                 margin: 30px 0 0;">
-              Copyright © INDRA 2022
+              Copyright © INDRA 2023
             </p>
-          </div>
         </td>
       </tr>
     </table>
+
+

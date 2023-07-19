@@ -30,6 +30,7 @@ export class CrearPersonalComponent implements OnInit {
     this.getListProyectos();
     this.getUserID();
     this.getListPerfiles();
+    this.getListLideres();
   }
 
   newForm(){
@@ -116,6 +117,17 @@ export class CrearPersonalComponent implements OnInit {
     this.personalService.getListPerfiles(parametro[0]).subscribe((resp: any) => {
             this.listPerfiles = resp.list;
             // console.log('PERFILES', resp);
+    });
+  };
+
+
+  listLideres: any[] = [];
+  getListLideres(){
+    let parametro: any[] = [{queryId: 149}];
+
+    this.personalService.getListLideres(parametro[0]).subscribe((resp: any) => {
+            this.listLideres = resp.list;
+            console.log('LIDERES', resp);
     });
   }
 

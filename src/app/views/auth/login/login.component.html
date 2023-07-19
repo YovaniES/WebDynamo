@@ -33,10 +33,13 @@
       <div class="form-group text-center">
         <button class="cli-btn btn-l btn-login my-4"
                 type="submit"
-                (click)="login_b2b()"
+                (click)="login()"
                 [disabled]="loginForm.invalid"
                 ><mat-icon class="icon-cent icon-16">login</mat-icon> Ingresar
         </button>
+        <div class="cli-loader" *ngIf="loadingItem">
+          <mat-spinner style="margin-right: 20px" diameter="60"></mat-spinner>cargando...
+        </div>
       </div>
     </form>
   </div>

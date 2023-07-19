@@ -11,7 +11,6 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./visor-cierre.component.scss']
 })
 export class VisorCierreComponent implements OnInit {
-
   resultado  : any[] = [];
   resultadoV : any[] = [];
   resultadoR : any[] = [];
@@ -26,15 +25,15 @@ export class VisorCierreComponent implements OnInit {
   pieChartOptions: any = {
     responsive: true,
 
-    onClick: function (e: any) {
-      var element = this.getElementAtEvent(e);
-      if (element.length) {
-          (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-          (<HTMLInputElement>document.getElementById('ckh2h')).click();
-          console.log(element[0]._view.label)
-        }
-      },
-    };
+   onClick: function (e: any) {
+    var element = this.getElementAtEvent(e);
+    if (element.length) {
+        (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
+        (<HTMLInputElement>document.getElementById('ckh2h')).click();
+        console.log(element[0]._view.label)
+      }
+    },
+  };
 
   pieChartLabels: Label[] = ['Loading.', 'Loading..', 'Loading...', 'Loading...', 'Loading...', 'Loading...'];
   pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
@@ -42,9 +41,8 @@ export class VisorCierreComponent implements OnInit {
   pieChartLegend = true;
   pieChartPlugins = [chartDataLabels];
 
-
   barChartOptions: any = {
-        responsive: true,
+  responsive: true,
 
         onClick: function (e: any) {
             var element = this.getElementAtEvent(e);
@@ -143,7 +141,7 @@ export class VisorCierreComponent implements OnInit {
 
         { label: 'Facturación',
           data: reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["Facturar"])}
-       ]
+      ]
 
       this.barChartLabels = reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["fecha"]);
       console.log('SUM_BAR', res);
@@ -159,7 +157,6 @@ export class VisorCierreComponent implements OnInit {
       var res = [];
       for (var x in res0) {
           res0.hasOwnProperty(x) && res.push(res0[x])
-
       }
       this.pieChartData = res;
 
@@ -189,51 +186,52 @@ export class VisorCierreComponent implements OnInit {
   }
 
   open(content: any, proy: string, periodo: any, origen: string) {
+    this.caspru = null;
 
-      this.caspru = null;
-      this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: any) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason: any) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: any) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason: any) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
 
-      if (origen=="LI")
-      {
-          (<HTMLSpanElement>document.getElementById('headertxt')).innerText =  "Liquidaciones - " + proy;
-          this.caspru = this.resultado;
-          this.caspru = this.caspru.filter((task: { proyecto: any; }) => task.proyecto == proy);
-      }
-      else
-      {
-          (<HTMLSpanElement>document.getElementById('headertxt')).innerText = (origen=="VD"?  "Venta Declarada - ":origen=="CR"?  "Certificado - ":"Facturado - " ) + proy;
-          this.caspru = this.resultadoVF;
-          this.caspru = this.caspru.filter((task: { proyecto: any; tipo: any; }) => task.proyecto == proy && task.tipo == origen);
-      }
+    if (origen=="LI")
+    {
+      (<HTMLSpanElement>document.getElementById('headertxt')).innerText =  "Liquidaciones - " + proy;
+      this.caspru = this.resultado;
+      this.caspru = this.caspru.filter((task: { proyecto: any; }) => task.proyecto == proy);
+    }
+    else
+    {
+      (<HTMLSpanElement>document.getElementById('headertxt')).innerText = (origen=="VD"?  "Venta Declarada - ":origen=="CR"?  "Certificado - ":"Facturado - " ) + proy;
+      this.caspru = this.resultadoVF;
+      this.caspru = this.caspru.filter((task: { proyecto: any; tipo: any; }) => task.proyecto == proy && task.tipo == origen);
+    }
 
-      var groups = this.caspru.reduce(function (obj: { [x: string]: any[]; }, item: { gestor: string | number; }) {
-          obj[item.gestor] = obj[item.gestor] || [];
-          obj[item.gestor].push(item);
-          return obj;
-        }, {});
-        var myArray = Object.keys(groups).map(function (key) {
-          return { torneo: key, requerimientos: groups[key] };
-        });
-        this.casprux = myArray;
-        console.log(this.casprux);
-      //document.getElementById('titulo').innerText = document.getElementById('titulo').innerText + "(" + this.sum + ")";
+    var groups = this.caspru.reduce(function (obj: { [x: string]: any[]; }, item: { gestor: string | number; }) {
+      obj[item.gestor] = obj[item.gestor] || [];
+      obj[item.gestor].push(item);
+      return obj;
+    }, {});
 
+    var myArray = Object.keys(groups).map(function (key) {
+      return { torneo: key, requerimientos: groups[key] };
+    });
+
+    this.casprux = myArray;
+      console.log(this.casprux);
+    //document.getElementById('titulo').innerText = document.getElementById('titulo').innerText + "(" + this.sum + ")";
       return false;
-    }
+  }
 
-    private getDismissReason(reason: any): string {
-      if (reason === ModalDismissReasons.ESC) {
-        return 'by pressing ESC';
-      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-        return 'by clicking on a backdrop';
-      } else {
-        return `with: ${reason}`;
-      }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
     }
+  }
 
   // events
   // chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
@@ -263,16 +261,14 @@ export class VisorCierreComponent implements OnInit {
   }
 
   suma(){
-      this.sum = this.resultadoV.map((a: { importe: any; }) => a.importe).reduce(function(a: any, b: any)
-      {
-        return a + b;
-      }).toFixed(2);
-      console.log(this.sum);
+    this.sum = this.resultadoV.map((a: { importe: any; }) => a.importe).reduce(function(a: any, b: any)
+    {
+    return a + b;
+    }).toFixed(2);
+    console.log(this.sum);
   }
 
   total(vrv: number){
     return vrv==1? this.resultadoR.reduce((accum: any, curr: { importe: any; }) => accum + curr.importe, 0) : vrv==3? this.resultadoR.reduce((accum: any, curr: { facturado: any; }) => accum + curr.facturado, 0) : vrv==4? this.resultadoR.reduce((accum: any, curr: { certificado: any; }) => accum + curr.certificado, 0) : this.resultadoR.reduce((accum: any, curr: { venta_declarada: any; }) => accum + curr.venta_declarada, 0);
   }
-
-
 }

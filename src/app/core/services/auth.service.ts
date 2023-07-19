@@ -3,9 +3,9 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
-import { AUTH_SESSION_B2B } from '../constants/url.constants';
+import { AUTH_SESSION } from '../constants/url.constants';
 import { of } from 'rxjs';
-import { ROLES_ENUM, ROL_GESTOR, ROL_USUARIO } from '../constants/rol.constants';
+import { ROLES_ENUM, ROL_COOR_TDP, ROL_GESTOR, ROL_LIDER, ROL_SUPER_ADMIN } from '../constants/rol.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +16,13 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login_b2b(loginData: any) {
-    return this.http.post<any>(AUTH_SESSION_B2B, loginData).pipe(
+  login(loginData: any) {
+    return this.http.post<any>(AUTH_SESSION, loginData).pipe(
       tap((resp: any) => {
+        console.log('LOGIN_SCORE_ACCESO: ', resp.user.acceso);
+        console.log('LOGIN_SCORE_APLIC: ', resp.user.aplicacion);
+        console.log('LOGIN_SCORE_ROLNAME: ', resp.user.rolName);
+
         localStorage.setItem('token', resp.user.token);
         localStorage.setItem('currentUser', JSON.stringify(resp));
       })
@@ -35,8 +39,8 @@ export class AuthService {
   // Obtenemos desde el TOKEN: unique_name:"jysantiago"; También el ID_ROL=101,102,...106
   getUsername() {
       const decodedToken: any = this.decodeToken();
-      // console.log('ROL_ID', decodedToken, decodedToken.ROL_ID);
-      return decodedToken ? decodedToken.unique_name : '';
+      console.log('DECODE_TOKEN - UNIQUE_NAME', decodedToken, decodedToken.name);
+      return decodedToken ? decodedToken.name : '';
   }
 
   hasAccessToModule(roles: ROLES_ENUM[]){
@@ -44,27 +48,19 @@ export class AuthService {
     return roles.includes(decodedToken_RolId.ROL_ID)
   }
 
-  getUserNameByRol(){
-    const usuarioLogeado: any = this.decodeToken();
-    // console.log('ROL_ID_USUARIO', usuarioLogeado.ROL_ID);
-
-    if (!usuarioLogeado || usuarioLogeado.ROL_ID != ROL_USUARIO.rolID ) {
-      return null
-    } else {
-      return usuarioLogeado.unique_name
-    }
+  esUsuarioSuperAdmin(){
+    const usuarioLogueado: any = this.decodeToken();
+    return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_SUPER_ADMIN.rolID
   }
 
-  getRolId(){
-    const usuarioLogeado: any = this.decodeToken();
-    // console.log('ROL_ID', usuarioLogeado);
+  esUsuarioLider(){
+    const usuarioLogueado: any = this.decodeToken();
+    return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_LIDER.rolID
+  }
 
-    if (!usuarioLogeado || usuarioLogeado.ROL_ID != ROL_USUARIO.rolID ) {
-
-      return null
-    } else {
-      return usuarioLogeado.ROL_ID
-    }
+  esUsuarioCoordTdp(){
+    const usuarioLogueado: any = this.decodeToken();
+    return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_COOR_TDP.rolID
   }
 
   esUsuarioGestor(): boolean{

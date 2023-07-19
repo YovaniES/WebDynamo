@@ -15,7 +15,7 @@
         <label>Proyecto *</label>
         <select class="cli-input-white" formControlName="id_proyecto">
           <option [value]="0" disabled>- Seleccione -</option>
-          <option [value]="cod.id_correlativo" *ngFor="let cod of listProyectos">{{ cod.valor_texto_1 }}</option>
+          <option [value]="cod.id" *ngFor="let cod of listProyectos">{{ cod.valor_texto_1 }}</option>
         </select>
         <small class="form-text text-alert" *ngIf="campoNoValido('id_proyecto')">* Seleccione el Proyecto es obligatorio</small>
       </div>

@@ -226,7 +226,7 @@
                   {{ x.requerimientos[0].estado }}
                 </span>
               </td>
-              <td><span>{{ x.requerimientos[0].importe | number: "3.2-2" }}</span></td>
+              <td><span>{{ x.requerimientos[0].importe   | number: "3.2-2" }}</span></td>
               <td><span>{{ x.requerimientos[0].declarado | number: "3.2-2"}}</span></td>
               <td><span>{{ x.requerimientos[0].facturado | number: "3.2-2"}}</span></td>
             </tr>
@@ -236,7 +236,7 @@
               <td>
                 <span [ngStyle]="{color:item.estado == 'En Elaboración'? 'red': item.estado == 'Enviado'? 'blue': 'green'}">{{ item.estado }}</span>
               </td>
-              <td><span>{{ item.importe | number: "3.2-2" }}</span></td>
+              <td><span>{{ item.importe   | number: "3.2-2" }}</span></td>
               <td><span>{{ item.declarado | number: "3.2-2" }}</span></td>
               <td><span>{{ item.facturado | number: "3.2-2" }}</span></td>
             </tr>

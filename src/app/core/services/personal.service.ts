@@ -143,4 +143,8 @@ export class PersonalService {
   getListCategorias(obj: any) {
     return this.http.post(API_DYNAMO, obj);
   }
+
+  getListLideres(obj: any) {
+    return this.http.post(API_DYNAMO, obj);
+  }
 }

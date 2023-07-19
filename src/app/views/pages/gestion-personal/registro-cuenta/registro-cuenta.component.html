@@ -117,12 +117,12 @@
                   </div>
               </td>
               <td>{{ cuenta.id }}</td>
-              <td class="w155">{{ cuenta.usuario }}</td>
-              <td class="w135">{{ cuenta.password}}</td>
+              <td>{{ cuenta.usuario }}</td>
+              <td>{{ cuenta.password}}</td>
               <td>{{ cuenta.tipo }}</td>
-              <td class="w135" style="text-align: left">{{ cuenta.nombres | firstCapital }}</td>
+              <td style="text-align: left">{{ cuenta.nombres | firstCapital }}</td>
               <!-- <td>{{ cuenta.estado }}</td> -->
-              <td style="width: 100px; height: 50px;">
+              <td style="height: 36px;">
                 <span *ngIf="cuenta.estado == 'Reservado'"  class="label est-res"> {{ cuenta.estado | uppercase }}</span>
                 <span *ngIf="cuenta.estado == 'Disponible'" class="label est-disp">{{ cuenta.estado | uppercase }}</span>
               </td>

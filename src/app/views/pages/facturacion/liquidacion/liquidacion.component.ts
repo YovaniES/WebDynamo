@@ -26,7 +26,7 @@ export class LiquidacionComponent implements OnInit {
 
   page = 1;
   totalFacturas: number = 0;
-  pageSize = 10;
+  pageSize = 15;
   // pageSizes = [3, 6, 9];
 
   constructor(
@@ -248,6 +248,5 @@ export class LiquidacionComponent implements OnInit {
     this.exportExcellService.exportarExcel(this.listVD_Fact, 'FACTURACION-VENT_DECLARADA')
   }
 }
-
 
 

@@ -134,18 +134,18 @@
       </div>
 
       <!-- TABLA DEL FACTURAS ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 300px">
+      <div style="overflow: auto; min-height: 540px; color:#6c757d;">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th class="w90">Cod. Factura</th>
+              <th style="min-width: 80px;">Cod. Factura</th>
               <th class="w100">Periodo</th>
-              <th>Gestor</th>
+              <th style="min-width: 250px;">Gestor</th>
               <th>Proyecto</th>
-              <th>Tipo Liq.</th>
-              <th>Subservicio</th>
-              <th>Estado</th>
+              <th style="min-width: 115px;">Tipo Liq.</th>
+              <th style="min-width: 327px;">Subservicio</th>
+              <th style="min-width: 92px;" >Estado</th>
               <th>Importe</th>
               <th>Declarado</th>
               <th>Facturado</th>
@@ -183,15 +183,28 @@
               </td>
               <td>{{ factura.idFactura }}</td>
               <td>{{ factura.periodo | date:"yyyy/MM" }}</td>
-              <td class="w155" style="text-align: left">{{ factura.gestor }}</td>
+              <td style="text-align: left">{{ factura.gestor }}</td>
               <td>{{ factura.proyecto  | uppercase}}</td>
-              <td class="w135">{{ factura.liquidacion }}</td>
-              <td class="w155" style="text-align: left">{{ factura.subServicio }}</td>
-              <td>{{ factura.estado }}</td>
+              <td>
+                <span *ngIf="factura.liquidacion == 'Acta'"           style="color:#498ff6">  {{ factura.liquidacion | uppercase }}</span>
+                <span *ngIf="factura.liquidacion == 'Regularización'" style="color:#4cffc3">  {{ factura.liquidacion | uppercase }}</span>
+                <span *ngIf="factura.liquidacion == 'Pago Adelantado'"style="color:deeppink" >  {{ factura.liquidacion | uppercase }}</span>
+              </td>
+              <td style="text-align: left; height: 33px;">{{ factura.subServicio }}</td>
+              <td>
+                <span *ngIf="factura.estado == 'Aprobado'"      class="label est-reg"   >    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'Cancelado'"     class="label est-obs "  >    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'En Elaboración'"class="label est-valid" >    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'Enviado'"       class="label est-sol "  >    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'Facturado'"     class="label est-aprobado">  {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'MO Cargado'"    class="label est-finalizado">{{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'MO_Visado'"     class="label est-enviado">   {{ factura.estado | uppercase }}</span>
+              </td>
               <td style="font-weight: 600; text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe | number : '1.0-2'}}</td>
               <td style="text-align: end;"><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado | number : '1.0-2'}}</td>
               <td style="text-align: end;"><small *ngIf="factura.facturado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.facturado | number : '1.0-2'}}</td>
-              <td style="text-align: end;"><small  style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.saldo? factura.saldo: factura.importe) | number : '1.0-2' }}</td>
+              <td style="text-align: end; color: #f26897" *ngIf="factura.declarado"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.declarado - factura.facturado) | number : '1.0-2' }}</td>
+              <!-- <td style="text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.saldo? factura.saldo: factura.importe) | number : '1.0-2' }}</td> -->
             </tr>
           </tbody>
         </table>

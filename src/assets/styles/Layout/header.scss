@@ -15,13 +15,33 @@
 }
 
 .personname{
-// color: $color-hispam-dark;
     font-weight: 700;
     color: $white;
-    line-height: $header-height;
+    // line-height: $header-height;
     margin: 0 5px;
-    text-shadow: 0 1px 3px #0000002a;
+    // text-shadow: 0 1px 3px #0000002a;
 }
+
+.rol-superAdmin{
+  color: #ff007f;
+  justify-content: center;
+}
+
+.rol-lider{
+  color: #0d6efd;
+  justify-content: center;
+}
+
+.rol-gestor{
+  color: #4ae19b;
+  justify-content: center;
+}
+
+.rol-coordinador{
+  color: #0dcaf0;
+  justify-content: center;
+}
+
 .header-hiddenaside{
     left: 70px;
 }
@@ -50,10 +70,7 @@
     border-radius: 50%;
     justify-content: center;
     background-color: #00bcd4;
-
     // background-color: #033f58;
-
-
     color: #fff;
     font-weight: 600;
     font-size: 16px;

@@ -4,6 +4,7 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { CoreModule } from 'src/app/core/core.module';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginComponent } from './login/login.component';
+import { MaterialModule } from 'src/app/material/material.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { LoginComponent } from './login/login.component';
   imports: [
     AuthRoutingModule,
     CoreModule,
-    MatIconModule
+    MatIconModule,
+    MaterialModule
   ]
 })
 export class AuthModule { }
