@@ -103,5 +103,9 @@ export class FacturacionService {
   exportListVD_Fact(obj: any){
     return this.http.post(API_DYNAMO, obj);
   }
+
+  cargarOBuscarVentaDeclada(obj: any[]) {
+    return this.http.post(API_DYNAMO, obj);
+  }
 }
 

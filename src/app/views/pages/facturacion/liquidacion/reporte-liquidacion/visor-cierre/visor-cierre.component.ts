@@ -4,6 +4,7 @@ import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { VisorService } from 'src/app/core/services/visor.service';
 
 @Component({
   selector: 'app-visor-cierre',
@@ -79,6 +80,7 @@ export class VisorCierreComponent implements OnInit {
 
   constructor(private http: HttpClient,
               private modalService: NgbModal,
+              private visorService: VisorService
       ) {}
 
   ngOnInit() {
@@ -86,11 +88,11 @@ export class VisorCierreComponent implements OnInit {
   }
 
   getDataCierre(){
-    this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=1').subscribe((result: any[]) => {
+    this.visorService.getLiqActPeriodo().subscribe((resp: any[]) => {
 
-      this.resultado = result;
-      this.resultadoV = result;
-      console.log(this.resultadoV);
+      this.resultado = resp;
+      this.resultadoV = resp;
+      console.log('VISOR-CIERRE', this.resultadoV);
 
       this.suma();
 
@@ -163,26 +165,25 @@ export class VisorCierreComponent implements OnInit {
       var res = [];
       for (var x in res0) {
           res0.hasOwnProperty(x) && res.push(x)
-
       }
       this.pieChartLabels = res;
 
-  }, error => console.error(error));
+    }, error => console.error(error));
 
-  this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=5').subscribe((result: any[]) => {
+    this.visorService.getLiqByProyecto().subscribe((resp: any[]) => {
 
-      this.resultadoR = result;
+        this.resultadoR = resp;
 
-      this.displayedColumns = ['periodo', 'proyecto','actas','avance', 'importe', 'venta_declarada','certificado','facturado'];
-      this.dataSource = result;
-      console.log(result);
-  }, error => console.error(error));
+        this.displayedColumns = ['periodo', 'proyecto','actas','avance', 'importe', 'venta_declarada','certificado','facturado'];
+        this.dataSource = resp;
+        console.log('LIQ_BY_PROY', resp);
+    }, error => console.error(error));
 
-  this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=6').subscribe((result: any[]) => {
+     this.visorService.getLiqByProyCertificado().subscribe((resp: any[]) => {
 
-      this.resultadoVF = result;
+       this.resultadoVF = resp;
 
-  }, error => console.error(error));
+     }, error => console.error(error));
   }
 
   open(content: any, proy: string, periodo: any, origen: string) {

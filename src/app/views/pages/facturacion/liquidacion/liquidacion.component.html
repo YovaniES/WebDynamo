@@ -143,6 +143,7 @@
               <th class="w100">Periodo</th>
               <th style="min-width: 250px;">Gestor</th>
               <th>Proyecto</th>
+              <th>Lider</th>
               <th style="min-width: 115px;">Tipo Liq.</th>
               <th style="min-width: 327px;">Subservicio</th>
               <th style="min-width: 92px;" >Estado</th>
@@ -185,6 +186,7 @@
               <td>{{ factura.periodo | date:"yyyy/MM" }}</td>
               <td style="text-align: left">{{ factura.gestor }}</td>
               <td>{{ factura.proyecto  | uppercase}}</td>
+              <td>{{ factura.lider }}</td>
               <td>
                 <span *ngIf="factura.liquidacion == 'Acta'"           style="color:#498ff6">  {{ factura.liquidacion | uppercase }}</span>
                 <span *ngIf="factura.liquidacion == 'Regularización'" style="color:#4cffc3">  {{ factura.liquidacion | uppercase }}</span>

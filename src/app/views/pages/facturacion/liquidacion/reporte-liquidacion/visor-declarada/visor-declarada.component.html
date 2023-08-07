@@ -6,7 +6,7 @@
       (click)="filtrar(this)"
       type="button"
       style="height: 0px; width: 0px; visibility: hidden"/>
-    <p *ngIf="!resultadoV"><em>Loading...</em></p>
+    <p *ngIf="!listVentaDecl"><em>Loading...</em></p>
 
     <div class="row">
       <div class="col-lg-6 col-12">
@@ -55,37 +55,35 @@
           <h3 class="card-title"><span style="font-weight: 600" id="titulo">Venta Declarada :: ({{ sum | number: "5.2-2" }})</span></h3>
         </div>
 
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table
-              class="table table-sm table-centered mb-0"
-              style="font-size: small">
+        <div style="overflow: auto; min-height: 298px; color: #6c757d;">
+          <div class="cli-table stripedtable underlinedtable">
+            <table class="cli-table stripedtable underlinedtable">
               <thead>
-                <tr>
-                  <th style="background: #f4f5f6">Periodo</th>
-                  <th style="background: #f4f5f6">Proyecto</th>
-                  <th style="background: #f4f5f6">Sub Servicio</th>
-                  <th style="background: #f4f5f6">Estado</th>
-                  <th style="background: #f4f5f6">Gestor</th>
-                  <th style="background: #f4f5f6">Importe</th>
+                <tr class="c-white">
+                  <th>Periodo</th>
+                  <th>Proyecto</th>
+                  <th>Sub Servicio</th>
+                  <th>Estado</th>
+                  <th>Gestor</th>
+                  <th>Importe</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let cate of resultadoV | paginate: {
+                <tr *ngFor="let vd of listVentaDecl | paginate: {
                             itemsPerPage: pageSize,
                             currentPage: page,
                             totalItems: totalFacturas }">
-                  <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> -->
-                    {{ cate.periodo | date: "yyyy-MM" }}
+                  <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: vd.codigo_solicitud}">{{ vd.codigo }}</a> -->
+                    {{ vd.periodo | date: "yyyy-MM" }}
                   </td>
-                  <td>{{ cate.proyecto }}</td>
-                  <td>{{ cate.subservicio }}</td>
+                  <td>{{ vd.proyecto }}</td>
+                  <td>{{ vd.subservicio }}</td>
                   <td>
                     <span
-                      [ngStyle]="{color:cate.estado == 'En Elaboración'? 'red': cate.estado == 'Enviado'? 'blue': 'green'}">{{ cate.estado }}</span>
+                      [ngStyle]="{color:vd.estado == 'En Elaboración'? 'red': vd.estado == 'Enviado'? 'blue': 'green'}">{{ vd.estado }}</span>
                   </td>
-                  <td>{{ cate.gestor }}</td>
-                  <td>{{ cate.venta_declarada | number: "3.2-2" }}</td>
+                  <td>{{ vd.gestor }}</td>
+                  <td>{{ vd.venta_Declarada | number: "3.2-2" }}</td>
                 </tr>
               </tbody>
             </table>

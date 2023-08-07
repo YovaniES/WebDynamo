@@ -3,6 +3,8 @@ import { ChartType, ChartDataSets } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { HttpClient } from '@angular/common/http';
+import { FacturacionService } from 'src/app/core/services/facturacion.service';
+import { VisorService } from 'src/app/core/services/visor.service';
 
 @Component({
   selector: 'app-visor-declarada',
@@ -14,10 +16,13 @@ export class VisorDeclaradaComponent implements OnInit {
   totalFacturas: number = 0;
   pageSize = 10;
 
-  resultado  : any[] = [];
-  resultadoV : any[] = [];
-  resultadoNV: any;
+  resultado     : any[] = [];
+  listVentaDecl : any[] = [];
+  resultadoNV   : any;
   sum!: number;
+
+  constructor( private visorServices: VisorService,
+               private http: HttpClient, ){}
 
   pieChartOptions: any = {
     responsive: true,
@@ -75,17 +80,46 @@ export class VisorDeclaradaComponent implements OnInit {
   barChartPlugins = [chartDataLabels];
   barChartData: ChartDataSets[] = [{ data: [], label: '' }];
 
-  constructor(private http: HttpClient) { }
+  // constructor(private http: HttpClient,
+  //   private facturacionService: FacturacionService) { }
 
   ngOnInit() {
-    this.initializerDataDeclarada()
+    this.getDataVentaDeclarada();
+    // this.cargarOBuscarLiquidacion();
   }
 
-  initializerDataDeclarada(){
-    this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=4').subscribe((result: any[]) => {
-          this.resultado = result;
-          this.resultadoV = result;
-          console.log(this.resultadoV);
+  // listaLiquidacion: any[] = [];
+  // cargarOBuscarLiquidacion(){
+  //   let parametro: any[] = [{
+  //     "queryId": 150,
+  //     // "mapValue": {
+  //     //     cod_fact       : this.filtroForm.value.codFact,
+  //     //     id_proy        : this.filtroForm.value.id_proy,
+  //     //     id_liquidacion : this.filtroForm.value.id_liquidacion,
+  //     //     id_estado      : this.filtroForm.value.id_estado,
+  //     //     id_gestor      : this.filtroForm.value.id_gestor,
+  //     //     importe        : this.filtroForm.value.importe,
+  //     //     subservicio    : this.filtroForm.value.subservicio,
+  //     //     inicio         : this.datepipe.transform(this.filtroForm.value.fechaRegistroInicio,"yyyy/MM/dd"),
+  //     //     fin            : this.datepipe.transform(this.filtroForm.value.fechaRegistroFin,"yyyy/MM/dd"),
+  //     // }
+  //   }];
+  //   this.facturacionService.cargarOBuscarVentaDeclada(parametro[0]).subscribe((resp: any) => {
+
+  //     console.log('VD-SUP', resp);
+
+  //   //  console.log('Lista-Liquidaciones', resp.list, resp.list.length);
+  //     this.listaLiquidacion = [];
+  //     this.listaLiquidacion = resp.list;
+
+  //   });
+  // }
+
+  getDataVentaDeclarada(){
+    this.visorServices.getVentaDeclarada().subscribe((resp) => {
+          this.resultado = resp.VentasModel;
+          this.listVentaDecl = resp.VentasModel;
+          console.log('LIST-VD', this.listVentaDecl);
 
           this.suma();
 
@@ -102,7 +136,7 @@ export class VisorDeclaradaComponent implements OnInit {
             }, {});
           }
 
-          const groupedData = groupBy(this.resultadoV, 'proyecto');
+          const groupedData = groupBy(this.listVentaDecl, 'proyecto');
           const reducedData = [];
 
           for (let key in groupedData) {
@@ -143,9 +177,9 @@ export class VisorDeclaradaComponent implements OnInit {
 
             console.log('DATA_DECL', res);
 
-          var res0 = [];
+            var res0 = [];
 
-          res0 = this.resultadoV.reduce((p: { [x: string]: number }, n: { estado: string | number }) => {
+          res0 = this.listVentaDecl.reduce((p: { [x: string]: number }, n: { estado: string | number }) => {
               if (p[n.estado]) {p[n.estado] += 1;
               } else {
                 p[n.estado] = 1;
@@ -169,26 +203,16 @@ export class VisorDeclaradaComponent implements OnInit {
       );
   }
 
-  // events
-  // chartClicked({ event, active }: { event: MouseEvent; active: {}[] }): void {
-  //   console.log(event, active);
-  //   alert('hola');
-  // }
-
-  // chartHovered({ event, active }: { event: MouseEvent; active: {}[] }): void {
-  //   console.log(event, active);
-  //   alert('hola');
-  // }
 
   filtrar(flt: any) {
     var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
     var arrayDeCadenas = inputValue.split('|');
 
-    this.resultadoV = this.resultado;
+    this.listVentaDecl = this.resultado;
     if (arrayDeCadenas[1] == 'e') {
-      this.resultadoV = this.resultadoV.filter((task) => task.estado == arrayDeCadenas[0]);
+      this.listVentaDecl = this.listVentaDecl.filter((task) => task.estado == arrayDeCadenas[0]);
     } else {
-      this.resultadoV = this.resultadoV.filter((task) => task.proyecto == arrayDeCadenas[0]);
+      this.listVentaDecl = this.listVentaDecl.filter((task) => task.proyecto == arrayDeCadenas[0]);
     }
 
     this.suma();
@@ -197,7 +221,7 @@ export class VisorDeclaradaComponent implements OnInit {
     }
 
     public suma(){
-      this.sum = this.resultadoV.map(a => a.venta_declarada).reduce(function(a, b)
+      this.sum = this.listVentaDecl.map(a => a.venta_Declarada).reduce(function(a, b)
       {
         return a + b;
       }).toFixed(2);
@@ -209,10 +233,26 @@ export class VisorDeclaradaComponent implements OnInit {
   totalfiltro = 0;
   cambiarPagina(event: number) {
     if (this.totalfiltro != this.totalFacturas) {
-    this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=4').subscribe((result: any[]) => {
-      this.resultadoV = result;
+    this.visorServices.getVentaDeclarada().subscribe((result: any[]) => {
+      this.listVentaDecl = result;
     })
   }
       this.page = event;
   }
 }
+
+
+
+
+
+
+  // events
+  // chartClicked({ event, active }: { event: MouseEvent; active: {}[] }): void {
+  //   console.log(event, active);
+  //   alert('hola');
+  // }
+
+  // chartHovered({ event, active }: { event: MouseEvent; active: {}[] }): void {
+  //   console.log(event, active);
+  //   alert('hola');
+  // }

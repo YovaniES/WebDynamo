@@ -5,6 +5,7 @@ import { VisorActComponent } from './liquidacion/reporte-liquidacion/visor-act/v
 import { VisorCierreComponent } from './liquidacion/reporte-liquidacion/visor-cierre/visor-cierre.component';
 import { VisorDeclaradaComponent } from './liquidacion/reporte-liquidacion/visor-declarada/visor-declarada.component';
 import { VisorFactComponent } from './liquidacion/reporte-liquidacion/visor-fact/visor-fact.component';
+import { VisorDpfComponent } from './liquidacion/reporte-liquidacion/visor-dpf/visor-dpf.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
       { path: 'visorfact', component: VisorFactComponent },
       { path: 'visorcierre', component: VisorCierreComponent },
       { path: 'visordec', component: VisorDeclaradaComponent },
+      { path: 'visordpf', component: VisorDpfComponent },
       { path: '**', redirectTo: '' },
     ],
   },

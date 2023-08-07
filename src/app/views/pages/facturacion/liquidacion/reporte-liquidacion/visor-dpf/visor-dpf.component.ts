@@ -4,14 +4,13 @@ import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
-import { VisorService } from 'src/app/core/services/visor.service';
 
 @Component({
   selector: 'app-visor-fact',
-  templateUrl: './visor-fact.component.html',
-  styleUrls: ['./visor-fact.component.scss']
+  templateUrl: './visor-dpf.component.html',
+  styleUrls: ['./visor-dpf.component.scss']
 })
-export class VisorFactComponent implements OnInit {
+export class VisorDpfComponent implements OnInit {
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
@@ -70,19 +69,18 @@ export class VisorFactComponent implements OnInit {
     XLSX.writeFile(book, this.name);
   }
 
-  constructor(private http: HttpClient,
-              private visorService: VisorService){}
+  constructor(private http: HttpClient){}
 
   ngOnInit() {
     this.getInitializerFact();
   }
 
   getInitializerFact(){
-    this.visorService.getFacturas().subscribe((resp: any) => {
+    this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=2').subscribe((resp: any[]) => {
 
-      this.resultado = resp.factura;
-      this.resultadoV = resp.factura;
-      console.log(this.resultadoV);
+      this.resultado = resp;
+      this.resultadoV = resp;
+      console.log('DPF',this.resultadoV);
 
       this.suma();
 
@@ -193,11 +191,10 @@ export class VisorFactComponent implements OnInit {
   cambiarPagina(event: number) {
 
     if (this.totalfiltro != this.totalFacturas) {
-    this.visorService.getFacturas().subscribe((result: any[]) => {
+    this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=2').subscribe((result: any[]) => {
       this.resultadoV = result;
     })
   }
     this.page = event;
   }
 }
-

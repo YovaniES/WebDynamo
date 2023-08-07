@@ -56,14 +56,11 @@
           </button>
       </div>
 
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table
-            id="tbRes"
-            class="table table-sm table-centered mb-0"
-            style="font-size: small">
+      <div style="overflow: auto; min-height: 298px; color: #6c757d;">
+        <div class="cli-table stripedtable underlinedtable">
+          <table class="cli-table stripedtable underlinedtable">
             <thead>
-              <tr>
+              <tr class="c-white">
                 <th>Proyecto</th>
                 <th>Lider</th>
                 <th>Periodo</th>
@@ -88,7 +85,7 @@
                 <td>{{ cate.subservicio }}</td>
                 <td>{{ cate.estado      }}</td>
                 <td>{{ cate.importe | number: "3.2-2" }}</td>
-                <td>{{ cate.monto_facturado | number: "3.2-2" }}</td>
+                <td>{{ cate.monto_facturado? cate.monto_facturado : '' | number: "3.2-2" }}</td>
                 <td>{{ cate.monto_facturado - cate.importe | number: "3.2-2" }}</td>
               </tr>
             </tbody>

@@ -4,6 +4,7 @@ import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
+import { VisorService } from 'src/app/core/services/visor.service';
 
 @Component({
   selector: 'app-visor-act',
@@ -69,17 +70,17 @@ export class VisorActComponent implements OnInit {
     XLSX.writeFile(book, this.name);
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private visorService: VisorService) {}
 
   ngOnInit() {
     this.initializerDataAct();
   }
 
   initializerDataAct() {
-    this.http
-      .get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=3').subscribe((result: any[]) => {
-          this.resultado = result;
-          this.resultadoV = result;
+    this.visorService.getLiqActivas().subscribe((resp: any) => {
+          this.resultado = resp;
+          this.resultadoV = resp;
           console.log('DATA_REPORTE', this.resultadoV.length);
 
           this.suma();
@@ -207,11 +208,7 @@ export class VisorActComponent implements OnInit {
   totalfiltro = 0;
   cambiarPagina(event: number) {
     if (this.totalfiltro != this.totalFacturas) {
-      this.http
-        .get<any[]>(
-          'http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=3'
-        )
-        .subscribe((result: any[]) => {
+      this.visorService.getLiqActivas().subscribe((result: any[]) => {
           this.resultadoV = result;
         });
     }

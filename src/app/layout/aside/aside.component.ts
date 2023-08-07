@@ -239,6 +239,19 @@ export class AsideComponent implements OnInit {
           module: 'PAS',
           displayed: false,
           roles: PERMISSION.SUBMENU_REPORTE_LIQ,
+        },
+
+        {
+          code: 'FAC-004',
+          text: 'DPF',
+          order: 3,
+          icon: 'pie_chart',
+          type: 'PAREN',
+          link: 'factura/visordpf',
+          enable: false,
+          module: 'PAS',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
         }
       ],
     },

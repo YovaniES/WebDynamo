@@ -129,11 +129,14 @@
     padding: 2px 6px;
     transition: ease .3s;
     &:hover:enabled{
-        border-color: $color-blue;
+        border-color: #0daef4;
+        // border-color: $color-blue;
     }
     &:focus:enabled{
         background-color: transparent;
-        border-color: $color-blue;
+        // border-color: $color-blue;
+        border-color: #0daef4;
+
     }
     &:disabled{
         background-color: $color-grey-0;
