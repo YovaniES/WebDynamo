@@ -11,7 +11,7 @@ export class VisorService {
   constructor(private http: HttpClient) {}
 
   getVentaDeclarada() {
-    return this.http.get<any>(API_VISOR + 'getVentas').pipe(
+    return this.http.get<any>(API_VISOR + 'getVentaDecl').pipe(
       tap((resp: any) => {
         console.log('VISOR_VD: ', resp);
       })
@@ -19,7 +19,7 @@ export class VisorService {
   }
 
   getFacturas() {
-    return this.http.get<any>(API_VISOR + 'getFacturas').pipe(
+    return this.http.get<any>(API_VISOR + 'getFacturados').pipe(
       tap((resp: any) => {
         console.log('VISOR_Facturas: ', resp);
       })
@@ -55,6 +55,14 @@ export class VisorService {
     return this.http.get<any>(API_VISOR + 'getLiqByProyCertificado').pipe(
       tap((resp: any) => {
         console.log('LIQ_BY_PROY: ', resp);
+      })
+    );
+  }
+
+  getListDpf() {
+    return this.http.get<any>(API_VISOR + 'getDpf').pipe(
+      tap((resp: any) => {
+        console.log('DATA-DPF: ', resp);
       })
     );
   }

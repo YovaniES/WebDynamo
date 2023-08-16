@@ -63,6 +63,7 @@ export class VisorActComponent implements OnInit {
   name = 'dwdALODPF.xlsx';
   exportToExcel(): void {
     let element = document.getElementById('tbRes');
+
     const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
 
     const book: XLSX.WorkBook = XLSX.utils.book_new();
@@ -70,8 +71,7 @@ export class VisorActComponent implements OnInit {
     XLSX.writeFile(book, this.name);
   }
 
-  constructor(private http: HttpClient,
-              private visorService: VisorService) {}
+  constructor(private visorService: VisorService) {}
 
   ngOnInit() {
     this.initializerDataAct();
@@ -81,7 +81,7 @@ export class VisorActComponent implements OnInit {
     this.visorService.getLiqActivas().subscribe((resp: any) => {
           this.resultado = resp;
           this.resultadoV = resp;
-          console.log('DATA_REPORTE', this.resultadoV.length);
+          console.log('DATA_LIQ_ACT', this.resultadoV.length);
 
           this.suma();
 

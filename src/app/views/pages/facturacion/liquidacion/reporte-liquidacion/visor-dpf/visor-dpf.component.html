@@ -1,4 +1,4 @@
-<div class="modal-title-inic mt-3">DPF</div>
+<div class="modal-title-inic mt-3">DPF/ALO</div>
 <div class="cli-content">
   <div class="cli-card-body">
     <input
@@ -6,9 +6,9 @@
       (click)="filtrar(this)"
       type="button"
       style="height: 0px; width: 0px; visibility: hidden"/>
-    <p *ngIf="!resultadoV"><em>Cargado...</em></p>
+    <p *ngIf="!listDPF"><em>Cargado...</em></p>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-6 col-12">
         <h3 style="font-size: 20px; font-weight: 500">DPF por Periodo</h3>
         <div class="chart-wrapper">
@@ -38,7 +38,7 @@
           </canvas>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div>
       <div class="card" style="padding: 10px">
@@ -46,9 +46,9 @@
           class="card-header border-transparent"
           style="display: flex"
           class="mt-2 mb-1">
-          <h3 class="card-title">
+          <!-- <h3 class="card-title">
             <span style="font-weight: 600" id="titulo">Facturado :: ({{ sum | number: "5.2-2" }})</span>
-          </h3>
+          </h3> -->
 
           <div class="flex-1"></div>
 
@@ -66,7 +66,7 @@
             <table class="cli-table stripedtable underlinedtable">
               <thead>
                 <tr class="c-white">
-                  <th>Responsable</th>
+                  <th>Proyecto</th>
                   <th>Total Corriente</th>
                   <th>Vencido [1-30]</th>
                   <th>Vencido [31-60]</th>
@@ -75,25 +75,25 @@
                   <th>Vencido [181-365]</th>
                   <th>Total</th>
                   <th>DPF Vencido Facturado</th>
-                  <th>Saldo vencido</th>
+                  <!-- <th>Saldo vencido</th> -->
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let dpf of resultadoV | paginate: {
+                <tr *ngFor="let dpf of listDPF | paginate: {
                             itemsPerPage: pageSize,
                             currentPage: page,
                             totalItems: totalFacturas
                           }">
-                  <td>{{ dpf.periodo  }}<!-- <a [routerLink]="['/detail']" [queryParams]="{id: dpf.codigo_solicitud}">{{ dpf.codigo }}</a> --></td>
                   <td>{{ dpf.proyecto }}</td>
-                  <td>{{ dpf.lider    }}</td>
-                  <td>{{ dpf.subServicio }}</td>
-                  <td style="color: #09d6ff;font-weight: 500;">{{ dpf.estado   }}</td>
-                  <td>{{ dpf.factura  }}</td>
-                  <td>{{ dpf.monto_facturado | number: "3.2-2" }}</td>
-                  <td>{{ dpf.orden_compra + " - " + dpf.cod_certificacion }}</td>
-                  <td>{{ dpf.lider    }}</td>
-                  <td>{{ dpf.lider    }}</td>
+                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(),  'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
+                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(1), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
+                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(2), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
+                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(3), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
+                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(4), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
+                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(5), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
+                  <!-- <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(5), 'dpf', dpf.proyecto)| number: "3.2-2" }}</td> -->
+                  <td>{{totalDPF(dpf.proyecto)   | number: "3.2-2" }}</td>
+                  <td>{{ dpf.lider }}</td>
                 </tr>
               </tbody>
             </table>

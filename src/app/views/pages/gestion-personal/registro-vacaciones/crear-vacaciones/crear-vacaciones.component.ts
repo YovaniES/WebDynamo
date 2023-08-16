@@ -37,12 +37,12 @@ export class CrearVacacionesComponent implements OnInit {
     this.newForm();
     this.getUsuario();
     this.getListSistemaVacaciones();
+    this.getListTipoVacaciones();
   }
 
     newForm(){
       this.vacacionesForm = this.fb.group({
        idPersonal    : [''],
-
        codCorp       : [''],
        nombre        : ['', [Validators.required]],
        apPaterno     : [''],
@@ -53,6 +53,7 @@ export class CrearVacacionesComponent implements OnInit {
        fecha_ingreso : [''],
        id_estado_vac : [''],
        idSistema     : ['', [Validators.required]],
+       idTipoVac     : ['', [Validators.required]],
        total_dias_vac: ['']
       })
      }
@@ -77,6 +78,7 @@ export class CrearVacacionesComponent implements OnInit {
        p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
        p_id_estado_vac     : formValues.id_estado_vac,
        p_id_responsable    : this.userID,
+       p_id_tipo           : formValues.idTipoVac,
        p_fecha_crea_vac    : '',
        CONFIG_USER_ID      : this.userID,
        CONFIG_OUT_MSG_ERROR: "",
@@ -140,6 +142,15 @@ export class CrearVacacionesComponent implements OnInit {
   this.vacacionesService.getListSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listSistemaVacaciones = resp.list;
     // console.log('SISTEMA-ASIG_VAC', resp.list);
+    })
+  }
+
+  listTipoVacaciones: any[] = [];
+  getListTipoVacaciones(){
+  let parametro: any[] = [{ queryId: 151}];
+  this.vacacionesService.getListTipoVacaciones(parametro[0]).subscribe((resp: any) => {
+    this.listTipoVacaciones = resp.list;
+    // console.log('TIPO_VAC', resp.list);
     })
   }
 

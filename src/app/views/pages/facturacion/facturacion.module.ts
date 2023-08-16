@@ -17,8 +17,8 @@ import { ReporteLiquidacionComponent } from './liquidacion/reporte-liquidacion/r
 import { VisorActComponent } from './liquidacion/reporte-liquidacion/visor-act/visor-act.component';
 import { HomeVisorComponent } from './liquidacion/home-visor/home-visor.component';
 import { VisorFactComponent } from './liquidacion/reporte-liquidacion/visor-fact/visor-fact.component';
-import { VisorDeclaradaComponent } from './liquidacion/reporte-liquidacion/visor-declarada/visor-declarada.component';
-import { VisorCierreComponent } from './liquidacion/reporte-liquidacion/visor-cierre/visor-cierre.component';
+import { VisorDeclaradaComponent } from './liquidacion/reporte-liquidacion/visor-venta-decl/visor-declarada.component';
+import { VisorCierreComponent } from './liquidacion/reporte-liquidacion/visor-proy/visor-cierre.component';
 import { VisorDpfComponent } from './liquidacion/reporte-liquidacion/visor-dpf/visor-dpf.component';
 
 

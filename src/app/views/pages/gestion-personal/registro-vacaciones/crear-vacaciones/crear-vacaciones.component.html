@@ -66,8 +66,17 @@
               <small class="text-alert" *ngIf="campoNoValido('idSistema')">* El Sistema es obligatorio</small>
             </div>
 
-          <div class="col-sm-6 cli-form-element">
-            <label class="form-label">Fecha de vacaciones (desde/hasta) * </label>
+            <div class="col-sm-3 cli-form-element">
+              <label>Tipo vac.*</label>
+              <select class="cli-input-white" formControlName="idTipoVac">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="tipo.id_correlativo" *ngFor="let tipo of listTipoVacaciones">{{tipo.valor_texto_1}}</option>
+              </select>
+              <small class="text-alert" *ngIf="campoNoValido('idTipoVac')">* El Tipo de vacaciones es obligatorio</small>
+            </div>
+
+          <div class="col-sm-4 cli-form-element">
+            <label class="form-label">Fecha de vacaciones * </label>
             <mat-form-field color="accent" appearance="outline">
               <mat-date-range-input [formGroup]="vacacionesForm" [rangePicker]="picker">
                 <input matStartDate formControlName="fechaInicVac" placeholder="Inicio de vacaciones"   #fechaIni (dateChange)="totalDiasVacaciones()" >
@@ -81,7 +90,7 @@
             </mat-form-field>
           </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <div class="col-sm-2 cli-form-element">
               <label class="form-label">Total días vacaciones</label>
               <input
                 style="font-weight: 600; text-align:center"

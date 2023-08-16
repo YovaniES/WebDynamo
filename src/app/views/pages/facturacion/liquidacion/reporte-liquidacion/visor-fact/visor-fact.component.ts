@@ -70,18 +70,17 @@ export class VisorFactComponent implements OnInit {
     XLSX.writeFile(book, this.name);
   }
 
-  constructor(private http: HttpClient,
-              private visorService: VisorService){}
+  constructor(private visorService: VisorService){}
 
   ngOnInit() {
     this.getInitializerFact();
   }
 
   getInitializerFact(){
-    this.visorService.getFacturas().subscribe((resp: any) => {
+    this.visorService.getFacturas().subscribe((resp: any[]) => {
 
-      this.resultado = resp.factura;
-      this.resultadoV = resp.factura;
+      this.resultado = resp;
+      this.resultadoV = resp;
       console.log(this.resultadoV);
 
       this.suma();
@@ -193,8 +192,8 @@ export class VisorFactComponent implements OnInit {
   cambiarPagina(event: number) {
 
     if (this.totalfiltro != this.totalFacturas) {
-    this.visorService.getFacturas().subscribe((result: any[]) => {
-      this.resultadoV = result;
+    this.visorService.getFacturas().subscribe((resp: any[]) => {
+      this.resultadoV = resp;
     })
   }
     this.page = event;

@@ -19,25 +19,24 @@ export class VisorDeclaradaComponent implements OnInit {
   resultado     : any[] = [];
   listVentaDecl : any[] = [];
   resultadoNV   : any;
-  sum!: number;
+  totalVD!: number;
 
-  constructor( private visorServices: VisorService,
-               private http: HttpClient, ){}
+  constructor( private visorServices: VisorService){}
 
   pieChartOptions: any = {
     responsive: true,
 
-    onClick: function (e: any) {
+    onClick(e: any) {
       var element = this.getElementAtEvent(e);
       if (element.length) {
-          (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
-          (<HTMLInputElement>document.getElementById('ckh2h')).click();
+          (<HTMLInputElement>document.getElementById('filtro_vd')).value = element[0]._view.label + '|e';
+          (<HTMLInputElement>document.getElementById('filtro_vd')).click();
           console.log(element[0]._view.label)
         }
       },
-    };
+  };
 
-  pieChartLabels: Label[] = ['Loading.','Loading..','Loading...','Loading...','Loading...','Loading...',];
+  pieChartLabels: Label[] = ['Cargando.','Cargando..','Cargando...','Cargando...','Cargando...','Cargando...',];
   pieChartData: SingleDataSet = [1, 2, 3, 4, 5, 6];
   pieChartType: ChartType = 'pie';
   pieChartLegend = true;
@@ -46,13 +45,12 @@ export class VisorDeclaradaComponent implements OnInit {
   barChartOptions: any = {
     responsive: true,
 
-    onClick: function (e: any) {
+    onClick(e: any) {
       var element = this.getElementAtEvent(e);
 
       if (element.length) {
-
-          (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
-          (<HTMLInputElement>document.getElementById('ckh2h')).click();
+          (<HTMLInputElement>document.getElementById('filtro_vd')).value = element[0]._view.label + '|f';
+          (<HTMLInputElement>document.getElementById('filtro_vd')).click();
           console.log(element[0]._view.label)
       }
     },
@@ -61,18 +59,17 @@ export class VisorDeclaradaComponent implements OnInit {
       xAxes: [{ stacked: true }], yAxes: [{
           stacked: true
       }]
-  },
-  plugins: {
-      datalabels: {
-          anchor: 'center',
-          align: 'center',
-          display: function (context: any) {
-              return context.dataset.data[context.dataIndex] > 0;
-          },
-      }
-  }
-
-   };
+    },
+    plugins: {
+        datalabels: {
+            anchor: 'center',
+            align: 'center',
+            display: function (context: any) {
+                return context.dataset.data[context.dataIndex] > 0;
+            },
+        }
+    }
+  };
 
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
@@ -80,45 +77,14 @@ export class VisorDeclaradaComponent implements OnInit {
   barChartPlugins = [chartDataLabels];
   barChartData: ChartDataSets[] = [{ data: [], label: '' }];
 
-  // constructor(private http: HttpClient,
-  //   private facturacionService: FacturacionService) { }
-
   ngOnInit() {
     this.getDataVentaDeclarada();
-    // this.cargarOBuscarLiquidacion();
   }
 
-  // listaLiquidacion: any[] = [];
-  // cargarOBuscarLiquidacion(){
-  //   let parametro: any[] = [{
-  //     "queryId": 150,
-  //     // "mapValue": {
-  //     //     cod_fact       : this.filtroForm.value.codFact,
-  //     //     id_proy        : this.filtroForm.value.id_proy,
-  //     //     id_liquidacion : this.filtroForm.value.id_liquidacion,
-  //     //     id_estado      : this.filtroForm.value.id_estado,
-  //     //     id_gestor      : this.filtroForm.value.id_gestor,
-  //     //     importe        : this.filtroForm.value.importe,
-  //     //     subservicio    : this.filtroForm.value.subservicio,
-  //     //     inicio         : this.datepipe.transform(this.filtroForm.value.fechaRegistroInicio,"yyyy/MM/dd"),
-  //     //     fin            : this.datepipe.transform(this.filtroForm.value.fechaRegistroFin,"yyyy/MM/dd"),
-  //     // }
-  //   }];
-  //   this.facturacionService.cargarOBuscarVentaDeclada(parametro[0]).subscribe((resp: any) => {
-
-  //     console.log('VD-SUP', resp);
-
-  //   //  console.log('Lista-Liquidaciones', resp.list, resp.list.length);
-  //     this.listaLiquidacion = [];
-  //     this.listaLiquidacion = resp.list;
-
-  //   });
-  // }
-
   getDataVentaDeclarada(){
-    this.visorServices.getVentaDeclarada().subscribe((resp) => {
-          this.resultado = resp.VentasModel;
-          this.listVentaDecl = resp.VentasModel;
+    this.visorServices.getVentaDeclarada().subscribe((resp: any[]) => {
+          this.resultado = resp;
+          this.listVentaDecl = resp;
           console.log('LIST-VD', this.listVentaDecl);
 
           this.suma();
@@ -132,7 +98,6 @@ export class VisorDeclaradaComponent implements OnInit {
               }
               acc[key].push(obj);
               return acc;
-              //return [].slice.call(acc).sort((a,b) => (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0));
             }, {});
           }
 
@@ -205,27 +170,23 @@ export class VisorDeclaradaComponent implements OnInit {
 
 
   filtrar(flt: any) {
-    var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
+    var inputValue = (<HTMLInputElement>document.getElementById('filtro_vd')).value;
     var arrayDeCadenas = inputValue.split('|');
 
     this.listVentaDecl = this.resultado;
     if (arrayDeCadenas[1] == 'e') {
-      this.listVentaDecl = this.listVentaDecl.filter((task) => task.estado == arrayDeCadenas[0]);
+      this.listVentaDecl = this.listVentaDecl.filter((data) => data.estado == arrayDeCadenas[0]);
     } else {
-      this.listVentaDecl = this.listVentaDecl.filter((task) => task.proyecto == arrayDeCadenas[0]);
+      this.listVentaDecl = this.listVentaDecl.filter((data) => data.proyecto == arrayDeCadenas[0]);
     }
-
     this.suma();
 
-    (<HTMLInputElement>document.getElementById('titulo')).innerText = 'Liquidaciones:: ' + arrayDeCadenas[0] + '(' + this.sum.toLocaleString('es-PE') + ')';
+    (<HTMLInputElement>document.getElementById('titulo')).innerText = 'Liquidaciones:: ' + arrayDeCadenas[0] + '(' + this.totalVD.toLocaleString('es-PE') + ')';
     }
 
     public suma(){
-      this.sum = this.listVentaDecl.map(a => a.venta_Declarada).reduce(function(a, b)
-      {
-        return a + b;
-      }).toFixed(2);
-      console.log('SUMA', this.sum);
+      this.totalVD = this.listVentaDecl.map(a => a.venta_Declarada).reduce((x, y)=>{return x + y;}).toFixed(2);
+      console.log('SUMA', this.totalVD);
   }
 
 
@@ -233,26 +194,10 @@ export class VisorDeclaradaComponent implements OnInit {
   totalfiltro = 0;
   cambiarPagina(event: number) {
     if (this.totalfiltro != this.totalFacturas) {
-    this.visorServices.getVentaDeclarada().subscribe((result: any[]) => {
-      this.listVentaDecl = result;
+    this.visorServices.getVentaDeclarada().subscribe((resp: any[]) => {
+      this.listVentaDecl = resp;
     })
   }
       this.page = event;
   }
 }
-
-
-
-
-
-
-  // events
-  // chartClicked({ event, active }: { event: MouseEvent; active: {}[] }): void {
-  //   console.log(event, active);
-  //   alert('hola');
-  // }
-
-  // chartHovered({ event, active }: { event: MouseEvent; active: {}[] }): void {
-  //   console.log(event, active);
-  //   alert('hola');
-  // }

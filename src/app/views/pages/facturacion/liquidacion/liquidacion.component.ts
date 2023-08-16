@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
@@ -27,7 +26,6 @@ export class LiquidacionComponent implements OnInit {
   page = 1;
   totalFacturas: number = 0;
   pageSize = 15;
-  // pageSizes = [3, 6, 9];
 
   constructor(
     private facturacionService: FacturacionService,
@@ -58,7 +56,8 @@ export class LiquidacionComponent implements OnInit {
       fechaRegistroFin   : [''],
       id_gestor          : [''],
       importe            : [''],
-      subservicio        : ['']
+      subservicio        : [''],
+      f_periodo          : ['']
     })
   };
 
@@ -75,6 +74,8 @@ export class LiquidacionComponent implements OnInit {
           id_gestor      : this.filtroForm.value.id_gestor,
           importe        : this.filtroForm.value.importe,
           subservicio    : this.filtroForm.value.subservicio,
+          f_periodo      : this.filtroForm.value.f_periodo, //****************** */
+          // f_periodo         : this.datepipe.transform(this.filtroForm.value.f_periodo,"yyyy/MM/dd"),
           inicio         : this.datepipe.transform(this.filtroForm.value.fechaRegistroInicio,"yyyy/MM/dd"),
           fin            : this.datepipe.transform(this.filtroForm.value.fechaRegistroFin,"yyyy/MM/dd"),
       }

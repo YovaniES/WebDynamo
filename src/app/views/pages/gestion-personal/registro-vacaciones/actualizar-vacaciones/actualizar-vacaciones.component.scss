@@ -130,6 +130,22 @@
   width: 135px;
 }
 
+// form-control para el Input del total de vacaciones
+::ng-deep .form-control {
+  display: block;
+  width: 100%;
+  padding: .375rem .15rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #212529;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
 ::ng-deep .mat-calendar-body-selected {
   background-color: #0daef4;
   color: #fff;

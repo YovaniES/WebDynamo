@@ -38,7 +38,7 @@
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <!-- <div class="col-sm-3 cli-form-element">
               <label class="form-label">Fecha de Registro</label>
               <mat-form-field color="accent" appearance="outline">
                 <mat-date-range-input [rangePicker]="picker">
@@ -48,7 +48,7 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
-            </div>
+            </div> -->
 
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Estado</label>
@@ -64,6 +64,16 @@
                 type="number"
                 class="form-control"
                 formControlName="importe"/>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <div class="form-group">
+                <label>Fecha Periodo</label>
+                 <input
+                  type="month"
+                  class="form-control cli-input-white"
+                  formControlName="f_periodo"/>
+              </div>
             </div>
 
             <div class="col-sm-3 cli-form-element">
@@ -143,14 +153,13 @@
               <th class="w100">Periodo</th>
               <th style="min-width: 250px;">Gestor</th>
               <th>Proyecto</th>
-              <th>Lider</th>
               <th style="min-width: 115px;">Tipo Liq.</th>
               <th style="min-width: 327px;">Subservicio</th>
               <th style="min-width: 92px;" >Estado</th>
               <th>Importe</th>
-              <th>Declarado</th>
-              <th>Facturado</th>
-              <th>Pendiente</th>
+              <th style="background: #dee2e6;color: #676767;">Declarado</th>
+              <th style="background: #dee2e6;color: #676767;">Facturado</th>
+              <th style="background: #dee2e6;color: #676767;">Pendiente</th>
             </tr>
           </thead>
 
@@ -185,8 +194,17 @@
               <td>{{ factura.idFactura }}</td>
               <td>{{ factura.periodo | date:"yyyy/MM" }}</td>
               <td style="text-align: left">{{ factura.gestor }}</td>
-              <td>{{ factura.proyecto  | uppercase}}</td>
-              <td>{{ factura.lider }}</td>
+
+              <td style="text-align:left ">
+                <div class="cli-table-user">
+                  <button
+                    matTooltip={{factura.lider}}
+                    class="icon-btn btn-trans"
+                    style="color: #ffaaa4;"
+                    ><mat-icon class="icon-13">person_outline</mat-icon>
+                  </button>{{factura.proyecto | uppercase}}
+                </div>
+              </td>
               <td>
                 <span *ngIf="factura.liquidacion == 'Acta'"           style="color:#498ff6">  {{ factura.liquidacion | uppercase }}</span>
                 <span *ngIf="factura.liquidacion == 'Regularización'" style="color:#4cffc3">  {{ factura.liquidacion | uppercase }}</span>
@@ -203,9 +221,9 @@
                 <span *ngIf="factura.estado == 'MO_Visado'"     class="label est-enviado">   {{ factura.estado | uppercase }}</span>
               </td>
               <td style="font-weight: 600; text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.importe | number : '1.0-2'}}</td>
-              <td style="text-align: end;"><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado | number : '1.0-2'}}</td>
+              <td style="text-align: end; border-left-width: thin;"><small *ngIf="factura.declarado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.declarado | number : '1.0-2'}}</td>
               <td style="text-align: end;"><small *ngIf="factura.facturado >0" style="font-weight: 400; margin-right:3px;">S/</small>{{ factura.facturado | number : '1.0-2'}}</td>
-              <td style="text-align: end; color: #f26897" *ngIf="factura.declarado"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.declarado - factura.facturado) | number : '1.0-2' }}</td>
+              <td style="text-align: end; border-right-width: thin; color: #f26897" *ngIf="factura.declarado"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.declarado - factura.facturado) | number : '1.0-2' }}</td>
               <!-- <td style="text-align: end;"><small style="font-weight: 400; margin-right:3px;">S/</small>{{ (factura.saldo? factura.saldo: factura.importe) | number : '1.0-2' }}</td> -->
             </tr>
           </tbody>

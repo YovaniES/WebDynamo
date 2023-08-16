@@ -2,16 +2,16 @@
 <div class="cli-content">
   <div class="cli-card-body">
     <input
-      id="ckh2h"
+      id="filtro_vd"
       (click)="filtrar(this)"
       type="button"
       style="height: 0px; width: 0px; visibility: hidden"/>
-    <p *ngIf="!listVentaDecl"><em>Loading...</em></p>
+    <p *ngIf="!listVentaDecl"><em>Cargando...</em></p>
 
     <div class="row">
       <div class="col-lg-6 col-12">
         <h3 style="font-size: 20px; font-weight: 500">
-          Liquidación de Venta por Estado
+          Venta declarada por Estado
         </h3>
         <div class="chart-wrapper">
           <canvas
@@ -29,7 +29,7 @@
 
       <div class="col-lg-6 col-12">
         <h3 style="font-size: 20px; font-weight: 500">
-          Liquidación de Venta por Proyecto
+          Venta declarada por Proyecto
         </h3>
         <div style="display: block">
           <canvas
@@ -52,11 +52,11 @@
           class="card-header border-transparent"
           style="display: flex"
           class="mt-2 mb-1">
-          <h3 class="card-title"><span style="font-weight: 600" id="titulo">Venta Declarada :: ({{ sum | number: "5.2-2" }})</span></h3>
+          <h3 class="card-title"><span style="font-weight: 600" id="titulo">Venta Declarada :: ({{ totalVD | number: "5.2-2" }})</span></h3>
         </div>
 
         <div style="overflow: auto; min-height: 298px; color: #6c757d;">
-          <div class="cli-table stripedtable underlinedtable">
+          <div>
             <table class="cli-table stripedtable underlinedtable">
               <thead>
                 <tr class="c-white">
@@ -73,16 +73,15 @@
                             itemsPerPage: pageSize,
                             currentPage: page,
                             totalItems: totalFacturas }">
-                  <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: vd.codigo_solicitud}">{{ vd.codigo }}</a> -->
-                    {{ vd.periodo | date: "yyyy-MM" }}
-                  </td>
+                  <td>{{ vd.periodo | date: "yyyy-MM" }}</td>
                   <td>{{ vd.proyecto }}</td>
-                  <td>{{ vd.subservicio }}</td>
+                  <td style="text-align: left;">{{ vd.subservicio }}</td>
                   <td>
                     <span
-                      [ngStyle]="{color:vd.estado == 'En Elaboración'? 'red': vd.estado == 'Enviado'? 'blue': 'green'}">{{ vd.estado }}</span>
+                    [ngStyle]="{color:vd.estado == 'En Elaboración'? 'red': vd.estado == 'Enviado'? 'blue': 'green'}">{{ vd.estado }}</span>
+                    <!-- [ngStyle]="{color:vd.estado == 'MO_Visado'? 'red': vd.estado == 'Facturado'? 'blue': 'green'}">{{ vd.estado }}</span> -->
                   </td>
-                  <td>{{ vd.gestor }}</td>
+                  <td style="text-align: left;">{{ vd.gestor }}</td>
                   <td>{{ vd.venta_Declarada | number: "3.2-2" }}</td>
                 </tr>
               </tbody>

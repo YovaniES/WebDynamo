@@ -4,6 +4,8 @@ import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
+import { VisorService } from 'src/app/core/services/visor.service';
+import { removeDuplicateObjects } from 'src/app/core/util/util';
 
 @Component({
   selector: 'app-visor-fact',
@@ -13,10 +15,10 @@ import * as XLSX from 'xlsx';
 export class VisorDpfComponent implements OnInit {
   page = 1;
   totalFacturas: number = 0;
-  pageSize = 10;
+  pageSize = 20;
 
   resultado: any[] = [];
-  resultadoV: any[] = [];
+  listDPF: any[] = [];
   resultadoNV: any;
   sum!: number;
 
@@ -28,7 +30,7 @@ export class VisorDpfComponent implements OnInit {
       if (element.length) {
           (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|e';
           (<HTMLInputElement>document.getElementById('ckh2h')).click();
-          console.log('PIE-FACTURAS',element[0]._view.label)
+          console.log('PIE-DPF',element[0]._view.label)
         }
       },
   };
@@ -69,21 +71,44 @@ export class VisorDpfComponent implements OnInit {
     XLSX.writeFile(book, this.name);
   }
 
-  constructor(private http: HttpClient){}
+  constructor(private visorService: VisorService){}
 
   ngOnInit() {
     this.getInitializerFact();
   }
 
-  getInitializerFact(){
-    this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=2').subscribe((resp: any[]) => {
+  filtrarPorPeriodo(periodo: string, nombreCampo: string, proy: string): any{
+    const dpfItem = this.resultado.find( item => item.per_vd == periodo && item.proyecto == proy)
 
-      this.resultado = resp;
-      this.resultadoV = resp;
-      console.log('DPF',this.resultadoV);
+    return dpfItem? dpfItem[nombreCampo]: 0;
+  }
+
+  obtenerPeriodoPorMes(mesAnterior: number = 0){
+    const fechaActual = new Date();
+    return fechaActual.getFullYear() + '-' + ('0' + (fechaActual.getMonth()- mesAnterior)).slice(-2);
+  };
+
+  totalDPF(nameProy: string){
+     const totalDPF =  (this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(), 'sum_vd', nameProy)+
+     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(1), 'sum_vd', nameProy)+
+     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(2), 'sum_vd', nameProy)+
+     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(3), 'sum_vd', nameProy)+
+     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(4), 'sum_vd', nameProy));
+
+     return totalDPF? totalDPF : 0
+  }
+
+  listadoDPF: any[] = [];
+  getInitializerFact(){
+    this.visorService.getListDpf().subscribe((resp: any[]) => {
+      this.resultado = resp; //Almacenamos el total de dpf que viene de la BD
+
+      this.listDPF = removeDuplicateObjects(resp, 'proyecto');
+      console.log('DPF',this.listDPF, );
+      console.log('ABC',this.obtenerPeriodoPorMes(), this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(), 'dpf', 'TDPFAC'));
+
 
       this.suma();
-
       function groupBy(objectArray: any[], property: string) {
           return objectArray.reduce(function (acc: { [x: string]: any[]; }, obj: { [x: string]: any; }) {
               var key = obj[property];
@@ -95,7 +120,7 @@ export class VisorDpfComponent implements OnInit {
           }, {});
       }
 
-      const groupedData = groupBy(this.resultadoV, 'proyecto');
+      const groupedData = groupBy(this.listDPF, 'proyecto');
       const reducedData = [];
 
       for (let key in groupedData) {
@@ -126,7 +151,7 @@ export class VisorDpfComponent implements OnInit {
 
       var res0 = [];
 
-      res0 = this.resultadoV.reduce((p: { [x: string]: number; }, n: { periodo: string | number; }) => {
+      res0 = this.listDPF.reduce((p: { [x: string]: number; }, n: { periodo: string | number; }) => {
           if (p[n.periodo]) { p[n.periodo] += 1; }
           else { p[n.periodo] = 1; }
           return p;
@@ -165,13 +190,13 @@ export class VisorDpfComponent implements OnInit {
       var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
       var arrayDeCadenas = inputValue.split("|");
 
-      this.resultadoV = this.resultado;
+      this.listDPF = this.resultado;
       if (arrayDeCadenas[1] == "e") {
-          this.resultadoV = this.resultadoV.filter((task: { periodo: string; }) => task.periodo == arrayDeCadenas[0]);
+          this.listDPF = this.listDPF.filter((task: { periodo: string; }) => task.periodo == arrayDeCadenas[0]);
 
       }
       else {
-          this.resultadoV = this.resultadoV.filter((task: { proyecto: string; }) => task.proyecto == arrayDeCadenas[0]);
+          this.listDPF = this.listDPF.filter((task: { proyecto: string; }) => task.proyecto == arrayDeCadenas[0]);
       }
       this.suma();
 
@@ -180,7 +205,7 @@ export class VisorDpfComponent implements OnInit {
 
   suma()
   {
-      this.sum = this.resultadoV.map((a: { monto_facturado: any; }) => a.monto_facturado).reduce(function(a: any, b: any)
+      this.sum = this.listDPF.map((a: { monto_facturado: any; }) => a.monto_facturado).reduce(function(a: any, b: any)
       {
         return a + b;
       })
@@ -191,8 +216,8 @@ export class VisorDpfComponent implements OnInit {
   cambiarPagina(event: number) {
 
     if (this.totalfiltro != this.totalFacturas) {
-    this.http.get<any[]>('http://backdynamo.indratools.com/wsconsultaSupport/api/util/GetQuery?id=2').subscribe((result: any[]) => {
-      this.resultadoV = result;
+    this.visorService.getLiqByProyecto().subscribe((resp: any[]) => {
+      this.listDPF = resp;
     })
   }
     this.page = event;

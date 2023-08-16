@@ -8,6 +8,17 @@
   width: 100%;
 }
 
+.cli-table {
+  width: 100%;
+  background-color: #fff;
+  &-user {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: #6c757d;
+  }
+}
+
 .total {
   color: #97999b;
   font-size: 18px;

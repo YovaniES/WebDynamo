@@ -44,7 +44,8 @@ export class ActualizarVacacionesComponent implements OnInit {
     this.newForm();
     this.getUsuario();
     this.getListEstadoVacaciones();
-    this.getLstSistemaVacaciones();
+    this.getListSistemaVacaciones();
+    this.getListTipoVacaciones();
     this.cargarPeriodoVacaciones(false);
     this.getHistoricoCambiosEstado(this.DATA_VACACIONES);
     // console.log('DATA_VACACIONES', this.DATA_VACACIONES);
@@ -68,6 +69,7 @@ export class ActualizarVacacionesComponent implements OnInit {
        id_estado_vac : [''],
        estado_vac    : [''],
        idSistema     : [''],
+       idTipoVac     : [''],
        periodoVac    : [''],
        fecha_ingreso : [''],
        total_dias_vac: [''],
@@ -95,6 +97,7 @@ export class ActualizarVacacionesComponent implements OnInit {
           p_idVac             : this.DATA_VACACIONES.idVac,
           p_id_persona        : this.DATA_VACACIONES.id_persona,
           p_id_sist_vac       : formValues.idSistema,
+          p_id_tipo           : formValues.idTipoVac,
           p_fecha_ini_vac     : moment.utc(formValues.fechaInicVac).format('YYYY-MM-DD'),
           p_fecha_fin_vac     : moment.utc(formValues.fechaFinVac).format('YYYY-MM-DD'),
           p_id_estado_vac     : estadoVacaciones? estadoVacaciones : formValues.id_estado_vac,
@@ -145,6 +148,7 @@ export class ActualizarVacacionesComponent implements OnInit {
       this.vacacionesForm.controls['id_estado_vac' ].setValue(resp.list[0].id_estado_vac);
       this.vacacionesForm.controls['estado_vac'    ].setValue(resp.list[0].estado_vac);
       this.vacacionesForm.controls['idSistema'     ].setValue(resp.list[0].id_sist_vac);
+      this.vacacionesForm.controls['idTipoVac'     ].setValue(resp.list[0].id_tipo_vac);
       this.vacacionesForm.controls['total_dias_vac'].setValue(resp.list[0].cant_dias_vac);
       this.vacacionesForm.controls['fecha_ingreso' ].setValue(resp.list[0].fecha_ingreso);
 
@@ -217,7 +221,7 @@ export class ActualizarVacacionesComponent implements OnInit {
       const numDias = this.utilService.calcularDifDias( fechaFin, fechaIni)
 
       this.vacacionesForm.controls['total_dias_vac'].setValue(numDias)
-      console.log('DIAS_ESTADO', numDias);
+      // console.log('DIAS_ESTADO', numDias);
     }
   }
 
@@ -320,11 +324,20 @@ export class ActualizarVacacionesComponent implements OnInit {
   }
 
   listSistemaVacaciones: any[] = [];
-  getLstSistemaVacaciones(){
+  getListSistemaVacaciones(){
   let parametro: any[] = [{ queryId: 126}];
   this.vacacionesService.getListSistemaVacaciones(parametro[0]).subscribe((resp: any) => {
     this.listSistemaVacaciones = resp.list;
     // console.log('SISTEMA-ASIG_VAC', resp.list);
+    })
+  }
+
+  listTipoVacaciones: any[] = [];
+  getListTipoVacaciones(){
+  let parametro: any[] = [{ queryId: 151}];
+  this.vacacionesService.getListTipoVacaciones(parametro[0]).subscribe((resp: any) => {
+    this.listTipoVacaciones = resp.list;
+    console.log('TIPO_VAC', resp.list);
     })
   }
 

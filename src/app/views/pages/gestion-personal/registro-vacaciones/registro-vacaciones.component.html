@@ -129,6 +129,7 @@
               <th style="text-align: left; min-width: 202px;">Nombres y Apellidos</th>
               <th style="min-width: 90px;">Cód. Proyecto</th>
               <th style="min-width: 82px;">Sistema</th>
+              <th style="min-width: 82px;">Tipo Vac.</th>
               <th style="width: 200px">Fecha de vacaciones</th>
               <th style="text-align: center; min-width: 68px;">Cant. días</th>
               <th style="text-align:center">Responsable</th>
@@ -166,6 +167,7 @@
               <td style="text-align: left">{{vacaciones.nombres | firstCapital}}, {{vacaciones.apellidos |firstCapital }}</td>
               <td>{{ vacaciones.codigo_proyecto | uppercase}}</td>
               <td>{{vacaciones.sist_vac}}</td>
+              <td>{{vacaciones.tipo_vac}}</td>
               <td>
                 <div class="cli-table" style="display: flex; align-items: center; justify-content: space-evenly; background: none; color: #6c757d; border: solid 1px #c4c7ca; min-width: 150px; border-radius: 3px;">
                   {{ vacaciones.f_ini_vac}}<mat-icon class="icon-13">trending_flat</mat-icon>{{ vacaciones.f_fin_vac }}
