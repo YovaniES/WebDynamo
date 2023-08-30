@@ -43,6 +43,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
     this.getUserID();
     this.getListEstados();
     this.getListLiquidaciones();
+    this.getListValidarProy();
     this.getListGestores();
     this.cargarFacturalById();
     this.getHistoricoCambiosEstado(this.DATA_LIQUID);
@@ -70,12 +71,14 @@ export class ActualizarLiquidacionComponent implements OnInit {
      certificacion       : [''],
      factura             : [''],
      monto_facturado     : [''],
-     comentarios         : [''],
+     comentarios         : [''], // CAMBIAR POR OBS_REGULARIZACION
      gestor              : [''],
      fecha_crea          : [''],
 
      id_factura          : [''],
      user                : [''],
+     id_regular_proy     : [''],
+     comentarioLiq       : ['']
     })
    }
 
@@ -100,12 +103,13 @@ export class ActualizarLiquidacionComponent implements OnInit {
           p_cod_certificacion : formValues.certificacion,
           p_factura           : formValues.factura,
           p_monto_facturado   : formValues.monto_facturado,
-          p_Comentarios       : formValues.comentarios,
+          p_id_reg_proy       : formValues.id_regular_proy,
           p_idMotivo          : '',
           p_idUsuarioCrea     : this.userID,
           p_fechaCrea         : this.datePipe.transform(formValues.fecha_crea, 'yyyy-MM-dd hh:mm:ss'),
           p_idUsuarioActualiza: this.userID,
           p_fechaActualiza    : '',
+          p_obs_tipo_liq      : formValues.comentarioLiq,
           p_ver_estado        : 1,
           CONFIG_USER_ID      : this.userID,
           CONFIG_OUT_MSG_ERROR: '',
@@ -124,6 +128,19 @@ export class ActualizarLiquidacionComponent implements OnInit {
     });
     this.spinner.hide();
   }
+
+  setearTipoLiquidacion(): boolean{
+    let esTipoRegularizacion = false;
+
+    const tipoLiquidacion = this.listLiquidaciones.find(t => t.nombre.toUpperCase() == 'REGULARIZACIÓN');
+    if (tipoLiquidacion ) {
+      esTipoRegularizacion = tipoLiquidacion.id == this.facturaForm.controls['id_liquidacion'].value;
+    }
+    // console.log('TIPO_LIQ', tipoLiquidacion, esTipoRegularizacion);
+    // console.log('ID_TIPO_LIQ',this.facturaForm.controls['id_liquidacion'].value );
+    // console.log('ID_CORR_TIPO_LIQ', tipoLiquidacion.id );
+    return esTipoRegularizacion;
+   }
 
   estadoInicial: string = '';
   cargarFacturalById(){
@@ -149,8 +166,9 @@ export class ActualizarLiquidacionComponent implements OnInit {
         this.facturaForm.controls['certificacion'  ].setValue(resp.list[i].cod_certificacion);
         this.facturaForm.controls['factura'        ].setValue(resp.list[i].factura);
         this.facturaForm.controls['monto_facturado'].setValue(resp.list[i].monto_facturado);
-        this.facturaForm.controls['comentarios'    ].setValue(resp.list[i].Comentarios);
+        this.facturaForm.controls['comentarioLiq'  ].setValue(resp.list[i].obs_tipo_liq);
         this.facturaForm.controls['gestor'         ].setValue(resp.list[i].gestor);
+        this.facturaForm.controls['id_regular_proy'].setValue(resp.list[i].idRegularProy);
 
         // this.estadoInicial = resp.list[i].estado;
 
@@ -213,17 +231,19 @@ export class ActualizarLiquidacionComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((resp) => {
 
-    this.facturacionService.eliminaFactura(parametro[0]).subscribe(resp => {
-      if (resp) {
-        Swal.fire({
-          title: 'Eliminar Factura',
-          text: `La factura: ${id}, fue eliminado con éxito`,
-          icon: 'success',
-        });
-      this.cargarFactura()
+        if (resp.value) {
+          this.facturacionService.eliminaFactura(parametro[0]).subscribe(resp => {
+           if (resp) {
+            this.cargarFactura()
+            Swal.fire({
+              title: 'Eliminar Factura',
+              text: `La factura: ${id}, fue eliminado con éxito`,
+              icon: 'success',
+            });
+           }
+          });
         }
       });
-    });
     this.spinner.hide();
   }
 
@@ -254,6 +274,15 @@ export class ActualizarLiquidacionComponent implements OnInit {
     let parametro: any[] = [{queryId: 82}];
     this.facturacionService.getListLiquidaciones(parametro[0]).subscribe((resp: any) => {
             this.listLiquidaciones = resp.list;
+            console.log('LIQUIDAC', resp);
+    });
+  }
+
+  listValidarProy: any[] = [];
+  getListValidarProy(){
+    let parametro: any[] = [{queryId: 152}];
+    this.facturacionService.getListValidarProy(parametro[0]).subscribe((resp: any) => {
+            this.listValidarProy = resp.list;
             // console.log('LIQUIDAC', resp);
     });
   }

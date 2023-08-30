@@ -180,19 +180,18 @@ export class AsideComponent implements OnInit {
           displayed: false,
           roles: PERMISSION.SUBMENU_LIQUIDACION,
         },
-        // {
-        //   code: 'FAC-002',
-        //   text: 'Reporte',
-        //   order: 3,
-        //   icon: 'bar_chart',
-        //   type: 'PAREN',
-        //   link: 'factura/reporte',
-        //   enable: false,
-        //   module: 'PAS',
-        //   displayed: false,
-        //   roles: PERMISSION.SUBMENU_REPORTE_LIQ,
-        // },
-
+        {
+          code: 'FAC-004',
+          text: 'DPF/ALO',
+          order: 3,
+          icon: 'manage_history',
+          type: 'PAREN',
+          link: 'factura/visordpf',
+          enable: false,
+          module: 'PAS',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
+        },
         {
           code: 'FAC-003',
           text: 'Liquidaciones proyecto',
@@ -241,19 +240,6 @@ export class AsideComponent implements OnInit {
           displayed: false,
           roles: PERMISSION.SUBMENU_REPORTE_LIQ,
         },
-
-        {
-          code: 'FAC-004',
-          text: 'DPF/ALO',
-          order: 3,
-          icon: 'manage_history',
-          type: 'PAREN',
-          link: 'factura/visordpf',
-          enable: false,
-          module: 'PAS',
-          displayed: false,
-          roles: PERMISSION.SUBMENU_REPORTE_LIQ,
-        }
       ],
     },
 

@@ -1032,8 +1032,7 @@ SELECT
     @param_padre_id,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
-    @CONFIG_OUT_MSG_EXITO )
-    "
+    @CONFIG_OUT_MSG_EXITO )"
   },
   {
     "id": 50,
@@ -1330,12 +1329,13 @@ where pp.id_persona = @param_id_persona;
         @p_cod_certificacion,
         @p_factura,
         @p_monto_facturado,
-        @p_Comentarios,
+        @p_obs_tipo_liq,
         @p_idMotivo,
         @p_idUsuarioCrea,
         @p_fechaCrea,
         @p_idUsuarioActualiza,
         @p_fechaActualiza,
+        @p_id_reg_proy,
         @p_ver_estado,
         @CONFIG_USER_ID,
         @CONFIG_OUT_MSG_ERROR,
@@ -1347,22 +1347,22 @@ where pp.id_persona = @param_id_persona;
     "type": 1,
     "description": "Historico de cambios de Estado, Proyecto",
     "sql": "
-SELECT FC.idFactCambio,
-    FC.idFactura,
-    FC.idEstado,
-    E1.valor_texto_1 AS estado,
-    FC.idProyecto,
-    E2.valor_texto_1 AS proyecto,
-    FC.venta_declarada,
-    FC.usuario,
-    U.usuario AS username,
-    DATE_FORMAT(FC.dFecha,'%d/%m/%Y %H:%i') AS fecha
-FROM    facturacion_cambios AS FC
-LEFT JOIN entidad E1 ON FC.idEstado   = E1.id AND E1.id_tabla = 7
-LEFT JOIN entidad E2 ON FC.idProyecto = E2.id AND E2.id_tabla = 1
-LEFT JOIN usuario U  ON FC.usuario    = U.id
-WHERE FC.idFactura =  @p_id
-ORDER BY FC.dFecha;"
+    SELECT FC.idFactCambio,
+        FC.idFactura,
+        FC.idEstado,
+        E1.valor_texto_1 AS estado,
+        FC.idProyecto,
+        E2.valor_texto_1 AS proyecto,
+        FC.venta_declarada,
+        FC.usuario,
+        U.usuario AS username,
+        DATE_FORMAT(FC.dFecha,'%d/%m/%Y %H:%i') AS fecha
+    FROM    facturacion_cambios AS FC
+    LEFT JOIN entidad E1 ON FC.idEstado   = E1.id AND E1.id_tabla = 7
+    LEFT JOIN entidad E2 ON FC.idProyecto = E2.id AND E2.id_tabla = 1
+    LEFT JOIN usuario U  ON FC.usuario    = U.id
+    WHERE FC.idFactura =  @p_id
+    ORDER BY FC.dFecha DESC;"
   },
   {
     "id": 68,
@@ -1423,51 +1423,50 @@ ORDER BY f.idFactura DESC;
     "type": 4,
     "description": "insert new registro seguimiento",
     "sql": "
-  CALL prc_ins_factura(
-  @p_periodo,
-  @p_idProyecto,
-  @p_idLiquidacion,
-  @p_subServicio,
-  @p_gestor,
-  @p_idGestor,
-  @p_venta_declarada,
-  @p_idEstado,
-  @p_orden_compra,
-  @p_cod_certificacion,
-  @p_factura,
-  @p_monto_facturado,
-  @p_Comentarios,
-  @p_idMotivo,
-  @p_idUsuarioCrea,
-  @p_fechaCrea,
-  @p_idUsuarioActualiza,
-  @p_fechaActualiza,
-  @p_ver_estado,
-  @CONFIG_USER_ID,
-  @CONFIG_OUT_MSG_ERROR,
-  @CONFIG_OUT_MSG_EXITO)
-  "
+      CALL prc_ins_factura(
+      @p_periodo,
+      @p_idProyecto,
+      @p_idLiquidacion,
+      @p_subServicio,
+      @p_gestor,
+      @p_idGestor,
+      @p_venta_declarada,
+      @p_idEstado,
+      @p_orden_compra,
+      @p_cod_certificacion,
+      @p_factura,
+      @p_monto_facturado,
+      @p_Comentarios,
+      @p_idMotivo,
+      @p_idUsuarioCrea,
+      @p_fechaCrea,
+      @p_idUsuarioActualiza,
+      @p_fechaActualiza,
+      @p_ver_estado,
+      @CONFIG_USER_ID,
+      @CONFIG_OUT_MSG_ERROR,
+      @CONFIG_OUT_MSG_EXITO)"
   },
   {
     "id": 71,
     "type": 1,
     "description": "Listar factura certificada",
     "sql": "
-SELECT
-    idFactCertificacion,
-    idFactura,
-    oc,
-    importe,
-    certificacion,
-    factura,
-    dFecha,
-    DATE_FORMAT(fecha_facturacion, '%d/%m/%Y') AS fecha_facturacion,
-    comentario,
-    e1.valor_texto_1 AS estado,
-    e1.id AS id_estado
-FROM facturacion_certificacion
-	LEFT JOIN entidad e1 ON idEstado = e1.id AND e1.id_tabla = 7
-WHERE idFactura = @p_id"
+    SELECT
+        idFactCertificacion,
+        idFactura,
+        oc,
+        importe,
+        certificacion,
+        factura,
+        dFecha,
+        DATE_FORMAT(fecha_facturacion, '%d/%m/%Y') AS fecha_facturacion,
+        comentario,
+        e1.valor_texto_1 AS estado,
+        e1.id AS id_estado
+    FROM facturacion_certificacion
+    	LEFT JOIN entidad e1 ON idEstado = e1.id AND e1.id_tabla = 7
+    WHERE idFactura = @p_id"
   },
   {
     "id": 72,
@@ -1622,15 +1621,10 @@ WHERE idFactura = @p_id"
     "sql": "
     SELECT *
     FROM entidad
-    WHERE id_tabla
-    = 8
-    AND estado
-    = 1
-    and idPadre
-    = @p_idproyecto
-    order by
-    id_correlativo asc;
-    "
+    WHERE id_tabla = 8
+    AND estado = 1
+    and idPadre = @p_idproyecto
+    order by id_correlativo asc;"
   },
   {
     "id": 84,
@@ -2120,22 +2114,21 @@ SELECT
   F.venta_declarada,
   E2.valor_texto_1  AS estadoFactura,
   E2.id AS id_estado,
-  F.orden_compra,
-  F.cod_certificacion,
-  F.factura,
   F.monto_facturado,
-  F.Comentarios,
-  F.idMotivo,
   F.idUsuarioCrea,
   DATE_FORMAT(F.fechaCrea, '%Y-%m-%d') AS fechaCrea,
   F.idUsuarioActualiza,
   DATE_FORMAT(F.fechaActualiza, '%d/%m/%Y') AS fechaActualiza,
+  E4.id_correlativo AS idRegularProy,
+  E4.valor_texto_1 AS regularProy,
+  F.obs_tipo_liq,
   CASE WHEN F.ver_estado = 1 THEN 'Activo' ELSE 'Inactivo' END AS estado
 FROM facturacion F
 	LEFT JOIN  entidad E  ON F.idProyecto 	 = E.id   AND E.id_tabla  = 1
 	LEFT JOIN  entidad E1 ON F.idGestor   	 = E1.id  AND E1.id_tabla = 8
-    LEFT JOIN  entidad E2 ON F.idEstado  	 = E2.id  AND E2.id_tabla = 7
-    LEFT JOIN  entidad E3 ON F.idLiquidacion = E3.id  AND E3.id_tabla = 9
+  LEFT JOIN  entidad E2 ON F.idEstado  	 = E2.id  AND E2.id_tabla = 7
+  LEFT JOIN  entidad E3 ON F.idLiquidacion = E3.id  AND E3.id_tabla = 9
+  LEFT JOIN  entidad E4 ON F.id_reg_proy = E4.id_correlativo  AND E4.id_tabla = 17
 WHERE F.idFactura =  @param_id_factura;
   "
   },
@@ -2429,29 +2422,21 @@ FROM persona_recursos PR
     "type": 4,
     "description": "insert new registro liquidacion",
     "sql": "
-  CALL prc_ins_liquidacion(
-  @p_periodo,
-  @p_idProyecto,
-  @p_idLiquidacion,
-  @p_subServicio,
-  @p_gestor,
-  @p_idGestor,
-  @p_venta_declarada,
-  @p_idEstado,
-  @p_orden_compra,
-  @p_cod_certificacion,
-  @p_factura,
-  @p_monto_facturado,
-  @p_Comentarios,
-  @p_idMotivo,
-  @p_idUsuarioCrea,
-  @p_fechaCrea,
-  @p_idUsuarioActualiza,
-  @p_fechaActualiza,
-  @p_ver_estado,
-  @CONFIG_USER_ID,
-  @CONFIG_OUT_MSG_ERROR,
-  @CONFIG_OUT_MSG_EXITO)
+      CALL prc_ins_liquidacion(
+      @p_periodo,
+      @p_idProyecto,
+      @p_idLiquidacion,
+      @p_subServicio,
+      @p_idGestor,
+      @p_venta_declarada,
+      @p_idEstado,
+      @p_idUsuarioCrea,
+      @p_fechaCrea,
+      @p_ver_estado,
+      @p_id_reg_proy,
+      @CONFIG_USER_ID,
+      @CONFIG_OUT_MSG_ERROR,
+      @CONFIG_OUT_MSG_EXITO)
    "
   },
   {
@@ -2459,45 +2444,48 @@ FROM persona_recursos PR
     "type": 1,
     "description": "Listado y busqueda del registro Liquidacion, Saldo, Duplicidad, Lideres",
     "sql": "
-SELECT DISTINCT f.idFactura,
-    DATE_FORMAT(f.periodo, '%Y/%m') AS periodo,
-    e2.valor_texto_1 AS proyecto,
-    (SELECT ent.valor_texto_1 AS nombre FROM entidad ent WHERE ent.id = e2.idPadre) AS lider,
-    e3.valor_texto_1 AS liquidacion,
-    f.subServicio,
-    e1.valor_texto_1 AS estado,
-    CASE WHEN e4.valor_texto_1 IS NOT NULL  THEN e4.valor_texto_1  ELSE f.gestor END AS  gestor,
-    f.venta_declarada AS importe,
-    (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado,
-	(SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura ) AS facturado,
-    ((SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura) - (SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura)) AS saldo,
-
-    e3.id AS id_liquidacion,
-    e4.id AS id_gestor,
-    e1.id AS id_estado,
-    e2.id AS id_proyecto
-FROM facturacion f
-    LEFT JOIN entidad e1 ON f.idEstado		= e1.id AND e1.id_tabla = 7
-    LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
-    LEFT JOIN entidad e3 ON f.idLiquidacion = e3.id AND e3.id_tabla = 9
-    LEFT JOIN entidad e4 ON f.idGestor 		= e4.id AND e4.id_tabla = 8
-    LEFT JOIN entidad e5 ON e5.id = f.idProyecto AND e5.id_tabla = 13
-WHERE
-      (@cod_fact 		IS NULL OR f.idFactura = @cod_fact)
-  AND (@id_proy 		IS NULL OR e2.id = @id_proy)
-  AND (@id_liquidacion 	IS NULL OR e3.id = @id_liquidacion)
-  AND (@id_estado 		IS NULL OR e1.id = @id_estado)
-  AND (@id_gestor 		IS NULL OR e4.id = @id_gestor)
-  AND (@subservicio		IS NULL OR f.subServicio = @subservicio)
-  AND (@importe 		IS NULL OR f.venta_declarada LIKE CONCAT('%', @importe, '%'))
-  AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
-  AND DATE(f.fechaCrea) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
-  AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
-  AND DATE(f.fechaCrea) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
-  AND DATE(f.fechaCrea) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 180 OR (@inicio IS NULL AND @fin IS NULL))
-  AND ver_estado = 1
-ORDER BY f.idFactura DESC;
-    "
+    SELECT DISTINCT f.idFactura,
+        DATE_FORMAT(f.periodo, '%Y/%m') AS periodo,
+        e2.valor_texto_1 AS proyecto,
+        (SELECT ent.valor_texto_1 AS nombre FROM entidad ent WHERE ent.id = e2.idPadre) AS lider,
+        e3.valor_texto_1 AS liquidacion,
+        f.subServicio,
+        e1.valor_texto_1 AS estado,
+        CASE WHEN e4.valor_texto_1 IS NOT NULL  THEN e4.valor_texto_1  ELSE f.gestor END AS  gestor,
+        f.venta_declarada AS importe,
+        (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado,
+    	  (SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura ) AS facturado,
+        -- ((SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura) - (SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura)) AS saldo,
+        e3.id AS id_liquidacion,
+        e4.id AS id_gestor,
+        e1.id AS id_estado,
+        e2.id AS id_proyecto,
+        e6.id_correlativo AS idRegularProy,
+        e6.valor_texto_1 AS regularProy,
+        f.obs_tipo_liq AS comentarioRegularizacion
+    FROM facturacion f
+        LEFT JOIN entidad e1 ON f.idEstado		= e1.id AND e1.id_tabla = 7
+        LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
+        LEFT JOIN entidad e3 ON f.idLiquidacion = e3.id AND e3.id_tabla = 9
+        LEFT JOIN entidad e4 ON f.idGestor 		= e4.id AND e4.id_tabla = 8
+        LEFT JOIN entidad e5 ON e5.id = f.idProyecto    AND e5.id_tabla = 13
+        LEFT JOIN entidad e6 ON e6.id_correlativo = f.id_reg_proy AND e6.id_tabla = 17
+    WHERE
+          (@cod_fact 		IS NULL OR f.idFactura = @cod_fact)
+      AND (@id_proy 		IS NULL OR e2.id = @id_proy)
+      AND (@id_liquidacion 	IS NULL OR e3.id = @id_liquidacion)
+      AND (@id_estado 		IS NULL OR e1.id = @id_estado)
+      AND (@id_gestor 		IS NULL OR e4.id = @id_gestor)
+      AND (@subservicio		IS NULL OR f.subServicio = @subservicio)
+      AND (@importe 		IS NULL OR f.venta_declarada LIKE CONCAT('%', @importe, '%'))
+      AND (@f_periodo IS NULL OR DATE_FORMAT(f.periodo,'%Y-%m') = @f_periodo)
+      AND ((@inicio IS NULL AND @fin IS NULL) OR (@inicio IS NOT NULL AND @fin IS NOT NULL)
+      AND DATE(f.fechaCrea) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
+      AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
+      AND DATE(f.fechaCrea) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
+      AND DATE(f.fechaCrea) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 180 OR (@inicio IS NULL AND @fin IS NULL))
+      AND ver_estado = 1
+    ORDER BY f.idFactura DESC;"
   },
 {
     "id": 119,
@@ -2564,7 +2552,7 @@ WHERE
   AND DATE(p.fecha_ingreso) BETWEEN STR_TO_DATE(@inicio, '%Y/%m/%d')
   AND STR_TO_DATE(@fin,'%Y/%m/%d') OR (@inicio IS NOT NULL AND @fin IS NULL)
   AND DATE(p.fecha_ingreso) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
-  AND DATE(p.fecha_ingreso) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 90 OR (@inicio IS NULL AND @fin IS NULL))
+  AND DATE(p.fecha_ingreso) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 365 OR (@inicio IS NULL AND @fin IS NULL))
 
   AND pr.fecha_liberacion is null
   AND p.eliminacion_logica = 1
@@ -2648,9 +2636,10 @@ FROM
     "sql": "
 SELECT id,
 	   usuario AS username,
-	   concat(nombre, ', ', apellido) AS fullname
+	   concat(nombre, ', ', apellido) AS fullname,
+     correo
 FROM usuario
-WHERE id IN (341, 343, 436, 269, 339, 30, 108, 168, 345 )
+WHERE id IN (341, 343, 436, 269, 339, 30, 108, 168, 345, 441 )
 AND generico = 1
 ORDER BY usuario ASC; "
   },
@@ -2830,6 +2819,8 @@ SELECT DISTINCT (v.idVac),
      e2.valor_texto_1  AS estado_vac,
 	   e.id_correlativo  AS id_sist_vac,
      e.valor_texto_1   AS sist_vac,
+     e4.id_correlativo AS id_tipo_vac,
+     e4.valor_texto_1  AS tipo_vac,
      DATE_FORMAT(v.fecha_ini_vac,'%d/%m/%Y') AS fecha_ini_vac,
      DATE_FORMAT(v.fecha_fin_vac,'%d/%m/%Y') AS fecha_fin_vac,
      DATE_FORMAT(v.fecha_ini_vac,'%d %b') AS f_ini_vac,
@@ -2849,6 +2840,7 @@ FROM vacaciones v
   LEFT JOIN persona p	ON p.id = v.id_persona
   LEFT JOIN entidad e3  ON e3.id_correlativo = p.id_proyecto   AND e3.id_tabla = 1
   LEFT JOIN entidad e   ON e.id_correlativo  = v.id_sist_vac   AND e.id_tabla  = 10
+  LEFT JOIN entidad e4  ON e4.id_correlativo  = v.id_tipo      AND e4.id_tabla  = 16
   LEFT JOIN entidad e2  ON e2.id_correlativo = v.id_estado_vac AND e2.id_tabla = 12
   LEFT JOIN usuario u   ON u.id 	   = v.id_responsable
   LEFT JOIN seguimiento_vacaciones sv ON sv.id_vacaciones = v.idVac
@@ -2865,7 +2857,7 @@ WHERE
   AND DATE(v.fecha_crea_vac) >= STR_TO_DATE(@inicio, '%Y/%m/%d') OR (@inicio IS NULL AND @fin IS NOT NULL)
   AND DATE(v.fecha_crea_vac) <= STR_TO_DATE(@fin, '%Y/%m/%d')) AND (DATEDIFF(@fin, @inicio) <= 180 OR (@inicio IS NULL AND @fin IS NULL))
   AND v.eliminacion_logica = 1
-  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
   ORDER BY v.idVac DESC;
     "
   },
@@ -2950,7 +2942,7 @@ f.periodo DESC;
   {
     "id": 137,
     "type": 4,
-    "description": "Agregar vacaciones al persona",
+    "description": "Agregar vacaciones al personal",
     "sql": "
   CALL prc_ins_vacaciones(
     @p_id_persona,
@@ -2959,6 +2951,7 @@ f.periodo DESC;
     @p_fecha_fin_vac,
     @p_id_estado_vac,
     @p_id_responsable,
+    @p_id_tipo,
     @p_fecha_crea_vac,
     @CONFIG_USER_ID,
     @CONFIG_OUT_MSG_ERROR,
@@ -2974,10 +2967,10 @@ f.periodo DESC;
      @p_idVac,
      @p_id_persona,
      @p_id_sist_vac,
+     @p_id_tipo,
      @p_fecha_ini_vac,
      @p_fecha_fin_vac,
      @p_id_estado_vac,
-    -- @p_fecha_crea_vac,
      @CONFIG_USER_ID,
      @CONFIG_OUT_MSG_ERROR,
      @CONFIG_OUT_MSG_EXITO
@@ -2998,7 +2991,8 @@ SELECT ve.id_vacaciones,
 FROM vacaciones_estado ve
     LEFT JOIN entidad e ON e.id_tabla = 12 AND e.id_correlativo = ve.id_estado
     LEFT JOIN usuario u ON u.id = ve.id_usuario
-WHERE ve.id_vacaciones = @p_id_vacaciones; "
+WHERE ve.id_vacaciones = @p_id_vacaciones
+  ORDER BY ve.fecha_cambio ASC;"
   },
   {
     "id": 140,
@@ -3106,12 +3100,13 @@ ORDER BY PERSONA;
     "type": 1,
     "description": "Modal vacaciones  - Data by ID",
     "sql": "
-     SELECT DISTINCT (v.idVac),
+SELECT DISTINCT (v.idVac),
 	 p.id AS id_persona,
      p.nombres,
      CONCAT(p.apellido_paterno,' ', p.apellido_materno) AS apellidos,
      p.apellido_paterno,
      p.apellido_materno,
+     p.correo,
      p.codigo_corporativo,
      e3.id_correlativo AS id_proyecto,
      e3.valor_texto_1  AS codigo_proyecto,
@@ -3119,6 +3114,8 @@ ORDER BY PERSONA;
 	   e2.id_correlativo AS id_estado_vac,
      e2.valor_texto_1  AS estado_vac,
 	   e.id_correlativo  AS id_sist_vac,
+     e4.valor_texto_1   AS tipo_vac,
+     e4.id_correlativo  AS id_tipo_vac,
      e.valor_texto_1   AS sist_vac,
      DATE_FORMAT(v.fecha_ini_vac,'%d/%m/%Y') AS fecha_ini_vac,
      DATE_FORMAT(v.fecha_fin_vac,'%d/%m/%Y') AS fecha_fin_vac,
@@ -3138,6 +3135,7 @@ ORDER BY PERSONA;
 FROM vacaciones v
   LEFT JOIN persona p	ON p.id = v.id_persona
   LEFT JOIN entidad e3  ON e3.id_correlativo = p.id_proyecto   AND e3.id_tabla = 1
+  LEFT JOIN entidad e4  ON e4.id_correlativo = v.id_tipo       AND e4.id_tabla = 16
   LEFT JOIN entidad e   ON e.id_correlativo  = v.id_sist_vac   AND e.id_tabla  = 10
   LEFT JOIN entidad e2  ON e2.id_correlativo = v.id_estado_vac AND e2.id_tabla = 12
   LEFT JOIN usuario u   ON u.id 	   = v.id_responsable
@@ -3145,7 +3143,142 @@ FROM vacaciones v
 WHERE
 	  v.idVac = @param_id_vacaciones
   AND v.eliminacion_logica = 1
-  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21, 22,23
   ORDER BY v.idVac DESC;"
   },
+ {
+ "id": 147,
+ "type": 1,
+ "description": "Buscar y listar Vacaciones PLANIFICADAS O COMPLETADAS - ENVIO DE CORREO",
+ "sql": "
+SELECT CONCAT(pe.nombres,', ',pe.apellido_paterno, ' ', pe.apellido_materno) AS colaborador,
+	  us.correo,
+    DATE_FORMAT(fecha_per_ini, '%d/%m/%Y') AS fecha_ini,
+    DATE_FORMAT(fecha_per_fin, '%d/%m/%Y') AS fecha_fin,
+    DATEDIFF(fecha_per_fin, fecha_per_ini)+1 AS dias,
+    en.valor_texto_1 AS estado
+FROM vacaciones va
+	INNER JOIN seguimiento_vacaciones sv ON va.idVac = sv.id_vacaciones
+	INNER JOIN usuario us ON us.id = va.id_responsable
+	INNER JOIN persona pe ON pe.id = sv.id_persona
+	INNER JOIN entidad en ON en.id_tabla = 12 AND en.id_correlativo = sv.id_per_estado
+WHERE va.id_responsable = @p_id_responsable
+	AND va.eliminacion_logica = 1
+	AND sv.id_per_estado = @p_id_per_estado
+  AND fecha_per_fin <= NOW();"
+  },
+  {
+    "id": 148,
+    "type": 1,
+    "description": "Lista de Estados - Periodo vacaciones - envio de correo",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+  valor_texto_1,
+  valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 12
+    AND id_correlativo IN (1,2,3)
+    AND estado = 1
+    ORDER BY valor_texto_1  ASC;"
+  },
+  {
+    "id": 149,
+    "type": 1,
+    "description": "Lista de Lideres con correo - Registro de PERSONAS",
+    "sql": "
+SELECT id,
+id_correlativo,
+valor_texto_1 AS lider,
+valor_texto_2 AS correo
+FROM entidad
+WHERE id_tabla = 13 AND estado = 1
+    ORDER BY valor_texto_1  ASC; "
+  },
+  {
+    "id": 150,
+    "type": 1,
+    "description": "Visor VENTA DECLARADA",
+    "sql": "
+SELECT
+	DATE_FORMAT(fc.periodo,'%Y-%m') AS periodo,
+    e.valor_texto_1 AS proyecto,
+    subservicio AS subservicio,
+    e3.valor_texto_1 AS gestor,
+    sum(fc.venta_declarada) importe,
+	e2.valor_texto_1 AS estado,
+	e2.valor_texto_2 AS grupo,
+	SUM(vd.venta_declarada) AS declarado,
+	SUM(ff.importe) facturado
+ FROM facturacion fc
+ INNER JOIN entidad  e ON fc.idProyecto = e.id
+ INNER JOIN entidad e2 ON fc.idEstado = e2.id
+ LEFT JOIN entidad  e3 ON e3.id = fc.idGestor
+ LEFT JOIN (select SUM(venta_declarada) AS venta_declarada, idFactura FROM facturacion_venta_declarada GROUP BY idFactura) vd
+	ON vd.idFactura = fc.idFactura
+ LEFT JOIN (SELECT SUM(importe) importe, idFactura from facturacion_certificacion GROUP BY idFactura) ff
+ ON ff.idFactura = fc.idFactura
+ WHERE DATE_FORMAT(fc.periodo,'%Y-%m') = (SELECT valor_texto_1 FROM entidad WHERE id_correlativo = 1 AND id_tabla = 99) and fc.ver_estado = 1
+ GROUP BY fc.periodo, e.valor_texto_1, subservicio, fc.idGestor,e2.valor_texto_1,e2.valor_texto_2 "
+  },
+  {
+    "id": 151,
+    "type": 1,
+    "description": "Listado del tipo de vacaciones (Adelantada, regular, vencida)",
+    "sql": "
+ SELECT id,
+	id_correlativo,
+    valor_texto_1,
+    valor_texto_2 AS descripcion
+FROM
+    entidad WHERE id_tabla = 16 AND estado = 1
+    ORDER BY valor_texto_1  ASC;"
+  },
+  {
+    "id": 152,
+    "type": 1,
+    "description": "Lista de Regularizacion -  validar",
+    "sql": "
+   SELECT id_correlativo,
+   		valor_texto_1
+   	FROM entidad
+   WHERE id_tabla = 17 AND estado = 1
+   ORDER BY valor_texto_1 ASC; "
+  },
+  {
+    "id": 153,
+    "type": 1,
+    "description": "Lista del Modal comentario - Regularizacion",
+    "sql": "
+   SELECT DISTINCT f.idFactura,
+    DATE_FORMAT(f.periodo, '%Y/%m') AS periodo,
+    e2.valor_texto_1 AS proyecto,
+    -- (SELECT ent.valor_texto_1 AS nombre FROM entidad ent WHERE ent.id = e2.idPadre) AS lider,
+    -- e3.valor_texto_1 AS liquidacion,
+    -- f.subServicio,
+    -- e1.valor_texto_1 AS estado,
+    CASE WHEN e4.valor_texto_1 IS NOT NULL  THEN e4.valor_texto_1  ELSE f.gestor END AS  gestor,
+    f.venta_declarada AS importe,
+    (SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura ) AS declarado,
+	(SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura ) AS facturado,
+    -- ((SELECT SUM(venta_declarada) FROM facturacion_venta_declarada WHERE idFactura = f.idFactura) - (SELECT SUM(importe) FROM facturacion_certificacion WHERE idFactura = f.idFactura)) AS saldo,
+    -- e3.id AS id_liquidacion,
+    e4.id AS id_gestor,
+    e1.id AS id_estado,
+    e2.id AS id_proyecto,
+    -- e6.id_correlativo AS idRegularProy,
+    e6.valor_texto_1 AS regularProy,
+    f.obs_tipo_liq AS comentarioRegularizacion
+FROM facturacion f
+    LEFT JOIN entidad e1 ON f.idEstado		= e1.id AND e1.id_tabla = 7
+    LEFT JOIN entidad e2 ON f.idProyecto 	= e2.id AND e2.id_tabla = 1
+    LEFT JOIN entidad e3 ON f.idLiquidacion = e3.id AND e3.id_tabla = 9
+    LEFT JOIN entidad e4 ON f.idGestor 		= e4.id AND e4.id_tabla = 8
+    LEFT JOIN entidad e5 ON e5.id = f.idProyecto    AND e5.id_tabla = 13
+    LEFT JOIN entidad e6 ON e6.id_correlativo = f.id_reg_proy AND e6.id_tabla = 17
+WHERE
+    idFactura = @p_idFactura
+    AND  f.ver_estado = 1
+ORDER BY f.idFactura DESC; "
+  }
 ]

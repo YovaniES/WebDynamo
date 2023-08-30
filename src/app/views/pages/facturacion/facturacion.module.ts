@@ -20,6 +20,7 @@ import { VisorFactComponent } from './liquidacion/reporte-liquidacion/visor-fact
 import { VisorDeclaradaComponent } from './liquidacion/reporte-liquidacion/visor-venta-decl/visor-declarada.component';
 import { VisorCierreComponent } from './liquidacion/reporte-liquidacion/visor-proy/visor-cierre.component';
 import { VisorDpfComponent } from './liquidacion/reporte-liquidacion/visor-dpf/visor-dpf.component';
+import { ModalComentarioComponent } from './liquidacion/modal-comentario/modal-comentario.component';
 
 
 @NgModule({
@@ -36,8 +37,9 @@ import { VisorDpfComponent } from './liquidacion/reporte-liquidacion/visor-dpf/v
     VisorCierreComponent,
     VisorFactComponent,
     VisorDeclaradaComponent,
-    VisorDpfComponent
-  ],
+    VisorDpfComponent,
+    ModalComentarioComponent
+    ],
   imports: [
     CommonModule,
     FacturacionRoutingModule,

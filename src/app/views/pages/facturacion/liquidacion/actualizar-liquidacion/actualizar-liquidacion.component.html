@@ -37,6 +37,14 @@
             </select>
           </div>
 
+          <div class="col-sm-3 cli-form-element" *ngIf="setearTipoLiquidacion()">
+            <label class="form-label">Regular Proy.</label>
+            <select class="cli-input-white" formControlName="id_regular_proy">
+              <option [value]="0" disabled>-Seleccione-</option>
+              <option [value]="val.id_correlativo" *ngFor="let val of listValidarProy">{{val.valor_texto_1}}</option>
+            </select>
+          </div>
+
           <div class="col-sm-3 cli-form-element">
             <label>Subservicio</label>
             <input
@@ -73,7 +81,7 @@
 
           <div class="col-sm-3 cli-form-element">
             <label class="form-label">Estado</label>
-                  <select class="cli-input-white" formControlName="id_estado">
+              <select class="cli-input-white" formControlName="id_estado">
               <option [value]="0" disabled>-Seleccione-</option>
               <option [value]="est.id" *ngFor="let est of listEstados">{{est.nombre}}</option>
             </select>
@@ -88,6 +96,17 @@
                 class="form-control cli-input-white"
                 formControlName="fecha_crea"/>
             </div>
+          </div>
+
+          <div class="col-sm-9 cli-form-element" *ngIf="setearTipoLiquidacion()">
+            <label class="form-label">Comentario Regularización</label>
+            <textarea
+              class="form-control"
+              style="background-image: none; border-color: #0dcaf0; font-size: 14px;"
+              rows="1"
+              placeholder="Describa un comentario de la Regularización..."
+              formControlName="comentarioLiq">
+            </textarea>
           </div>
         </div>
       </div>
@@ -255,7 +274,7 @@
     <div class="pr-subtitle mt-2">Histórico de cambios de estado</div>
     <div class="pr-section">
       <div class="pr-module-container">
-        <div style="overflow: auto; min-height: 110px; max-height: 156px; color:#6c757d;">
+        <div style="overflow: auto; min-height: 82px; max-height: 82px; color:#6c757d;">
           <table class="cli-table stripedtable underlinedtable">
             <thead>
               <tr class="bgc-turquey c-white">
@@ -285,7 +304,7 @@
 
           <div
             *ngIf="histCambiosEstado.length == 0"
-            class="cli-loader mt-5"
+            class="cli-loader mt-2"
             style="color: #c9c9c9; font-size: 12px;"
             >Aquí se mostrará el histórico de estados...
           </div>

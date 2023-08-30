@@ -23,7 +23,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
-  userId!: number;
+  // userId!: number;
   filtroForm!: FormGroup;
 
   page = 1;
@@ -43,6 +43,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   ngOnInit(): void {
     this.newFilfroForm();
+    this.getUsuario();
     this.cargarOBuscarVacaciones();
     this.getListProyectos();
     this.getListEstadoVacaciones();
@@ -73,8 +74,9 @@ export class RegistroVacacionesComponent implements OnInit {
           nombre         : this.filtroForm.value.nombres + " " + this.filtroForm.value.apellidos,
           id_estado_vac  : this.filtroForm.value.id_estado_vac,
           cod_corp       : this.filtroForm.value.cod_corp,
-          id_responsable : this.userId,
-          // id_responsable : this.filtroForm.value.id_responsable,
+          // id_responsable : this.userID,
+          // id_responsable: this.filtroForm.controls['id_responsable'].value,
+          id_responsable: this.authService.getUserNameByRol(this.filtroForm.controls['id_responsable'].value),
           codigo_proyecto: this.filtroForm.value.id_cod_proy,
           sist_vac       : this.filtroForm.value.id_sist_vac,
           inicio         : this.datepipe.transform(this.filtroForm.value.fechaCreaVacIni,"yyyy/MM/dd"),
@@ -225,6 +227,18 @@ export class RegistroVacacionesComponent implements OnInit {
       }
     });
   }
+
+  userID: number = 0;
+  userLogeado: string = '';
+  getUsuario(){
+   this.authService.getCurrentUser().subscribe( resp => {
+     this.userID   =  resp.user.userId;
+    //  this.userID   = resp,  resp.user.userId;
+     this.userLogeado = `${resp.user.nombres} ${resp.user.apellidoPaterno}`
+     console.log('USER_lOGEADO', this.userID, this.userLogeado);
+     console.log('USER_ID_LOG', this.userID);
+   })
+  };
 
   crearVacaciones() {
     const dialogRef = this.dialog.open(CrearVacacionesComponent, {width: '55%',});

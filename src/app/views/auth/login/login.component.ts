@@ -30,22 +30,26 @@ export class LoginComponent  {
   ) {}
 
   login() {
+    this.blockUI.start("Iniciando Sesión...");
     this.authService.login( this.loginForm.value ).pipe(first()).subscribe( resp => {
 
         if (resp.user.acceso > 0 && resp.user.aplicacion == 1) {
-          this.spinner.hide();
+          // this.spinner.hide();
+          this.blockUI.stop();
 
           Swal.fire(
             "Inicio de Sesión",
             "Bienvenid@ <br />" + `${resp.user.nombres} ${resp.user.apellidoPaterno}`,
             "success"
           );
+
+
           this.router.navigateByUrl('home');
         }else{
         Swal.fire('Error', 'Credenciales Incorrectas para esta aplicación', 'error' );
         }
       }, error => {
-        this.spinner.hide();
+        // this.spinner.hide();
         Swal.fire('Error', 'Error con la aplicación, contacte con el admin', 'error' );
       });
   }

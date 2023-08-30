@@ -48,6 +48,10 @@ export class FacturacionService {
     return this.http.post(API_DYNAMO, obj);
   }
 
+  getListValidarProy(obj: any) {
+    return this.http.post(API_DYNAMO, obj);
+  }
+
   actualizarVentaDeclarada(obj: any) {
     return this.http.post(API_DYNAMO, obj);
   }
@@ -105,6 +109,10 @@ export class FacturacionService {
   }
 
   cargarOBuscarVentaDeclada(obj: any[]) {
+    return this.http.post(API_DYNAMO, obj);
+  }
+
+  listaComentarioByID(obj: any[]) {
     return this.http.post(API_DYNAMO, obj);
   }
 }

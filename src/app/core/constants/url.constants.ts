@@ -18,7 +18,6 @@ switch (ENVIROMENT) {
     PATH_VISOR_DYNAMO  = 'http://visordynamosupportapi.indratools.com/';
     // PATH_VISOR_DYNAMO  = 'https://localhost:7197/';
 
-
     PATH_BACK_NET = 'http://backdynamosupport.indratools.com/api/configurador/'
     // PATH_BACK_NET  = 'https://localhost:3061/api/configurador/';
     break;

@@ -62,7 +62,7 @@ export class VisorService {
   getListDpf() {
     return this.http.get<any>(API_VISOR + 'getDpf').pipe(
       tap((resp: any) => {
-        console.log('DATA-DPF: ', resp);
+        // console.log('DATA-DPF: ', resp);
       })
     );
   }

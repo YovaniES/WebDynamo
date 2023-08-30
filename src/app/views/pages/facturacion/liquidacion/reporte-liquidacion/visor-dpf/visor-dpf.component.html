@@ -1,12 +1,11 @@
-<div class="modal-title-inic mt-3">DPF/ALO</div>
+<div class="modal-title-inic mt-3">DPF / ALO</div>
 <div class="cli-content">
   <div class="cli-card-body">
-    <input
-      id="ckh2h"
+    <input id="ckh2h"
       (click)="filtrar(this)"
       type="button"
       style="height: 0px; width: 0px; visibility: hidden"/>
-    <p *ngIf="!listDPF"><em>Cargado...</em></p>
+    <p *ngIf="!listDPF"><em>Cargando...</em></p>
 
     <!-- <div class="row">
       <div class="col-lg-6 col-12">
@@ -41,73 +40,121 @@
     </div> -->
 
     <div>
+      <ul class="tabs-container">
+        <li (click)="onTabClick('Dpf')" [class.active]="activeTab == 'Dpf'" class="tab-link">DPF</li>
+        <li (click)="onTabClick('Alo')" [class.active]="activeTab == 'Alo'" class="tab-link">ALO</li>
+      </ul>
+    </div>
+
+    <div style="padding: 2px 2px" *ngIf="activeTab == 'Dpf'">
       <div class="card" style="padding: 10px">
         <div
           class="card-header border-transparent"
           style="display: flex"
-          class="mt-2 mb-1">
-          <!-- <h3 class="card-title">
-            <span style="font-weight: 600" id="titulo">Facturado :: ({{ sum | number: "5.2-2" }})</span>
-          </h3> -->
-
+          class="mt-2 mb-1"
+        >
           <div class="flex-1"></div>
-
-          <button
-            class="icon-btn btn-trans c-green-export"
-            matTooltip="Exportar"
-            type="button"
-            (click)="exportToExcel()">
-            <mat-icon class="icon-18">file_download</mat-icon>
-          </button>
+          <!-- <button
+                  class="icon-btn btn-trans c-green-export"
+                  matTooltip="Exportar"
+                  type="button"
+                  (click)="exportToExcel()">
+                  <mat-icon class="icon-18">file_download</mat-icon>
+                </button> -->
         </div>
 
         <div  style="overflow: auto; min-height: 298px; color: #6c757d;">
-          <div class="cli-table stripedtable underlinedtable">
+          <div>
             <table class="cli-table stripedtable underlinedtable">
               <thead>
-                <tr class="c-white">
-                  <th>Proyecto</th>
-                  <th>Total Corriente</th>
-                  <th>Vencido [1-30]</th>
-                  <th>Vencido [31-60]</th>
-                  <th>Vencido [61-90]</th>
-                  <th>Vencido [91-180]</th>
-                  <th>Vencido [181-365]</th>
-                  <th>Total</th>
-                  <th>DPF Vencido Facturado</th>
-                  <!-- <th>Saldo vencido</th> -->
-                </tr>
+                  <tr class="bgc-blue-light c-white">
+                    <th>Proyecto</th>
+                    <th style="text-align: end;">Total Corriente</th>
+                    <th style="min-width: 75px;text-align: end;">Vencido <br><small  style="color: #ffffff;font-size: 10px;">1-30   </small></th>
+                    <th style="min-width: 75px;text-align: end;">Vencido <br><small  style="color: #ffffff;font-size: 10px;">31-60  </small></th>
+                    <th style="min-width: 75px;text-align: end;">Vencido <br><small  style="color: #ffffff;font-size: 10px;">61-90  </small></th>
+                    <th style="min-width: 75px;text-align: end;">Vencido <br><small  style="color: #ffffff;font-size: 10px;">91-180 </small></th>
+                    <th style="min-width: 75px;text-align: end;">Vencido <br><small  style="color: #ffffff;font-size: 10px;">181-365</small></th>
+                    <th style="min-width: 75px;text-align: end;">Vencido <br><small  style="color: #ffffff;font-size: 10px;">> 365  </small></th>
+                    <th style="min-width: 75px;">Total<br><small     style="font-size: 12px;">Vencido</small></th>
+                    <th style="text-align: end;">TOTAL</th>
+                  </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let dpf of listDPF | paginate: {
-                            itemsPerPage: pageSize,
-                            currentPage: page,
-                            totalItems: totalFacturas
-                          }">
-                  <td>{{ dpf.proyecto }}</td>
-                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(),  'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
-                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(1), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
-                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(2), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
-                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(3), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
-                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(4), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
-                  <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(5), 'sum_vd', dpf.proyecto)| number: "3.2-2" }}</td>
-                  <!-- <td style="font-weight: 700; font-size: 13px; text-align: right;">{{ filtrarPorPeriodo(obtenerPeriodoPorMes(5), 'dpf', dpf.proyecto)| number: "3.2-2" }}</td> -->
-                  <td>{{totalDPF(dpf.proyecto)   | number: "3.2-2" }}</td>
-                  <td>{{ dpf.lider }}</td>
-                </tr>
+                <ng-container *ngFor="let x of listDPF">
+                  <tr *ngIf="(dataTOTAL(x.proyecto) >0 || dataTOTAL(x.proyecto) <0) ">
+                    <td style="color: #38ccbd;font-weight: 500;">{{ x.proyecto }}</td>
+                    <td class="dpf" style="color: #122a2c">{{(!dataDPF(x.proyecto, 0))? '': (dataDPF(x.proyecto, 0))| number:'1.2-2'}}</td> <!-- [0]-->
+                    <td class="dpf">{{(dataDPF(x.proyecto, -1)? (dataDPF(x.proyecto, -1)):'')| number:'1.2-2'}}</td> <!-- 1[1-30]-->
+                    <td class="dpf">{{(dataDPF(x.proyecto, -2)? (dataDPF(x.proyecto, -2)):'')| number:'1.2-2'}}</td> <!-- 2[31-60]-->
+                    <td class="dpf">{{(dataDPF(x.proyecto, -3)? (dataDPF(x.proyecto, -3)):'')| number:'1.2-2'}}</td> <!-- 3[61-90]-->
+                    <td class="dpf">{{(dpf91_180(x.proyecto)  ? dpf91_180(x.proyecto)  :'' )| number:'1.2-2'}}</td>  <!--[91-180] --> <!-- 456[91-180](E,F,M)-->
+                    <td class="dpf">{{(dpf181_365(x.proyecto) ? dpf181_365(x.proyecto) :'' )| number:'1.2-2'}}</td>
+                    <td class="dpf">{{(dpfMayor365(x.proyecto)? dpfMayor365(x.proyecto): '')| number:'1.2-2'}}</td>
+                    <td style="font-weight: 700;color: #007bff;text-align: end;">{{totalDpfVencidos(x.proyecto) | number:'1.2-2' }}</td>
+                    <td style="color: #000; font-weight: 600; text-align: end;">{{ dataTOTAL(x.proyecto) | number:'1.2-2' }}</td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>
         </div>
-        <div class="card-footer pb-0 pt-3">
-          <pagination-controls
-            previousLabel="Anterior"
-            nextLabel="Siguiente"
-            [responsive]="false"
-            (pageChange)="cambiarPagina($event)">
-          </pagination-controls>
+      </div>
+    </div>
+
+    <div class="card" style="padding: 10px" *ngIf="activeTab == 'Alo'">
+      <div
+        class="card-header border-transparent"
+        style="display: flex"
+        class="mt-2 mb-1"
+      >
+        <div class="flex-1"></div>
+        <!-- <button
+                  class="icon-btn btn-trans c-green-export"
+                  matTooltip="Exportar"
+                  type="button"
+                  (click)="exportToExcel()">
+                  <mat-icon class="icon-18">file_download</mat-icon>
+                </button> -->
+      </div>
+
+      <div  style="overflow: auto; color: #6c757d;">
+        <div>
+          <table class="cli-table stripedtable underlinedtable">
+            <thead>
+              <tr class="bgc-purple c-white">
+                <th>Proyecto</th>
+                <th style="text-align: end;">Total Corriente</th>
+                <th style="min-width: 75px;text-align: end;">Vencido<br><small style="color: #ffffff;font-size: 10px;">1-30   </small></th>
+                <th style="min-width: 75px;text-align: end;">Vencido<br><small style="color: #ffffff;font-size: 10px;">31-60  </small></th>
+                <th style="min-width: 75px;text-align: end;">Vencido<br><small style="color: #ffffff;font-size: 10px;">61-90  </small></th>
+                <th style="min-width: 75px;text-align: end;">Vencido<br><small style="color: #ffffff;font-size: 10px;">91-180 </small></th>
+                <th style="min-width: 75px;text-align: end;">Vencido<br><small style="color: #ffffff;font-size: 10px;">181-365</small></th>
+                <th style="min-width: 75px;text-align: end;">Vencido<br><small style="color: #ffffff;font-size: 10px;">> 365  </small></th>
+                <th style="min-width: 75px;text-align: end;">Total  <br><small style="font-size: 12px;">Vencido</small></th>
+                <th style="min-width: 75px;text-align: end;">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let x of listDPF">
+                <tr *ngIf="(totalDpfVencidos(x.proyecto) < 0)">
+                    <td style="color: #38ccbd;font-weight: 500;" >{{ x.proyecto }}</td>
+                    <td class="dpf" style="color: #122a2c">{{(dataDPF(x.proyecto, 0)? dataDPF(x.proyecto, 0): '')| number:'1.2-2'}}</td>
+                    <td class="dpf">{{(!dataDPF(x.proyecto, -1))? '': (dataDPF(x.proyecto, -1))| number:'1.2-2'}}</td> <!-- 1[1-30] JUL-->
+                    <td class="dpf">{{(!dataDPF(x.proyecto, -2))? '': (dataDPF(x.proyecto, -2))| number:'1.2-2'}}</td> <!-- 2[31-60] JUN-->
+                    <td class="dpf">{{(!dataDPF(x.proyecto, -3))? '': (dataDPF(x.proyecto, -3))| number:'1.2-2'}}</td> <!-- 3[61-90] MAY-->
+                    <td class="dpf">{{ (dpf91_180(x.proyecto)? dpf91_180(x.proyecto): '')    | number:'1.2-2'}}</td>
+                    <td class="dpf">{{ (!dpf181_365(x.proyecto)? '': dpf181_365(x.proyecto)) | number:'1.2-2'}}</td>
+                    <td class="dpf">{{ (dpfMayor365(x.proyecto)? dpfMayor365(x.proyecto): '')| number:'1.2-2'}}</td>
+                    <td style="font-weight: 700;color: #007bff;text-align: end;">{{totalDpfVencidos(x.proyecto) | number:'1.2-2' }}</td>
+                    <td style="color: #000; font-weight: 600; text-align: end;">{{ dataTOTAL(x.proyecto) | number:'1.2-2' }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
 </div>
+

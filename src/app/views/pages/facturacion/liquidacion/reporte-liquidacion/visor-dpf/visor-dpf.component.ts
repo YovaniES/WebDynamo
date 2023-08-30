@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
-import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { VisorService } from 'src/app/core/services/visor.service';
 import { removeDuplicateObjects } from 'src/app/core/util/util';
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-visor-fact',
@@ -13,14 +14,15 @@ import { removeDuplicateObjects } from 'src/app/core/util/util';
   styleUrls: ['./visor-dpf.component.scss']
 })
 export class VisorDpfComponent implements OnInit {
-  page = 1;
-  totalFacturas: number = 0;
-  pageSize = 20;
-
   resultado: any[] = [];
-  listDPF: any[] = [];
+  listDPF  : any[] = [];
   resultadoNV: any;
   sum!: number;
+
+  activeTab: string = 'Dpf';
+  onTabClick(tab: string) {
+    this.activeTab = tab;
+  }
 
   pieChartOptions: any = {
     responsive: true,
@@ -71,41 +73,113 @@ export class VisorDpfComponent implements OnInit {
     XLSX.writeFile(book, this.name);
   }
 
-  constructor(private visorService: VisorService){}
+  constructor(private visorService: VisorService,
+              public datepipe: DatePipe,){}
 
-  ngOnInit() {
-    this.getInitializerFact();
+  ngOnInit(){
+    this.getListDPF();
+  }
+
+  modificarMes(meses: number){
+    const fecha = new Date();
+    const mes = fecha.getMonth(); // Rpta:7
+
+    fecha.setMonth(fecha.getMonth() + meses);
+    while (fecha.getMonth() == mes) {
+      fecha.setDate(fecha.getDate() - 1);
+    }
+
+    return  fecha; //28/02/2022
   }
 
   filtrarPorPeriodo(periodo: string, nombreCampo: string, proy: string): any{
     const dpfItem = this.resultado.find( item => item.per_vd == periodo && item.proyecto == proy)
+    // console.log('FILTRO', dpfItem); //Rpta: {dpf:49091.67, per_vd:"07/2021" ,proyecto:"TRAPRO", sum_facturados:423685.22, sum_vd:472776.89}
 
     return dpfItem? dpfItem[nombreCampo]: 0;
   }
 
-  obtenerPeriodoPorMes(mesAnterior: number = 0){
-    const fechaActual = new Date();
-    return fechaActual.getFullYear() + '-' + ('0' + (fechaActual.getMonth()- mesAnterior)).slice(-2);
-  };
+  dataDPF(nameProy: string, per:number){
+    const dpf = this.filtrarPorPeriodo( moment(this.modificarMes(per)).format("Y-MM"), 'dpf', nameProy)
+    // OJO TENER EN CUENTA: PRUEBA CON FECHA (29/08/2023)
+    // console.log('DPF2',dpf, moment(this.modificarMes(-1)).format("Y-MM")); // 0 | 2023-07
+    // console.log('PER-ACTUAL1', moment(this.modificarMes(0)).format("Y-MM"),);  //2023-07
+    // console.log('PER-ACTUAL2', moment(this.modificarMes(-1)).format("Y-MM"),); //2023-07
+    // console.log('PER-ACTUAL3', moment(this.modificarMes(-2)).format("Y-MM"),); //2023-06
+    // console.log('PER-ACTUAL4', moment(this.modificarMes(-3)).format("Y-MM"),); //2023-05
+    // console.log('PER-ACTUAL3', moment(this.modificarMes(-4)).format("Y-MM"),); //2023-04
+    // console.log('PER-ACTUAL4', moment(this.modificarMes(-5)).format("Y-MM"),); //2023-03
+    // console.log('PER-ACTUAL5', moment(this.modificarMes(-6)).format("Y-MM"),); //2023-03
 
-  totalDPF(nameProy: string){
-     const totalDPF =  (this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(), 'sum_vd', nameProy)+
-     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(1), 'sum_vd', nameProy)+
-     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(2), 'sum_vd', nameProy)+
-     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(3), 'sum_vd', nameProy)+
-     this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(4), 'sum_vd', nameProy));
+    return (dpf > 5 || dpf <= -5)? dpf: 0
+  }
 
-     return totalDPF? totalDPF : 0
+  dpf91_180(proy:string){
+    let sumaDpf = 0;
+      for (let i = 4; i < 7; i++) { //i=4 : (E,F,M:4,5,6) | 2023(E,F,M): -6,-5,-4   | (J,Jn,M, A):7,6,5,4
+      sumaDpf = sumaDpf +  this.dataDPF(proy, -i)
+      // console.log('E-F-M', sumaDpf);
+      }
+    return sumaDpf? sumaDpf: 0 ;
+  }
+
+  dpf181_365(proy:string){
+    var suma181_365:any = 0;
+      for (let i = 7; i < 13; i++) { //i=7,8,9,10,11,12: D,N,O,S,A,J (2022) : -7,-8,-9,-10,-11,-12
+      suma181_365 = suma181_365 +  this.dataDPF(proy, -i) // 12,11,10,9,8,7 dataDpf022JAS
+      }
+      return (suma181_365 == 0)? 0 : suma181_365;
+  }
+
+  dpfMayor365(proy:string){
+    var sumaDpfx = 0;
+      for (let i = 13; i < 54; i++) { //i=13,14,15,16,17,18: (2022)Jn,M,A,M,F,E | (2021)D,N,O,S,A,J,Jn,M,A,M,F,E | 12(2020) | 12(2019)
+                                                                               // (2021)19,20,21,22,23,24,25,26,27,28,29,30 |(2020)[31->42] | (2019)[43->54] 31+12=43
+      sumaDpfx = sumaDpfx +  this.dataDPF(proy, -i)
+      // console.log('>365', sumaDpfx);
+      }
+    return sumaDpfx? sumaDpfx : 0;
+  }
+
+
+  totalDpfVencidos(proy:string){
+    var dpfVencidos = (
+      this.dataDPF(proy, -1)+ //[1-30]   Jn 2023
+      this.dataDPF(proy, -2)+ //[31-60]   M 2023
+      this.dataDPF(proy, -3)+ //[61-90]   A 2023
+      this.dpf91_180(proy) +   //[91-180]  EFM 2023
+      this.dpf181_365(proy)+   //[181-365] JASOND(2012)
+      this.dpfMayor365(proy)   //[>365]
+      )
+
+    return (dpfVencidos == 0)? '' : dpfVencidos;
+  }
+
+
+  dataTOTAL(proy: string){
+    const total =  (
+    // this.filtrarPorPeriodo(moment(this.modificarMes(0) ).format("Y-MM"), 'dpf', proy)+ //Total corriente (PERIODO ACTUAL: JULIO)
+    this.dataDPF(proy,  0)+ //Total corriente   J 2023
+    this.dataDPF(proy, -1)+ //[1-30]   Jn 2023
+    this.dataDPF(proy, -2)+ //[31-60]   M 2023
+    this.dataDPF(proy, -3)+ //[61-90]   A 2023
+    this.dpf91_180(proy) +  //[91-180]
+    this.dpf181_365(proy)+  //[181-365]  //NOTA: Corregir la data
+    this.dpfMayor365(proy)  //[>365]
+    );
+
+   return (total == 0)? '': total;
   }
 
   listadoDPF: any[] = [];
-  getInitializerFact(){
+  getListDPF(){
     this.visorService.getListDpf().subscribe((resp: any[]) => {
-      this.resultado = resp; //Almacenamos el total de dpf que viene de la BD
+      this.resultado = resp; //Almacenamos toda la lista de dpf que viene desde la BD
 
       this.listDPF = removeDuplicateObjects(resp, 'proyecto');
-      console.log('DPF',this.listDPF, );
-      console.log('ABC',this.obtenerPeriodoPorMes(), this.filtrarPorPeriodo(this.obtenerPeriodoPorMes(), 'dpf', 'TDPFAC'));
+      // console.log('DPF',this.listDPF, );
+      console.log('ABC',moment(this.modificarMes(-4)).format("Y-MM"), this.filtrarPorPeriodo(moment(this.modificarMes(-4)).format("Y-MM"), 'dpf', 'TDPFAC'));
+      // console.log('DPF_VENCIDO', this.DPFVencidoFacturado('TPSNEG'));
 
 
       this.suma();
@@ -210,16 +284,5 @@ export class VisorDpfComponent implements OnInit {
         return a + b;
       })
       console.log('SUMA', this.sum);
-  }
-
-  totalfiltro = 0;
-  cambiarPagina(event: number) {
-
-    if (this.totalfiltro != this.totalFacturas) {
-    this.visorService.getLiqByProyecto().subscribe((resp: any[]) => {
-      this.listDPF = resp;
-    })
-  }
-    this.page = event;
   }
 }

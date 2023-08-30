@@ -5,7 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
 import { AUTH_SESSION } from '../constants/url.constants';
 import { of } from 'rxjs';
-import { ROLES_ENUM, ROL_COOR_TDP, ROL_GESTOR, ROL_LIDER, ROL_SUPER_ADMIN } from '../constants/rol.constants';
+import { ROLES_ENUM, ROL_ADMIN, ROL_COOR_TDP, ROL_GESTOR, ROL_LIDER, ROL_SUPER_ADMIN } from '../constants/rol.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,21 @@ export class AuthService {
     );
   }
 
+  getUserNameByRol(filtroSuperAdmin: string){
+    const usuarioLogeado: any = this.decodeToken();
+    console.log('id_respon', usuarioLogeado);
+
+    if (this.esUsuarioSuperAdmin() ||  this.esUsuarioCoordTdp()) {
+    // console.log('ABC', usuarioLogeado);
+
+      return filtroSuperAdmin? filtroSuperAdmin: null
+    } else {
+    // console.log('XYZ', usuarioLogeado);
+
+      return usuarioLogeado.USER_ID
+    }
+  }
+
   //Obtenemos el ROL_ID, desde el TOKEN: ROL_ID=101,102,103,..106 (ROL_ID=106 : SUPER_ADMIN)
   getRolID(){
     const decodedToken: any = this.decodeToken();
@@ -39,7 +54,7 @@ export class AuthService {
   // Obtenemos desde el TOKEN: unique_name:"jysantiago"; También el ID_ROL=101,102,...106
   getUsername() {
       const decodedToken: any = this.decodeToken();
-      console.log('DECODE_TOKEN - UNIQUE_NAME', decodedToken, decodedToken.name);
+      // console.log('DECODE_TOKEN - UNIQUE_NAME', decodedToken, decodedToken.name);
       return decodedToken ? decodedToken.name : '';
   }
 
@@ -63,19 +78,19 @@ export class AuthService {
     return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_COOR_TDP.rolID
   }
 
-  esUsuarioGestor(): boolean{
-    const usuarioLogeado:any = this.decodeToken();
+  esUsuarioAdmin(){
+    const usuarioLogueado: any = this.decodeToken();
+    return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_ADMIN.rolID
+  }
 
-    if (!usuarioLogeado || usuarioLogeado.ROL_ID != ROL_GESTOR.rolID ) {
-      return false
-    } else {
-      return true
-    }
+  esUsuarioGestor(){
+    const usuarioLogueado: any = this.decodeToken();
+    return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_GESTOR.rolID
   }
 
   getCurrentUser() {
     const currentUser: any = localStorage.getItem('currentUser');
-    console.log('CURRENT_USER',JSON.parse(currentUser));
+    // console.log('CURRENT_USER',JSON.parse(currentUser));
     return of(currentUser ? JSON.parse(currentUser) : '');
   }
 
@@ -91,7 +106,7 @@ export class AuthService {
 
   // IApiUserAuthenticated
   get getUser(): any {
-    console.log('USS', this.currentUser);
+    // console.log('USS', this.currentUser);
 
     return this.currentUser;
   }
