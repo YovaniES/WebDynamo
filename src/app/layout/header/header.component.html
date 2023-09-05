@@ -15,9 +15,10 @@
       <br />
       <div *ngIf="authService.esUsuarioSuperAdmin()" class="rol-superAdmin col-sm-12 cli-btn"  style="font-size: 12px; font-weight: 400; margin-top: -11px;"><mat-icon class="icon-13">person</mat-icon> {{userRolName}}</div>
       <div *ngIf="authService.esUsuarioLider()"      class="rol-lider col-sm-12 cli-btn"       style="font-size: 12px; font-weight: 400; margin-top: -11px;"><mat-icon class="icon-13">person</mat-icon> {{userRolName}}</div>
-      <div *ngIf="authService.esUsuarioAdmin()"      class="rol-admin col-sm-12 cli-btn"      style="font-size: 12px; font-weight: 400; margin-top: -11px;"><mat-icon class="icon-13">person</mat-icon> {{userRolName}}</div>
+      <div *ngIf="authService.esUsuarioAdmin()"      class="rol-admin col-sm-12 cli-btn"       style="font-size: 12px; font-weight: 400; margin-top: -11px;"><mat-icon class="icon-13">person</mat-icon> {{userRolName}}</div>
       <div *ngIf="authService.esUsuarioGestor()"     class="rol-gestor col-sm-12 cli-btn"      style="font-size: 12px; font-weight: 400; margin-top: -11px;"><mat-icon class="icon-13">person</mat-icon> {{userRolName}}</div>
       <div *ngIf="authService.esUsuarioCoordTdp()"   class="rol-coordinador col-sm-12 cli-btn" style="font-size: 12px; font-weight: 400; margin-top: -11px;"><mat-icon class="icon-13">person</mat-icon> {{userRolName}}</div>
+      <div *ngIf="authService.esCoordLider()"        class="rol-coordinador col-sm-12 cli-btn" style="font-size: 12px; font-weight: 400; margin-top: -11px;"><mat-icon class="icon-13">person</mat-icon> {{userRolName}}</div>
     </div>
   </div>
 

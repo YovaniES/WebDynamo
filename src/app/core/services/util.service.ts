@@ -9,7 +9,6 @@ export class UtilService {
 
   generarPeriodo(fechaPeriodo: string) {
     // console.log('fecha_p', fechaPeriodo.split('/'));
-
     const periodo: Date = new Date();
     const mesAndYear = fechaPeriodo.split('/');
 

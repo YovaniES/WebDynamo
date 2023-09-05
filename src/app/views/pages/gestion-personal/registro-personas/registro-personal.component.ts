@@ -159,7 +159,7 @@ export class RegistroPersonalComponent implements OnInit {
       icon: 'question',
       confirmButtonColor: '#20c997',
       cancelButtonColor : '#b2b5b4',
-      confirmButtonText : 'Si!',
+      confirmButtonText : 'Si, eliminar!',
       showCancelButton: true,
       cancelButtonText: 'Cancelar',
     }).then((resp) => {

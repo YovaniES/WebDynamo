@@ -130,7 +130,7 @@
               <th>Correo</th>
               <th>Perfil</th>
               <th>Cód. Corporativo</th>
-              <th>Cód. Proyecto</th>
+              <th>Proyecto</th>
               <th>Total Recurso</th>
               <th>DNI</th>
               <th>Estado</th>
@@ -161,7 +161,7 @@
                   </button>
 
                   <button matTooltip ="{{ tooltipActivoInactivo }}"
-                    class="icon-btn btn-trans c-grey"
+                    class="icon-btn btn-trans c-grey" style="border: solid 0.5px #999c9f;"
                     (click)="abrirEliminar(personal.id, personal.codigo_corporativo, personal.estado, personal.nombres)"
                     ><mat-icon class="icon-13">person_off</mat-icon>
                   </button>
@@ -204,9 +204,10 @@
                 <span *ngIf="personal.estado == 'Inactivo'" class="w135 label est-inact">{{ personal.estado | uppercase }}</span>
               </td>
               <td style="text-align:left; color: #888888; min-width: 80px;">
-                <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'AM'"   ><mat-icon class="icon-13 icon-btn" style="margin-right: 5px; display: flex; color: #ae7cff;">webhook</mat-icon>{{ personal.categoria}}</span>
-                <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'NO AM'"><mat-icon class="icon-13 icon-btn" style="margin-right: 5px; display: flex; color: #71e7ff;">radio_button_checked</mat-icon>{{ personal.categoria}}</span>
-                <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'OTROS'"><mat-icon class="icon-13 icon-btn" style="margin-right: 5px; display: flex; color: #fec622;">workspaces_outline</mat-icon>{{ personal.categoria}}</span>
+                <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'AM'"       ><mat-icon class="icon-13 icon-btn am">webhook</mat-icon>{{ personal.categoria}}</span>
+                <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'NO AM'"    ><mat-icon class="icon-13 icon-btn no-am">radio_button_checked</mat-icon>{{ personal.categoria}}</span>
+                <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'OTROS'"    ><mat-icon class="icon-13 icon-btn otros">workspaces_outline</mat-icon>{{ personal.categoria}}</span>
+                <span style="align-items: center; display: flex" *ngIf="personal.categoria == 'Carlos A.'"><mat-icon class="icon-13 icon-btn carlos">device_hub</mat-icon>{{ personal.categoria}}</span>
               </td>
               <td style="min-width: 105px">{{ personal.fecha_ingreso }}</td>
             </tr>

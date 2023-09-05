@@ -137,6 +137,17 @@
   }
 }
 
+.fecha-ini {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background: none;
+  color: #6c757d;
+  border: solid 1px #c4c7ca;
+  min-width: 150px;
+  border-radius: 3px;
+}
+
 // estilos para el rango de fechas
 .input-group {
   width: auto;

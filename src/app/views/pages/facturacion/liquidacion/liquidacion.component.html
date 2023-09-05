@@ -212,13 +212,13 @@
               </td>
               <td style="text-align: left; height: 33px;">{{ factura.subServicio }}</td>
               <td>
-                <span *ngIf="factura.estado == 'Aprobado'"      class="label est-reg"   >    {{ factura.estado | uppercase }}</span>
-                <span *ngIf="factura.estado == 'Cancelado'"     class="label est-obs "  >    {{ factura.estado | uppercase }}</span>
-                <span *ngIf="factura.estado == 'En Elaboración'"class="label est-valid" >    {{ factura.estado | uppercase }}</span>
-                <span *ngIf="factura.estado == 'Enviado'"       class="label est-sol "  >    {{ factura.estado | uppercase }}</span>
-                <span *ngIf="factura.estado == 'Facturado'"     class="label est-aprobado">  {{ factura.estado | uppercase }}</span>
-                <span *ngIf="factura.estado == 'MO Cargado'"    class="label est-finalizado">{{ factura.estado | uppercase }}</span>
-                <span *ngIf="factura.estado == 'MO_Visado'"     class="label est-enviado">   {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'Aprobado'"      class="label ">    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'Cancelado'"     class="label ">    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'En Elaboración'"class="label ">    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'Enviado'"       class="label ">    {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'Facturado'"     class="label est-facturado">{{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'MO Cargado'"    class="label est-cargado">  {{ factura.estado | uppercase }}</span>
+                <span *ngIf="factura.estado == 'MO_Visado'"     class="label est-visado">   {{ factura.estado | uppercase }}</span>
               </td>
               <td style="font-weight: 600; text-align: end;"><small class="icon-soles">S/</small>{{ factura.importe | number : '1.0-2'}}</td>
               <td style="text-align: end; border-left-width: thin;"><small *ngIf="factura.declarado >0" class="icon-soles">S/</small>{{ factura.declarado | number : '1.0-2'}}</td>

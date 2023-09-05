@@ -8,8 +8,8 @@
       style="height: 0px; width: 0px; visibility: hidden"/>
     <p *ngIf="!resultadoV"><em>Cargado...</em></p>
 
-    <div class="row">
-      <div class="col-lg-6 col-12">
+    <div class="row" style="justify-content: space-around;">
+      <div class="col-lg-6 col-12 canvas">
         <h3 style="font-size: 20px; font-weight: 500">Facturados por Periodo</h3>
         <div class="chart-wrapper">
           <canvas
@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="col-lg-6 col-12">
+      <div class="col-lg-6 col-12 canvas">
         <h3 style="font-size: 20px; font-weight: 500">Facturados por Proyecto</h3>
         <div style="display: block">
           <canvas
@@ -41,7 +41,7 @@
     </div>
 
     <div>
-      <div class="card" style="padding: 10px">
+      <div class="card mt-5" style="padding: 10px">
         <div
           class="card-header border-transparent"
           style="display: flex"
@@ -61,7 +61,7 @@
           </button>
         </div>
 
-        <div  style="overflow: auto; min-height: 298px; color: #6c757d;">
+        <div  style="overflow: auto; min-height: 430px; color: #6c757d;">
           <div class="cli-table stripedtable underlinedtable">
             <table class="cli-table stripedtable underlinedtable">
               <thead>

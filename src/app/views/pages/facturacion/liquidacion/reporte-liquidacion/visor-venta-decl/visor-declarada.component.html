@@ -8,8 +8,8 @@
       style="height: 0px; width: 0px; visibility: hidden"/>
     <p *ngIf="!listVentaDecl"><em>Cargando...</em></p>
 
-    <div class="row">
-      <div class="col-lg-6 col-12">
+    <div class="row" style="justify-content: space-around;">
+      <div class="col-lg-6 col-12 canvas">
         <h3 style="font-size: 20px; font-weight: 500">
           Venta declarada por Estado
         </h3>
@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="col-lg-6 col-12">
+      <div class="col-lg-6 col-12 canvas">
         <h3 style="font-size: 20px; font-weight: 500">
           Venta declarada por Proyecto
         </h3>
@@ -47,7 +47,7 @@
     </div>
 
     <div>
-      <div class="card" style="padding: 10px">
+      <div class="card mt-5" style="padding: 10px">
         <div
           class="card-header border-transparent"
           style="display: flex"
@@ -55,7 +55,7 @@
           <h3 class="card-title"><span style="font-weight: 600" id="titulo">Venta Declarada :: ({{ totalVD | number: "5.2-2" }})</span></h3>
         </div>
 
-        <div style="overflow: auto; min-height: 298px; color: #6c757d;">
+        <div style="overflow: auto; min-height: 430px; color: #6c757d;">
           <div>
             <table class="cli-table stripedtable underlinedtable">
               <thead>

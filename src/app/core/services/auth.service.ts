@@ -5,7 +5,7 @@ import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
 import { AUTH_SESSION } from '../constants/url.constants';
 import { of } from 'rxjs';
-import { ROLES_ENUM, ROL_ADMIN, ROL_COOR_TDP, ROL_GESTOR, ROL_LIDER, ROL_SUPER_ADMIN } from '../constants/rol.constants';
+import { ROLES_ENUM, ROL_ADMIN, ROL_COORD_LIDER, ROL_COOR_TDP, ROL_GESTOR, ROL_LIDER, ROL_SUPER_ADMIN } from '../constants/rol.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -19,9 +19,9 @@ export class AuthService {
   login(loginData: any) {
     return this.http.post<any>(AUTH_SESSION, loginData).pipe(
       tap((resp: any) => {
-        console.log('LOGIN_SCORE_ACCESO: ', resp.user.acceso);
-        console.log('LOGIN_SCORE_APLIC: ', resp.user.aplicacion);
-        console.log('LOGIN_SCORE_ROLNAME: ', resp.user.rolName);
+        console.log('LOGIN_ACCESO: ', resp.user.acceso);
+        console.log('LOGIN_APLIC: ', resp.user.aplicacion);
+        console.log('LOGIN_ROLNAME: ', resp.user.rolName);
 
         localStorage.setItem('token', resp.user.token);
         localStorage.setItem('currentUser', JSON.stringify(resp));
@@ -29,19 +29,23 @@ export class AuthService {
     );
   }
 
-  getUserNameByRol(filtroSuperAdmin: string){
-    const usuarioLogeado: any = this.decodeToken();
-    console.log('id_respon', usuarioLogeado);
+  getUserNameByRol(filtroResponsable: number){
+    const usuarioLogueado: any = this.decodeToken();
+    console.log('id_respon', usuarioLogueado);
 
-    if (this.esUsuarioSuperAdmin() ||  this.esUsuarioCoordTdp()) {
-    // console.log('ABC', usuarioLogeado);
-
-      return filtroSuperAdmin? filtroSuperAdmin: null
-    } else {
-    // console.log('XYZ', usuarioLogeado);
-
-      return usuarioLogeado.USER_ID
+    if (this.esUsuarioSuperAdmin() || this.esUsuarioCoordTdp()) {
+      return filtroResponsable? filtroResponsable: null
     }
+
+    if (this.esUsuarioLider()) {
+      return filtroResponsable? filtroResponsable: usuarioLogueado.USER_ID;
+    }
+
+    if (this.esCoordLider()) {
+      return filtroResponsable? filtroResponsable: usuarioLogueado.USER_ID;
+    }
+      return usuarioLogueado.USER_ID;  //USER_ID: 441 (name:jysantiago)
+
   }
 
   //Obtenemos el ROL_ID, desde el TOKEN: ROL_ID=101,102,103,..106 (ROL_ID=106 : SUPER_ADMIN)
@@ -71,6 +75,11 @@ export class AuthService {
   esUsuarioLider(){
     const usuarioLogueado: any = this.decodeToken();
     return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_LIDER.rolID
+  }
+
+  esCoordLider(){
+    const usuarioLogueado: any = this.decodeToken();
+    return usuarioLogueado && usuarioLogueado.ROL_ID == ROL_COORD_LIDER.rolID
   }
 
   esUsuarioCoordTdp(){

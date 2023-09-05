@@ -58,7 +58,7 @@
         <div class="pr-module-container">
           <div class="row g-3">
             <div class="col-sm-3 cli-form-element">
-              <label>Sistema *</label>
+                <label>Sistema <small style="color: #f45572; margin:1px 0 0;">*</small></label>
               <select class="cli-input-white" formControlName="idSistema">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="sistema.id_correlativo" *ngFor="let sistema of listSistemaVacaciones">{{sistema.valor_texto_1}}</option>
@@ -67,7 +67,7 @@
             </div>
 
             <div class="col-sm-3 cli-form-element">
-              <label>Tipo vac.*</label>
+              <label>Sistema <small style="color: #f45572; margin:1px 0 0;">*</small></label>
               <select class="cli-input-white" formControlName="idTipoVac">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="tipo.id_correlativo" *ngFor="let tipo of listTipoVacaciones">{{tipo.valor_texto_1}}</option>
@@ -76,7 +76,7 @@
             </div>
 
           <div class="col-sm-4 cli-form-element">
-            <label class="form-label">Fecha de vacaciones * </label>
+            <label class="form-label">Fecha de vacaciones <small style="color: #f45572; margin:1px 0 0;">*</small> </label>
             <mat-form-field color="accent" appearance="outline">
               <mat-date-range-input [formGroup]="vacacionesForm" [rangePicker]="picker">
                 <input matStartDate formControlName="fechaInicVac" placeholder="Inicio de vacaciones"   #fechaIni (dateChange)="totalDiasVacaciones()" >

@@ -38,7 +38,7 @@ export class AsideComponent implements OnInit {
         },
         {
           code: 'MAN-002',
-          text: 'Registro vacaciones',
+          text: 'Lista vacaciones',
           order: 20,
           icon: 'surfing',
           type: 'PAREN',

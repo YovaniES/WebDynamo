@@ -4,7 +4,7 @@
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
       <div class="card" style="border-radius: 2px; font-weight: 600; padding: 7px">
-          <form class="row g-3" [formGroup]="filtroForm">
+          <form class="row g-3" [formGroup]="vacacionesForm">
 
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">Código corp.</label>
@@ -31,7 +31,7 @@
             </div>
 
             <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Cód.Proyecto</label>
+              <label class="form-label">Proyecto</label>
               <select class="form-select" formControlName="id_cod_proy">
                 <option [value]="0" disabled>- Seleccione -</option>
                 <option [value]="cod.id_correlativo" *ngFor="let cod of listCodProy">{{cod.valor_texto_1}}</option>
@@ -125,9 +125,10 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
+              <th>ID VAC.</th>
               <th style="min-width: 82px;">Código Corp.</th>
               <th style="text-align: left; min-width: 202px;">Nombres y Apellidos</th>
-              <th style="min-width: 90px;">Cód. Proyecto</th>
+              <th style="min-width: 90px;">Proyecto</th>
               <th style="min-width: 82px;">Sistema</th>
               <th style="min-width: 82px;">Tipo Vac.</th>
               <th style="width: 200px">Fecha de vacaciones</th>
@@ -150,7 +151,7 @@
               <td>
                 <div class="cli-table-actions">
                   <button
-                    matTooltip='Actualizar'
+                    matTooltip='Planificar'
                     class="icon-btn btn-trans c-darkcyan"
                     (click)="actualizarVacaciones(vacaciones)"
                     ><mat-icon class="icon-13">hail</mat-icon>
@@ -163,13 +164,14 @@
                   </button>
                 </div>
               </td>
+              <td>{{ vacaciones.cod_vac }}</td>
               <td>{{ vacaciones.codigo_corporativo }}</td>
               <td style="text-align: left">{{vacaciones.nombres | firstCapital}}, {{vacaciones.apellidos |firstCapital }}</td>
               <td>{{ vacaciones.codigo_proyecto | uppercase}}</td>
               <td>{{vacaciones.sist_vac}}</td>
               <td>{{vacaciones.tipo_vac}}</td>
               <td>
-                <div class="cli-table" style="display: flex; align-items: center; justify-content: space-evenly; background: none; color: #6c757d; border: solid 1px #c4c7ca; min-width: 150px; border-radius: 3px;">
+                <div class="cli-table fecha-ini">
                   {{ vacaciones.f_ini_vac}}<mat-icon class="icon-13">trending_flat</mat-icon>{{ vacaciones.f_fin_vac }}
                 </div>
               </td>
@@ -186,7 +188,7 @@
                     matTooltip={{vacaciones.responsable}}
                     class="icon-btn btn-trans"
                     style="color: #6c757d;"
-                    ><mat-icon class="icon-18">account_circle</mat-icon>
+                    ><mat-icon class="icon-13" style="color: #0dcaf0;">person_outline</mat-icon>
                   </button>{{vacaciones.usuario}}
                 </div>
               </td>

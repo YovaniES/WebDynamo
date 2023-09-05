@@ -23,8 +23,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
-  // userId!: number;
-  filtroForm!: FormGroup;
+  vacacionesForm!: FormGroup;
 
   page = 1;
   totalVacaciones: number = 0;
@@ -32,7 +31,7 @@ export class RegistroVacacionesComponent implements OnInit {
 
   constructor(
     private personalService: PersonalService,
-    private authService: AuthService,
+    public authService: AuthService,
     private vacacionesService: VacacionesPersonalService,
     private exportExcellService: ExportExcellService,
     private fb: FormBuilder,
@@ -52,7 +51,7 @@ export class RegistroVacacionesComponent implements OnInit {
   }
 
     newFilfroForm(){
-    this.filtroForm = this.fb.group({
+    this.vacacionesForm = this.fb.group({
       cod_corp       : [''],
       nombres        : [''],
       apellidos      : [''],
@@ -67,26 +66,24 @@ export class RegistroVacacionesComponent implements OnInit {
 
   listaRegVacaciones: any[] = [];
   cargarOBuscarVacaciones(){
-    this.blockUI.start("Cargando Registro de Vacaciones...");
+    this.blockUI.start("Cargando Lista de Vacaciones...");
     let parametro: any[] = [{
       "queryId": 133,
       "mapValue": {
-          nombre         : this.filtroForm.value.nombres + " " + this.filtroForm.value.apellidos,
-          id_estado_vac  : this.filtroForm.value.id_estado_vac,
-          cod_corp       : this.filtroForm.value.cod_corp,
-          // id_responsable : this.userID,
-          // id_responsable: this.filtroForm.controls['id_responsable'].value,
-          id_responsable: this.authService.getUserNameByRol(this.filtroForm.controls['id_responsable'].value),
-          codigo_proyecto: this.filtroForm.value.id_cod_proy,
-          sist_vac       : this.filtroForm.value.id_sist_vac,
-          inicio         : this.datepipe.transform(this.filtroForm.value.fechaCreaVacIni,"yyyy/MM/dd"),
-          fin            : this.datepipe.transform(this.filtroForm.value.fechaCreaVacFin,"yyyy/MM/dd"),
+          nombre         : this.vacacionesForm.value.nombres + " " + this.vacacionesForm.value.apellidos,
+          id_estado_vac  : this.vacacionesForm.value.id_estado_vac,
+          cod_corp       : this.vacacionesForm.value.cod_corp,
+          id_responsable : this.authService.getUserNameByRol(this.vacacionesForm.controls['id_responsable'].value ),
+          codigo_proyecto: this.vacacionesForm.value.id_cod_proy,
+          sist_vac       : this.vacacionesForm.value.id_sist_vac,
+          inicio         : this.datepipe.transform(this.vacacionesForm.value.fechaCreaVacIni,"yyyy/MM/dd"),
+          fin            : this.datepipe.transform(this.vacacionesForm.value.fechaCreaVacFin,"yyyy/MM/dd"),
       }
     }];
     this.vacacionesService.cargarOBuscarVacaciones(parametro[0]).subscribe((resp: any) => {
     this.blockUI.stop();
 
-    //  console.log('Lista-VACACIONES-APROB', resp, resp.list.length);
+     console.log('LISTA-VACACIONES', resp, resp.list.length);
       this.listaRegVacaciones = [];
       this.listaRegVacaciones = resp.list;
 
@@ -185,8 +182,24 @@ export class RegistroVacacionesComponent implements OnInit {
   getListAdminVacaciones(){
   let parametro: any[] = [{ queryId: 127}];
   this.vacacionesService.getListAdminVacaciones(parametro[0]).subscribe((resp: any) => {
-    this.listAdminVacaciones = resp.list;
-    // console.log('RESPONSABLES-VACAS', resp.list);
+
+    if (this.userID == 341 || this.userID == 465) { //WILMER Y CRISTIAN
+      this.listAdminVacaciones = resp.list.filter((v:any) => v.username == 'camarcas' || v.username == 'wgil' );
+    }
+
+    if (this.userID == 343 || this.userID == 30 || this.userID == 108) { //SERGIO
+      this.listAdminVacaciones = resp.list.filter((v:any) => v.username == 'lmquispe' || v.username == 'ecarrospide'|| v.username == 'saleon' );
+      console.log('USER-RESP', this.listAdminVacaciones);
+    }
+
+    if (this.userID == 436 || this.userID == 454) { //MARCELA
+      this.listAdminVacaciones = resp.list.filter((v:any) => v.username == 'admeza'|| v.username == 'imcanelo' );
+    }
+
+    if (this.authService.esUsuarioSuperAdmin() || this.authService.esUsuarioCoordTdp()) {
+        this.listAdminVacaciones = resp.list;
+    }
+
     })
   }
 
@@ -209,7 +222,7 @@ export class RegistroVacacionesComponent implements OnInit {
   }
 
   limpiarFiltro() {
-    this.filtroForm.reset('', {emitEvent: false})
+    this.vacacionesForm.reset('', {emitEvent: false})
     this.newFilfroForm();
 
     this.cargarOBuscarVacaciones();

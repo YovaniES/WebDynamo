@@ -6,10 +6,10 @@
     (click)="filtrar(this)"
     type="button"
     style="height: 0px; width: 0px; visibility: hidden"/>
-  <p *ngIf="!resultadoV"><em>Loading...</em></p>
+  <p *ngIf="!resultadoV"><em>Cargango...</em></p>
 
-  <div class="row">
-    <div class="col-lg-6 col-12">
+  <div class="row" style="justify-content: space-around;">
+    <div class="col-lg-6 col-12 canvas">
       <h3 style="font-size: 20px; font-weight: 500">Liquidaciones activas por Lider</h3>
 
       <div class="chart-wrapper">
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="col-lg-6 col-12">
+    <div class="col-lg-6 col-12 canvas">
       <h3 style="font-size: 20px; font-weight: 500">Liquidaciones activas por Periodo</h3>
       <div style="display: block">
         <canvas
@@ -42,7 +42,7 @@
   </div>
 
   <div>
-    <div class="card" style="padding: 10px">
+    <div class="card mt-5" style="padding: 10px">
       <div class="card-header border-transparent" style="display: flex" class="mt-2 mb-1">
         <h3 class="card-title">
           <span style="font-weight: 600;" id="titulo">Pendiente de Facturar :: ({{ sum | number: "5.2-2" }})</span>
@@ -56,7 +56,7 @@
           </button>
       </div>
 
-      <div style="overflow: auto; min-height: 298px; color: #6c757d;">
+      <div style="overflow: auto; min-height: 430px; color: #6c757d;">
         <div class="cli-table stripedtable underlinedtable">
           <table class="cli-table stripedtable underlinedtable">
             <thead>
@@ -77,12 +77,10 @@
                 currentPage : page,
                 totalItems  : totalFacturas
               } ">
-                <td><!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> -->
-                  {{ cate.proyecto }}
-                </td>
-                <td>{{ cate.lider       }}</td>
+                <td>{{ cate.proyecto }}<!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> --></td>
+                <td style="text-align: left;">{{ cate.lider       }}</td>
                 <td>{{ cate.periodo     }}</td>
-                <td>{{ cate.subservicio }}</td>
+                <td style="text-align: left;">{{ cate.subservicio }}</td>
                 <td>{{ cate.estado      }}</td>
                 <td>{{ cate.importe | number: "3.2-2" }}</td>
                 <td>{{ cate.monto_facturado? cate.monto_facturado : '' | number: "3.2-2" }}</td>

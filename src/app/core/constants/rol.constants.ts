@@ -3,6 +3,11 @@ export const ROL_COOR_TDP = {
   name: 'Coordinador TDP',
 }
 
+export const ROL_COORD_LIDER = {
+  rolID: '103',
+  name: 'CoordLider'
+}
+
 export const ROL_ADMIN = {
   rolID: '104',
   name: 'Admin'
@@ -26,6 +31,7 @@ export const ROL_LIDER = {
 export enum ROLES_ENUM {
   USER        = '101',
   CORD_TDP    = '102',
+  CORD_LIDER  = '103', //Visualiza y registra vacaciones
   ADMIN       = '104',
   SUPER_ADMIN = '105', //Visualiza todos los Menús
   GESTOR      = '106', //Visualiza Gestión Personas + Mantenimiento

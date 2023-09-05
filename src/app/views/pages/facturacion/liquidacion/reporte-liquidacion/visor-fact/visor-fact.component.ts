@@ -14,7 +14,7 @@ import { VisorService } from 'src/app/core/services/visor.service';
 export class VisorFactComponent implements OnInit {
   page = 1;
   totalFacturas: number = 0;
-  pageSize = 10;
+  pageSize = 15;
 
   resultado: any[] = [];
   resultadoV: any[] = [];
