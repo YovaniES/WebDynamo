@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets } from 'chart.js';
 import chartDataLabels from 'chartjs-plugin-datalabels';
 import { SingleDataSet, Label } from 'ng2-charts';
-import { HttpClient } from '@angular/common/http';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { VisorService } from 'src/app/core/services/visor.service';
 
 @Component({

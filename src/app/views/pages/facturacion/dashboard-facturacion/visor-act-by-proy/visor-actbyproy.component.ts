@@ -7,11 +7,11 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { VisorService } from 'src/app/core/services/visor.service';
 
 @Component({
-  selector: 'app-visor-cierre',
-  templateUrl: './visor-cierre.component.html',
-  styleUrls: ['./visor-cierre.component.scss']
+  selector: 'app-visor-actbyproy',
+  templateUrl: './visor-actbyproy.component.html',
+  styleUrls: ['./visor-actbyproy.component.scss']
 })
-export class VisorCierreComponent implements OnInit {
+export class VisorActByProyComponent implements OnInit {
   resultado  : any[] = [];
   resultadoV : any[] = [];
   resultadoR : any[] = [];
@@ -78,21 +78,20 @@ export class VisorCierreComponent implements OnInit {
   displayedColumns: string[] = [];
   dataSource: any[] = [];
 
-  constructor(private http: HttpClient,
-              private modalService: NgbModal,
+  constructor(private modalService: NgbModal,
               private visorService: VisorService
       ) {}
 
   ngOnInit() {
-    this.getDataCierre();
+    this.getListLiqByProy();
   }
 
-  getDataCierre(){
+  getListLiqByProy(){
     this.visorService.getLiqActPeriodo().subscribe((resp: any[]) => {
 
       this.resultado = resp;
       this.resultadoV = resp;
-      console.log('VISOR-CIERRE', this.resultadoV);
+      console.log('VISOR-LIQ-PROY', this.resultadoV);
 
       this.suma();
 

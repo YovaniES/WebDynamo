@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
-import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { VisorService } from 'src/app/core/services/visor.service';
 

@@ -266,7 +266,7 @@ export class RegistroVacacionesComponent implements OnInit {
   actualizarVacaciones(DATA: any) {
     // console.log('DATA_PERSONA_VACACIONES', DATA);
     this.dialog
-      .open(ActualizarVacacionesComponent, {width: '55%', height: '75%', data: DATA, disableClose: true})
+      .open(ActualizarVacacionesComponent, {width: '65%', height: '75%', data: DATA, disableClose: true})
       .afterClosed().subscribe((resp) => {
         // if (resp) {
         //   this.cargarOBuscarVacaciones();

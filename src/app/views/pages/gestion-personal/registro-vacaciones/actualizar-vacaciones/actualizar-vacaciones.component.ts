@@ -27,6 +27,7 @@ export class ActualizarVacacionesComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   vacacionesForm!: FormGroup;
+  idVac:string = 'VAC-00123';
 
   constructor(
     private vacacionesService: VacacionesPersonalService,
@@ -58,8 +59,9 @@ export class ActualizarVacacionesComponent implements OnInit {
     newForm(){
       this.vacacionesForm = this.fb.group({
        nombre        : ['', [Validators.required]],
-       apPaterno     : [''],
-       apMaterno     : [''],
+      //  apPaterno     : [''],
+      //  apMaterno     : [''],
+       apellidos     : [''],
        codCorp       : [''],
        fechaInicVac  : [''],
        fechaFinVac   : [''],
@@ -113,7 +115,7 @@ export class ActualizarVacacionesComponent implements OnInit {
 
       Swal.fire({
         title: 'Actualizar Vacaciones!',
-        text : `La vacación de: ${ formValues.nombre } ${ formValues.apPaterno }, fue actualizado con éxito`,
+        text : `La vacación de: ${ formValues.nombre } ${ formValues.apellidos }, fue actualizado con éxito`,
         icon : 'success',
         confirmButtonText: 'Ok'
         })
@@ -138,9 +140,10 @@ export class ActualizarVacacionesComponent implements OnInit {
     this.vacacionesService.cargarVacacionesById(arrayParametro[0]).subscribe((resp: any) => {
       console.log('DATA_BY_ID', resp.list);
       this.vacacionesForm.controls['nombre'        ].setValue(resp.list[0].nombres);
-      this.vacacionesForm.controls['apPaterno'     ].setValue(resp.list[0].apellido_paterno);
+      // this.vacacionesForm.controls['apPaterno'     ].setValue(resp.list[0].apellido_paterno);
+      // this.vacacionesForm.controls['apMaterno'     ].setValue(resp.list[0].apellido_materno);
+      this.vacacionesForm.controls['apellidos'     ].setValue(resp.list[0].apellidos);
       this.vacacionesForm.controls['correo'        ].setValue(resp.list[0].correo);
-      this.vacacionesForm.controls['apMaterno'     ].setValue(resp.list[0].apellido_materno);
       this.vacacionesForm.controls['codCorp'       ].setValue(resp.list[0].codigo_corporativo);
       this.vacacionesForm.controls['proyecto'      ].setValue(resp.list[0].codigo_proyecto);
       this.vacacionesForm.controls['id_proyecto'   ].setValue(resp.list[0].id_proyecto);

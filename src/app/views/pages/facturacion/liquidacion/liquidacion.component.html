@@ -5,7 +5,8 @@
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
       <div class="card" style="border-radius: 2px; font-weight: 600">
         <div class="card-body" style="padding: 10px">
-          <form class="row g-3" [formGroup]="filtroForm">
+          <form class="row g-3" [formGroup]="liquidacionForm">
+
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">ID factura</label>
               <input
@@ -65,12 +66,20 @@
             </div>
 
             <div class="col-sm-3 cli-form-element">
+              <label>Importar Arch.</label>
+                <input type="file" class="cli-import"
+                accept=".xlsx, .xls, .csv"
+                formControlName="importar"
+                (change)="readExcell($event)">
+            </div>
+
+            <!-- <div class="col-sm-3 cli-form-element">
               <label class="form-label">SubServicio</label>
               <input
                 type="text"
                 class="form-control"
                 formControlName="subservicio"/>
-            </div>
+            </div> -->
 
             <div class="cli-form-buttons" style="margin-top: 8px">
               <button
@@ -224,7 +233,7 @@
               <td style="text-align: end; border-left-width: thin;"><small *ngIf="factura.declarado >0" class="icon-soles">S/</small>{{ factura.declarado | number : '1.0-2'}}</td>
               <td style="text-align: end;"><small *ngIf="factura.facturado >0" class="icon-soles">S/</small>{{ factura.facturado | number : '1.0-2'}}</td>
               <td style="text-align: end; border-right-width: thin; color: #f26897" >
-                <ng-container *ngIf="factura.declarado">
+                <ng-container>
                   <small class="icon-soles">S/</small>{{ (factura.declarado - factura.facturado) | number : '1.0-2' }}
                 </ng-container>
               </td>

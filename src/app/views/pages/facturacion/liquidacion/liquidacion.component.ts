@@ -11,6 +11,11 @@ import { ActualizarLiquidacionComponent } from '../liquidacion/actualizar-liquid
 import { ActualizacionMasivaComponent } from './actualizacion-masiva/actualizacion-masiva.component';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { ModalComentarioComponent } from './modal-comentario/modal-comentario.component';
+import * as XLSX from 'xlsx';
+import { LiquidacionModel } from 'src/app/core/models/liquidacion.models';
+import { mapearImportLiquidacion } from 'src/app/core/mapper/liquidacion-list.mapper';
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
+import { concatMap, of } from 'rxjs';
 
 @Component({
   selector: 'app-liquidacion',
@@ -22,7 +27,7 @@ export class LiquidacionComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
   userId!: number;
-  filtroForm!: FormGroup;
+  liquidacionForm!: FormGroup;
 
   page = 1;
   totalFacturas: number = 0;
@@ -31,6 +36,7 @@ export class LiquidacionComponent implements OnInit {
   constructor(
     private facturacionService: FacturacionService,
     private exportExcellService: ExportExcellService,
+    private liquidacionService: LiquidacionService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     public datepipe: DatePipe,
@@ -48,7 +54,7 @@ export class LiquidacionComponent implements OnInit {
   }
 
   newFilfroForm(){
-    this.filtroForm = this.fb.group({
+    this.liquidacionForm = this.fb.group({
       codFact            : [''],
       id_proy            : [''],
       id_liquidacion     : [''],
@@ -58,9 +64,67 @@ export class LiquidacionComponent implements OnInit {
       id_gestor          : [''],
       importe            : [''],
       subservicio        : [''],
-      f_periodo          : ['']
+      f_periodo          : [''],
+
+      importar           : ['']
     })
   };
+
+  importacion = 0;
+  dataLiqImport: any[] = [];
+  readExcell(e: any){
+    console.log('|==>',e, this.liquidacionForm);
+    this.importacion ++
+    this.blockUI.start("Espere por favor, estamos Importando la Data, importación N°: " + this.importacion) ;
+
+    let file = e.target.files[0];
+    let fileReader = new FileReader();
+
+    fileReader.readAsBinaryString(file)
+
+    fileReader.onload = e => {
+      var wb = XLSX.read(fileReader.result, { type: 'binary', cellDates: true})
+      // console.log('****', wb);
+      var sheetNames = wb.SheetNames;
+
+      this.dataLiqImport = XLSX.utils.sheet_to_json(wb.Sheets[sheetNames[0]])
+
+      console.log('DATA_EXCELL', this.dataLiqImport);
+
+      this.liquidacionForm.controls['importar'].reset()
+      this.liquidacionForm.controls['importar'].setValue(null)
+
+      // this.validarImportacionExcell();
+      this.insertarListaLiquidacion();
+
+      this.blockUI.stop();
+    }
+  }
+
+  insertarListaLiquidacion(){
+    this.spinner.show();
+    const listaImportado: LiquidacionModel[] = mapearImportLiquidacion(this.dataLiqImport, )
+
+    this.liquidacionService.insertarListadoLiquidacion(listaImportado)
+        .pipe(concatMap((resp: any) => {
+          console.log('DATA-IMP-LIQ', resp);// {message: "ok"}
+             return resp && resp.message == 'ok';
+            //  return resp && resp.message == 'ok'? this.scoreService.actualizarScore(parametro[0]): of({})
+      })).subscribe((resp: any) => {
+        console.log('DATA_LIQ-SAVE', resp);
+      if (resp) {
+        Swal.fire({
+          title: 'Importar Liquidación!',
+          text : `Se importó con éxito la data`,
+          icon : 'success',
+          confirmButtonText: 'Ok'
+        });
+        this.spinner.hide();
+        this.cargarOBuscarLiquidacion();
+      }
+     }
+   )}
+
 
   listaLiquidacion: any[] = [];
   cargarOBuscarLiquidacion(){
@@ -68,17 +132,17 @@ export class LiquidacionComponent implements OnInit {
     let parametro: any[] = [{
       "queryId": 118,
       "mapValue": {
-          cod_fact       : this.filtroForm.value.codFact,
-          id_proy        : this.filtroForm.value.id_proy,
-          id_liquidacion : this.filtroForm.value.id_liquidacion,
-          id_estado      : this.filtroForm.value.id_estado,
-          id_gestor      : this.filtroForm.value.id_gestor,
-          importe        : this.filtroForm.value.importe,
-          subservicio    : this.filtroForm.value.subservicio,
-          f_periodo      : this.filtroForm.value.f_periodo,
-          // f_periodo         : this.datepipe.transform(this.filtroForm.value.f_periodo,"yyyy/MM/dd"),
-          inicio         : this.datepipe.transform(this.filtroForm.value.fechaRegistroInicio,"yyyy/MM/dd"),
-          fin            : this.datepipe.transform(this.filtroForm.value.fechaRegistroFin,"yyyy/MM/dd"),
+          cod_fact       : this.liquidacionForm.value.codFact,
+          id_proy        : this.liquidacionForm.value.id_proy,
+          id_liquidacion : this.liquidacionForm.value.id_liquidacion,
+          id_estado      : this.liquidacionForm.value.id_estado,
+          id_gestor      : this.liquidacionForm.value.id_gestor,
+          importe        : this.liquidacionForm.value.importe,
+          subservicio    : this.liquidacionForm.value.subservicio,
+          f_periodo      : this.liquidacionForm.value.f_periodo,
+          // f_periodo         : this.datepipe.transform(this.liquidacionForm.value.f_periodo,"yyyy/MM/dd"),
+          inicio         : this.datepipe.transform(this.liquidacionForm.value.fechaRegistroInicio,"yyyy/MM/dd"),
+          fin            : this.datepipe.transform(this.liquidacionForm.value.fechaRegistroFin,"yyyy/MM/dd"),
       }
     }];
     this.facturacionService.cargarOBuscarLiquidacion(parametro[0]).subscribe((resp: any) => {
@@ -178,7 +242,7 @@ export class LiquidacionComponent implements OnInit {
   }
 
   limpiarFiltro() {
-    this.filtroForm.reset('', {emitEvent: false})
+    this.liquidacionForm.reset('', {emitEvent: false})
     this.newFilfroForm()
 
     this.cargarOBuscarLiquidacion();

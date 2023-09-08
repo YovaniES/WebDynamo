@@ -73,7 +73,7 @@
         <label class="form-label">Estado</label>
         <select class="form-select" formControlName="id_estado">
           <option [value]="0" disabled>-Seleccione-</option>
-          <option [value]="est.id_correlativo" *ngFor="let est of listEstados">{{est.nombre}}</option>
+          <option [value]="est.id" *ngFor="let est of listEstados">{{est.nombre}}</option>
         </select>
         <small class="form-text text-alert" *ngIf="campoNoValido('id_estado')">* Este campo es obligatorio</small>
       </div>

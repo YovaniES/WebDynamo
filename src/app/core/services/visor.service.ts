@@ -18,10 +18,10 @@ export class VisorService {
     );
   }
 
-  getFacturas() {
+  getFacturados() {
     return this.http.get<any>(API_VISOR + 'getFacturados').pipe(
       tap((resp: any) => {
-        console.log('VISOR_Facturas: ', resp);
+        console.log('VISOR_Facturados: ', resp);
       })
     );
   }
@@ -37,7 +37,7 @@ export class VisorService {
   getLiqActPeriodo() {
     return this.http.get<any>(API_VISOR + 'getLiqPer').pipe(
       tap((resp: any) => {
-        console.log('VISOR_LIQ_PER: ', resp);
+        console.log('VISOR_LIQ_PROY: ', resp);
       })
     );
   }

@@ -44,15 +44,15 @@ export class CrearLiquidacionComponent implements OnInit {
 
   newForm(){
     this.facturaForm = this.fb.group({
-     id_liquidacion      : [676,[Validators.required]], //tipoLiq=676 : ACTA
-     id_proyecto         : ['',[Validators.required]],
-     subservicio         : ['',[Validators.required]],
-     id_gestor           : ['',[Validators.required]],
-     venta_declarada     : ['',[Validators.required]],
-     fechaPeriodo        : ['',[Validators.required]],
-     id_estado           : [178,[Validators.required]], //Estado 178: ENVIADO
+     id_liquidacion : [676,[Validators.required]], //tipoLiq=676 : ACTA
+     id_proyecto    : ['',[Validators.required]],
+     subservicio    : ['',[Validators.required]],
+     id_gestor      : ['',[Validators.required]],
+     venta_declarada: ['',[Validators.required]],
+     fechaPeriodo   : ['',[Validators.required]],
+     id_estado      : [178,[Validators.required]], //Estado 178: ENVIADO
     })
-   }
+  }
 
   crearOduplicarLiquidacion(){
     this.spinner.show();
@@ -78,21 +78,13 @@ export class CrearLiquidacionComponent implements OnInit {
         p_idProyecto        : formValues.id_proyecto,
         p_idLiquidacion     : formValues.id_liquidacion,
         p_subServicio       : formValues.subservicio,
-        p_gestor            : formValues.gestor,
         p_idGestor          : formValues.id_gestor,
         p_venta_declarada   : formValues.venta_declarada,
         p_idEstado          : formValues.id_estado,
-        p_orden_compra      : formValues.orden_compra,
-        p_cod_certificacion : formValues.certificacion,
-        p_factura           : formValues.factura,
-        p_monto_facturado   : formValues.monto_facturado,
-        p_Comentarios       : formValues.comentarios,
-        p_idMotivo          : '',
         p_idUsuarioCrea     : this.userID,
         p_fechaCrea         : formValues.fecha_crea,
-        p_idUsuarioActualiza: '',
-        p_fechaActualiza    : '',
         p_ver_estado        : '',
+        p_id_reg_proy       : '',
         CONFIG_USER_ID      : this.userID,
         CONFIG_OUT_MSG_ERROR: '',
         CONFIG_OUT_MSG_EXITO: '',
@@ -162,7 +154,7 @@ export class CrearLiquidacionComponent implements OnInit {
         this.facturaForm.controls['id_estado'      ].setValue(this.DATA_DUPLICIDAD.id_estado)
         this.facturaForm.controls['fechaPeriodo'   ].setValue(this.formatPeriodo(this.DATA_DUPLICIDAD.periodo))
 
-        console.log('PER--DUP', this.formatPeriodo(this.DATA_DUPLICIDAD.periodo) ); // 08-2022
+        console.log('PER--DUP',this.DATA_DUPLICIDAD,  this.formatPeriodo(this.DATA_DUPLICIDAD.periodo) ); // 08-2022
     }
   };
 

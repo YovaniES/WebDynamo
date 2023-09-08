@@ -13,13 +13,11 @@ import { AgregarVentadeclaradaComponent } from './liquidacion/actualizar-liquida
 import { LiquidacionComponent } from './liquidacion/liquidacion.component';
 import { AgregarCertificacionComponent } from './liquidacion/actualizar-liquidacion/agregar-certificacion/agregar-certificacion.component';
 import { ActualizacionMasivaComponent } from './liquidacion/actualizacion-masiva/actualizacion-masiva.component';
-import { ReporteLiquidacionComponent } from './liquidacion/reporte-liquidacion/reporte-liquidacion.component';
-import { VisorActComponent } from './liquidacion/reporte-liquidacion/visor-act/visor-act.component';
-import { HomeVisorComponent } from './liquidacion/home-visor/home-visor.component';
-import { VisorFactComponent } from './liquidacion/reporte-liquidacion/visor-fact/visor-fact.component';
-import { VisorDeclaradaComponent } from './liquidacion/reporte-liquidacion/visor-venta-decl/visor-declarada.component';
-import { VisorCierreComponent } from './liquidacion/reporte-liquidacion/visor-proy/visor-cierre.component';
-import { VisorDpfComponent } from './liquidacion/reporte-liquidacion/visor-dpf/visor-dpf.component';
+import { VisorActComponent } from './dashboard-facturacion/visor-liquid-activas/visor-act.component';
+import { VisorFactComponent } from './dashboard-facturacion/visor-facturados/visor-fact.component';
+import { VisorDeclaradaComponent } from './dashboard-facturacion/visor-venta-decl/visor-declarada.component';
+import { VisorActByProyComponent } from './dashboard-facturacion/visor-act-by-proy/visor-actbyproy.component';
+import { VisorDpfComponent } from './dashboard-facturacion/visor-dpf-alo/visor-dpf.component';
 import { ModalComentarioComponent } from './liquidacion/modal-comentario/modal-comentario.component';
 
 
@@ -31,10 +29,8 @@ import { ModalComentarioComponent } from './liquidacion/modal-comentario/modal-c
     LiquidacionComponent,
     AgregarCertificacionComponent,
     ActualizacionMasivaComponent,
-    ReporteLiquidacionComponent,
-    HomeVisorComponent,
     VisorActComponent,
-    VisorCierreComponent,
+    VisorActByProyComponent,
     VisorFactComponent,
     VisorDeclaradaComponent,
     VisorDpfComponent,

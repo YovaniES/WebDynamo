@@ -73,11 +73,11 @@ export class VisorFactComponent implements OnInit {
   constructor(private visorService: VisorService){}
 
   ngOnInit() {
-    this.getInitializerFact();
+    this.getListFacturados();
   }
 
-  getInitializerFact(){
-    this.visorService.getFacturas().subscribe((resp: any[]) => {
+  getListFacturados(){
+    this.visorService.getFacturados().subscribe((resp: any[]) => {
 
       this.resultado = resp;
       this.resultadoV = resp;
@@ -192,7 +192,7 @@ export class VisorFactComponent implements OnInit {
   cambiarPagina(event: number) {
 
     if (this.totalfiltro != this.totalFacturas) {
-    this.visorService.getFacturas().subscribe((resp: any[]) => {
+    this.visorService.getFacturados().subscribe((resp: any[]) => {
       this.resultadoV = resp;
     })
   }

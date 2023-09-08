@@ -24,7 +24,7 @@
         </div>
       </div>
 
-      <div class="col-lg-6 col-12 canvas">
+      <div class="col-lg-6 col-12 ">
         <h3 style="font-size: 20px; font-weight: 500">Facturados por Proyecto</h3>
         <div style="display: block">
           <canvas
@@ -84,9 +84,9 @@
                           }">
                   <td>{{ cate.periodo  }}<!-- <a [routerLink]="['/detail']" [queryParams]="{id: cate.codigo_solicitud}">{{ cate.codigo }}</a> --></td>
                   <td>{{ cate.proyecto }}</td>
-                  <td>{{ cate.lider    }}</td>
+                  <td style="text-align: left;">{{ cate.lider }}</td>
                   <td style="text-align: left;">{{ cate.subservicio }}</td>
-                  <td style="color: #09d6ff;font-weight: 500;">{{ cate.estado   }}</td>
+                  <td style="color: #09d6ff;font-weight: 500;">{{ cate.estado }}</td>
                   <td>{{ cate.factura  }}</td>
                   <td>{{ cate.monto_facturado | number: "3.2-2" }}</td>
                   <td>{{ cate.orden_compra + " - " + cate.cod_certificacion }}</td>

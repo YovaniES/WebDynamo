@@ -21,7 +21,7 @@
 
             <div class="input-group col-sm-4">
               <div class="input-group-text"><mat-icon>person</mat-icon></div>
-              <div class="info">{{vacacionesForm.controls['nombre'].value | uppercase}} {{vacacionesForm.controls['apPaterno'].value | uppercase}} {{vacacionesForm.controls['apMaterno'].value | uppercase}}</div>
+              <div class="info">{{vacacionesForm.controls['nombre'].value | uppercase}} {{vacacionesForm.controls['apellidos'].value | uppercase}}</div>
             </div>
 
             <div class="input-group col-sm-4">
@@ -37,7 +37,13 @@
         </div>
 
       <!-- DATOS DE LA EMPRESA ------------------------------------------------------------------------->
-      <div class="pr-subtitle mt-2">Registro vacaciones</div>
+      <!-- <div class="pr-subtitle mt-2">Registro vacaciones <small style="color: #47deb1;border: 1px solid #47deb1;border-radius: 2px;padding: 2px;"> {{idVac}} </small></div> -->
+      <div style="display: flex;" >
+        <div class="pr-subtitle">Registro Vacaciones 2</div>
+        <div class="flex-1"></div>
+        <!-- <small style="color: #47deb1;border: 1px solid #47deb1;border-radius: 2px;padding: 2px; padding-inline: 6px;"> {{idVac}} </small> -->
+      </div>
+
       <div class="pr-section mb-3">
         <div class="pr-module-container">
           <div class="row g-3">
@@ -49,7 +55,7 @@
               </select>
             </div>
 
-            <div class="col-sm-2 cli-form-element">
+            <div class="col-sm-3 cli-form-element">
               <label>Tipo vac.</label>
               <select class="cli-input-white" formControlName="idTipoVac">
                 <option [value]="0" disabled>- Seleccione -</option>
@@ -57,7 +63,7 @@
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <div class="col-sm-2 cli-form-element">
               <label class="form-label">Estado</label>
               <input
                 style="font-weight: 500; text-align:center"
