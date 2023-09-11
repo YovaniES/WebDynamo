@@ -19,6 +19,7 @@ import { VisorDeclaradaComponent } from './dashboard-facturacion/visor-venta-dec
 import { VisorActByProyComponent } from './dashboard-facturacion/visor-act-by-proy/visor-actbyproy.component';
 import { VisorDpfComponent } from './dashboard-facturacion/visor-dpf-alo/visor-dpf.component';
 import { ModalComentarioComponent } from './liquidacion/modal-comentario/modal-comentario.component';
+import { ModalDpfPendienteComponent } from './dashboard-facturacion/visor-dpf-alo/modal-dpf-pendiente/modal-dpf-pendiente.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ModalComentarioComponent } from './liquidacion/modal-comentario/modal-c
     VisorFactComponent,
     VisorDeclaradaComponent,
     VisorDpfComponent,
-    ModalComentarioComponent
+    ModalComentarioComponent,
+    ModalDpfPendienteComponent
     ],
   imports: [
     CommonModule,

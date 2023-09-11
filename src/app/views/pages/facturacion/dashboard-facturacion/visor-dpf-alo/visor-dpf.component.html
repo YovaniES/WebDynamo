@@ -218,14 +218,26 @@
               <ng-container *ngFor="let x of listDPF">
                   <tr *ngIf="dataDpfAloTOTAL(x.proyecto) ">
                     <td style="color: #38ccbd;font-weight: 500;" >{{ x.proyecto }}</td>
-                    <td class="tot-cor">{{(dataDPF(x.proyecto, -1)? dataDPF(x.proyecto, -1):'')| number:'1.2-2'}}</td>
+                    <td class="tot-cor">{{(dataDPF(x.proyecto, -1)? dataDPF(x.proyecto, -1):'') | number:'1.2-2'}}</td>
                     <td class="visor">  {{(dataDPF(x.proyecto, -2)? dataDPF(x.proyecto, -2):'') | number:'1.2-2'}}</td> <!-- -1[1-30] JUL-->
                     <td class="visor">  {{(dataDPF(x.proyecto, -3)? dataDPF(x.proyecto, -3):'') | number:'1.2-2'}}</td> <!-- -2[31-60] JUN-->
                     <td class="visor">  {{(dataDPF(x.proyecto, -4)? dataDPF(x.proyecto, -4):'') | number:'1.2-2'}}</td> <!-- -3[61-90] MAY-->
                     <td class="visor">  {{(dpfAlo91_180(x.proyecto  )? dpfAlo91_180(x.proyecto ): '') | number:'1.2-2'}}</td> <!-- -4-5-6[91-180] MAY-->
                     <td class="visor">  {{(dpfAlo181_365(x.proyecto )? dpfAlo181_365(x.proyecto): '') | number:'1.2-2'}}</td>
                     <td class="visor">  {{(dpfAloMayor365(x.proyecto)? dpfAloMayor365(x.proyecto): '')| number:'1.2-2'}}</td>
-                    <td style="font-weight: 700;color: #007bff;text-align: end;">{{(dpfAloVencidos(x.proyecto)? dpfAloVencidos(x.proyecto): '') | number:'1.2-2' }}</td>
+
+                    <td>
+                      <div class="cli-table-user">
+                        <span style="font-weight: 700;color: #007bff;text-align: end;">  {{ (dpfAloVencidos(x.proyecto)? dpfAloVencidos(x.proyecto): '') | number:'1.2-2' }}</span>
+                        <button matTooltip="Ver Deuda por gestor" *ngIf="dpfAloVencidos(x.proyecto)"
+                          class="icon-btn btn-trans c-cyan"
+                          (click)="abrirDpfPendiente(x.proyecto)"
+                          ><mat-icon class="icon-10">person</mat-icon>
+                        </button>
+                      </div>
+                    </td>
+
+                    <!-- <td style="font-weight: 700;color: #007bff;text-align: end;">{{(dpfAloVencidos(x.proyecto)? dpfAloVencidos(x.proyecto): '') | number:'1.2-2' }}</td> -->
                     <td style="color: #000; font-weight: 600; text-align: end;">{{ dataDpfAloTOTAL(x.proyecto) | number:'1.2-2' }}</td>
                 </tr>
               </ng-container>

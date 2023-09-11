@@ -54,7 +54,7 @@ export class VisorService {
   getLiqByProyCertificado() {
     return this.http.get<any>(API_VISOR + 'getLiqByProyCertificado').pipe(
       tap((resp: any) => {
-        console.log('LIQ_BY_PROY: ', resp);
+        // console.log('LIQ_BY_PROY: ', resp);
       })
     );
   }
@@ -63,6 +63,14 @@ export class VisorService {
     return this.http.get<any>(API_VISOR + 'getDpf').pipe(
       tap((resp: any) => {
         // console.log('DATA-DPF: ', resp);
+      })
+    );
+  }
+
+  getListPendienteByGestor(){
+    return this.http.get<any>(API_VISOR + 'getListPendByGestor').pipe(
+      tap((resp: any) => {
+        console.log('DATA-getListPendByGestor: ', resp);
       })
     );
   }

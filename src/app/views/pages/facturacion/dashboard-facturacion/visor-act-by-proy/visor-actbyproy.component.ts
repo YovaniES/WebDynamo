@@ -185,6 +185,7 @@ export class VisorActByProyComponent implements OnInit {
      }, error => console.error(error));
   }
 
+  // Abrir modal de porcengt
   open(content: any, proy: string, periodo: any, origen: string) {
     this.caspru = null;
 

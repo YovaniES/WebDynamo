@@ -10,6 +10,8 @@ import * as moment from 'moment';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ModalDpfPendienteComponent } from './modal-dpf-pendiente/modal-dpf-pendiente.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-visor-fact',
@@ -29,9 +31,15 @@ export class VisorDpfComponent implements OnInit {
     this.activeTab = tab;
   }
 
+  constructor(private visorService: VisorService,
+    public datepipe: DatePipe,
+    private spinner: NgxSpinnerService,
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+  ){}
+
   pieChartOptions: any = {
     responsive: true,
-
     onClick: function (e: any) {
       var element = this.getElementAtEvent(e);
       if (element.length) {
@@ -47,7 +55,6 @@ export class VisorDpfComponent implements OnInit {
   pieChartType  : ChartType = 'pie';
   pieChartLegend  = true;
   pieChartPlugins = [chartDataLabels];
-
   barChartOptions: any = {
   responsive: true,
   onClick: function (e: any) {
@@ -77,12 +84,6 @@ export class VisorDpfComponent implements OnInit {
 
     XLSX.writeFile(book, this.name);
   }
-
-  constructor(private visorService: VisorService,
-              public datepipe: DatePipe,
-              private spinner: NgxSpinnerService,
-              private fb: FormBuilder,
-    ){}
 
   ngOnInit(){
     this.getListDPF();
@@ -479,5 +480,16 @@ export class VisorDpfComponent implements OnInit {
         return a + b;
       })
       console.log('SUMA', this.sum);
+  }
+
+  abrirDpfPendiente(byProyecto: string) {
+    console.log('PROYECTO_PEND_BY_GESTOR:', byProyecto);
+
+    const dialogRef = this.dialog.open(ModalDpfPendienteComponent, { width: '45%',data: byProyecto});
+    dialogRef.afterClosed().subscribe((resp) => {
+      if (resp) {
+        this.getListDPF();
+      }
+    });
   }
 }

@@ -28,6 +28,17 @@ tr.mat-row.cdk-row {
   cursor: pointer;
 }
 
+.cli-table {
+  width: 100%;
+  background-color: #fff;
+  &-user {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    color: #6c757d;
+  }
+}
+
 .active{
   border-bottom: 3px solid #03bccf;
   transition: ease-in-out .3s;

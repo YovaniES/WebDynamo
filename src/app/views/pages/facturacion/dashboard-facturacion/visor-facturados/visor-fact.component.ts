@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ChartType, ChartDataSets } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import chartDataLabels from 'chartjs-plugin-datalabels';
-import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { VisorService } from 'src/app/core/services/visor.service';
 
@@ -16,13 +15,13 @@ export class VisorFactComponent implements OnInit {
   totalFacturas: number = 0;
   pageSize = 15;
 
-  resultado: any[] = [];
-  resultadoV: any[] = [];
+  // Filtro - Grafico PIE
+  resultado  : any[] = [];
+  resultadoV : any[] = [];
   resultadoNV: any;
   sum!: number;
-
   pieChartOptions: any = {
-    responsive: true,
+  responsive: true,
 
     onClick: function (e: any) {
       var element = this.getElementAtEvent(e);
@@ -31,26 +30,26 @@ export class VisorFactComponent implements OnInit {
           (<HTMLInputElement>document.getElementById('ckh2h')).click();
           console.log('PIE-FACTURAS',element[0]._view.label)
         }
-      },
+    },
   };
 
+  // Filtro - Grafico BAR
   pieChartLabels: Label[] = ['Cargando.', 'Cargando..', 'Cargando...', 'Cargando...', 'Cargando...', 'Cargando...'];
   pieChartData  : SingleDataSet = [1, 2, 3, 4, 5, 6];
   pieChartType  : ChartType = 'pie';
-  pieChartLegend  = true;
+  pieChartLegend = true;
   pieChartPlugins = [chartDataLabels];
-
   barChartOptions: any = {
   responsive: true,
-  onClick: function (e: any) {
-    var element = this.getElementAtEvent(e);
-    if (element.length) {
 
+    onClick: function (e: any) {
+      var element = this.getElementAtEvent(e);
+      if (element.length) {
         (<HTMLInputElement>document.getElementById('ckh2h')).value = element[0]._view.label + '|f';
         (<HTMLInputElement>document.getElementById('ckh2h')).click();
-        console.log(element[0]._view.label)
+        console.log('FILTRO_PROY',element[0]._view.label)
+        }
       }
-    }
   };
 
   barChartLabels: Label[] = [];
@@ -58,7 +57,6 @@ export class VisorFactComponent implements OnInit {
   barChartLegend  = true;
   barChartPlugins = [chartDataLabels];
   barChartData: ChartDataSets[] = [{ data: [], label: '' }];
-
   name = 'dwdFacturas.xlsx';
   exportToExcel(): void {
     let element = document.getElementById('tbRes');
@@ -76,27 +74,34 @@ export class VisorFactComponent implements OnInit {
     this.getListFacturados();
   }
 
+
+  groupBy(objectArray: any[], property: string) {
+    return objectArray.reduce(function (acc: { [x: string]: any[]; }, obj: { [x: string]: any; }) {
+        var key = obj[property];
+        if (!acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(obj);
+        return acc;
+    }, {});
+  }
+
   getListFacturados(){
     this.visorService.getFacturados().subscribe((resp: any[]) => {
 
       this.resultado = resp;
       this.resultadoV = resp;
-      console.log(this.resultadoV);
+      console.log('lista-fact',this.resultadoV);
 
       this.suma();
 
-      function groupBy(objectArray: any[], property: string) {
-          return objectArray.reduce(function (acc: { [x: string]: any[]; }, obj: { [x: string]: any; }) {
-              var key = obj[property];
-              if (!acc[key]) {
-                  acc[key] = [];
-              }
-              acc[key].push(obj);
-              return acc;
-          }, {});
-      }
 
-      const groupedData = groupBy(this.resultadoV, 'proyecto');
+
+
+
+
+
+      const groupedData = this.groupBy(this.resultadoV, 'proyecto');
       const reducedData = [];
 
       for (let key in groupedData) {
@@ -107,7 +112,7 @@ export class VisorFactComponent implements OnInit {
 
         let sumd = groupedData[key].reduce((accumulator: string | number, currentValue: { estado_proyecto: string; }) => {
           return +accumulator + (currentValue.estado_proyecto=="Derivado"?1:0);
-      },initialValue)
+        },initialValue)
 
           reducedData.push({
               Derivados: sumd,
@@ -123,7 +128,7 @@ export class VisorFactComponent implements OnInit {
       ]
 
       this.barChartLabels = reducedData.sort((a, b) => (a.fecha > b.fecha) ? 1 : ((b.fecha > a.fecha) ? -1 : 0)).map(x => x["fecha"]);
-      console.log('Fecha', res);
+      console.log('Fecha-fac', res);
 
       var res0 = [];
 
@@ -136,7 +141,6 @@ export class VisorFactComponent implements OnInit {
       var res = [];
       for (var x in res0) {
           res0.hasOwnProperty(x) && res.push(res0[x])
-
       }
       this.pieChartData = res;
 
@@ -160,7 +164,7 @@ export class VisorFactComponent implements OnInit {
       alert("hola");
   }
 
-  filtrar(flt: any) {
+   filtrar(flt: any) {
       // Only Change 3 values
 
       var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
@@ -169,7 +173,6 @@ export class VisorFactComponent implements OnInit {
       this.resultadoV = this.resultado;
       if (arrayDeCadenas[1] == "e") {
           this.resultadoV = this.resultadoV.filter((task: { periodo: string; }) => task.periodo == arrayDeCadenas[0]);
-
       }
       else {
           this.resultadoV = this.resultadoV.filter((task: { proyecto: string; }) => task.proyecto == arrayDeCadenas[0]);
@@ -179,13 +182,12 @@ export class VisorFactComponent implements OnInit {
       (<HTMLInputElement>document.getElementById('titulo')).innerText = "Facturas:: " + arrayDeCadenas[0] + "(" + this.sum.toLocaleString('es-PE') + ")";
   }
 
-  suma()
-  {
+  suma(){
       this.sum = this.resultadoV.map((a: { monto_facturado: any; }) => a.monto_facturado).reduce(function(a: any, b: any)
       {
         return a + b;
       })
-      console.log('SUMA', this.sum);
+      console.log('SUMA-FACTURADOS', this.sum);
   }
 
   totalfiltro = 0;
