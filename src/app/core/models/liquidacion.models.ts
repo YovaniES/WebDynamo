@@ -5,15 +5,10 @@ export interface LiquidacionModel{
   SubServicio    : string;
   IdGestor       : number;
   Venta_declarada: string;
+  IdEstado       : number;
   Periodo        : Date;
-
-
-  // IdFactura      : number;
-  // Proyecto       : string;
-  // Subservicio    : string;
-  // Gestor         : string;
-  // Venta_declarada: string;
-  // Periodo        : Date;
+  Id_reg_proy    : number;
+  FechaCrea      : Date
 };
 
 

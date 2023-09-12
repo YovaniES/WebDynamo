@@ -32,8 +32,9 @@ const routes: Routes = [
         // data: {rol_menu: [PERMISSION.MENU_MANTENIMIENTO]}
       },
       {
-        path:'seguridad',
-        loadChildren: () => import ('./views/pages/seguridad/seguridad.module').then((m)=>m.SeguridadModule),
+        path:'dashboard',
+        // loadChildren: () => import ('./views/pages/seguridad/seguridad.module').then((m)=>m.SeguridadModule),
+        loadChildren: () => import ('./views/pages/Dashboard/seguridad.module').then((m)=> m.SeguridadModule),
       },
       {
         path:'factura',

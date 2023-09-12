@@ -8,7 +8,7 @@
           <form class="row g-3" [formGroup]="liquidacionForm">
 
             <div class="col-sm-3 cli-form-element">
-              <label class="form-label">ID factura</label>
+              <label class="form-label">ID Liquidación</label>
               <input
                 type="number"
                 class="form-control"
@@ -65,21 +65,17 @@
               </div>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
-              <label>Importar Arch.</label>
-                <input type="file" class="cli-import"
-                accept=".xlsx, .xls, .csv"
-                formControlName="importar"
-                (change)="readExcell($event)">
+            <div class="col-sm-3 cli-form-element" style="margin-top: 45px">
+              <div class="form-group">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         id="inlineCheckbox1"
+                         formControlName="periodoActual">
+                  <label class="form-check-label" for="inlineCheckbox1">Periodo actual</label>
+                </div>
+              </div>
             </div>
-
-            <!-- <div class="col-sm-3 cli-form-element">
-              <label class="form-label">SubServicio</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="subservicio"/>
-            </div> -->
 
             <div class="cli-form-buttons" style="margin-top: 8px">
               <button
@@ -108,31 +104,30 @@
       <!-- BOTON MODAL PARA CREAR LIQIDACION ----------------------------------------------------->
       <div style="display: flex" class="mt-4 mb-1">
         <button
-          class="cli-btn btn-blue"
+          class="btn-crear btn-blue"
           style="margin: 0"
           type="button"
           (click)="crearLiquidacion()"
-        ><mat-icon class="icon-18">add</mat-icon>Crear liquidación
+          ><mat-icon class="icon-18">add</mat-icon>Crear liquidación
         </button>
 
         <button
-          class="cli-btn btn-cancel mx-1"
+          class="cli-btn-liq btn-cancel mx-1"
           (click)="actualizacionMasiva()"
           ><mat-icon class="icon-18">edit_note</mat-icon>Act. masiva
         </button>
-        <button
-          matTooltip="Exportar filtro"
-          class="icon-btn btn-trans c-green-export mx-1"
-          (click)="exportarRegistro()"
-        ><mat-icon class="icon-18">file_download</mat-icon>Exportar filtro
-        </button>
 
-        <button
-        matTooltip="Exportar VD-FACT"
-        class="icon-btn btn-trans c-indigo-export mx-1"
-        (click)="exportarVD_FACT()"
-      ><mat-icon class="icon-18">archive</mat-icon>Exportar Venta Decl.
-      </button>
+        <!-- <button
+           matTooltip="Exportar VD-FACT"
+           class="icon-btn btn-trans c-indigo-export mx-1"
+           (click)="exportarVD_FACT()"
+           ><mat-icon class="icon-18">archive</mat-icon>
+        </button> -->
+
+        <!-- Ver ngModel -->
+        <!-- <input type="file" class="cli-import"
+            accept=".xlsx, .xls, .csv"
+            (change)="readExcell($event)"> -->
 
         <div class="flex-1"></div>
         <div class="mt-2" style="color: #345df3; font-weight: 600;">
@@ -146,7 +141,7 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 72px;">ID Factura</th>
+              <th style="min-width: 72px;">ID Liquid</th>
               <th class="w100">Periodo</th>
               <th style="min-width: 240px;">Gestor</th>
               <th>Proyecto</th>
@@ -154,8 +149,24 @@
               <th style="min-width: 65px;" >Validar</th>
               <th style="min-width: 280px;">Subservicio</th>
               <th style="min-width: 92px;" >Estado</th>
-              <th>Importe</th>
-              <th style="background: #dee2e6;color: #676767;">Declarado</th>
+              <th>
+                <div class="cli-table-user">
+                  <button matTooltip="Exportar filtro"
+                    class="icon-btn btn-trans c-white"
+                    (click)="exportarRegistro()"
+                    ><mat-icon class="icon-16">downloading</mat-icon>
+                  </button>Importe
+                </div>
+              </th>
+              <th style="background: #dee2e6;color: #676767;">
+                <div class="cli-table-user">
+                  <button matTooltip="Exportar venta declarada"
+                    class="icon-btn btn-trans c-indigo"
+                    (click)="exportarVD_FACT()"
+                    ><mat-icon class="icon-16">file_download</mat-icon>
+                  </button>Declarado
+                </div>
+              </th>
               <th style="background: #dee2e6;color: #676767;">Facturado</th>
               <th style="background: #dee2e6;color: #676767;">Pendiente</th>
             </tr>
@@ -189,7 +200,7 @@
                   </button>
                 </div>
               </td>
-              <td>{{ factura.idFactura }}</td>
+              <td style="font-weight: 600;">{{ factura.id_liq }}</td>
               <td>{{ factura.periodo | date:"yyyy/MM" }}</td>
               <td style="text-align: left">{{ factura.gestor }}</td>
 
@@ -210,7 +221,7 @@
                     matTooltip="Ver comentario"
                     class="icon-btn btn-trans c-grey"
                     (click)="abrirComentarioRegularizacion(factura.idFactura)"
-                    ><mat-icon class="icon-13">visibility</mat-icon>
+                    ><mat-icon class="icon-10">visibility</mat-icon>
                   </button><span *ngIf="factura.liquidacion == 'Regularización'" style="color:#00d4ff">  {{ factura.liquidacion | uppercase }}</span>
                 </div>
                 <span *ngIf="factura.liquidacion == 'Pago Adelantado'"style="color:deeppink">{{ factura.liquidacion | uppercase }}</span>

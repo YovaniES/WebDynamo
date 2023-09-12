@@ -20,7 +20,7 @@ export class ModalDpfPendienteComponent implements OnInit {
 
   ngOnInit(): void {
     this.getListPendienteByGestor();
-    console.log('PROY_BY_GESTOR', this.PROY_BY_GESTOR);
+    // console.log('PROY_BY_GESTOR', this.PROY_BY_GESTOR);
   }
 
   proyectoPendiente: string = 'ENTEQA';
@@ -34,8 +34,7 @@ export class ModalDpfPendienteComponent implements OnInit {
 
       this.dataInicial = resp;
       this.listPendienteByGestor = resp.filter(x=>(x.pendiente > 5 || x.pendiente < -5) && x.proyecto == this.PROY_BY_GESTOR );
-      console.log('DATA-PEND_BYGESTOR', this.listPendienteByGestor);
-
+      // console.log('DATA-PEND_BYGESTOR', this.listPendienteByGestor);
     })
   }
 }

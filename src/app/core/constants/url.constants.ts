@@ -21,7 +21,7 @@ switch (ENVIROMENT) {
     // PATH_VISOR_DYNAMO  = 'https://localhost:7197/';
 
     // API_SAVE_DATA_IMPORT = 'http://saveimporteddata.indratools.com/api/ScoreDetalle'
-    API_SAVE_DATA_IMPORT = 'https://localhost:7247/api/ScoreDetalle'
+    API_SAVE_DATA_IMPORT = 'https://localhost:7247/api/Facturacion'
 
     PATH_BACK_NET = 'http://backdynamosupport.indratools.com/api/configurador/'
     // PATH_BACK_NET  = 'https://localhost:3061/api/configurador/';

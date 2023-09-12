@@ -1,49 +1,76 @@
 import { LiquidacionModel } from '../models/liquidacion.models';
 
-export function mapearImportLiquidacion(data: any[],): LiquidacionModel[] {
-  const listaLiquid: LiquidacionModel[] = data.map((liq) => {
-    const liquidacionModel: LiquidacionModel = {
-      IdFactura      : liq.id,
-      IdProyecto     : liq.IdProyecto,
-      IdLiquidacion  : liq.IdLiquidacion,
-      SubServicio    : liq.Subservicio,
-      IdGestor       : liq.IdGestor,
-      Venta_declarada: liq.Importe,
-      Periodo        : new Date(liq.Periodo),
+function buscarLiquidacionPorNombre(listLiquidaciones:any[], nombreLiquidacion: string): any{
+  let liquidacionEncontrada;
+  // console.log('LIQUID', liquidacionEncontrada, nombreLiquidacion);
+  // console.log('LIQUID_NOMBRE', nombreLiquidacion); // ACTA
 
-      // IdFactura      : liq.id,
-      // Proyecto       : liq.Proyecto,
-      // Subservicio    : liq.Subservicio,
-      // Gestor         : liq.Gestor,
-      // Venta_declarada: liq.Importe,
-      // Periodo        : new Date(liq.Periodo),
+  if (listLiquidaciones && listLiquidaciones.length > 0 && nombreLiquidacion) {
+    liquidacionEncontrada =  listLiquidaciones.find(x => x.nombre.toUpperCase() == nombreLiquidacion.toUpperCase()) //id, nombre
+  }
 
-      // idscore           : idScore,
-      // fecha_proceso     : new Date(detalle.FECHAPROCESO), //masivo: 20230412, Individual: 08/02/2023
-      // observacion_gestor: '',
-      // id_estado         : 1,  // default = 1: Solicitado
-      // item_version      : version + 1,
-    };
-    return liquidacionModel;
+  return liquidacionEncontrada? liquidacionEncontrada.id: null;
+}
+
+function buscarGestorPorNombre(listGestor:any[], nombreGestor: string): any{
+  let gestorEncontrada;
+
+  if (listGestor && listGestor.length > 0 && nombreGestor) {
+    gestorEncontrada =  listGestor.find(x => x.nombre.toUpperCase() == nombreGestor.toUpperCase()) //id, nombre
+  }
+  return gestorEncontrada? gestorEncontrada.id: null;
+}
+
+function buscarProyectoPorNombre(listProy:any[], nombreProy: string): any{
+  let proyEncontrada;
+
+  if (listProy && listProy.length > 0 && nombreProy) {
+    proyEncontrada =  listProy.find(x => x.valor_texto_1.toUpperCase() == nombreProy.toUpperCase()) //id, nombre
+  }
+  // console.log('PROY', proyEncontrada);
+  return proyEncontrada? proyEncontrada.id: null;
+}
+
+
+export function mapearImportLiquidacion(data: any[], listLiquidaciones: any, listGestor: any[], listProy: any[]): LiquidacionModel[] {
+  const listaLiquid: LiquidacionModel[] = [];
+    data.map(columna => {
+    // console.log('LIQ', columna, listLiquidaciones); // {Gestor: "Katia Chavez", Importe: 9925, Periodo:Thu Aug 10 2023 00:00:36 GMT-0500 (hora estándar de Perú) {}, Proyecto: "PETO21", Subservicio: "Soporte Equipo Lesly J.", Tipo: "ACTA"}
+
+    const liquidacionEncontrada = buscarLiquidacionPorNombre(listLiquidaciones, columna.Tipo);
+    const gestorEncontrado      = buscarGestorPorNombre(listGestor, columna.Gestor);
+    const proyectoEncontrado    = buscarProyectoPorNombre(listProy, columna.Proyecto);
+
+    if (liquidacionEncontrada && gestorEncontrado) {
+      const liquidacionModel: LiquidacionModel = {
+        IdFactura      : columna.id,
+        IdProyecto     : proyectoEncontrado,
+        IdLiquidacion  : liquidacionEncontrada,
+        SubServicio    : columna.Subservicio,
+        IdGestor       : gestorEncontrado,
+        Venta_declarada: columna.Importe,
+        IdEstado       : 178, // ENVIADO
+        Periodo        : new Date(columna.Periodo),
+        Id_reg_proy    : (liquidacionEncontrada == 676)? 2 : 1,
+        FechaCrea      : new Date('2023-09-05 12:00:00')
+        // FechaCrea      : new Date() // 2023-09-08 12:00:00
+      };
+
+      listaLiquid.push(liquidacionModel)
+    }
   });
   return listaLiquid;
 }
 
 
-// export function mapearImportScore(scoreData: any[], version?: number): LiquidacionModel[] {
+
+
+// IdFactura      : liq.id,
+ // export function mapearImportScore(scoreData: any[], version?: number): LiquidacionModel[] {
 //   const listadoDetalle: LiquidacionModel[] = scoreData.map((detalle) => {
 //     const liquidacionModel: LiquidacionModel = {
 //       // idscore           : idScore,
 //       tipo_documento    : detalle.TIPODOCUMENTO,
-//       numero_documento  : detalle.NUMDOCUMENTO,
-//       segmento          : detalle.Segmento,
-//       q_lineas          : detalle.QLINEAS,
-//       capacidad_fin     : detalle.CAPACIDADFINANCIAMIENTO,
-//       codigo_fin        : detalle.CODFINANCIAMIENTO,
-//       fecha_proceso     : new Date(detalle.FECHAPROCESO), //masivo: 20230412, Individual: 08/02/2023
-//       score             : detalle.SCORE,
-//       cargo_fijo_max    : detalle.CARGOFIJOMAXIMO,
-//       observacion_solic : detalle.OBSERVACIONES,
 //       observacion_gestor: '',
 //       id_estado         : 1,  // default = 1: Solicitado
 //       idrequerimiento   : detalle.REQ,
@@ -51,15 +78,6 @@ export function mapearImportLiquidacion(data: any[],): LiquidacionModel[] {
 //       financiamiento    : detalle.Financiamiento,
 //       nombre_req        : detalle.NombreREQ,
 //       // item_version      : version + 1,
-//       negocio_segmento  : detalle.NEGOCIOYSEGMENTO ,
-//       tipo_transaccion  : detalle.TIPOTRANSACCION ,
-//       tipo_venta        : detalle.TIPODEVENTA ,
-//       gama              : detalle.GAMADEEQUIPO,
-
-//       cuota_inicial     : detalle.CUOTAINICIAL,
-//       nombres           : detalle.NOMBRESYAPELLIDOSDELCLIENTE,
-//       tipo_proyecto     : detalle.TIPODEPROYECTO,
-//       nombre_proy       : detalle.NOMBREDEPROYECTO,
 //     };
 //     return liquidacionModel;
 //   });

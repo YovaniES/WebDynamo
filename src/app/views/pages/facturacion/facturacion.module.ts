@@ -36,7 +36,8 @@ import { ModalDpfPendienteComponent } from './dashboard-facturacion/visor-dpf-al
     VisorDeclaradaComponent,
     VisorDpfComponent,
     ModalComentarioComponent,
-    ModalDpfPendienteComponent
+    ModalDpfPendienteComponent,
+
     ],
   imports: [
     CommonModule,

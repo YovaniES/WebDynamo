@@ -251,7 +251,7 @@ export class ActualizarPersonalComponent implements OnInit {
 
     this.personalService.getListProyectos(parametro[0]).subscribe((resp: any) => {
             this.listProyectos = resp.list;
-            console.log('ID_PROYECTOS', resp.list);
+            // console.log('ID_PROYECTOS', resp.list);
     });
   };
 

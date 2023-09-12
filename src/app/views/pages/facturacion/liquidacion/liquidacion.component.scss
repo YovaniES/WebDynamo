@@ -15,21 +15,42 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    color: #6c757d;
+    // color: #6c757d;
   }
 }
 
-.cli-import {
-  border: solid 1px #6c757d;
-  border-radius: 4px;
-  color: #20c997;
-  font-size: 12px;
-  padding: 3.5px;
+.btn-crear {
+  border: none;
+  border-radius: 3px;
+  height: 26px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
 }
 
-.icon-soles{
+.cli-btn-liq {
+  // border: none;
+  border-radius: 3px;
+  margin: 0 5px;
+  height: 26px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+}
+
+.cli-import {
+  // border: solid 1px #6c757d;
+  // border-radius: 4px;
+  // color: #20c997;
+  color: #6c757d;
+  font-size: 12px;
+  cursor: pointer;
+  // padding: 3.5px;
+}
+
+.icon-soles {
   font-weight: 400;
-  margin-right:3px;
+  margin-right: 3px;
 }
 
 .total {
@@ -114,7 +135,6 @@
   background-color: #0daef4;
   color: #fff;
 }
-
 
 @media (max-width: 850px) {
 }

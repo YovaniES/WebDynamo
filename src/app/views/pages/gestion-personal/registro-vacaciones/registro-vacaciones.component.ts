@@ -192,8 +192,8 @@ export class RegistroVacacionesComponent implements OnInit {
       console.log('USER-RESP', this.listAdminVacaciones);
     }
 
-    if (this.userID == 436 || this.userID == 454) { //MARCELA
-      this.listAdminVacaciones = resp.list.filter((v:any) => v.username == 'admeza'|| v.username == 'imcanelo' );
+    if (this.userID == 436 || this.userID == 168 || this.userID == 454) { //MARCELA
+      this.listAdminVacaciones = resp.list.filter((v:any) => v.username == 'admeza' || v.username == 'kdloayza' || v.username == 'imcanelo' );
     }
 
     if (this.authService.esUsuarioSuperAdmin() || this.authService.esUsuarioCoordTdp()) {

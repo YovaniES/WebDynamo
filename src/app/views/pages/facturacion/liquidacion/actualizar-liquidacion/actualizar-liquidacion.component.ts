@@ -22,7 +22,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
 
   userID: number = 0;
   facturaForm!: FormGroup;
-  factura_Id = this.DATA_LIQUID.idFactura;
+  factura_Id = this.DATA_LIQUID.id_liq;
 
   constructor(
     private facturacionService: FacturacionService,

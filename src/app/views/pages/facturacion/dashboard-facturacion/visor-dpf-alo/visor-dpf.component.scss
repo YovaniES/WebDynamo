@@ -7,7 +7,7 @@ tr.mat-row.cdk-row {
   // border: solid 0.5px #029d55;
 }
 
-.tabs-container{
+.tabs-container {
   // background: #eee;
   list-style-type: none;
   padding-left: 0;
@@ -18,7 +18,7 @@ tr.mat-row.cdk-row {
   color: #6c757d;
 }
 
-.tabs-container .tab-link{
+.tabs-container .tab-link {
   width: 33.3%;
   position: relative;
   height: 100%;
@@ -39,9 +39,9 @@ tr.mat-row.cdk-row {
   }
 }
 
-.active{
+.active {
   border-bottom: 3px solid #03bccf;
-  transition: ease-in-out .3s;
+  transition: ease-in-out 0.3s;
   font-weight: 700;
   color: #03bccf;
   background: #e9fdff;
@@ -49,7 +49,7 @@ tr.mat-row.cdk-row {
   border-radius: 4px 4px 4px 4px;
 }
 
-.tot-cor{
+.tot-cor {
   color: #122a2c;
   font-size: 13px;
   text-align: right;
@@ -60,11 +60,11 @@ tr.mat-row.cdk-row {
   text-align: right;
 }
 
-.form{
-  &-buttons{
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.form {
+  &-buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

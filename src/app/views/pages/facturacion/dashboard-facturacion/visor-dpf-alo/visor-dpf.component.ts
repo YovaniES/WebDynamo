@@ -6,7 +6,6 @@ import * as XLSX from 'xlsx';
 import { VisorService } from 'src/app/core/services/visor.service';
 import { removeDuplicateObjects } from 'src/app/core/util/util';
 import { DatePipe } from '@angular/common';
-import * as moment from 'moment';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -120,35 +119,9 @@ export class VisorDpfComponent implements OnInit {
     })
   };
 
-  listaVd: any[] = [];
-  cargarOBuscarListVD(){
-    this.blockUI.start("Cargando liquidaciones...");
-    // let parametro: any[] = [{
-    //   "queryId": 118,
-    //   "mapValue": {
-    //       f_periodo: this.filtroForm.value.f_periodo,
-    //       // f_periodo         : this.datepipe.transform(this.filtroForm.value.f_periodo,"yyyy/MM/dd"),
-    //   }
-    // }];
-    this.visorService.getVentaDeclarada().subscribe((resp: any[]) => {
-      this.blockUI.stop();
-      // f_periodo: this.filtroForm.value.f_periodo,
-      console.log('FIL-PER', this.filtroForm.value.f_periodo);//2023-0x
-
-      // console.log('Lista-VD', resp, resp.length);
-       this.listaVd = [];
-      //  this.listaVd = resp .map(x => x.periodo == '2023-07');
-       this.listaVd = resp.map(x => x.periodo == this.filtroForm.value.f_periodo);
-
-       this.spinner.hide();
-    });
-  }
-
   limpiarFiltro() {
     this.filtroForm.reset('', {emitEvent: false})
     this.newFilfroForm()
-
-    // this.cargarOBuscarListVD();
   }
 
   modificarMes(mes: any) {
@@ -287,11 +260,8 @@ export class VisorDpfComponent implements OnInit {
         if (this.dataDPF(proy, -i) > 0) {
           sumaDpfx = sumaDpfx +  this.dataDPF(proy, -i)
         }
-      // console.log('>365', sumaDpfx);
       }
       return (sumaDpfx > 5 || sumaDpfx <= -5)? sumaDpfx: 0
-    // return sumaDpfx? sumaDpfx : 0;
-
   }
 
   aloMayor365(proy:string){
@@ -363,8 +333,6 @@ export class VisorDpfComponent implements OnInit {
       console.log('DPF',this.listDPF, );
       // console.log('ABC',moment(this.modificarMes(-4)).format("Y-MM"), this.filtrarPorPeriodo(moment(this.modificarMes(-4)).format("Y-MM"), 'dpf', 'TDPFAC'));
       console.log('TQACOR',this.modificarMes(-1), this.filtrarPorPeriodo(this.modificarMes(-1), 'dpf', 'TQACOR'));
-
-
       // console.log('DPF_VENCIDO', this.DPFVencidoFacturado('TPSNEG'));
 
 
@@ -456,7 +424,6 @@ export class VisorDpfComponent implements OnInit {
 
   filtrar(flt: any) {
       // Only Change 3 values
-
       var inputValue = (<HTMLInputElement>document.getElementById('ckh2h')).value;
       var arrayDeCadenas = inputValue.split("|");
 
