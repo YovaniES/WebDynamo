@@ -22,6 +22,7 @@ export class AuthService {
         console.log('LOGIN_ACCESO: ', resp.user.acceso);
         console.log('LOGIN_APLIC: ', resp.user.aplicacion);
         console.log('LOGIN_ROLNAME: ', resp.user.rolName);
+        // console.log('TOKEN: ', resp.user.token);
 
         localStorage.setItem('token', resp.user.token);
         localStorage.setItem('currentUser', JSON.stringify(resp));

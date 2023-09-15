@@ -3,9 +3,9 @@
     <div class="modal-title c-male">Registro de Liquidaciones</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
-      <div class="card" style="border-radius: 2px; font-weight: 600">
-        <div class="card-body" style="padding: 10px">
-          <form class="row g-3" [formGroup]="liquidacionForm">
+      <form [formGroup]="liquidacionForm">
+        <div class="card" style="border-radius: 2px; font-weight: 600">
+          <div class="row g-3 card-body" style="padding: 10px">
 
             <div class="col-sm-3 cli-form-element">
               <label class="form-label">ID Liquidación</label>
@@ -32,7 +32,7 @@
             </div>
 
             <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Tipo Liquidaciones</label>
+              <label class="form-label">Tipo Liquidación</label>
               <select class="form-select" formControlName="id_liquidacion">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="liq.id" *ngFor="let liq of listLiquidaciones">{{liq.nombre}}</option>
@@ -96,44 +96,38 @@
                 Buscar
               </button>
             </div>
-          </form>
+          </div>
         </div>
-      </div>
 
+        <!-- BOTON MODAL PARA CREAR LIQUIDACION ----------------------------------------------------->
+        <div style="display: flex" class="mt-4 mb-1">
+          <button
+            class="btn-crear btn-blue"
+            style="margin: 0"
+            type="button"
+            (click)="crearLiquidacion()"
+            ><mat-icon class="icon-18">add</mat-icon>Crear liquidación
+          </button>
 
-      <!-- BOTON MODAL PARA CREAR LIQIDACION ----------------------------------------------------->
-      <div style="display: flex" class="mt-4 mb-1">
-        <button
-          class="btn-crear btn-blue"
-          style="margin: 0"
-          type="button"
-          (click)="crearLiquidacion()"
-          ><mat-icon class="icon-18">add</mat-icon>Crear liquidación
-        </button>
+          <button
+            class="cli-btn-liq btn-cancel mx-1"
+            (click)="actualizacionMasiva()"
+            ><mat-icon class="icon-18">edit_note</mat-icon>Act. masiva
+          </button>
 
-        <button
-          class="cli-btn-liq btn-cancel mx-1"
-          (click)="actualizacionMasiva()"
-          ><mat-icon class="icon-18">edit_note</mat-icon>Act. masiva
-        </button>
+          <!-- Ver ngModel -->
+          <input type="file" class="cli-import"
+              accept=".xlsx, .xls, .csv"
+              formControlName="import"
+              (change)="readExcell($event)">
 
-        <!-- <button
-           matTooltip="Exportar VD-FACT"
-           class="icon-btn btn-trans c-indigo-export mx-1"
-           (click)="exportarVD_FACT()"
-           ><mat-icon class="icon-18">archive</mat-icon>
-        </button> -->
-
-        <!-- Ver ngModel -->
-        <!-- <input type="file" class="cli-import"
-            accept=".xlsx, .xls, .csv"
-            (change)="readExcell($event)"> -->
-
-        <div class="flex-1"></div>
-        <div class="mt-2" style="color: #345df3; font-weight: 600;">
-          Total : <span class="total">{{ listaLiquidacion.length }} Facturas</span>
+          <div class="flex-1"></div>
+          <div class="mt-2" style="color: #345df3; font-weight: 600;">
+            Total : <span class="total">{{ listaLiquidacion.length }} Facturas</span>
+          </div>
         </div>
-      </div>
+      </form>
+
 
       <!-- TABLA DEL FACTURAS ------------------------------------------------------------------>
       <div style="overflow: auto; min-height: 540px; color:#6c757d;">

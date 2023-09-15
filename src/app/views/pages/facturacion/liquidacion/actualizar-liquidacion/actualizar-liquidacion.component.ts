@@ -118,8 +118,8 @@ export class ActualizarLiquidacionComponent implements OnInit {
     //  console.log('VAOR', formValues , parametro);
     this.facturacionService.actualizarLiquidacion(parametro).subscribe((resp: any) => {
       Swal.fire({
-        title: 'Actualizar Factura!',
-        text: `La Factura: ${this.DATA_LIQUID.idFactura}, ha sido actualizado con éxito`,
+        title: 'Actualizar Liquidación!',
+        text: `La Liquidación con ID: ${this.DATA_LIQUID.id_liq}, ha sido actualizado con éxito`,
         icon: 'success',
         confirmButtonText: 'Ok',
       });

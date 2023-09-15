@@ -52,7 +52,7 @@ export class LiquidacionComponent implements OnInit {
     this.getListLiquidaciones();
     this.exportListVD_Fact();
 
-    // console.log('PERIODO_ACTUAL-LIQ',this.modificarMes(-1)); //2023-08
+    // console.log('PERIODO_ACTUAL-LIQ',this.modificarMes(0)); //2023-09
   }
 
   newFilfroForm(){
@@ -67,8 +67,8 @@ export class LiquidacionComponent implements OnInit {
       importe            : [''],
       subservicio        : [''],
       f_periodo          : [''],
-      // importar           : [''] //Evaluar para eliminar
-      periodoActual      : [true]
+      periodoActual      : [true],
+      import             : ['']
     })
   };
 
@@ -90,10 +90,13 @@ export class LiquidacionComponent implements OnInit {
       var sheetNames = wb.SheetNames;
 
       this.DATAimport = XLSX.utils.sheet_to_json(wb.Sheets[sheetNames[0]])
+      // console.log('DATA_EXCELL', this.DATAimport);
 
-      console.log('DATA_EXCELL', this.DATAimport);
       // this.validarImportacionExcell();
-      this.importarListaLiquidacion();
+      if (this.validarImportacionExcell()) {
+      this.guardarListaimportado();
+      }
+      // this.guardarListaimportado();
 
       this.blockUI.stop();
     }
@@ -107,27 +110,70 @@ export class LiquidacionComponent implements OnInit {
     });
   }
 
-  importarListaLiquidacion(){
+  guardarListaimportado(){
     this.spinner.show();
     const listaImportado: LiquidacionModel[] = mapearImportLiquidacion(this.DATAimport, this.listLiquidaciones, this.listGestores, this.listProyectos  )
 
     this.liquidacionService.insertarListadoLiquidacion(listaImportado)
         .pipe(concatMap((resp: any) => { console.log('DATA-IMP-LIQ', resp);// {message: "ok"}
-             return resp && resp.message == 'ok';
+
+        this.spinner.hide();
+        if (resp && resp.message == 'ok') {
+          this.cargarOBuscarLiquidacion();
+
+          Swal.fire({
+            title: 'Importar Liquidación!',
+            text : `Se importó con éxito la data`,
+            icon : 'success',
+            confirmButtonText: 'Ok'
+          });
+          this.limpiarFiltro();
+        }
+
+        return resp && resp.message == 'ok';
       })).subscribe((resp: any) => {
         console.log('DATA_LIQ-SAVE', resp);
-      if (resp && resp.message == 'ok') {
-        Swal.fire({
-          title: 'Importar Liquidación!',
-          text : `Se importó con éxito la data`,
-          icon : 'success',
-          confirmButtonText: 'Ok'
-        });
-        this.spinner.hide();
-        this.cargarOBuscarLiquidacion();
-      }
      }
    )}
+
+   validarImportacionExcell(): boolean{
+    let importacionCorrecta: boolean = true;
+
+    this.DATAimport.map((columna, indice)=> {
+      // console.log('FORMATO_ENVIO', this.liquidacionForm.controls['formato_envio'].value);
+
+      console.log('==>',columna, indice, columna.Tipo, columna.Proyecto.length, columna.Proyecto, columna.Gestor, columna.Periodo)
+
+      if (columna.Tipo != 'ACTA'  && columna.Tipo != 'REGULARIZACIÓN' && columna.Tipo != 'PAGO ADELANTADO') {
+        importacionCorrecta = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Sólo se permiten Tipo Liquidación: "ACTA", "REGULARIZACIÓN" o "PAGO ADELANTADO", corregir en',
+          text: `La columna: 'Tipo' vs fila: ${(indice+2)}`
+        });
+      }
+
+      //     // if (columna.FECHAPROCESO.length == 8) {
+      //   importacionCorrecta = false;
+
+      //   Swal.fire({
+      //     icon:'error',
+      //     title:'ERROR, La fecha de proceso solo acepta un total de 8 dígitos y en formato YYYYMMDD',
+      //     text:`La columna: 'FECHAPROCESO' vs fila: ${(indice + 2)}`
+      //     });
+      // }
+
+      // if ((columna.NUMDOCUMENTO.length >= 8 ||  columna.NUMDOCUMENTO.length < 9) && columna.TIPODOCUMENTO == 'DNI') {
+
+      //   Swal.fire({
+      //     icon:'error',
+      //     title:'Algo salio mal, Corregir en',
+      //     text:`La columna: 'NUMDOCUMENTO' y fila: ${(indice+2)}`
+      //   });
+      // }
+    })
+    return importacionCorrecta;
+  }
 
    modificarMes(mes: any) {
     var date1 = new Date() //new Date('2023/04/03'); Ejm
@@ -154,8 +200,7 @@ export class LiquidacionComponent implements OnInit {
           id_estado      : formValues.id_estado,
           id_gestor      : formValues.id_gestor,
           importe        : formValues.importe,
-          periodo_actual : formValues.periodoActual? this.modificarMes(-1): this.modificarMes(-5), //NOTA PERIODO QUE VIENE DEL BACK: periodo: "2022/12"
-          // periodo_actual : formValues.periodoActual,
+          per_actual     : formValues.periodoActual? this.modificarMes(-1): '',
           subservicio    : formValues.subservicio,
           f_periodo      : formValues.f_periodo,
           inicio         : this.datepipe.transform(formValues.fechaRegistroInicio,"yyyy/MM/dd"),

@@ -13,6 +13,6 @@ export class LiquidacionService {
   constructor(private http: HttpClient,) {}
 
   insertarListadoLiquidacion(listImport: LiquidacionModel[]) {
-    return this.http.post(PATH_IMPORT_LIQ + '/Guardar', listImport);
+    return this.http.post(PATH_IMPORT_LIQ + '/guardar', listImport);
   }
 }

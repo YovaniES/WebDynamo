@@ -82,8 +82,8 @@ export class RegistroVacacionesComponent implements OnInit {
     }];
     this.vacacionesService.cargarOBuscarVacaciones(parametro[0]).subscribe((resp: any) => {
     this.blockUI.stop();
+    //  console.log('LISTA-VACACIONES', resp, resp.list.length);
 
-     console.log('LISTA-VACACIONES', resp, resp.list.length);
       this.listaRegVacaciones = [];
       this.listaRegVacaciones = resp.list;
 

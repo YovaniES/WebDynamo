@@ -52,8 +52,8 @@ export function mapearImportLiquidacion(data: any[], listLiquidaciones: any, lis
         IdEstado       : 178, // ENVIADO
         Periodo        : new Date(columna.Periodo),
         Id_reg_proy    : (liquidacionEncontrada == 676)? 2 : 1,
-        FechaCrea      : new Date('2023-09-05 12:00:00')
-        // FechaCrea      : new Date() // 2023-09-08 12:00:00
+        FechaCrea      : new Date() // 2023-09-08 12:00:00
+        // FechaCrea      : new Date('2023-09-05 12:00:00')
       };
 
       listaLiquid.push(liquidacionModel)
