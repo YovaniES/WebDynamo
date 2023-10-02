@@ -13,13 +13,13 @@ import { AgregarVentadeclaradaComponent } from './liquidacion/actualizar-liquida
 import { LiquidacionComponent } from './liquidacion/liquidacion.component';
 import { AgregarCertificacionComponent } from './liquidacion/actualizar-liquidacion/agregar-certificacion/agregar-certificacion.component';
 import { ActualizacionMasivaComponent } from './liquidacion/actualizacion-masiva/actualizacion-masiva.component';
-import { VisorActComponent } from './dashboard-facturacion/visor-liquid-activas/visor-act.component';
-import { VisorFactComponent } from './dashboard-facturacion/visor-facturados/visor-fact.component';
-import { VisorDeclaradaComponent } from './dashboard-facturacion/visor-venta-decl/visor-declarada.component';
-import { VisorActByProyComponent } from './dashboard-facturacion/visor-act-by-proy/visor-actbyproy.component';
-import { VisorDpfComponent } from './dashboard-facturacion/visor-dpf-alo/visor-dpf.component';
 import { ModalComentarioComponent } from './liquidacion/modal-comentario/modal-comentario.component';
-import { ModalDpfPendienteComponent } from './dashboard-facturacion/visor-dpf-alo/modal-dpf-pendiente/modal-dpf-pendiente.component';
+import { VisorActComponent } from './dpf-facturacion/visor-liquid-activas/visor-act.component';
+import { VisorActByProyComponent } from './dpf-facturacion/visor-act-by-proy/visor-actbyproy.component';
+import { VisorFactComponent } from './dpf-facturacion/visor-facturados/visor-fact.component';
+import { VisorDeclaradaComponent } from './dpf-facturacion/visor-venta-decl/visor-declarada.component';
+import { VisorDpfComponent } from './dpf-facturacion/visor-dpf-alo/visor-dpf.component';
+import { ModalDpfPendienteComponent } from './dpf-facturacion/visor-dpf-alo/modal-dpf-pendiente/modal-dpf-pendiente.component';
 
 
 @NgModule({

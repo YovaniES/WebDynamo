@@ -57,7 +57,8 @@ export class VisorFactComponent implements OnInit {
   barChartLegend  = true;
   barChartPlugins = [chartDataLabels];
   barChartData: ChartDataSets[] = [{ data: [], label: '' }];
-  name = 'dwdFacturas.xlsx';
+
+  name = 'Facturados.xlsx';
   exportToExcel(): void {
     let element = document.getElementById('tbRes');
     const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);

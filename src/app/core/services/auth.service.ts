@@ -44,10 +44,9 @@ export class AuthService {
 
     if (this.esCoordLider()) {
       return filtroResponsable? filtroResponsable: usuarioLogueado.USER_ID;
-    }
+      }
       return usuarioLogueado.USER_ID;  //USER_ID: 441 (name:jysantiago)
-
-  }
+    }
 
   //Obtenemos el ROL_ID, desde el TOKEN: ROL_ID=101,102,103,..106 (ROL_ID=106 : SUPER_ADMIN)
   getRolID(){

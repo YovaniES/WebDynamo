@@ -36,7 +36,7 @@ export class LoginComponent {
       .pipe(first())
       .subscribe(
         (resp) => {
-          if (resp.user.acceso > 0 && resp.user.aplicacion == 1) {
+          if (resp.user.acceso == 1 && resp.user.aplicacion == 1) {
             // this.spinner.hide();
             this.blockUI.stop();
 

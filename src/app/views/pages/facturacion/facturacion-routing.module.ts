@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LiquidacionComponent } from './liquidacion/liquidacion.component';
-import { VisorActComponent } from './dashboard-facturacion/visor-liquid-activas/visor-act.component';
-import { VisorActByProyComponent } from './dashboard-facturacion/visor-act-by-proy/visor-actbyproy.component';
-import { VisorDeclaradaComponent } from './dashboard-facturacion/visor-venta-decl/visor-declarada.component';
-import { VisorFactComponent } from './dashboard-facturacion/visor-facturados/visor-fact.component';
-import { VisorDpfComponent } from './dashboard-facturacion/visor-dpf-alo/visor-dpf.component';
+import { VisorFactComponent } from './dpf-facturacion/visor-facturados/visor-fact.component';
+import { VisorActComponent } from './dpf-facturacion/visor-liquid-activas/visor-act.component';
+import { VisorActByProyComponent } from './dpf-facturacion/visor-act-by-proy/visor-actbyproy.component';
+import { VisorDeclaradaComponent } from './dpf-facturacion/visor-venta-decl/visor-declarada.component';
+import { VisorDpfComponent } from './dpf-facturacion/visor-dpf-alo/visor-dpf.component';
 
 const routes: Routes = [
   {

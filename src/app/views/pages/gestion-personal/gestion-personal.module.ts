@@ -16,7 +16,6 @@ import { ModalHardwareComponent } from './registro-hardware/modal-hardware/modal
 import { ModalCuentaComponent } from './registro-cuenta/modal-cuenta/modal-cuenta.component';
 import { RegistroVacacionesComponent } from './registro-vacaciones/registro-vacaciones.component';
 import { ActualizarVacacionesComponent } from './registro-vacaciones/actualizar-vacaciones/actualizar-vacaciones.component';
-// import { AsignarVacacionesComponent } from './registro-vacaciones/actualizar-vacaciones/asignar-vacaciones/asignar-vacaciones.component';
 import { AsignarPersonalComponent } from './registro-vacaciones/crear-vacaciones/asignar-personal/asignar-personal.component';
 import { CrearVacacionesComponent } from './registro-vacaciones/crear-vacaciones/crear-vacaciones.component';
 import { AsignarVacacionesComponent } from './registro-vacaciones/actualizar-vacaciones/asignar-vacaciones/asignar-vacaciones.component';
