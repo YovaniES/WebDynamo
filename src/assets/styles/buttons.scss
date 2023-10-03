@@ -153,6 +153,7 @@
   background-color: $color-magenta;
   color: #fff;
   transition: ease 0.3s;
+  justify-content: center;
   &:hover:enabled {
     background-color: $color-magenta-l;
   }

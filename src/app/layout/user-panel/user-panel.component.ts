@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -20,7 +21,7 @@ export class UserPanelComponent implements OnInit, OnDestroy {
   constructor(
     private menuServices: MenuService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -49,4 +50,6 @@ export class UserPanelComponent implements OnInit, OnDestroy {
     localStorage.clear();
     this.router.navigateByUrl('/auth');
   }
+
+
 }

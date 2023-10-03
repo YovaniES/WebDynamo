@@ -17,10 +17,13 @@
     box-shadow: $shadow-lvl-1;
     z-index: 1001;
     position: fixed;
-    top: 0;
-    bottom: 0;
-    padding: 2.3rem;
-    width: $user-panel-width;
+    top: 66px;
+    // top: 0;
+    // bottom: 0; //Probar
+    // padding: 2.3rem;
+    padding: 1rem;
+    width: 280px;
+    // width: $user-panel-width;
     flex-shrink: 0!important;
 }
 .panel-hidden{
