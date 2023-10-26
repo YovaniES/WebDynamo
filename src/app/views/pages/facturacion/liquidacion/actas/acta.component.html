@@ -1,0 +1,128 @@
+<ng-container *ngIf="!loading">
+    <table class="cli-table_x stripedtable underlinedtable">
+      <thead>
+        <tr class="bgc-blue-light c-white">
+          <th style="min-width: 120px;"></th>
+          <th>ID Acta</th>
+          <th>Proyecto</th>
+          <th>Subservicio</th>
+          <th>Estado</th>
+          <th>Total</th>
+          <th>Declarado</th>
+          <th>Facturado</th>
+          <th>Pendiente</th>
+          <th>Comentario</th>
+        </tr>
+      </thead>
+    </table>
+
+    <div class="cli-col" *ngFor="let acta of listActas; let i = index">
+
+
+      <!-- ACTAS -->
+    <div class="moad-module">
+      <div class="moad-module-title">
+      <table class="cli-table_x stripedtable underlinedtable">
+        <tbody style="background: #e9eae8;">
+            <td><button (click)="showingidx = i" class="icon-btn btn-s btn-turq"><mat-icon class="icon-20">{{ showingidx == i? "keyboard_arrow_down" : "keyboard_arrow_right"}}</mat-icon></button></td>
+            <td style="min-width: 140px; font-weight: 400;"><mat-icon style="vertical-align: middle;" [ngClass]="{ 'c-green': acta.enable, 'c-light': !acta.enable }" class="icon-18">{{ acta.icon }}</mat-icon>
+            <small style="margin-left: 10px;"> </small>{{ acta.periodo }}: <small style="margin-left: 10px; font-size: 14px;">{{ acta.gestor }}</small>
+            </td>
+            <!-- <td style="min-width: 140px; font-weight: 400;">{{ acta.periodo }}: <small style="margin-left: 10px; font-size: 14px;">{{ acta.gestor }}</small></td> -->
+            <!-- <td style="margin: 0 10px">{{ acta.gestor }}</td> -->
+            <!-- <td></td> -->
+            <td></td>
+            <td></td>
+            <td  *ngIf="!acta.enable" class="moad-inactive label_x" >{{acta.estado}}</td>
+            <td>[{{ acta.importe }}]</td>
+            <td style="flex: 1 1;"></td>
+            <!-- <td></td>
+            <td></td> -->
+        </tbody>
+      </table>
+     </div>
+
+
+
+
+      <!-- BUTTONS EDIT - ADD -->
+      <div class="moad-actions">
+        <button
+            matTooltip="Eliminar acta"
+            (click)="openEditDialog(i, acta, false, false, acta.text)"
+            class="icon-btn btn-trans c-fucsia">
+            <mat-icon class="icon-18">delete</mat-icon>
+        </button>
+
+        <button
+          matTooltip="Editar acta"
+          (click)="openEditDialog(i, acta, true, false, acta.text)"
+          class="icon-btn btn-trans c-yellow"
+          ><mat-icon class="icon-18">edit</mat-icon>
+        </button>
+
+        <button
+          matTooltip="Agregar detalle"
+          (click)="openEditDialog(i, acta, false, true, acta.text)"
+          class="icon-btn btn-trans c-green"
+          ><mat-icon class="icon-18">add</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- SUBMENUS DETALLE ACTA-->
+    <div *ngIf="showingidx == i" class="moad-menus">
+      <div class="moad-menu" style="color:#a4a5a6; justify-content: center;" *ngIf="acta.detalle_acta.length == 0">Aún no se agregan DETALLES a esta Acta</div>
+
+      <div style="overflow: auto; color:#6c757d;">
+        <table class="cli-table_x stripedtable underlinedtable">
+          <tbody>
+            <tr *ngFor="let detalle of acta.detalle_acta">
+              <td></td>
+              <td>
+                <div class="moad-actions">
+                  <button (click)="openEditDialog(i, detalle, false, false, acta.text)"
+                    class="icon-btn btn-trans" style="color: #69aafa;">
+                    <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                  </button>
+
+                  <button (click)="openEditDialog(i, detalle, false, false, acta.text)"
+                    class="icon-btn btn-trans c-fucsia">
+                    <mat-icon class="icon-15">delete_forever</mat-icon>
+                  </button>
+                </div>
+              </td>
+              <td style="text-align: left; min-width: 95px;">{{ detalle.acta }}</td>
+              <td>{{ detalle.proyecto    }}</td>
+              <td style="min-width: 125px;">{{ detalle.subservicio }}</td>
+              <td>{{ detalle.estado      }}</td>
+              <td>{{ detalle.venta_total }}</td>
+              <td>{{ detalle.declarado   }}</td>
+              <td>{{ detalle.facturado   }}</td>
+              <td>{{ detalle.pendiente   }}</td>
+              <td style="text-align: left; min-width: 125px">{{ detalle.comentario }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <div class="cli-loader" *ngIf="loadingItem">
+          <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
+          cargando...
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- <div class="d-flex">
+    <button style="margin-top: 10px" class="cli-btn btn-turq"
+      (click)="openEditDialog(0, null, true, true, null)"
+      >Nueva acta
+    </button>
+  </div> -->
+</ng-container>
+
+<div class="cli-loader" *ngIf="loading">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>

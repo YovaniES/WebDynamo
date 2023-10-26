@@ -1,0 +1,81 @@
+.cli-card{
+  min-width: 0;
+  display: flex;
+  background-color: #fff;
+  flex-direction: column;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  height: 100%;
+}
+
+.fit-card{
+  min-height: 70vh;
+  max-width: 900px;
+  margin: auto;
+}
+.cli-card-body{
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1rem 2rem;
+}
+.cli-title-center{
+  text-align: center;
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+  position: relative;
+  margin-bottom: 10px;
+}
+.c-male{
+  color: #59C2C9;
+}
+
+.modules-actions{
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-turq{
+  background-color: #59C2C9;
+  color: #fff;
+  transition: ease .3s;
+  cursor: pointer;
+  &:hover:enabled{
+      background-color: #67E0E5;
+  }
+  &:hover:enabled:active{
+      background-color: #3E8A8A;
+  }
+}
+
+.btn-trans{
+  background-color: transparent;
+  transition: ease .3s;
+  cursor: pointer;
+  &:hover:enabled{
+      background-color: #00000014;
+  }
+  &:hover:enabled:active{
+      background-color: #00000044;
+  }
+}
+
+.cli-btn{
+  border: none;
+  border-radius: 2px;
+  margin: 0 5px;
+  height: 30px;
+  padding: 0 10px;
+  font-family: 'Telefonica-Bold' !important;
+  display: flex;
+  align-items: center;
+  & mat-icon{
+      margin: 0 5px;
+  }
+  &:disabled{
+      background-color: #F4F4F3;
+      color: #fff;
+  }
+}

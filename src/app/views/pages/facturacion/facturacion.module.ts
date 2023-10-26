@@ -20,6 +20,9 @@ import { VisorFactComponent } from './dpf-facturacion/visor-facturados/visor-fac
 import { VisorDeclaradaComponent } from './dpf-facturacion/visor-venta-decl/visor-declarada.component';
 import { VisorDpfComponent } from './dpf-facturacion/visor-dpf-alo/visor-dpf.component';
 import { ModalDpfPendienteComponent } from './dpf-facturacion/visor-dpf-alo/modal-dpf-pendiente/modal-dpf-pendiente.component';
+import { ModulesComponent } from '../module-configuration/modules/modules.component';
+import { ModuleActasComponent } from './liquidacion/module-actas/actas-menus.component';
+import { ActaComponent } from './liquidacion/actas/acta.component';
 
 
 @NgModule({
@@ -38,7 +41,9 @@ import { ModalDpfPendienteComponent } from './dpf-facturacion/visor-dpf-alo/moda
     ModalComentarioComponent,
     ModalDpfPendienteComponent,
 
-    ],
+    ModuleActasComponent,
+    ActaComponent
+  ],
   imports: [
     CommonModule,
     FacturacionRoutingModule,

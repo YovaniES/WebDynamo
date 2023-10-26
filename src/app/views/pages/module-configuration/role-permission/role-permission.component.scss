@@ -1,0 +1,230 @@
+.cli-card{
+  min-width: 0;
+  display: flex;
+  background-color: #fff;
+  flex-direction: column;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  height: 100%;
+}
+.fit-card{
+  min-height: 70vh;
+  max-width: 900px;
+  margin: auto;
+}
+.cli-card-body{
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1rem 2rem;
+}
+.cli-title-center{
+  text-align: center;
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+  position: relative;
+  margin-bottom: 10px;
+}
+.c-male{
+  color: #59C2C9;
+}
+.pr-subtitle{
+  font-size: 1.2rem;
+  font-family: 'Telefonica-Bold';
+}
+
+.pr-section{
+  margin-left: 10px;
+  padding-left: 20px;
+  padding-top: 10px;
+  border-left: 2px solid #d3d3d4;
+}
+
+
+/* PERMISSIONS */
+.pr-userscontainer{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 2px;
+    border: solid 1px #59C2C9;
+    margin-bottom: 20px;
+}
+.pr-username{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #99C0FF;
+    color: #2B3447;
+    margin: 5px;
+    padding: 4px 10px;
+    border-radius: 2px;
+}
+.pr-usersearcher{
+    display: flex;
+    align-items: center;
+    flex: 1 1;
+    margin: 1px;
+    padding: 5px;
+    min-width: 250px;
+    position: relative;
+    & input{
+        flex:1 1;
+        border: none;
+    }
+}
+.pr-sugget{
+    font-size: .9rem;
+    color: #b7b6b7;
+}
+.pr-subtitle{
+    font-size: 1.2rem;
+    font-family: 'Telefonica-Bold';
+}
+.pr-moduleselector{
+    width: 100%;
+    padding: 5px 10px;
+    border: solid 1px #59C2C9;
+    border-radius: 1px;
+}
+.pr-section{
+    margin-left: 10px;
+    padding-left: 20px;
+    padding-top: 10px;
+    border-left: 2px solid #d3d3d4;
+}
+.pr-module{
+    &-container{
+        margin: 5px 0;
+        padding: 20px;
+        border: dashed 1px #D3D4D3;
+        border-radius: 2px;
+    }
+}
+::ng-deep mat-checkbox .mat-checkbox-label{
+    display: flex;
+    align-items: center;
+ }
+.iconmr-10{
+    margin-right: 10px;
+}
+.pr-segment{
+    margin-right: 20px;
+    &-container{
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px 20px;
+        border: dashed 1px #D3D4D3;
+    }
+    &-title{
+        width: 100%;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        font-family: 'Telefonica-Bold';
+        color: #59C2C9;
+    }
+}
+
+.pr-loading{
+    width: 100%;
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+}
+
+
+.pr-checkoptions{
+    width: 240px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.pr-function{
+    width: 100%;
+    padding: 5px;
+    padding-left: 10px;
+    margin: 5px;
+    box-shadow: 0 1px 1px 0 #00000020, 0 2px 5px 0 #00000020;
+    display: flex;
+    margin-left: 10px;
+    border-left: solid 4px #59C2C9;
+
+    &-label{
+        width: 200px;
+        font-family: 'Telefonica-Bold';
+    }
+    &-group{
+        flex: 1;
+        display: flex;
+        width: 80%;
+    }
+    &-option{
+        width: 25%;
+    }
+}
+.cli-form{
+  &-buttons{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+}
+
+.cli-btn{
+  border: none;
+  border-radius: 2px;
+  margin: 0 5px;
+  height: 30px;
+  padding: 0 10px;
+  font-family: 'Telefonica-Bold' !important;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  & mat-icon{
+      margin: 0 5px;
+  }
+  &:disabled{
+      background-color: #F4F4F3;
+      color: #fff;
+  }
+}
+
+.flex-1X{
+    flex: 1 1;
+}
+.btn-l{
+  height: 38px;
+  padding: 0 30px;
+}
+
+.btn-grey{
+  background-color: #E9EAE8;
+  transition: ease .3s;
+  width: 160px;
+  justify-content: center;
+  &:hover:enabled{
+      background-color: #F4F4F3;
+  }
+  &:hover:enabled:active{
+      background-color: #D3D4D3;
+  }
+}
+
+.btn-turq{
+  background-color: #59C2C9;
+  color: #fff;
+  transition: ease .3s;
+  cursor: pointer;
+  &:hover:enabled{
+      background-color: #67E0E5;
+  }
+  &:hover:enabled:active{
+      background-color: #3E8A8A;
+  }
+}
+

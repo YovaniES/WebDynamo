@@ -9,6 +9,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { EntidadComponent } from './entidad/entidad.component';
 import { ModalEntidadlistaComponent } from './entidad/modal-entidadlista/modal-entidadlista.component';
 import { ModalEntidadtablaComponent } from './entidad/modal-entidadtabla/modal-entidadtabla.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ModalEntidadtablaComponent } from './entidad/modal-entidadtabla/modal-e
     MantenimientoRoutingModule,
     CoreModule,
     MaterialModule,
+    MatIconModule,
 
     NgxPaginationModule,
     NgxSpinnerModule,

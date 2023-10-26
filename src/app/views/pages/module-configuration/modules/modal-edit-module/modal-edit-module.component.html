@@ -1,0 +1,85 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar"(click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form">
+  <div class="cli-form-title c-male" style="margin-bottom: 20px">
+    {{ data.isnew ? "Nuevo" : "Editar" }} {{ data.ismodule ? "Módulo" : "Menú" }}
+  </div>
+
+  <div *ngIf="!data.ismodule" class="cli-form-subtitle">
+    Módulo {{ data.modulename }} ({{ modecode }})
+  </div>
+  <div class="cli-row">
+    <div *ngIf="!(data.isnew && !data.ismodule)"
+      class="cli-form-element col-f-3">
+      <label>Código</label>
+      <input
+        placeholder="MMM"
+        maxlength="3"
+        [disabled]="!data.isnew"
+        [(ngModel)]="menu.code"
+        class="cli-input"/>
+    </div>
+
+    <div class="cli-form-element col-f-fill">
+      <label>Nombre</label>
+      <input
+        placeholder="Nombre para mostrar"
+        [(ngModel)]="menu.text"
+        class="cli-input"/>
+    </div>
+  </div>
+
+  <div class="cli-row">
+    <div *ngIf="!data.ismodule" class="cli-form-element col-f-1">
+      <label>Path</label>
+      <input
+        class="cli-input"
+        placeholder="Angular path"
+        [(ngModel)]="menu.link"
+      />
+      <div class="cli-form-suggest">* Ruta de Angular para la vista</div>
+    </div>
+
+    <div class="cli-form-element col-f-3">
+      <label>Orden</label>
+      <input
+        class="cli-input"
+        placeholder="Orden"
+        [(ngModel)]="menu.order"
+        type="number"
+      />
+    </div>
+
+    <div class="cli-form-element col-f-3">
+      <label>Icono </label>
+      <div class="inputiconcont">
+        <mat-icon class="icon-18">{{ menu.icon }}</mat-icon>
+        <input
+          class="cli-input"
+          placeholder="Mat-icon"
+          [(ngModel)]="menu.icon"
+        />
+      </div>
+    </div>
+    <div class="cli-form-element col-f-3">
+      <label>Estado</label>
+      <select [(ngModel)]="menu.enable" class="cli-input">
+        <option value="true">Activo</option>
+        <option value="false">Inactivo</option>
+      </select>
+    </div>
+  </div>
+  <div class="cli-form-buttons">
+    <button (click)="dialogRef.close()"
+            class="cli-btn btn-grey">
+      cancelar
+    </button>
+    <div class="flex-1"></div>
+    <button (click)="save()"
+            class="cli-btn btn-turq">
+            Guardar
+    </button>
+  </div>
+</div>

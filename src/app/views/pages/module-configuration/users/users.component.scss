@@ -1,0 +1,40 @@
+.cli-card{
+  min-width: 0;
+  display: flex;
+  background-color: #fff;
+  flex-direction: column;
+  word-wrap: break-word;
+  background-clip: border-box;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  height: 100%;
+}
+.cli-shadow-1{
+  box-shadow: 0 1px 1px 0 #00000020, 0 2px 5px 0 #00000020;
+}
+.fit-card{
+  min-height: 70vh;
+  max-width: 1200px;
+  margin: auto;
+}
+.cli-card-body{
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1rem 2rem;
+}
+.cli-title{
+  display: flex;
+  font-size: 2.2rem;
+  line-height: 3rem;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.cli-title-center{
+  text-align: center;
+  font-size: 2.4rem;
+  line-height: 3.2rem;
+  position: relative;
+  margin-bottom: 10px;
+}
+

@@ -43,6 +43,14 @@ const routes: Routes = [
         // data: {rol_menu: [PERMISSION.MENU_FACTURACION]}
       },
 
+      { path: 'administracion',
+      loadChildren: () => import('./views/pages/module-configuration/module-configuration.module').then(m => m.ModuleConfigurationModule)
+      },
+
+      { path: 'liquidacion',
+      loadChildren: () => import('./views/pages/Liquidacion/Liquidacion.module').then(m => m.LiquidacionModule)
+      },
+
       {path: '', redirectTo: 'home', pathMatch: 'full'},
       { path:'**', redirectTo:'/error/404' }
     ]

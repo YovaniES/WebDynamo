@@ -242,7 +242,125 @@ export class AsideComponent implements OnInit {
         },
       ],
     },
+    {
+      id: 4,
+      code: 'ADM',
+      text: 'ADMINISTRACIÓN',
+      order: 1,
+      icon: 'admin_panel_settings',
+      type: 'PAREN',
+      link: 'administracion',
+      enable: true,
+      module: 'administrador4',
+      displayed: false,
+      roles: PERMISSION.MENU_FACTURACION,
+      submenus: [
+        {
+          code: 'ADM-001',
+          text: 'Usuarios',
+          order: 1,
+          icon: 'person',
+          type: 'PAREN',
+          link: 'administracion/usuarios',
+          enable: true,
+          module: 'ADM',
+          displayed: true
+        },
+        {
+          code: 'ADM-002',
+          text: 'Permisos',
+          order: 2,
+          icon: 'https',
+          type: 'PAREN',
+          link: 'administracion/permisos',
+          enable: false,
+          module: 'ADM',
+          displayed: false
+        },
+        {
+          code: 'ADM-003',
+          text: 'Módulos de config.',
+          order: 3,
+          icon: 'menu_open',
+          type: 'PAREN',
+          link: 'administracion/modulos',
+          enable: true,
+          module: 'ADM',
+          displayed: false
+        },
+        {
+          code: 'ADM-004',
+          text: 'Menú',
+          order: 20,
+          icon: 'check',
+          type: 'PAREN',
+          link: 'administracion/menu',
+          enable: true,
+          module: 'ADM',
+          displayed: false
+        }
+      ]
+    },
 
+    {
+      id: 5,
+      code: 'LIQ',
+      text: 'LIQUIDACIÓN',
+      order: 1,
+      icon: 'account_tree',
+      type: 'PAREN',
+      link: 'liquidacion',
+      enable: true,
+      module: 'liquidacion',
+      displayed: false,
+      roles: PERMISSION.MENU_FACTURACION,
+      submenus: [
+        {
+          code: 'LIQ-001',
+          text: 'Actas',
+          order: 1,
+          icon: 'pix',
+          type: 'PAREN',
+          link: 'liquidacion/actas',
+          enable: true,
+          module: 'LIQ',
+          displayed: true
+        },
+        {
+          code: 'LIQ-002',
+          text: 'Mant. Liq.',
+          order: 2,
+          icon: 'dashboard_customize',
+          type: 'PAREN',
+          link: 'liquidacion/mantenimiento',
+          enable: false,
+          module: 'LIQ',
+          displayed: false
+        },
+        // {
+        //   code: 'LIQ-003',
+        //   text: 'Módulos de config.',
+        //   order: 3,
+        //   icon: 'menu_open',
+        //   type: 'PAREN',
+        //   link: 'liquidacion/modulos',
+        //   enable: true,
+        //   module: 'LIQ',
+        //   displayed: false
+        // },
+        // {
+        //   code: 'LIQ-004',
+        //   text: 'Menú',
+        //   order: 20,
+        //   icon: 'check',
+        //   type: 'PAREN',
+        //   link: 'liquidacion/menu',
+        //   enable: true,
+        //   module: 'LIQ',
+        //   displayed: false
+        // }
+      ]
+    },
   ];
 
   constructor(

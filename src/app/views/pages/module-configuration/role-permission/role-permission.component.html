@@ -1,0 +1,119 @@
+<div class="cli-card fit-card">
+  <div class="cli-card-body">
+    <div class="cli-title-center c-male">Asignar permisos a usuarios</div>
+    <!-- USUARIOS -->
+    <div class="pr-subtitle">Usuarios</div>
+    <div class="pr-section">
+      <div class="pr-userscontainer">
+        <div
+          [@fadeanimation]="'in'"
+          *ngFor="let user of users; let idx = index"
+          class="pr-username"
+        >
+          {{ user.value }}
+          <button
+            (click)="users.splice(idx, 1)"
+            class="icon-btn btn-trans c-male"
+          >
+            <mat-icon class="icon-18">close</mat-icon>
+          </button>
+        </div>
+
+        <!-- BUSCADOR -->
+        <div class="pr-usersearcher">
+          <input
+            [(ngModel)]="searchtext"
+            (blur)="searchtext = ''"
+            (keydown.escape)="doCancelSearch()"
+            (keydown.enter)="doSearchPerson()"
+            placeholder="Buscar usuario"
+          />
+          <div *ngIf="searchtext.length > 0" class="pr-sugget">
+            Enter para buscar
+          </div>
+          <mat-icon class="icon-20">search</mat-icon>
+
+          <!-- RESULTADOS BUSQUEDA  OJOOOOOOOOOO 20/10/2023-->
+          <!-- <cli-picklist
+            [showsubtitle]="true"
+            *ngIf="searchshowresult"
+            [items]="searchresult"
+            (close)="searchshowresult = false"
+            (result)="doPickUser($event)"
+          ></cli-picklist> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULO -->
+    <div class="pr-subtitle">Módulo</div>
+    <div class="pr-section">
+      <!-- SELECTOR DE MÓDULO -->
+      <select
+        class="pr-moduleselector"
+        *ngIf="!loadingModules"
+        (ngModelChange)="doPickModule($event)"
+        [(ngModel)]="selectedModule"
+      > <option value="N/A" disabled>--Seleccionar--</option>
+        <option *ngFor="let modulo of moduleList"
+                [value]="modulo.code">
+                {{ modulo.name }}
+        </option>
+      </select>
+
+      <ng-container *ngIf="selectedModule != 'N/A' && !loadingModules">
+        <!-- MENÚS -->
+        <div class="pr-segment-container"
+             style="margin-top: 5px">
+          <div class="pr-segment-title">Menús</div>
+          <div class="pr-checkoptions" *ngFor="let modMenu of modMenus">
+            <mat-checkbox class="pr-segment"
+                          [(ngModel)]="modMenu.selected">
+              <mat-icon class="icon-18 iconmr-10">{{ modMenu.icon }}</mat-icon>
+              {{ modMenu.name }}
+            </mat-checkbox>
+          </div>
+        </div>
+
+        <!-- FUNCIONES -->
+        <div class="pr-module-container">
+          <div class="pr-segment-title">Funciones</div>
+
+          <div *ngFor="let f of mfunction" class="pr-function">
+            <div class="pr-function-label">{{ f.name }}</div>
+            <mat-radio-group [(ngModel)]="f.lvl" class="pr-function-group">
+              <div class="pr-function-option"><mat-radio-button value="N/A">N/A</mat-radio-button></div>
+              <div class="pr-function-option"><mat-radio-button value="READ">READ</mat-radio-button></div>
+              <div class="pr-function-option"><mat-radio-button value="UPDATE">UPDATE</mat-radio-button></div>
+              <div class="pr-function-option"><mat-radio-button value="CREATE">CREATE</mat-radio-button></div>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <!-- SEGMENTOS -->
+        <!-- <div class="pr-segment-container">
+          <div class="pr-segment-title">Segmentos</div>
+          <div *ngFor="let s of msegment" class="pr-checkoptions">
+            <mat-checkbox [(ngModel)]="s.selected" class="pr-segment">{{
+              s.name
+            }}</mat-checkbox>
+          </div>
+        </div> -->
+      </ng-container>
+      <div class="pr-loading" *ngIf="loadingModules">
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
+    </div>
+
+    <!-- BOTON ACCIONES -->
+    <div
+      *ngIf="selectedModule != 'N/A' && !loadingModules"
+      class="cli-form-buttons"
+    >
+      <button (click)="doRequestPermissions()"
+              class="cli-btn btn-l btn-turq">
+        Asignar permisos
+      </button>
+    </div>
+  </div>
+</div>

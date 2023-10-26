@@ -1,0 +1,97 @@
+<div class="cli-tablebar">
+  <div class="cli-table-search">
+    <input #searcher type="text" placeholder="Buscar" />
+    <mat-icon class="icon-20">search</mat-icon>
+  </div>
+
+  <!-- REFRESH -->
+  <button matTooltip="Refrescar" class="icon-btn btn-trans">
+    <mat-icon class="icon-20">refresh</mat-icon>
+  </button>
+
+  <!-- FILTRO USER -->
+  <div class="h-divider"></div>
+  <button matTooltip="Ver todos" class="icon-btn btn-trans">
+    <mat-icon class="icon-20">list</mat-icon>
+  </button>
+  <button matTooltip="Ver solo mios" class="icon-btn btn-trans">
+    <mat-icon class="icon-20">person_search</mat-icon>
+  </button>
+
+  <!-- STATUS -->
+  <div class="flex-1"></div>
+  <div>Estado:</div>
+  <div class="status-btn">
+    <select class="cli-input-white">
+      <option value="-1">Todos</option>
+      <option value="1">Activo</option>
+      <option value="0">Inactivo</option>
+    </select>
+  </div>
+
+  <!-- RESTAURAR -->
+  <div class="h-divider"></div>
+  <button matTooltip="Deshacer filtros" class="icon-btn btn-trans">
+    <mat-icon class="icon-20">restore</mat-icon>
+  </button>
+</div>
+
+<!-- TABLA -->
+<table class="cli-table stripedtable underlinedtable">
+  <thead>
+    <tr class="bold c-male">
+      <th><mat-checkbox></mat-checkbox></th>
+      <th>ID</th>
+      <th>Displayname</th>
+      <th>Username</th>
+      <th>Status</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of data; let i = index">
+      <td><mat-checkbox></mat-checkbox></td>
+      <td>{{ user.id    }}</td>
+      <td>{{ user.name  }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <select [(ngModel)]="user.rol" class="cli-input-white">
+          <option value="true">User</option>
+          <option value="false">Gestor</option>
+        </select>
+      </td>
+      <td>
+        <div class="cli-table-actions">
+          <button
+            (click)="doUpdateRow(i)"
+            matTooltip="Editar"
+            class="icon-btn btn-trans btn-trans c-dark"
+            ><mat-icon class="icon-18 c-blue">edit</mat-icon>
+          </button>
+          <button
+            matTooltip="Eliminar"
+            class="icon-btn btn-trans btn-trans c-dark"
+            ><mat-icon class="icon-18 c-fucsia">delete_forever</mat-icon>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- PAGINACIÓN -->
+<div class="cli-pagination-container">
+  <div class="cli-pagination-page">Página:</div>
+  <button
+    [disabled]="table_settings.page == 1"
+    (click)="doPageChange(-1)"
+    class="icon-btn btn-turq"
+  >
+    <mat-icon class="icon-20">chevron_left</mat-icon>
+  </button>
+  <div class="cli-pagination-page">
+    {{ table_settings.page }}
+  </div>
+  <button (click)="doPageChange(1)" class="icon-btn btn-turq">
+    <mat-icon class="icon-20">chevron_right</mat-icon>
+  </button>
+</div>
