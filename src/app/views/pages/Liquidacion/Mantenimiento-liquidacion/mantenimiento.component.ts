@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { ListaGestorComponent } from './lista-gestor/lista-gestor.component';
+import { ListaSubservicioComponent } from './lista-subservicio/lista-subservicio.component';
 
 @Component({
   selector: 'app-mantenimiento',
@@ -22,6 +24,8 @@ export class MantenimientoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getAllGestor();
+    this.getAllSubservicio();
   }
 
 
@@ -32,6 +36,33 @@ export class MantenimientoComponent implements OnInit {
     })
   };
 
+  getAllGestor(){}
+  getAllSubservicio(){}
+
+  abrirModalGestor( ) {
+    this.dialog
+      .open(ListaGestorComponent, { width: '60%', data: { } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.getAllGestor();
+        }
+      });
+  }
+
+
+  abrirListaSubservicio( ) {
+    this.dialog
+      .open(ListaSubservicioComponent, { width: '60%', data: { } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.getAllSubservicio();
+        }
+      });
+  }
 
 
 }
+
+

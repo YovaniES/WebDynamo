@@ -1,0 +1,152 @@
+<div class="cli-modalclose mt-2">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-card fit-card">
+  <div class="cli-card-body">
+    <div class="modal-title c-male">Registro de subservicios</div>
+    <div>
+      <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
+      <form [formGroup]="gestorForm">
+        <div class="card" style="border-radius: 2px">
+          <div class="row g-3 card-body" style="padding: 10px">
+            <div class="cli-form-element col-f-3">
+              <label>Nombre o Apellido</label>
+              <input
+                class="cli-input"
+                formControlName="nombre_apell"
+                type="text"/>
+            </div>
+
+            <div class="cli-form-element col-f-3">
+              <label>Proyectos</label>
+              <select formControlName="proyectos" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-3">
+              <label>Subservicios</label>
+              <select formControlName="subservicios" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small>
+            </div>
+
+            <div class="cli-form-buttons" style="margin-top: 8px">
+              <button
+                type="submit"
+                class="cli-btn btn-m btn-regresar"
+                style="border-radius: 2px; padding: 0.225rem 0.75rem"
+                (click)="limpiarFiltro()">
+                <mat-icon class="icon-18">rotate_left</mat-icon>
+                Limpiar
+              </button>
+
+              <button
+                type="button"
+                class="cli-btn btn-blue-light"
+                style="border-radius: 2px; padding: 0.225rem 0.75rem"
+                (click)="getAllGestor()"
+                ><mat-icon class="icon-18">search</mat-icon>
+                Buscar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTON MODAL PARA CREAR GESTOR ----------------------------------------------------->
+        <div style="display: flex" class="mt-4 mb-1">
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="gestorForm.invalid"
+            (click)="abrirModalCrearOactualizar()">
+            <mat-icon class="icon-18">add</mat-icon> Crear subservicio
+          </button>
+
+          <div class="flex-1"></div>
+          <div class="mt-2" style="color: #345df3; font-weight: 600">
+            Total : <span class="total">{{ listGestores.length }} Gestor</span>
+          </div>
+        </div>
+      </form>
+
+      <!-- TABLA DE GESTORES ------------------------------------------------------------------>
+      <div style="overflow: auto; min-height: 250px; color: #6c757d">
+        <table class="cli-table stripedtable underlinedtable">
+          <thead>
+            <tr class="bgc-blue-light c-white">
+              <th class="w50">Acción</th>
+              <th style="min-width: 150px">Nombre Apell.</th>
+              <th class="w100">Correo</th>
+              <th style="min-width: 240px">Proyectos</th>
+              <th style="min-width: 115px">Subservicios</th>
+              <th style="min-width: 92px">Estado</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let gestor of listGestores | paginate: {
+                        itemsPerPage: pageSize,
+                        currentPage: page,
+                        totalItems: totalFacturas }">
+              <td>
+                <div class="moad-actions">
+                  <button
+                    matTooltip="Editar subservicio"
+                    (click)="abrirModalCrearOactualizar(gestor)"
+                    class="icon-btn btn-trans c-yellow"
+                    ><mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                  </button>
+
+                  <button
+                    matTooltip="Eliminar subservicio"
+                    (click)="eliminarLiquidacion(gestor.id)"
+                    class="icon-btn btn-trans c-red">
+                    <mat-icon class="icon-15">delete_forever</mat-icon>
+                  </button>
+                </div>
+              </td>
+              <td style="font-weight: 600">{{ gestor.id }}</td>
+              <td style="text-align: left">{{ gestor.nombre | uppercase}}</td>
+              <td style="font-weight: 600">{{ gestor.id }}</td>
+              <td style="font-weight: 600">{{ gestor.id }}</td>
+              <td>
+                <span *ngIf="gestor.estado == 'Aprobado'" class="label">{{gestor.estado | uppercase}}</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="cli-loader" *ngIf="loadingItem">
+          <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
+        </div>
+
+        <div
+          *ngIf="!loadingItem && listGestores.length == 0"
+          class="cli-loader mt-5"
+          style="color: #f83434">
+          No hay subservicio para mostrar
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer pb-0 pt-3">
+      <pagination-controls
+        previousLabel="Anterior"
+        nextLabel="Siguiente"
+        [responsive]="false"
+        (pageChange)="cambiarPagina($event)">
+      </pagination-controls>
+    </div>
+  </div>
+
+  <div class="cli-form-buttons" style="margin-top: 5%">
+    <button class="cli-btn btn-m btn-regresar"
+            type="submit" (click)="close()">
+            <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
+    </button>
+</div>

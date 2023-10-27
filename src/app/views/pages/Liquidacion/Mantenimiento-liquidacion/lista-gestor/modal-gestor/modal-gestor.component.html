@@ -1,0 +1,112 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_GESTOR ? "Actualizar" : "Crear" }} gestor</div>
+
+  <form class="row g-3" [formGroup]="gestorForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="row g-3">
+        <div class="cli-form-element col-f-3">
+          <label>Nombre <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="nombre"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('nombre')">* Ingrese el nombre es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Apellido paterno <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="apell_pat"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('apell_pat')">* Ingrese el apellido paterno es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Apellido materno <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="apell_mat"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('apell_mat')">* Ingrese el apellido materno es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Correo</label>
+          <input
+            class="cli-input"
+            formControlName="correo"
+            type="text"/>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <div class="form-group">
+            <label>Fecha inicio</label>
+             <input
+              style="padding: 0.175rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_ini"/>
+          </div>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <div class="form-group">
+            <label>Fecha fin</label>
+             <input
+              style="padding: 0.175rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_fin"/>
+          </div>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Proyectos <small style="color: red">*</small></label>
+          <select formControlName="proyectos" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Subservicios <small style="color: red">*</small></label>
+          <select formControlName="subservicios" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Estado</label>
+          <select formControlName="id_estado" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cli-form-buttons" style="margin-top: 8%">
+        <button class="cli-btn btn-m btn-regresar"
+                type="submit" (click)="close()">
+                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+        </button>
+
+        <button class="cli-btn btn-m btn-turq"
+                [disabled]="gestorForm.invalid"
+                >
+                <!-- (click)="save()" -->
+                <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

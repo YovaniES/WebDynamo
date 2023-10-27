@@ -33,6 +33,7 @@
   padding: 0 8px;
   display: flex;
   align-items: center;
+  justify-content: center;
   & mat-icon {
     margin: 0 5px;
   }
@@ -66,13 +67,27 @@
   transition: ease 0.3s;
   color: #007bff;
   border: solid 1px #007bff;
-  // min-width: 90px;
+  min-width: 90px;
   &:hover:enabled {
     background-color: $color-grey-1;
   }
   &:hover:enabled:active {
     background-color: #5493ff;
     color: #FFF;
+  }
+}
+
+.btn-regresar {
+  background-color: #f6f6f6;
+  transition: ease 0.3s;
+  color: #454749;
+  // min-width: 90px;
+  &:hover:enabled {
+    background-color: $color-grey-1;
+  }
+  &:hover:enabled:active {
+    background-color: #929294;
+    color: #f6f6f6;
   }
 }
 
@@ -190,6 +205,7 @@
   background-color: $color-turq;
   color: #fff;
   transition: ease 0.3s;
+  justify-content: center;
   &:hover:enabled {
     background-color: $color-turq-l;
   }

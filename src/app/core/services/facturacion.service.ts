@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_DYNAMO } from '../constants/url.constants';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -114,6 +115,17 @@ export class FacturacionService {
 
   listaComentarioByID(obj: any[]) {
     return this.http.post(API_DYNAMO, obj);
+  }
+
+  // BASE_LIQUIDACION <> API_DYNAMO
+  getLiquidacionById(idLiq: number): Observable<any>{
+    return this.http.get(`${API_DYNAMO}/GetLiquidacionById/${idLiq}`).pipe(
+      map((resp: any) => {
+        console.log('DATA_BY_ID', resp.result);
+
+        return resp.result;
+      })
+    );
   }
 }
 

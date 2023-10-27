@@ -10,13 +10,21 @@ import { LiquidacionRoutingModule } from './Liquidacion-routing.module';
 import { ActaComponent } from './Actas/acta.component';
 import { MantenimientoComponent } from './Mantenimiento-liquidacion/mantenimiento.component';
 import { ModalEditModuleComponent } from './Actas/modal-edit-module/modal-edit-module.component';
+import { ListaGestorComponent } from './Mantenimiento-liquidacion/lista-gestor/lista-gestor.component';
+import { ModalGestorComponent } from './Mantenimiento-liquidacion/lista-gestor/modal-gestor/modal-gestor.component';
+import { ListaSubservicioComponent } from './Mantenimiento-liquidacion/lista-subservicio/lista-subservicio.component';
+import { ModalSubservicioComponent } from './Mantenimiento-liquidacion/lista-subservicio/modal-subservicio/modal-subservicio.component';
 
 
 @NgModule({
   declarations: [
     ActaComponent,
     MantenimientoComponent,
-    ModalEditModuleComponent
+    ModalEditModuleComponent,
+    ModalGestorComponent,
+    ListaGestorComponent,
+    ListaSubservicioComponent,
+    ModalSubservicioComponent
   ],
   imports: [
     CommonModule,
