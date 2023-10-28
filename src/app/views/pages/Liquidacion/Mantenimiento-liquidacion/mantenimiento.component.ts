@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ListaGestorComponent } from './lista-gestor/lista-gestor.component';
 import { ListaSubservicioComponent } from './lista-subservicio/lista-subservicio.component';
+import { ListaOrdencompraComponent } from './lista-ordencompra/lista-ordencompra.component';
 
 @Component({
   selector: 'app-mantenimiento',
@@ -26,6 +27,7 @@ export class MantenimientoComponent implements OnInit {
   ngOnInit(): void {
     this.getAllGestor();
     this.getAllSubservicio();
+    this.getAllOrdencompra()
   }
 
 
@@ -38,6 +40,7 @@ export class MantenimientoComponent implements OnInit {
 
   getAllGestor(){}
   getAllSubservicio(){}
+  getAllOrdencompra(){}
 
   abrirModalGestor( ) {
     this.dialog
@@ -63,6 +66,16 @@ export class MantenimientoComponent implements OnInit {
   }
 
 
+  abrirListaOrdecompra( ) {
+    this.dialog
+      .open(ListaOrdencompraComponent, { width: '60%', data: { } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.getAllOrdencompra();
+        }
+      });
+  }
 }
 
 

@@ -1,10 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
-import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
 export interface changeResponse {
@@ -14,26 +13,25 @@ export interface changeResponse {
 }
 
 @Component({
-  selector: 'app-modal-subservicio',
-  templateUrl: './modal-subservicio.component.html',
-  styleUrls: ['./modal-subservicio.component.scss'],
+  selector: 'app-modal-acta',
+  templateUrl: './modal-acta.component.html',
+  styleUrls: ['./modal-acta.component.scss'],
 })
-export class ModalSubservicioComponent implements OnInit {
+export class ModalActaComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
 
   page = 1;
-  totalFacturas: number = 0;
+  totalActas: number = 0;
   pageSize = 10;
 
   modecode = '';
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
-               private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
-               public dialogRef: MatDialogRef<ModalSubservicioComponent>,
-               @Inject(MAT_DIALOG_DATA) public DATA_SUBSERV: any
+               public dialogRef: MatDialogRef<ModalActaComponent>,
+               @Inject(MAT_DIALOG_DATA) public DATA_ACTAS: any
   ) {}
 
   ngOnInit(): void {
@@ -41,41 +39,39 @@ export class ModalSubservicioComponent implements OnInit {
   this.getListProyectos();
   this.getListGestores();
 
-  if (this.DATA_SUBSERV) {
-    this.cargarSubservicioById(this.DATA_SUBSERV);
-    console.log('MODAL-SUBSERV', this.DATA_SUBSERV);
-
+  if (this.DATA_ACTAS) {
+    this.cargarGestorById(this.DATA_ACTAS);
   }
   }
 
-  subservicioForm!: FormGroup;
+  actasForm!: FormGroup;
   newForm(){
-    this.subservicioForm = this.fb.group({
-     subservicio: ['',],
-     gestor     : ['',],
-     fecha_ini  : ['',],
-     fecha_fin  : ['',],
-     proyecto   : ['',],
-     id_estado  : ['']
+    this.actasForm = this.fb.group({
+     proyecto     : ['',],
+     subservicio  : ['',],
+     gestor       : ['',],
+     importe      : ['',],
+     fecha_periodo: ['',],
+     comentario   : ['',],
+     estado       : ['',],
     })
   }
 
   actionBtn: string = 'Crear';
-  cargarSubservicioById(idGestor: number): void{
-    this.blockUI.start("Cargando Subservicio...");
-    if (this.DATA_SUBSERV) {
+  cargarGestorById(idGestor: number): void{
+    // this.blockUI.start("Cargando data...");
+    if (this.DATA_ACTAS) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getSubserviciosById(this.DATA_SUBSERV.idSubservicio).subscribe((subserv: any) => {
-        console.log('DATA_BY_ID_SUBSERV', subserv);
-        this.blockUI.stop();
+      this.facturacionService.getLiquidacionById(idGestor).subscribe((resp: any) => {
+        console.log('DATA_BY_ID_GESTOR', resp);
 
-        this.subservicioForm.reset({
-          subservicio: subserv.subservicio,
-          gestor     : subserv.representante,
-          fecha_ini  : subserv.fechaCreacion,
-          fecha_fin  : subserv.fecha_fin,
-          proyecto   : subserv.proyecto,
-          id_estado  : subserv.estado,
+        this.actasForm.reset({
+          proyecto     : resp.proyecto,
+          subservicio  : resp.subservicio,
+          gestor       : resp.gestor,
+          importe      : resp.importe,
+          fecha_periodo: resp.fecha_periodo,
+          comentario   : resp.comentario,
         })
       })
     }
@@ -121,7 +117,7 @@ export class ModalSubservicioComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.subservicioForm.get(campo)?.invalid && this.subservicioForm.get(campo)?.touched ) {
+    if (this.actasForm.get(campo)?.invalid && this.actasForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;
@@ -133,7 +129,7 @@ export class ModalSubservicioComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalFacturas) {
+    if (this.totalfiltro != this.totalActas) {
       this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
             this.listGestores = resp.list;
             this.spinner.hide();

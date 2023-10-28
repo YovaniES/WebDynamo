@@ -5,8 +5,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
-import { ModalSubservicioComponent } from './modal-subservicio/modal-subservicio.component';
-import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
+import { ModalOrdencompraComponent } from './modal-ordencompra/modal-ordencompra.component';
 
 export interface changeResponse {
   message: string;
@@ -15,40 +14,39 @@ export interface changeResponse {
 }
 
 @Component({
-  selector: 'app-lista-subservicio',
-  templateUrl: './lista-subservicio.component.html',
-  styleUrls: ['./lista-subservicio.component.scss'],
+  selector: 'app-lista-ordencompra',
+  templateUrl: './lista-ordencompra.component.html',
+  styleUrls: ['./lista-ordencompra.component.scss'],
 })
-export class ListaSubservicioComponent implements OnInit {
+export class ListaOrdencompraComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
 
   page = 1;
-  totalFacturas: number = 0;
-  pageSize = 5;
+  totalOrdencompra: number = 0;
+  pageSize = 10;
 
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
-               private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
-               public dialogRef: MatDialogRef<ListaSubservicioComponent>,
+               public dialogRef: MatDialogRef<ListaOrdencompraComponent>,
   ) {}
 
   ngOnInit(): void {
   this.newForm()
   this.getListProyectos();
   this.getListGestores();
-  this.getAllSubservicios()
   }
 
-  gestorForm!: FormGroup;
+  ordencompraForm!: FormGroup;
   newForm(){
-    this.gestorForm = this.fb.group({
-     nombre_apell: [''],
-     subservicios: [''],
-     proyectos   : ['']
+    this.ordencompraForm = this.fb.group({
+     orden_compra : [''],
+     certificacion: [''],
+     monto        : [''],
+     proyecto     : ['']
     })
   }
 
@@ -62,15 +60,6 @@ export class ListaSubservicioComponent implements OnInit {
     });
   };
 
-  listSubservicios: any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
-      console.log('DATA_SUBSERV', this.listSubservicios);
-
-    })
-  }
-
 
   actionBtn: string = 'Crear';
 
@@ -80,36 +69,6 @@ export class ListaSubservicioComponent implements OnInit {
   getAllGestor(){}
 
   eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
-
-  save() {
-    this.blockUI.start('Guardando...');
-    // MÓDULOS
-    // if (this.data.ismodule) {
-    //   this.menu.module = this.data.isnew ? 'ADD' : 'EDT';
-    //   const sub: Subscription = this.permissionService
-    //     .postModule(this.menu)
-    //     .subscribe((resp: any) => {
-    //       this.blockUI.stop();
-    //       if (resp.status) this.dialogRef.close(this.menu);
-    //       else this.showAlertError(resp.message);
-    //       sub.unsubscribe();
-    //     });
-
-    //   // MENÚS
-    // } else {
-    //   this.menu.module = this.modecode;
-    //   const sub: Subscription = this.permissionService
-    //     .postMenu(this.menu)
-    //     .subscribe((resp: any) => {
-    //       this.blockUI.stop();
-    //       if (resp.status) this.dialogRef.close(this.menu);
-    //       else this.showAlertError(resp.message);
-    //       sub.unsubscribe();
-    //     });
-    // }
-  }
-
 
   listProyectos: any[] = [];
   getListProyectos(){
@@ -135,7 +94,7 @@ export class ListaSubservicioComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.gestorForm.get(campo)?.invalid && this.gestorForm.get(campo)?.touched ) {
+    if (this.ordencompraForm.get(campo)?.invalid && this.ordencompraForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;
@@ -147,7 +106,7 @@ export class ListaSubservicioComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalFacturas) {
+    if (this.totalfiltro != this.totalOrdencompra) {
       this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
             this.listaLiquidacion = resp.list;
             this.spinner.hide();
@@ -161,7 +120,7 @@ export class ListaSubservicioComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalSubservicioComponent, { width: '45%', height:'45%', data: DATA })
+      .open(ModalOrdencompraComponent, { width: '45%', height:'60%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllGestor();

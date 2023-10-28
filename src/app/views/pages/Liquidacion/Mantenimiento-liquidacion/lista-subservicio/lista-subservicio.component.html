@@ -69,7 +69,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listGestores.length }} Gestor</span>
+            Total : <span class="total">{{ listSubservicios.length }} Subservicios</span>
           </div>
         </div>
       </form>
@@ -80,16 +80,16 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px">Nombre Apell.</th>
-              <th class="w100">Correo</th>
+              <th style="min-width: 150px">Subservicio</th>
+              <th class="w100">Gestor</th>
               <th style="min-width: 240px">Proyectos</th>
-              <th style="min-width: 115px">Subservicios</th>
+              <th style="min-width: 115px">Fecha inicio - fin</th>
               <th style="min-width: 92px">Estado</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let gestor of listGestores | paginate: {
+            <tr *ngFor="let subserv of listSubservicios | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalFacturas }">
@@ -97,25 +97,25 @@
                 <div class="moad-actions">
                   <button
                     matTooltip="Editar subservicio"
-                    (click)="abrirModalCrearOactualizar(gestor)"
+                    (click)="abrirModalCrearOactualizar(subserv)"
                     class="icon-btn btn-trans c-yellow"
                     ><mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                   </button>
 
                   <button
                     matTooltip="Eliminar subservicio"
-                    (click)="eliminarLiquidacion(gestor.id)"
+                    (click)="eliminarLiquidacion(subserv.idSubservicio)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
-              <td style="font-weight: 600">{{ gestor.id }}</td>
-              <td style="text-align: left">{{ gestor.nombre | uppercase}}</td>
-              <td style="font-weight: 600">{{ gestor.id }}</td>
-              <td style="font-weight: 600">{{ gestor.id }}</td>
-              <td>
-                <span *ngIf="gestor.estado == 'Aprobado'" class="label">{{gestor.estado | uppercase}}</span>
+              <td style="text-align: left;">{{ subserv.subservicio }}</td>
+              <td style="text-align: left">{{ subserv.representante | uppercase}}</td>
+              <td style="">{{ subserv.proyecto }}</td>
+              <td style="text-align: left;">{{ subserv.fechaCreacion | date }}</td>
+              <td class="moad-module">
+                <mat-icon [ngClass]="{ 'c-green_x': subserv.estado == 'Activo', 'c-red': subserv.estado != 'Activo' }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>
@@ -126,7 +126,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listGestores.length == 0"
+          *ngIf="!loadingItem && listSubservicios.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
           No hay subservicio para mostrar

@@ -1,11 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { Menu } from 'src/app/core/models/menu.models';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { PermissionsService } from 'src/app/core/services/permissions.service';
 import Swal from 'sweetalert2';
 
@@ -32,6 +34,7 @@ export class ModalGestorComponent implements OnInit {
   modecode = '';
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
+               private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                public dialogRef: MatDialogRef<ModalGestorComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_GESTOR: any
@@ -50,36 +53,39 @@ export class ModalGestorComponent implements OnInit {
   gestorForm!: FormGroup;
   newForm(){
     this.gestorForm = this.fb.group({
-     nombre      : ['',],
-     apell_pat   : ['',],
-     apell_mat   : ['',],
-     correo      : ['',],
-     fecha_ini   : ['',],
-     fecha_fin   : ['',],
-     proyectos   : ['',],
-     subservicios: ['',],
-     id_estado   : ['']
+     nombre        : ['',],
+     apell_pat     : ['',],
+     apell_mat     : ['',],
+     correo        : ['',],
+     fecha_ini     : ['',],
+     fecha_fin     : ['',],
+     proyectos     : ['',],
+     subservicios  : ['',],
+     id_estado     : [''],
+     fecha_creacion: ['']
     })
   }
 
   actionBtn: string = 'Crear';
   cargarGestorById(idGestor: number): void{
-    // this.blockUI.start("Cargando data...");
+    this.blockUI.start("Cargando data...");
     if (this.DATA_GESTOR) {
       this.actionBtn = 'Actualizar'
-      this.facturacionService.getLiquidacionById(idGestor).subscribe((resp: any) => {
-        console.log('DATA_BY_ID_GESTOR', resp);
+      this.liquidacionService.getGestorById(this.DATA_GESTOR.idGestor).subscribe((gestor: any) => {
+        console.log('DATA_BY_ID_GESTOR', gestor);
 
+        this.blockUI.stop();
         this.gestorForm.reset({
-          nombre      : resp.nombre,
-          apell_pat   : resp.apell_pat,
-          apell_mat   : resp.apell_mat,
-          correo      : resp.correo,
-          fecha_ini   : resp.fecha_ini,
-          fecha_fin   : resp.fecha_fin,
-          proyectos   : resp.proyectos,
-          subservicios: resp.subservicios,
-          id_estado   : resp.id_estado,
+          nombre        : gestor.nombres,
+          apell_pat     : gestor.apellidos,
+          apell_mat     : gestor.apellidos,
+          correo        : gestor.correo,
+          fecha_ini     : moment.utc(gestor.fecha_inicio).format('YYYY-MM-DD'),
+          fecha_fin     : moment.utc(gestor.fecha_fin).format('YYYY-MM-DD'),
+          proyectos     : gestor.proyectos,
+          subservicios  : gestor.subservicios,
+          id_estado     : gestor.estado,
+          fecha_creacion: moment.utc(gestor.fecha_facturacion).format('YYYY-MM-DD'),
         })
       })
     }

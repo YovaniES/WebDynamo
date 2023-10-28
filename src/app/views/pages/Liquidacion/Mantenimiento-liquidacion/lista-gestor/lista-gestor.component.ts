@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalGestorComponent } from './modal-gestor/modal-gestor.component';
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 
 export interface changeResponse {
   message: string;
@@ -29,6 +30,7 @@ export class ListaGestorComponent implements OnInit {
 
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
+               private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
                public dialogRef: MatDialogRef<ListaGestorComponent>,
@@ -36,8 +38,9 @@ export class ListaGestorComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
+  this.getAllGestor();
   this.getListProyectos();
-  this.getListGestores();
+  // this.getListGestores();
   }
 
   gestorForm!: FormGroup;
@@ -49,23 +52,28 @@ export class ListaGestorComponent implements OnInit {
     })
   }
 
-  listGestores: any[] = [];
-  getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
+  // // API_GESTOR
+  // listGestores: any[] = [];
+  // getListGestores(){
+  //   let parametro: any[] = [{queryId: 102}];
 
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            console.log('GESTORES', resp);
-    });
-  };
+  //   this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
+  //           this.listGestores = resp.list;
+  //           console.log('GESTORES', resp);
+  //   });
+  // };
 
 
   actionBtn: string = 'Crear';
 
-  listaLiquidacion: any[] = [];
-
+  listGestores: any[] = [];
   limpiarFiltro(){}
-  getAllGestor(){}
+  getAllGestor(){
+    this.liquidacionService.getAllGestor().subscribe( (resp: any) => {
+      this.listGestores = resp
+      console.log('LIST-GESTOR', this.listGestores);
+    })
+  }
 
   eliminarLiquidacion(id: number){}
   // actualizarFactura(data: any){}
@@ -137,7 +145,7 @@ export class ListaGestorComponent implements OnInit {
 
     if (this.totalfiltro != this.totalFacturas) {
       this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listaLiquidacion = resp.list;
+            this.listGestores = resp.list;
             this.spinner.hide();
           });
     } else {

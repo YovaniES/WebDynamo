@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ModalEditModuleComponent } from './modal-edit-module/modal-edit-module.component';
+import { ModalActaComponent } from './modal-actas/modal-acta.component';
 
 @Component({
   selector: 'app-acta',
@@ -17,7 +18,7 @@ export class ActaComponent implements OnInit {
   loading = false;
 
   page = 1;
-  totalFacturas: number = 0;
+  totalActas: number = 0;
   pageSize = 5;
 
   listActas: any[] = [];
@@ -227,21 +228,6 @@ export class ActaComponent implements OnInit {
     //   });
   }
 
-  openEditDialog( idx: number, module:any, ismodule: boolean, isnew: boolean, modulename: any) {
-    this.dialog
-      .open(ModalEditModuleComponent, { data: { module, ismodule, isnew, modulename } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          this.showingidx = idx;
-          this.refreshModules();
-        }
-      });
-  }
-
-
-
-
   // DATA LIQUIDACION OJO
 
 
@@ -250,14 +236,12 @@ export class ActaComponent implements OnInit {
     this.actasForm = this.fb.group({
       codFact            : [''],
       id_proy            : [''],
-      id_liquidacion     : [''],
-      id_estado          : [''],
-      id_gestor          : [''],
       importe            : [''],
       subservicio        : [''],
       f_periodo          : [''],
       periodoActual      : [true],
-      import             : ['']
+      import             : [''],
+      estado             : ['']
     })
   };
 
@@ -303,7 +287,7 @@ export class ActaComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalFacturas) {
+    if (this.totalfiltro != this.totalActas) {
       // this.facturacionService.getAllActas(offset.toString()).subscribe( (resp: any) => {
       //       this.listaLiquidacion = resp.list;
       //       this.spinner.hide();
@@ -325,6 +309,29 @@ export class ActaComponent implements OnInit {
     date.setMonth(date.getMonth() + mes);
     // console.log('TOTAL-CORR',this.modificarMes(-1)); //2023-08
     return date.toISOString().substring(0, 7); /* Obtenemos la fecha en formato YYYY-mm */
+  }
+
+  openEditDialog( idx: number, module:any, ismodule: boolean, isnew: boolean, modulename: any) {
+    this.dialog
+      .open(ModalEditModuleComponent, { data: { module, ismodule, isnew, modulename } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+          this.showingidx = idx;
+          this.refreshModules();
+        }
+      });
+  }
+
+  abrirModalCrearOactualizar(DATA?: any) {
+    console.log('DATA_ACTAS', DATA);
+    this.dialog
+      .open(ModalActaComponent, { width: '70%', height:'60%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllActas();
+        }
+      });
   }
 
 

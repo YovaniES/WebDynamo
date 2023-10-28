@@ -4,7 +4,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
-import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
 export interface changeResponse {
@@ -14,11 +13,11 @@ export interface changeResponse {
 }
 
 @Component({
-  selector: 'app-modal-subservicio',
-  templateUrl: './modal-subservicio.component.html',
-  styleUrls: ['./modal-subservicio.component.scss'],
+  selector: 'app-modal-ordencompra',
+  templateUrl: './modal-ordencompra.component.html',
+  styleUrls: ['./modal-ordencompra.component.scss'],
 })
-export class ModalSubservicioComponent implements OnInit {
+export class ModalOrdencompraComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
@@ -30,10 +29,9 @@ export class ModalSubservicioComponent implements OnInit {
   modecode = '';
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
-               private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
-               public dialogRef: MatDialogRef<ModalSubservicioComponent>,
-               @Inject(MAT_DIALOG_DATA) public DATA_SUBSERV: any
+               public dialogRef: MatDialogRef<ModalOrdencompraComponent>,
+               @Inject(MAT_DIALOG_DATA) public DATA_ORDENCOMPRA: any
   ) {}
 
   ngOnInit(): void {
@@ -41,41 +39,32 @@ export class ModalSubservicioComponent implements OnInit {
   this.getListProyectos();
   this.getListGestores();
 
-  if (this.DATA_SUBSERV) {
-    this.cargarSubservicioById(this.DATA_SUBSERV);
-    console.log('MODAL-SUBSERV', this.DATA_SUBSERV);
-
+  if (this.DATA_ORDENCOMPRA) {
+    this.cargarGestorById(this.DATA_ORDENCOMPRA);
   }
   }
 
-  subservicioForm!: FormGroup;
+  ordencompraForm!: FormGroup;
   newForm(){
-    this.subservicioForm = this.fb.group({
-     subservicio: ['',],
-     gestor     : ['',],
-     fecha_ini  : ['',],
-     fecha_fin  : ['',],
-     proyecto   : ['',],
-     id_estado  : ['']
+    this.ordencompraForm = this.fb.group({
+     orden_compra : ['',],
+     monto        : ['',],
+     certificacion: ['',],
     })
   }
 
   actionBtn: string = 'Crear';
-  cargarSubservicioById(idGestor: number): void{
-    this.blockUI.start("Cargando Subservicio...");
-    if (this.DATA_SUBSERV) {
+  cargarGestorById(idGestor: number): void{
+    // this.blockUI.start("Cargando data...");
+    if (this.DATA_ORDENCOMPRA) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getSubserviciosById(this.DATA_SUBSERV.idSubservicio).subscribe((subserv: any) => {
-        console.log('DATA_BY_ID_SUBSERV', subserv);
-        this.blockUI.stop();
+      this.facturacionService.getLiquidacionById(idGestor).subscribe((resp: any) => {
+        console.log('DATA_BY_ID_OC', resp);
 
-        this.subservicioForm.reset({
-          subservicio: subserv.subservicio,
-          gestor     : subserv.representante,
-          fecha_ini  : subserv.fechaCreacion,
-          fecha_fin  : subserv.fecha_fin,
-          proyecto   : subserv.proyecto,
-          id_estado  : subserv.estado,
+        this.ordencompraForm.reset({
+          orden_compra : resp.orden_compra,
+          monto        : resp.monto,
+          certificacion: resp.certificacion,
         })
       })
     }
@@ -95,7 +84,6 @@ export class ModalSubservicioComponent implements OnInit {
   getAllGestor(){}
 
   eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
 
   listProyectos: any[] = [];
   getListProyectos(){
@@ -121,7 +109,7 @@ export class ModalSubservicioComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.subservicioForm.get(campo)?.invalid && this.subservicioForm.get(campo)?.touched ) {
+    if (this.ordencompraForm.get(campo)?.invalid && this.ordencompraForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;

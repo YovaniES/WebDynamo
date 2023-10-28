@@ -3,9 +3,9 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_GESTOR ? "Actualizar" : "Crear" }} gestor</div>
+  <div class="cli-form-title c-male">{{ DATA_GESTOR ? "Actualizar" : "Crear" }} gestor</div>
 
-  <form class="row g-3" [formGroup]="gestorForm">
+  <form class="row g-3 mt-3" [formGroup]="gestorForm">
     <div class="cli-form newvac-wrapper">
       <div class="row g-3">
         <div class="cli-form-element col-f-3">
@@ -87,10 +87,22 @@
           <label>Estado</label>
           <select formControlName="id_estado" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option value="true">Activo</option>
-            <option value="false">Inactivo</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
           </select>
         </div>
+
+        <div class="cli-form-element col-f-3">
+          <div class="form-group">
+            <label>Fecha creación</label>
+             <input
+              style="padding: 0.175rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_creacion"/>
+          </div>
+        </div>
+
       </div>
 
       <div class="cli-form-buttons" style="margin-top: 8%">

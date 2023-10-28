@@ -4,61 +4,63 @@
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
       <form [formGroup]="actasForm">
-        <div class="card" style="border-radius: 2px; font-weight: 600">
+        <div class="card" style="border-radius: 2px;">
           <div class="row g-3 card-body" style="padding: 10px">
 
-            <div class="col-sm-3 cli-form-element">
-              <label class="form-label">ID Acta</label>
+            <div class="cli-form-element col-f-4">
+              <label>ID Acta</label>
               <input
-                type="number"
-                class="form-control"
-                formControlName="codFact"/>
+                class="cli-input"
+                formControlName="codFact"
+                type="number"/>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Gestor</label>
-              <select class="form-select" formControlName="id_gestor">
+            <div class="cli-form-element col-f-4">
+              <label>Proyecto</label>
+              <select formControlName="id_proy" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="g.id" *ngFor="let g of listGestores">{{g.nombre}}</option>
+                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
               </select>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Proyecto</label>
-              <select class="form-select" formControlName="id_proy">
+            <div class="cli-form-element col-f-4">
+              <label>Subservicio</label>
+              <select formControlName="subservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.id" *ngFor="let proy of listProyectos">{{proy.valor_texto_1}}</option>
+                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
               </select>
             </div>
 
-
-            <!-- <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Estado</label>
-              <select class="form-select" formControlName="id_estado">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="est.id" *ngFor="let est of listEstados">{{est.nombre}}</option>
-              </select>
-            </div> -->
-
-            <div class="col-sm-3 cli-form-element">
-              <label class="form-label">Importe</label>
+            <div class="cli-form-element col-f-4">
+              <label>Importe</label>
               <input
+                class="cli-input"
                 type="number"
-                class="form-control"
                 formControlName="importe"/>
             </div>
 
-            <div class="col-sm-3 cli-form-element">
+            <div class="cli-form-element col-f-4">
               <div class="form-group">
                 <label>Fecha Periodo</label>
                  <input
+                  class="cli-input"
                   type="month"
-                  class="form-control cli-input-white"
+                  class="form-control"
                   formControlName="f_periodo"/>
               </div>
             </div>
 
-            <!-- <div class="col-sm-3 cli-form-element" style="margin-top: 45px">
+            <div class="cli-form-element col-f-4">
+              <label>Estado</label>
+              <select formControlName="estado" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option value="true">Completado</option>
+                <option value="false">Pendiente</option>
+              </select>
+            </div>
+
+
+            <!-- <div class="cli-form-element scol-f-4m-3  " style="margin-top: 45px">
               <div class="form-group">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input"
@@ -73,7 +75,7 @@
             <div class="cli-form-buttons" style="margin-top: 8px">
               <button
                 type="submit"
-                class="cli-btn btn-m btn-cancel"
+                class="cli-btn btn-m btn-regresar"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
                 (click)="limpiarFiltro()"
                 ><mat-icon class="icon-18">rotate_left</mat-icon>
@@ -94,21 +96,12 @@
 
         <!-- BOTON MODAL PARA CREAR LIQUIDACION ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
-          <!-- <button
-            class="btn-crear btn-blue"
-            style="margin: 0"
-            type="button"
-            (click)="crearLiquidacion()"
-            ><mat-icon class="icon-18">add</mat-icon>Crear acta
-          </button> -->
-
           <div class="d-flex">
             <button style="margin-top: 10px" class="cli-btn btn-turq"
-              (click)="openEditDialog(0, null, true, true, null)"
+              (click)="abrirModalCrearOactualizar()"
               ><mat-icon class="icon-18">add</mat-icon>Crear acta
             </button>
           </div>
-
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600;">
@@ -171,14 +164,14 @@
           <div class="moad-actions">
             <button
               matTooltip="Eliminar acta"
-              (click)="openEditDialog(i, acta, false, false, acta.text)"
+              (click)="abrirModalCrearOactualizar(acta.id_acta)"
               class="icon-btn btn-trans c-fucsia">
               <mat-icon class="icon-18">delete</mat-icon>
             </button>
 
             <button
               matTooltip="Editar acta"
-              (click)="openEditDialog(i, acta, true, false, acta.text)"
+              (click)="abrirModalCrearOactualizar(acta)"
               class="icon-btn btn-trans c-yellow"
               ><mat-icon class="icon-18">edit</mat-icon>
             </button>
@@ -235,19 +228,10 @@
         </div>
       </div>
 
-
-
-
     </ng-container>
-
     <div class="cli-loader" *ngIf="loading">
       <mat-spinner diameter="40"></mat-spinner>
     </div>
-
-
-
-
-
 
     </div>
 
