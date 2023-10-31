@@ -7,6 +7,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ModalEditModuleComponent } from './modal-edit-module/modal-edit-module.component';
 import { ModalActaComponent } from './modal-actas/modal-acta.component';
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 
 @Component({
   selector: 'app-acta',
@@ -27,6 +28,7 @@ export class ActaComponent implements OnInit {
 
   constructor(
     private facturacionService: FacturacionService,
+    private liquidacionService: LiquidacionService,
     public datepipe: DatePipe,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
@@ -38,8 +40,8 @@ export class ActaComponent implements OnInit {
     this.newFilfroForm();
     this.getAllActas();
     this.dataMenuPrueba();
-    this.getListProyectos();
-    this.getListGestores();
+    this.getAllProyecto();
+    this.getAllSubservicio()
     console.log('ABX', this.listActas);
     ;
   }
@@ -254,26 +256,22 @@ export class ActaComponent implements OnInit {
   }
 
   listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyecto().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY', this.listProyectos);
 
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            // console.log('COD_PROY', resp.list);
-    });
-  };
+    })
+  }
 
+  listSubservicio: any[] = [];
+  getAllSubservicio(){
+    this.liquidacionService.getAllSubservicio().subscribe(resp => {
+      this.listSubservicio = resp;
+      console.log('SUBSERV', this.listSubservicio);
 
-  listGestores: any[] = [];
-  getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
-
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            // console.log('GESTORES', resp);
-    });
-  };
-
+    })
+  }
 
   limpiarFiltro() {
     this.actasForm.reset('', {emitEvent: false})

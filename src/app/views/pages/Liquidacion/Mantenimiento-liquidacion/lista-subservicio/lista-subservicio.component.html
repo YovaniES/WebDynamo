@@ -22,7 +22,7 @@
               <label>Proyectos</label>
               <select formControlName="proyectos" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
               <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small>
             </div>
@@ -31,7 +31,7 @@
               <label>Subservicios</label>
               <select formControlName="subservicios" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+                <option [value]="sub.idSubservicio" *ngFor="let sub of listSubservicios">{{sub.subservicio}}</option>
               </select>
               <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small>
             </div>
@@ -82,7 +82,7 @@
               <th class="w50">Acción</th>
               <th style="min-width: 150px">Subservicio</th>
               <th class="w100">Gestor</th>
-              <th style="min-width: 240px">Proyectos</th>
+              <th style="min-width: 240px">Proyecto(s)</th>
               <th style="min-width: 115px">Fecha inicio - fin</th>
               <th style="min-width: 92px">Estado</th>
             </tr>
@@ -92,7 +92,7 @@
             <tr *ngFor="let subserv of listSubservicios | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
-                        totalItems: totalFacturas }">
+                        totalItems: totalSubservicio }">
               <td>
                 <div class="moad-actions">
                   <button
@@ -111,7 +111,7 @@
                 </div>
               </td>
               <td style="text-align: left;">{{ subserv.subservicio }}</td>
-              <td style="text-align: left">{{ subserv.representante | uppercase}}</td>
+              <td style="text-align: left; min-width: 150px;">{{ subserv.representante | uppercase}}</td>
               <td style="">{{ subserv.proyecto }}</td>
               <td style="text-align: left;">{{ subserv.fechaCreacion | date }}</td>
               <td class="moad-module">

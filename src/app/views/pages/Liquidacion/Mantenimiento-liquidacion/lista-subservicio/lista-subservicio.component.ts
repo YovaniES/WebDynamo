@@ -25,7 +25,7 @@ export class ListaSubservicioComponent implements OnInit {
 
 
   page = 1;
-  totalFacturas: number = 0;
+  totalSubservicio: number = 0;
   pageSize = 5;
 
   constructor( private fb: FormBuilder,
@@ -38,7 +38,7 @@ export class ListaSubservicioComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getListProyectos();
+  this.getAllProyecto();
   this.getListGestores();
   this.getAllSubservicios()
   }
@@ -74,52 +74,23 @@ export class ListaSubservicioComponent implements OnInit {
 
   actionBtn: string = 'Crear';
 
-  listaLiquidacion: any[] = [];
+  // listSubservicios: any[] = [];
 
   limpiarFiltro(){}
   getAllGestor(){}
 
   eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
 
-  save() {
-    this.blockUI.start('Guardando...');
-    // MÓDULOS
-    // if (this.data.ismodule) {
-    //   this.menu.module = this.data.isnew ? 'ADD' : 'EDT';
-    //   const sub: Subscription = this.permissionService
-    //     .postModule(this.menu)
-    //     .subscribe((resp: any) => {
-    //       this.blockUI.stop();
-    //       if (resp.status) this.dialogRef.close(this.menu);
-    //       else this.showAlertError(resp.message);
-    //       sub.unsubscribe();
-    //     });
+  listProyectos: any[] = [];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyecto().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY', this.listProyectos);
 
-    //   // MENÚS
-    // } else {
-    //   this.menu.module = this.modecode;
-    //   const sub: Subscription = this.permissionService
-    //     .postMenu(this.menu)
-    //     .subscribe((resp: any) => {
-    //       this.blockUI.stop();
-    //       if (resp.status) this.dialogRef.close(this.menu);
-    //       else this.showAlertError(resp.message);
-    //       sub.unsubscribe();
-    //     });
-    // }
+    })
   }
 
 
-  listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
-
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            // console.log('COD_PROY', resp.list);
-    });
-  };
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
@@ -147,9 +118,9 @@ export class ListaSubservicioComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalFacturas) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listaLiquidacion = resp.list;
+    if (this.totalfiltro != this.totalSubservicio) {
+      this.liquidacionService.getAllSubservicio().subscribe( (resp: any) => {
+            this.listSubservicios = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -164,7 +135,7 @@ export class ListaSubservicioComponent implements OnInit {
       .open(ModalSubservicioComponent, { width: '45%', height:'45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllGestor();
+          this.getAllSubservicios();
         }
       });
   }

@@ -26,7 +26,7 @@ export class ListaGestorComponent implements OnInit {
 
   page = 1;
   totalFacturas: number = 0;
-  pageSize = 10;
+  pageSize = 7;
 
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
@@ -39,8 +39,8 @@ export class ListaGestorComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllGestor();
-  this.getListProyectos();
-  // this.getListGestores();
+  this.getAllProyecto();
+  this.getAllSubservicios();
   }
 
   gestorForm!: FormGroup;
@@ -69,7 +69,7 @@ export class ListaGestorComponent implements OnInit {
   listGestores: any[] = [];
   limpiarFiltro(){}
   getAllGestor(){
-    this.liquidacionService.getAllGestor().subscribe( (resp: any) => {
+    this.liquidacionService.getAllGestor().subscribe((resp: any) => {
       this.listGestores = resp
       console.log('LIST-GESTOR', this.listGestores);
     })
@@ -106,16 +106,21 @@ export class ListaGestorComponent implements OnInit {
     // }
   }
 
-
   listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyecto().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY', this.listProyectos);
+    })
+  }
 
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            // console.log('COD_PROY', resp.list);
-    });
-  };
+  listSubservicios:any[] = [];
+  getAllSubservicios(){
+    this.liquidacionService.getAllSubservicio().subscribe( resp => {
+      this.listSubservicios = resp;
+      console.log('SUBS', this.listSubservicios);
+    })
+  }
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);

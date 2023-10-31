@@ -7,6 +7,7 @@ let PATH_BACK_NET  = '';
 let AUTH_API = '';
 let API_SAVE_DATA_IMPORT = '';
 let BASE_LIQUIDACION = ''
+let MANTENIM_LIQUIDACION = '';
 
 switch (ENVIROMENT) {
   case 'DEV':
@@ -29,7 +30,7 @@ switch (ENVIROMENT) {
     // API_SAVE_DATA_IMPORT = 'https://localhost:7247/api/importar'
 
     BASE_LIQUIDACION = 'https://facturaciondynamo2.azurewebsites.net/api/';
-
+    MANTENIM_LIQUIDACION = 'https://dmantenimiento.azurewebsites.net/api/'
 
     PATH_BACK_NET = 'http://backdynamosupport.indratools.com/api/configurador/' //SUBSITE 21
     // PATH_BACK_NET = 'http://changestatevacations.indratools.com/api/configurador/' //BACK DE PRUEBA OJO | SUBSITE 25
@@ -46,6 +47,9 @@ export const AUTH_SESSION = AUTH_API + 'login';
 export const API_DYNAMO = PATH_BACK_NET + 'ExecuteQuery';
 export const API_GESTOR = BASE_LIQUIDACION + 'Gestor/';
 export const API_SUBSERVICIO = BASE_LIQUIDACION + 'Subservicio';
+
+// MANTENIMIENTO LIQUIDACION
+export const API_PROYECTO = MANTENIM_LIQUIDACION + 'Proyecto'
 // DATA VISOR DASHBOARD
 export const API_VISOR =  PATH_VISOR_DYNAMO + 'api/visor/';
 

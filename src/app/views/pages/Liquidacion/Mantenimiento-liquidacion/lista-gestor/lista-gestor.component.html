@@ -22,7 +22,7 @@
               <label>Proyectos</label>
               <select formControlName="proyectos" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
               <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small>
             </div>
@@ -31,7 +31,7 @@
               <label>Subservicios</label>
               <select formControlName="subservicios" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
               </select>
               <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small>
             </div>
@@ -42,8 +42,7 @@
                 class="cli-btn btn-m btn-regresar"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
                 (click)="limpiarFiltro()">
-                <mat-icon class="icon-18">rotate_left</mat-icon>
-                Limpiar
+                <mat-icon class="icon-18">rotate_left</mat-icon>Limpiar
               </button>
 
               <button
@@ -113,9 +112,11 @@
               </td>
               <td style="text-align: left">{{ gestor.nombresApellidos | uppercase}}</td>
               <td style="text-align: left;">{{ gestor.correo }}</td>
-              <td>{{ gestor.proyectosList }}</td>
-              <td>{{ gestor.subserviciosList }}</td>
-              <td>{{ gestor.usuario_act }}</td>
+              <td>
+                <span *ngIf="gestor.proyectos" class="label ">{{ gestor.proyectos | uppercase }}</span>
+                <!-- {{ gestor.proyectos }}</td> -->
+              <td style="min-width: 240px;">{{ gestor.subservicios }}</td>
+              <td>{{ gestor.usuario }}</td>
               <td class="moad-module">
                 <mat-icon [ngClass]="{ 'c-green_x': gestor.estado == 'Activo', 'c-red': gestor.estado != 'Activo' }" class="icon-18">report</mat-icon>
               </td>

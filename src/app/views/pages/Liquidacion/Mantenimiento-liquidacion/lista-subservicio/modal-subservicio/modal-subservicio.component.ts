@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
@@ -31,6 +33,7 @@ export class ModalSubservicioComponent implements OnInit {
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
                private liquidacionService: LiquidacionService,
+               private authService: AuthService,
                private spinner: NgxSpinnerService,
                public dialogRef: MatDialogRef<ModalSubservicioComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_SUBSERV: any
@@ -38,27 +41,70 @@ export class ModalSubservicioComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getListProyectos();
-  this.getListGestores();
+  this.getAllProyecto();
+  this.getAllGestor();
 
   if (this.DATA_SUBSERV) {
     this.cargarSubservicioById(this.DATA_SUBSERV);
-    console.log('MODAL-SUBSERV', this.DATA_SUBSERV);
-
-  }
+    // console.log('MODAL-SUBSERV', this.DATA_SUBSERV);
+    }
   }
 
   subservicioForm!: FormGroup;
   newForm(){
     this.subservicioForm = this.fb.group({
-     subservicio: ['',],
-     gestor     : ['',],
-     fecha_ini  : ['',],
-     fecha_fin  : ['',],
-     proyecto   : ['',],
-     id_estado  : ['']
+     subservicio   : ['', Validators.required],
+     gestor        : ['', Validators.required],
+     proyecto      : ['', Validators.required],
+     fecha_creacion: [''],
+     fecha_ini     : [''],
+     fecha_fin     : [''],
+     id_estado     : ['']
     })
   }
+
+  crearOactualizarSubservicio(){
+    if (this.subservicioForm.invalid) {
+      return Object.values(this.subservicioForm.controls).forEach((controls) => {
+        controls.markAllAsTouched();
+      })
+    }
+    if (this.DATA_SUBSERV ) {
+        console.log('UPD_SUBS');
+        this.actualizarSubservicio();
+    } else {
+      console.log('CREAR_SUBS');
+      this.crearSubservicio()
+    }
+  }
+
+  crearSubservicio(): void{
+    const formValues = this.subservicioForm.getRawValue();
+
+    const request = {
+      idProyecto    : formValues.proyecto,
+      nombre        : formValues.subservicio,
+      representante : formValues.gestor,
+      idUsuarioCrea : this.userID,
+      fechaInicio   : formValues.fecha_ini,
+      fechaFin      : formValues.fecha_fin,
+    }
+
+    this.liquidacionService.crearSubservicio(request).subscribe((resp: any) => {
+      if (resp.message) {
+        Swal.fire({
+          title: 'Crear subservicio!',
+          text: `${resp.message}`,
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        })
+        this.close(true);
+      }
+    })
+  }
+
+
+  actualizarSubservicio(){}
 
   actionBtn: string = 'Crear';
   cargarSubservicioById(idGestor: number): void{
@@ -70,47 +116,44 @@ export class ModalSubservicioComponent implements OnInit {
         this.blockUI.stop();
 
         this.subservicioForm.reset({
-          subservicio: subserv.subservicio,
-          gestor     : subserv.representante,
-          fecha_ini  : subserv.fechaCreacion,
-          fecha_fin  : subserv.fecha_fin,
-          proyecto   : subserv.proyecto,
-          id_estado  : subserv.estado,
+          subservicio   : subserv.subservicio,
+          gestor        : subserv.representante,
+          fecha_ini     : subserv.fechaInicio,
+          fecha_creacion: moment.utc(subserv.fechaCreacion).format('YYYY-MM-DD'),
+          fecha_fin     : subserv.fechaFin,
+          proyecto      : subserv.idProyecto,
+          id_estado     : subserv.estado,
         })
       })
     }
   }
 
-  listGestores: any[] = [];
-  getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
-
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            console.log('GESTORES', resp);
-    });
-  };
-
-  limpiarFiltro(){}
-  getAllGestor(){}
-
   eliminarLiquidacion(id: number){}
   // actualizarFactura(data: any){}
 
-  listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
-
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            console.log('COD_PROY', resp.list);
-    });
-  };
-
-  close(succes?: boolean) {
-    this.dialogRef.close(succes);
+  userID: number = 0;
+  getUserID(){
+   this.authService.getCurrentUser().subscribe( resp => {
+     this.userID   = resp.user.userId;
+     console.log('ID-USER', this.userID);
+   })
   }
 
+  listGestores: any[] = [];
+  getAllGestor(){
+    this.liquidacionService.getAllGestor().subscribe( (resp: any) => {
+      this.listGestores = resp
+      // console.log('LIST-GESTOR', this.listGestores);
+    })
+  }
+
+  listProyectos: any[] = [];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyecto().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY-S', this.listProyectos);
+    })
+  }
 
   showAlertError(message: string) {
     Swal.fire({
@@ -128,20 +171,9 @@ export class ModalSubservicioComponent implements OnInit {
     }
   }
 
-  totalfiltro = 0;
-  cambiarPagina(event: number) {
-    let offset = event*10;
-    this.spinner.show();
-
-    if (this.totalfiltro != this.totalFacturas) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listGestores = resp.list;
-            this.spinner.hide();
-          });
-    } else {
-      this.spinner.hide();
-    }
-      this.page = event;
+  close(succes?: boolean) {
+    this.dialogRef.close(succes);
   }
+
 }
 

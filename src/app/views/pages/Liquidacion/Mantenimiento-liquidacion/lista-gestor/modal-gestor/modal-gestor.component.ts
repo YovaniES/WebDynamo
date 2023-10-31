@@ -3,12 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Subscription } from 'rxjs';
-import { Menu } from 'src/app/core/models/menu.models';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { PermissionsService } from 'src/app/core/services/permissions.service';
 import Swal from 'sweetalert2';
 
 export interface changeResponse {
@@ -33,29 +29,29 @@ export class ModalGestorComponent implements OnInit {
 
   modecode = '';
   constructor( private fb: FormBuilder,
-               private facturacionService: FacturacionService,
+               private authService: AuthService,
                private liquidacionService: LiquidacionService,
-               private spinner: NgxSpinnerService,
                public dialogRef: MatDialogRef<ModalGestorComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_GESTOR: any
   ) {}
 
   ngOnInit(): void {
   this.newForm()
-  this.getListProyectos();
-  this.getListGestores();
+  this.getUserID();
+  this.getAllProyecto();
+  this.getAllSubservicios();
 
   if (this.DATA_GESTOR) {
     this.cargarGestorById(this.DATA_GESTOR);
+    console.log('DATA_G_MODAL', this.DATA_GESTOR);
   }
   }
 
   gestorForm!: FormGroup;
   newForm(){
     this.gestorForm = this.fb.group({
-     nombre        : ['',],
-     apell_pat     : ['',],
-     apell_mat     : ['',],
+     nombre        : ['', Validators.required],
+     apellidos     : ['', Validators.required],
      correo        : ['',],
      fecha_ini     : ['',],
      fecha_fin     : ['',],
@@ -72,50 +68,127 @@ export class ModalGestorComponent implements OnInit {
     if (this.DATA_GESTOR) {
       this.actionBtn = 'Actualizar'
       this.liquidacionService.getGestorById(this.DATA_GESTOR.idGestor).subscribe((gestor: any) => {
-        console.log('DATA_BY_ID_GESTOR', gestor);
+        // console.log('DATA_BY_ID_GESTOR', gestor, gestor.proyectos[0].idProyecto);
 
         this.blockUI.stop();
         this.gestorForm.reset({
           nombre        : gestor.nombres,
-          apell_pat     : gestor.apellidos,
-          apell_mat     : gestor.apellidos,
+          apellidos     : gestor.apellidos,
           correo        : gestor.correo,
           fecha_ini     : moment.utc(gestor.fecha_inicio).format('YYYY-MM-DD'),
           fecha_fin     : moment.utc(gestor.fecha_fin).format('YYYY-MM-DD'),
-          proyectos     : gestor.proyectos,
-          subservicios  : gestor.subservicios,
+          proyectos     : gestor.proyectos[0].idProyecto,
+          subservicios  : gestor.subservicios[0].idSubservicio,
           id_estado     : gestor.estado,
-          fecha_creacion: moment.utc(gestor.fecha_facturacion).format('YYYY-MM-DD'),
+          fecha_creacion: moment.utc(gestor.fechaCreacion).format('YYYY-MM-DD'),
         })
       })
     }
   }
 
-  listGestores: any[] = [];
-  getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
+  crearOactualizarGestor(){
+    if (this.gestorForm.invalid) {
+      return Object.values(this.gestorForm.controls).forEach((controls) => {
+        controls.markAllAsTouched();
+      })
+    }
+    if (this.DATA_GESTOR ) {
+        console.log('UPD_GESTOR');
+        this.actualizarGestor();
+    } else {
+      console.log('CREAR_SUBS');
+      this.crearGestor()
+    }
+  }
 
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            console.log('GESTORES', resp);
-    });
-  };
+  actualizarGestor(){
+    const formValues = this.gestorForm.getRawValue();
 
-  limpiarFiltro(){}
-  getAllGestor(){}
+    const requestGestor = {
+      idCertificacion : this.DATA_GESTOR.idCertificacion,
+      idFactura       : this.DATA_GESTOR.idFactura,
+      fechaFacturacion: formValues.fechaFact,
+      importe         : formValues.importe,
+      orden_compra    : formValues.ordenCompra,
+      certificacion   : formValues.certificacion,
+      idEstado        : 663,
+      factura         : formValues.factura,
+      comentario      : formValues.comentario,
+      usuario         : this.userID
+    }
+
+    this.liquidacionService.actualizarGestor(this.DATA_GESTOR.idCertificacion, requestGestor).subscribe((resp: any) => {
+      if (resp.success) {
+          Swal.fire({
+            title: 'Actualizar gestor!',
+            text : `${resp.message}`,
+            icon : 'success',
+            confirmButtonText: 'Ok',
+          });
+          this.close(true);
+      }
+    })
+  }
+
+  crearGestor(): void{
+    const formValues = this.gestorForm.getRawValue();
+
+    const request = {
+      nombres    : formValues.nombre,
+      apellidos  : formValues.apell_pat,
+      correo     : formValues.correo,
+      fechaInicio: formValues.fecha_ini,
+      fechaFin   : formValues.fecha_fin,
+      gestorSubservicio:[
+        {
+          idSubservicio: formValues.subservicios,
+          idProyecto   : formValues.proyectos,
+        }
+      ],
+      idUsuarioCrea  : this.userID,
+    }
+
+    this.liquidacionService.crearGestor(request).subscribe((resp: any) => {
+      if (resp.message) {
+        Swal.fire({
+          title: 'Crear gestor!',
+          text: `${resp.message}`,
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        })
+
+        this.close(true);
+      }
+    })
+  }
+
+  userID: number = 0;
+  getUserID(){
+   this.authService.getCurrentUser().subscribe( resp => {
+     this.userID   = resp.user.userId;
+     console.log('ID-USER', this.userID);
+   })
+  }
 
   eliminarLiquidacion(id: number){}
   // actualizarFactura(data: any){}
 
   listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyecto().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY', this.listProyectos);
 
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            console.log('COD_PROY', resp.list);
-    });
-  };
+    })
+  }
+
+  listSubservicios:any[] = [];
+  getAllSubservicios(){
+    this.liquidacionService.getAllSubservicio().subscribe( resp => {
+      this.listSubservicios = resp;
+      console.log('SUBS', this.listSubservicios);
+    })
+  }
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
@@ -138,20 +211,5 @@ export class ModalGestorComponent implements OnInit {
     }
   }
 
-  totalfiltro = 0;
-  cambiarPagina(event: number) {
-    let offset = event*10;
-    this.spinner.show();
-
-    if (this.totalfiltro != this.totalFacturas) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listGestores = resp.list;
-            this.spinner.hide();
-          });
-    } else {
-      this.spinner.hide();
-    }
-      this.page = event;
-  }
 }
 

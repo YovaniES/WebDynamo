@@ -35,8 +35,8 @@ export class LiquidacionComponent implements OnInit {
 
   constructor(
     private facturacionService: FacturacionService,
-    private exportExcellService: ExportExcellService,
     private liquidacionService: LiquidacionService,
+    private exportExcellService: ExportExcellService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     public datepipe: DatePipe,

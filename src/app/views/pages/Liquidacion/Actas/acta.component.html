@@ -19,7 +19,7 @@
               <label>Proyecto</label>
               <select formControlName="id_proy" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
             </div>
 
@@ -27,7 +27,7 @@
               <label>Subservicio</label>
               <select formControlName="subservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicio">{{subs.subservicio}}</option>
               </select>
             </div>
 
