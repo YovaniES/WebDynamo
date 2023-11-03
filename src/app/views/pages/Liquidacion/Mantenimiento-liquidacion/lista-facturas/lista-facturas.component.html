@@ -4,22 +4,22 @@
 
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Registro de Líderes</div>
+    <div class="modal-title c-male">Registro de facturas</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
-      <form [formGroup]="liderForm">
+      <form [formGroup]="facturaForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
-              <label>Líder</label>
+              <label>N° Factura</label>
               <input
                 class="cli-input"
-                formControlName="lider"
+                formControlName="num_factura"
                 type="text"/>
             </div>
 
             <div class="cli-form-element col-f-3">
-              <label>Proyecto</label>
+              <label>Proyecto <small style="color: red">*</small></label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
@@ -48,7 +48,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllLider()"
+                (click)="getAllFacturas()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -56,67 +56,78 @@
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR lider ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR CLIENTE ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="liderForm.invalid"
+            [disabled]="facturaForm.invalid"
             (click)="abrirModalCrearOactualizar()">
-            <mat-icon class="icon-18">add</mat-icon> Crear líder
+            <mat-icon class="icon-18">add</mat-icon> Crear factura
           </button>
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listLideres.length }} Líderes</span>
+            Total : <span class="total">{{ listFacturas.length }} Facturas</span>
           </div>
         </div>
       </form>
 
-      <!-- TABLA DE LIDERES ------------------------------------------------------------------>
+      <!-- TABLA DE FACTURAS ------------------------------------------------------------------>
       <div style="overflow: auto; min-height: 188px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px">Líder.</th>
-              <th style="min-width: 150px">Proyecto(s).</th>
-              <th style="min-width: 160px">Correo</th>
-              <th style="min-width: 240px">Descripción</th>
+              <th style="min-width: 150px">N° Factura</th>
+              <th style="min-width: 150px">Proyecto</th>
+              <th style="min-width: 160px">Certificación</th>
+              <th style="min-width: 240px">Fecha facturación</th>
+              <th>Total</th>
+              <th>Tgs</th>
+              <th>Adquira</th>
+              <th style="min-width: 150px">Factrura TGS</th>
+              <th style="min-width: 150px">Factura Adquira</th>
               <th style="min-width: 108px">Actualizado por</th>
               <th style="min-width: 92px" >Estado</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let lider of listLideres | paginate: {
+            <tr *ngFor="let factura of listFacturas | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
-                        totalItems: totalLideres }">
+                        totalItems: totalFacturas }">
               <td>
                 <div class="moad-actions">
                   <button
-                    matTooltip="Editar lider"
-                    (click)="abrirModalCrearOactualizar(lider)"
+                    matTooltip="Editar factura"
+                    (click)="abrirModalCrearOactualizar(factura)"
                     class="icon-btn btn-trans c-yellow"
                     ><mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                   </button>
 
                   <button
-                    matTooltip="Eliminar lider"
-                    (click)="eliminarLider(lider)"
+                    matTooltip="Eliminar factura"
+                    (click)="eliminarFactura(factura)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
-              <td style="text-align: left"> {{ lider.lider | uppercase}}</td>
-              <td style="text-align: left; min-width: 310px;">{{ lider.proyectos.codigo_proyecto }}</td>
-              <td style="text-align: left;">{{ lider.correo }}</td>
-              <td style="min-width: 240px;">{{ lider.descripcion }}</td>
-              <td>{{ lider.usuario }}</td>
-              <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': lider.eliminacion_logica == 1, 'c-red': lider.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
-              </td>
+              <td style="text-align: left"> {{ factura.nro_factura}}</td>
+              <td style="text-align: left; min-width: 310px;">{{ factura.proyecto.codigo_proyecto }}</td>
+              <td style="text-align: left;">{{ factura.certificacion.nro_certificacion }}</td>
+              <td style="min-width: 150px;">{{ factura.fecha_facturacion }}</td>
+              <td>{{ factura.total }}</td>
+              <td>{{ factura.tgs }}</td>
+              <td>{{ factura.adquira }}</td>
+              <td>{{ factura.factura_tgs }}</td>
+              <td>{{ factura.factura_adquira }}</td>
+              <td>{{ factura.usuario_actualiza }}</td>
+              <td>{{ factura.estado.estado_facturacion }}</td>
+              <!-- <td class="moad-module">
+                <mat-icon [ngClass]="{ 'c-green_x': factura.eliminacion_logica == 1, 'c-red': factura.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -126,10 +137,10 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listLideres.length == 0"
+          *ngIf="!loadingItem && listFacturas.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
-          No hay líderes para mostrar
+          No hay Facturas para mostrar
         </div>
       </div>
     </div>

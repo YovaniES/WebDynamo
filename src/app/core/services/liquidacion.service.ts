@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import {
+  API_CLIENTE,
+  API_FACTURAS,
   API_GESTOR,
   API_JEFATURA,
   API_LIDER,
@@ -109,6 +111,96 @@ export class LiquidacionService {
 
   eliminarProyecto(idProy: number): Observable<any> {
     return this.http.delete<any>(`${API_PROYECTO}/${idProy}`);
+  }
+
+  //  SERVICES - JEFATURA
+  getAllJefatura() {
+    return this.http.get(API_JEFATURA).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+  crearJefatura(requestProy: any): Observable<any> {
+    return this.http.post(API_JEFATURA, requestProy);
+  }
+
+  actualizarJefatura(idJefatura: number, request: any) {
+    return this.http.put<any>(`${API_JEFATURA}/${idJefatura}`, request);
+  }
+
+  getJefaturaById(idJefatura: number): Observable<any> {
+    return this.http.get(`${API_JEFATURA}/${idJefatura}`).pipe(
+      map((resp: any) => {
+        console.log('DATA_JEFA_BY_ID', resp.result);
+
+        return resp.result;
+      })
+    );
+  }
+
+  eliminarJefatura(idJefatura: number): Observable<any> {
+    return this.http.delete<any>(`${API_JEFATURA}/${idJefatura}`);
+  }
+
+  //  SERVICES - CLIENTE
+  getAllCliente() {
+    return this.http.get(API_CLIENTE).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+  crearCliente(requestProy: any): Observable<any> {
+    return this.http.post(API_CLIENTE, requestProy);
+  }
+
+  actualizarCliente(idCliente: number, request: any) {
+    return this.http.put<any>(`${API_CLIENTE}/${idCliente}`, request);
+  }
+
+  getClienteById(idCliente: number): Observable<any> {
+    return this.http.get(`${API_CLIENTE}/${idCliente}`).pipe(
+      map((resp: any) => {
+        console.log('DATA_CLIENTE_BY_ID', resp.result);
+
+        return resp.result;
+      })
+    );
+  }
+
+  eliminarCliente(idCliente: number): Observable<any> {
+    return this.http.delete<any>(`${API_CLIENTE}/${idCliente}`);
+  }
+
+  //  SERVICES - Facturas
+  getAllFacturas() {
+    return this.http.get(API_FACTURAS).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+  crearFactura(requestFactura: any): Observable<any> {
+    return this.http.post(API_FACTURAS, requestFactura);
+  }
+
+  actualizarFactura(idFactura: number, request: any) {
+    return this.http.put<any>(`${API_FACTURAS}/${idFactura}`, request);
+  }
+
+  getFacturaById(idFactura: number): Observable<any> {
+    return this.http.get(`${API_FACTURAS}/${idFactura}`).pipe(
+      map((resp: any) => {
+        console.log('DATA_Facturas_BY_ID', resp.result);
+
+        return resp.result;
+      })
+    );
+  }
+
+  eliminarFacturas(idFacturas: number): Observable<any> {
+    return this.http.delete<any>(`${API_FACTURAS}/${idFacturas}`);
   }
 
   // SERVICES - SUBSERVICIOS

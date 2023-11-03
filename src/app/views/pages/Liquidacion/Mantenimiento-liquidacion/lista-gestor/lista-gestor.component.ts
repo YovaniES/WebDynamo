@@ -87,13 +87,6 @@ export class ListaGestorComponent implements OnInit {
     });
   };
 
-  limpiarFiltro() {
-    this.gestorForm.reset('', {emitEvent: false})
-    this.newForm()
-
-    this.getAllGestor();
-  }
-
   listProyectos: any[] = [];
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
@@ -145,6 +138,13 @@ export class ListaGestorComponent implements OnInit {
       this.spinner.hide();
     }
       this.page = event;
+  }
+
+  limpiarFiltro() {
+    this.gestorForm.reset('', {emitEvent: false})
+    this.newForm()
+
+    this.getAllGestor();
   }
 
   abrirModalCrearOactualizar(DATA?: any) {

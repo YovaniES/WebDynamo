@@ -26,7 +26,6 @@ export class ModalOrdencompraComponent implements OnInit {
   totalFacturas: number = 0;
   pageSize = 10;
 
-  modecode = '';
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
                private spinner: NgxSpinnerService,

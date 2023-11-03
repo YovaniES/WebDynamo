@@ -4,33 +4,17 @@
 
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Registro de órdenes de compra</div>
+    <div class="modal-title c-male">Registro de Jefaturas</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
-      <form [formGroup]="ordencompraForm">
+      <form [formGroup]="jefaturaForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
-              <label>Orden de compra</label>
+              <label>Líder</label>
               <input
                 class="cli-input"
-                formControlName="orden_compra"
-                type="text"/>
-            </div>
-
-            <div class="cli-form-element col-f-3">
-              <label>Certificación</label>
-              <input
-                class="cli-input"
-                formControlName="certificacion"
-                type="text"/>
-            </div>
-
-            <div class="cli-form-element col-f-3">
-              <label>Monto</label>
-              <input
-                class="cli-input"
-                formControlName="monto"
+                formControlName="lider"
                 type="text"/>
             </div>
 
@@ -38,9 +22,17 @@
               <label>Proyecto</label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
-              <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Seleccione el proyecto es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-3">
+              <label>Estado</label>
+              <select formControlName="estado" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
             </div>
 
             <div class="cli-form-buttons" style="margin-top: 8px">
@@ -49,15 +41,14 @@
                 class="cli-btn btn-m btn-regresar"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
                 (click)="limpiarFiltro()">
-                <mat-icon class="icon-18">rotate_left</mat-icon>
-                Limpiar
+                <mat-icon class="icon-18">rotate_left</mat-icon>Limpiar
               </button>
 
               <button
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllGestor()"
+                (click)="getAllJefatura()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -65,64 +56,64 @@
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR ORDEN DE COMPRA ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR lider ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="ordencompraForm.invalid"
+            [disabled]="jefaturaForm.invalid"
             (click)="abrirModalCrearOactualizar()">
-            <mat-icon class="icon-18">add</mat-icon> Crear orden de compra
+            <mat-icon class="icon-18">add</mat-icon> Crear jefatura
           </button>
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listGestores.length }} Orden de compra</span>
+            Total : <span class="total">{{ listJefaturas.length }} Jefaturas</span>
           </div>
         </div>
       </form>
 
-      <!-- TABLA DE ORDENES DE COMPRA ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 250px; color: #6c757d">
+      <!-- TABLA DE LIDERES ------------------------------------------------------------------>
+      <div style="overflow: auto; min-height: 188px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px">Orden de compra.</th>
-              <th class="w100">Monto</th>
-              <th style="min-width: 240px">Proyectos</th>
-              <th style="min-width: 115px">Certificaciones</th>
-              <th style="min-width: 92px">Estado</th>
+              <th style="min-width: 150px">Líder.</th>
+              <th style="min-width: 150px">Proyecto(s).</th>
+              <th style="min-width: 160px">Correo</th>
+              <th style="min-width: 240px">Descripción</th>
+              <th style="min-width: 108px">Actualizado por</th>
+              <th style="min-width: 92px" >Estado</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let orden of listProyectos | paginate: {
+            <tr *ngFor="let lider of listJefaturas | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
-                        totalItems: totalOrdencompra }">
+                        totalItems: totalJefaturas }">
               <td>
                 <div class="moad-actions">
                   <button
-                    matTooltip="Editar orden de compra"
-                    (click)="abrirModalCrearOactualizar(orden)"
+                    (click)="abrirModalCrearOactualizar(lider)"
                     class="icon-btn btn-trans c-yellow"
                     ><mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                   </button>
 
                   <button
-                    matTooltip="Eliminar orden de compra"
-                    (click)="eliminarLiquidacion(orden.id)"
+                    (click)="eliminarJefatura(lider)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
-              <td style="font-weight: 600">{{ orden.id }}</td>
-              <td style="text-align: left">{{ orden.nombre | uppercase}}</td>
-              <td style="font-weight: 600">{{ orden.id }}</td>
-              <td style="font-weight: 600">{{ orden.id }}</td>
-              <td>
-                <span *ngIf="orden.estado == 'Aprobado'" class="label">{{orden.estado | uppercase}}</span>
+              <td style="text-align: left"> {{ lider.lider | uppercase}}</td>
+              <td style="text-align: left; min-width: 310px;">{{ lider.proyectos }}</td>
+              <td style="text-align: left;">{{ lider.correo }}</td>
+              <td style="min-width: 240px;">{{ lider.descripcion }}</td>
+              <td>{{ lider.usuario }}</td>
+              <td class="moad-module">
+                <mat-icon [ngClass]="{ 'c-green_x': lider.eliminacion_logica == 1, 'c-red': lider.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>
@@ -133,10 +124,10 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listGestores.length == 0"
+          *ngIf="!loadingItem && listJefaturas.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
-          No hay Orden de compra para mostrar
+          No hay Jefatura para mostrar
         </div>
       </div>
     </div>

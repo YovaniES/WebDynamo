@@ -6,7 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { ModalLiderComponent } from './modal-lider/modal-lider.component';
+import { ModalJefaturaComponent } from './modal-jefatura/modal-jefatura.component';
 
 export interface changeResponse {
   message: string;
@@ -15,17 +15,17 @@ export interface changeResponse {
 }
 
 @Component({
-  selector: 'app-lista-lider',
-  templateUrl: './lista-lider.component.html',
-  styleUrls: ['./lista-lider.component.scss'],
+  selector: 'app-lista-jefatura',
+  templateUrl: './lista-jefatura.component.html',
+  styleUrls: ['./lista-jefatura.component.scss'],
 })
-export class ListaLiderComponent implements OnInit {
+export class ListaJefaturaComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
 
   page = 1;
-  totalLideres: number = 0;
+  totalJefaturas: number = 0;
   pageSize = 5;
 
   constructor( private fb: FormBuilder,
@@ -33,45 +33,39 @@ export class ListaLiderComponent implements OnInit {
                private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
-               public dialogRef: MatDialogRef<ListaLiderComponent>,
+               public dialogRef: MatDialogRef<ListaJefaturaComponent>,
   ) {}
 
   ngOnInit(): void {
   this.newForm()
-  this.getAllLider();
+  this.getAllJefatura();
   this.getAllProyecto();
   this.getAllSubservicios();
   }
 
-  liderForm!: FormGroup;
+  jefaturaForm!: FormGroup;
   newForm(){
-    this.liderForm = this.fb.group({
+    this.jefaturaForm = this.fb.group({
      lider   : [''],
      estado  : [''],
      proyecto: ['']
     })
   }
 
-  listLideres: any[] = [];
-  proyectos_x: any[] = [];
-  getAllLider(){
-    this.liquidacionService.getAllLideres().subscribe((resp: any) => {
-      this.listLideres = resp
-      this.proyectos_x = resp.map((x: any) => x.proyectos)
-
-      console.log('LIST-LIDER', this.listLideres);
-      console.log('PROY_LIDER', this.proyectos_x);
-      console.log('COD_PROY', this.proyectos_x[4]);
-
+  listJefaturas: any[] = [];
+  getAllJefatura(){
+    this.liquidacionService.getAllJefatura().subscribe((resp: any) => {
+      this.listJefaturas = resp
+      console.log('LIST-JEFAT', this.listJefaturas);
     })
   }
 
-  eliminarLider(lider: any,){
+  eliminarJefatura(lider: any,){
     console.log('DEL_LIDER', lider);
 
     Swal.fire({
-      title:'¿Eliminar líder?',
-      text: `¿Estas seguro que deseas eliminar el líder: ${lider.lider}?`,
+      title:'¿Eliminar jefatura?',
+      text: `¿Estas seguro que deseas eliminar la jefatura: ${lider.lider}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -80,14 +74,14 @@ export class ListaLiderComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarLider(lider.idLider).subscribe(resp => {
+        this.liquidacionService.eliminarJefatura(lider.idLider).subscribe(resp => {
 
           Swal.fire({
-            title: 'Eliminar líder',
+            title: 'Eliminar jefatura',
             text: `${lider.lider}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllLider()
+          this.getAllJefatura()
         });
       };
     });
@@ -123,7 +117,7 @@ export class ListaLiderComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.liderForm.get(campo)?.invalid && this.liderForm.get(campo)?.touched ) {
+    if (this.jefaturaForm.get(campo)?.invalid && this.jefaturaForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;
@@ -135,9 +129,9 @@ export class ListaLiderComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalLideres) {
+    if (this.totalfiltro != this.totalJefaturas) {
       this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listLideres = resp.list;
+            this.listJefaturas = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -147,19 +141,19 @@ export class ListaLiderComponent implements OnInit {
   }
 
   limpiarFiltro() {
-    this.liderForm.reset('', {emitEvent: false})
+    this.jefaturaForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllLider();
+    this.getAllJefatura();
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalLiderComponent, { width: '45%', height:'40%', data: DATA })
+      .open(ModalJefaturaComponent, { width: '45%', height:'40%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllLider();
+          this.getAllJefatura();
         }
       });
   }

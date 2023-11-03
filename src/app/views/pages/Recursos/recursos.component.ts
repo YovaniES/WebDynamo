@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ListaLiderComponent } from './lista-lider/lista-lider.component';
 import { ListaProyectoComponent } from './lista-proyecto/lista-proyecto.component';
+import { ListaJefaturaComponent } from './lista-jefatura/lista-jefatura.component';
+import { ListaClienteComponent } from './lista-clientes/lista-cliente.component';
 
 @Component({
   selector: 'app-recursos',
@@ -23,10 +25,7 @@ export class RecursosComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
-    this.getAllLider();
-    this.getAllProyecto();
-  }
+  ngOnInit(): void {}
 
 
   liquidacionForm!: FormGroup;
@@ -36,8 +35,8 @@ export class RecursosComponent implements OnInit {
     })
   };
 
-  getAllLider(){};
-  getAllProyecto(){};
+  // getAllLider(){};
+  // getAllProyecto(){};
 
   abrirModalLider( ) {
     this.dialog
@@ -45,7 +44,7 @@ export class RecursosComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.getAllLider();
+          // this.getAllLider();
         }
       });
   }
@@ -57,11 +56,31 @@ export class RecursosComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.getAllProyecto();
+          // this.getAllProyecto();
         }
       });
   }
 
+
+  abrirListaJefaturas( ) {
+    this.dialog
+      .open(ListaJefaturaComponent, { width: '60%', data: { } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+        }
+      });
+  }
+
+  abrirListaClientes( ) {
+    this.dialog
+      .open(ListaClienteComponent, { width: '60%', data: { } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+        }
+      });
+  }
 }
 
 

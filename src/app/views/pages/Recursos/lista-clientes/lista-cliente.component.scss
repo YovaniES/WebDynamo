@@ -1,0 +1,144 @@
+@import "variables.scss";
+
+.cli-table {
+  width: 100%;
+  background-color: #fff;
+  & th {
+    padding: 2px;
+    font-weight: 300;
+    text-align: center;
+  }
+  & td {
+    vertical-align: middle;
+    text-align: center;
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  &-input {
+    border: 1px solid $color-grey-4;
+    border-radius: 2px;
+  }
+}
+
+.cli-modalclose {
+  position: relative;
+  & mat-icon {
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    border-radius: 2px;
+    color: #50535a;
+    transition: ease 0.3s;
+    &:hover {
+      cursor: pointer;
+      color: #e66c64;
+    }
+  }
+}
+
+.c-male {
+  color: #59c2c9;
+}
+
+.cli-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &-title {
+    width: 100%;
+    font-family: "Telefonica-Bold";
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+  &-buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  &-element {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: column;
+    & label {
+      padding: 0;
+      margin: 0 2px;
+      font-size: 0.9rem;
+    }
+    &:focus-within label {
+      color: #00bec0;
+    }
+  }
+}
+
+.col-f-3 {
+  width: 33%;
+  padding: 5px 10px;
+}
+
+.cli-input {
+  border: solid 0.5px #f4f4f3;
+  background-color: #f4f4f3;
+  border-radius: 2px;
+  padding: 4px 2px;
+  transition: ease 0.3s;
+  text-align: center;
+  &:hover:enabled {
+    background-color: #f2f4ff;
+  }
+  &:focus:enabled {
+    background-color: transparent;
+    border-color: #00bec0;
+  }
+  &:disabled {
+    background-color: transparent;
+    color: #86888c;
+    border-color: transparent;
+  }
+}
+
+// .col-f-1 {
+//   width: 100%;
+//   padding: 5px 10px;
+// }
+
+.btn-grey {
+  background-color: #e9eae8;
+  transition: ease 0.3s;
+  &:hover:enabled {
+    background-color: #f4f4f3;
+  }
+  &:hover:enabled:active {
+    background-color: #d3d4d3;
+  }
+}
+
+.btn-turq {
+  background-color: #59c2c9;
+  color: #fff;
+  transition: ease 0.3s;
+  cursor: pointer;
+  &:hover:enabled {
+    background-color: #67e0e5;
+  }
+  &:hover:enabled:active {
+    background-color: #3e8a8a;
+  }
+}
+.cli-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-1 {
+  flex: 1 1;
+}
+
+.moad {
+  &-actions {
+    display: flex;
+    justify-content: center;
+    width: 70px;
+  }
+}

@@ -4,10 +4,10 @@
 
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Registro de Líderes</div>
+    <div class="modal-title c-male">Registro de clientes</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
-      <form [formGroup]="liderForm">
+      <form [formGroup]="clienteForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
@@ -48,7 +48,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllLider()"
+                (click)="getAllClientes()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -56,23 +56,23 @@
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR lider ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR CLIENTE ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="liderForm.invalid"
+            [disabled]="clienteForm.invalid"
             (click)="abrirModalCrearOactualizar()">
-            <mat-icon class="icon-18">add</mat-icon> Crear líder
+            <mat-icon class="icon-18">add</mat-icon> Crear cliente
           </button>
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listLideres.length }} Líderes</span>
+            Total : <span class="total">{{ listLideres.length }} Clientes</span>
           </div>
         </div>
       </form>
 
-      <!-- TABLA DE LIDERES ------------------------------------------------------------------>
+      <!-- TABLA DE CLIENTES ------------------------------------------------------------------>
       <div style="overflow: auto; min-height: 188px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
@@ -103,14 +103,14 @@
 
                   <button
                     matTooltip="Eliminar lider"
-                    (click)="eliminarLider(lider)"
+                    (click)="eliminarCliente(lider)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
               <td style="text-align: left"> {{ lider.lider | uppercase}}</td>
-              <td style="text-align: left; min-width: 310px;">{{ lider.proyectos.codigo_proyecto }}</td>
+              <td style="text-align: left; min-width: 310px;">{{ lider.proyectos }}</td>
               <td style="text-align: left;">{{ lider.correo }}</td>
               <td style="min-width: 240px;">{{ lider.descripcion }}</td>
               <td>{{ lider.usuario }}</td>
@@ -129,7 +129,7 @@
           *ngIf="!loadingItem && listLideres.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
-          No hay líderes para mostrar
+          No hay Clientes para mostrar
         </div>
       </div>
     </div>

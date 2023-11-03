@@ -1,0 +1,91 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male">{{ DATA_CLIENTE ? "Actualizar" : "Crear" }} cliente</div>
+
+  <form class="row g-3 mt-3" [formGroup]="clienteForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="row g-3">
+        <div class="cli-form-element col-f-3">
+          <label>Nombre líder <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="nombre"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('nombre')">* Ingrese el nombre es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Apellidos <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="apellidos"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('apellidos')">* Ingrese los apellidos son obligatorios</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Correo</label>
+          <input
+            class="cli-input"
+            formControlName="correo"
+            type="text"/>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Descripción</label>
+          <input
+            class="cli-input"
+            formControlName="descripcion"
+            type="text"/>
+        </div>
+
+
+        <div class="cli-form-element col-f-3">
+          <label>Proyecto <small style="color: red">*</small></label>
+          <select formControlName="proyecto" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Seleccione el proyecto es obligatorio</small>
+        </div>
+
+        <ng-container *ngIf="DATA_CLIENTE">
+          <div class="cli-form-element col-f-3">
+            <label>Estado</label>
+            <select formControlName="id_estado" class="cli-input">
+              <option [value]="0" disabled>-Seleccione-</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+
+          <div class="cli-form-element form-group col-f-3">
+            <label>Fecha creación</label>
+             <input
+              style="padding: 0.175rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_creacion"/>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="cli-form-buttons" style="margin-top: 8%">
+        <button class="cli-btn btn-m btn-regresar"
+                type="submit" (click)="close()">
+                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+        </button>
+
+        <button class="cli-btn btn-m btn-turq"
+                [disabled]="clienteForm.invalid"
+                (click)="crearOactualizarCliente()"
+                ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

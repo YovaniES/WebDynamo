@@ -17,6 +17,8 @@ import { ModalSubservicioComponent } from './Mantenimiento-liquidacion/lista-sub
 import { ListaOrdencompraComponent } from './Mantenimiento-liquidacion/lista-ordencompra/lista-ordencompra.component';
 import { ModalOrdencompraComponent } from './Mantenimiento-liquidacion/lista-ordencompra/modal-ordencompra/modal-ordencompra.component';
 import { ModalActaComponent } from './Actas/modal-actas/modal-acta.component';
+import { ListaFacturasComponent } from './Mantenimiento-liquidacion/lista-facturas/lista-facturas.component';
+import { ModalFacturasComponent } from './Mantenimiento-liquidacion/lista-facturas/modal-facturas/modal-facturas.component';
 
 
 @NgModule({
@@ -27,10 +29,12 @@ import { ModalActaComponent } from './Actas/modal-actas/modal-acta.component';
     ModalGestorComponent,
     ListaGestorComponent,
     ListaSubservicioComponent,
-    ModalSubservicioComponent,
     ListaOrdencompraComponent,
+    ListaFacturasComponent,
+    ModalSubservicioComponent,
     ModalOrdencompraComponent,
-    ModalActaComponent
+    ModalActaComponent,
+    ModalFacturasComponent
   ],
   imports: [
     CommonModule,

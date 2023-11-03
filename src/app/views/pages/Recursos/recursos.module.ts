@@ -12,6 +12,10 @@ import { ListaProyectoComponent } from './lista-proyecto/lista-proyecto.componen
 import { ModalLiderComponent } from './lista-lider/modal-lider/modal-lider.component';
 import { ModalProyectoComponent } from './lista-proyecto/modal-proyecto/modal-proyecto.component';
 import { RecursosComponent } from './recursos.component';
+import { ListaClienteComponent } from './lista-clientes/lista-cliente.component';
+import { ListaJefaturaComponent } from './lista-jefatura/lista-jefatura.component';
+import { ModalClienteComponent } from './lista-clientes/modal-clientes/modal-cliente.component';
+import { ModalJefaturaComponent } from './lista-jefatura/modal-jefatura/modal-jefatura.component';
 
 
 @NgModule({
@@ -19,6 +23,10 @@ import { RecursosComponent } from './recursos.component';
     RecursosComponent,
     ListaLiderComponent,
     ListaProyectoComponent,
+    ListaClienteComponent,
+    ListaJefaturaComponent,
+    ModalClienteComponent,
+    ModalJefaturaComponent,
     ModalLiderComponent,
     ModalProyectoComponent
   ],

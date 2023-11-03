@@ -27,7 +27,6 @@ export class ModalGestorComponent implements OnInit {
   totalFacturas: number = 0;
   pageSize = 10;
 
-  modecode = '';
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private liquidacionService: LiquidacionService,
