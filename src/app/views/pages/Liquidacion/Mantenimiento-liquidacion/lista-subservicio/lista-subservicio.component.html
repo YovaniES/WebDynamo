@@ -7,15 +7,15 @@
     <div class="modal-title c-male">Registro de subservicios</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
-      <form [formGroup]="gestorForm">
+      <form [formGroup]="subservicioForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
-              <label>Nombre o Apellido</label>
-              <input
-                class="cli-input"
-                formControlName="nombre_apell"
-                type="text"/>
+              <label>Gestor</label>
+              <select formControlName="gestor" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-3">
@@ -24,7 +24,6 @@
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
-              <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small>
             </div>
 
             <div class="cli-form-element col-f-3">
@@ -33,7 +32,6 @@
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="sub.idSubservicio" *ngFor="let sub of listSubservicios">{{sub.subservicio}}</option>
               </select>
-              <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small>
             </div>
 
             <div class="cli-form-buttons" style="margin-top: 8px">
@@ -50,7 +48,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllGestor()"
+                (click)="getAllSubservicios()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -62,7 +60,7 @@
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="gestorForm.invalid"
+            [disabled]="subservicioForm.invalid"
             (click)="abrirModalCrearOactualizar()">
             <mat-icon class="icon-18">add</mat-icon> Crear subservicio
           </button>
@@ -104,14 +102,14 @@
 
                   <button
                     matTooltip="Eliminar subservicio"
-                    (click)="eliminarLiquidacion(subserv.idSubservicio)"
+                    (click)="eliminarSubservicio(subserv.idSubservicio)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
               <td style="text-align: left;">{{ subserv.subservicio }}</td>
-              <td style="text-align: left; min-width: 150px;">{{ subserv.representante | uppercase}}</td>
+              <td style="text-align: left; min-width: 150px;">{{ subserv.representante.nombre | uppercase}} {{ subserv.representante.apellidos | uppercase}}</td>
               <td style="">{{ subserv.proyecto }}</td>
               <td style="text-align: left;">{{ subserv.fechaCreacion | date }}</td>
               <td class="moad-module">

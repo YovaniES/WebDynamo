@@ -3,13 +3,13 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male">{{ DATA_GESTOR ? "Actualizar" : "Crear" }} gestor</div>
+  <div class="cli-form-title c-male">{{ DATA_LIDER ? "Actualizar" : "Crear" }} líder</div>
 
-  <form class="row g-3 mt-3" [formGroup]="gestorForm">
+  <form class="row g-3 mt-3" [formGroup]="liderForm">
     <div class="cli-form newvac-wrapper">
       <div class="row g-3">
         <div class="cli-form-element col-f-3">
-          <label>Nombre <small style="color: red">*</small></label>
+          <label>Nombre líder <small style="color: red">*</small></label>
           <input
             class="cli-input"
             formControlName="nombre"
@@ -23,7 +23,7 @@
             class="cli-input"
             formControlName="apellidos"
             type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('apellidos')">* Ingrese los Apellidos es obligatorio</small>
+            <small class="form-text text-alert" *ngIf="campoNoValido('apellidos')">* Ingrese los apellidos son obligatorios</small>
         </div>
 
         <div class="cli-form-element col-f-3">
@@ -35,52 +35,30 @@
         </div>
 
         <div class="cli-form-element col-f-3">
-          <div class="form-group">
-            <label>Fecha inicio</label>
-             <input
-              style="padding: 0.175rem .75rem;"
-              type="date"
-              class="form-control"
-              formControlName="fecha_ini"/>
-          </div>
+          <label>Descripción</label>
+          <input
+            class="cli-input"
+            formControlName="descripcion"
+            type="text"/>
         </div>
 
-        <div class="cli-form-element col-f-3">
-          <div class="form-group">
-            <label>Fecha fin</label>
-             <input
-              style="padding: 0.175rem .75rem;"
-              type="date"
-              class="form-control"
-              formControlName="fecha_fin"/>
-          </div>
-        </div>
 
         <div class="cli-form-element col-f-3">
-          <label>Proyecto(s)</label>
-          <select formControlName="proyectos" class="cli-input">
+          <label>Proyecto <small style="color: red">*</small></label>
+          <select formControlName="proyecto" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
           </select>
-          <!-- <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small> -->
+          <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Seleccione el proyecto es obligatorio</small>
         </div>
 
-        <div class="cli-form-element col-f-3">
-          <label>Subservicios</label>
-          <select formControlName="subservicios" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
-          </select>
-          <!-- <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small> -->
-        </div>
-
-        <ng-container *ngIf="DATA_GESTOR">
+        <ng-container *ngIf="DATA_LIDER">
           <div class="cli-form-element col-f-3">
             <label>Estado</label>
             <select formControlName="id_estado" class="cli-input">
               <option [value]="0" disabled>-Seleccione-</option>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
             </select>
           </div>
 
@@ -102,8 +80,8 @@
         </button>
 
         <button class="cli-btn btn-m btn-turq"
-                [disabled]="gestorForm.invalid"
-                (click)="crearOactualizarGestor()"
+                [disabled]="liderForm.invalid"
+                (click)="crearOactualizarLider()"
                 ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
         </button>
       </div>

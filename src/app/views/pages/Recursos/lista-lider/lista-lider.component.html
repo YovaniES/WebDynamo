@@ -4,36 +4,35 @@
 
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Registro de gestores</div>
+    <div class="modal-title c-male">Registro de Líderes</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
-      <form [formGroup]="gestorForm">
+      <form [formGroup]="liderForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
-              <label>Gestor</label>
+              <label>Líder</label>
               <input
                 class="cli-input"
-                formControlName="nombre_apell"
+                formControlName="lider"
                 type="text"/>
             </div>
 
             <div class="cli-form-element col-f-3">
-              <label>Proyectos</label>
-              <select formControlName="proyectos" class="cli-input">
+              <label>Proyecto</label>
+              <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
-              <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small>
             </div>
 
             <div class="cli-form-element col-f-3">
-              <label>Subservicios</label>
-              <select formControlName="subservicios" class="cli-input">
+              <label>Estado</label>
+              <select formControlName="estado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
               </select>
-              <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small>
             </div>
 
             <div class="cli-form-buttons" style="margin-top: 8px">
@@ -49,7 +48,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllGestor()"
+                (click)="getAllLider()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -57,67 +56,66 @@
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR GESTOR ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR lider ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="gestorForm.invalid"
+            [disabled]="liderForm.invalid"
             (click)="abrirModalCrearOactualizar()">
-            <mat-icon class="icon-18">add</mat-icon> Crear gestor
+            <mat-icon class="icon-18">add</mat-icon> Crear líder
           </button>
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listGestores.length }} Gestores</span>
+            Total : <span class="total">{{ listLideres.length }} líderes</span>
           </div>
         </div>
       </form>
 
-      <!-- TABLA DE GESTORES ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 272px; color: #6c757d">
+      <!-- TABLA DE LIDERES ------------------------------------------------------------------>
+      <div style="overflow: auto; min-height: 188px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px">Gestor.</th>
-              <th class="w100">Correo</th>
-              <th style="min-width: 240px">Proyectos</th>
-              <th style="min-width: 115px">Subservicios</th>
+              <th style="min-width: 150px">Líder.</th>
+              <th style="min-width: 150px">Proyecto(s).</th>
+              <th style="min-width: 160px">Correo</th>
+              <th style="min-width: 240px">Descripción</th>
               <th style="min-width: 108px">Actualizado por</th>
               <th style="min-width: 92px" >Estado</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let gestor of listGestores | paginate: {
+            <tr *ngFor="let lider of listLideres | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
-                        totalItems: totalGestor }">
+                        totalItems: totalLideres }">
               <td>
                 <div class="moad-actions">
                   <button
-                    matTooltip="Editar gestor"
-                    (click)="abrirModalCrearOactualizar(gestor)"
+                    matTooltip="Editar lider"
+                    (click)="abrirModalCrearOactualizar(lider)"
                     class="icon-btn btn-trans c-yellow"
                     ><mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                   </button>
 
                   <button
-                    matTooltip="Eliminar gestor"
-                    (click)="eliminarGestor(gestor)"
+                    matTooltip="Eliminar lider"
+                    (click)="eliminarLider(lider)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
-              <td style="text-align: left">{{ gestor.nombresApellidos | uppercase}}</td>
-              <td style="text-align: left;">{{ gestor.correo }}</td>
-              <td>
-                <span *ngIf="gestor.proyectos" class="label ">{{ gestor.proyectos | uppercase }}</span>
-              <td style="min-width: 240px; text-align: left">{{ gestor.subservicios }}</td>
-              <td style="text-align: left; color: #7287fd">{{ gestor.usuarioActualiza? gestor.usuarioActualiza.usuario: gestor.usuarioActualiza }}</td>
+              <td style="text-align: left"> {{ lider.lider | uppercase}}</td>
+              <td style="text-align: left; min-width: 310px;">{{ lider.proyectos.codigo_proyecto }}</td>
+              <td style="text-align: left;">{{ lider.correo }}</td>
+              <td style="min-width: 240px;">{{ lider.descripcion }}</td>
+              <td>{{ lider.usuario }}</td>
               <td class="moad-module">
-                <mat-icon matTooltip="Activo" [ngClass]="{ 'c-green_x': gestor.estado == 'Activo', 'c-red': gestor.estado != 'Activo' }" class="icon-18">report</mat-icon>
+                <mat-icon [ngClass]="{ 'c-green_x': lider.eliminacion_logica == 1, 'c-red': lider.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>
@@ -128,10 +126,10 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listGestores.length == 0"
+          *ngIf="!loadingItem && listLideres.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
-          No hay gestores para mostrar
+          No hay líderes para mostrar
         </div>
       </div>
     </div>

@@ -25,8 +25,8 @@ export class ListaGestorComponent implements OnInit {
 
 
   page = 1;
-  totalFacturas: number = 0;
-  pageSize = 7;
+  totalGestor: number = 0;
+  pageSize = 10;
 
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
@@ -52,22 +52,7 @@ export class ListaGestorComponent implements OnInit {
     })
   }
 
-  // // API_GESTOR
-  // listGestores: any[] = [];
-  // getListGestores(){
-  //   let parametro: any[] = [{queryId: 102}];
-
-  //   this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-  //           this.listGestores = resp.list;
-  //           console.log('GESTORES', resp);
-  //   });
-  // };
-
-
-  actionBtn: string = 'Crear';
-
   listGestores: any[] = [];
-  limpiarFiltro(){}
   getAllGestor(){
     this.liquidacionService.getAllGestor().subscribe((resp: any) => {
       this.listGestores = resp
@@ -75,40 +60,43 @@ export class ListaGestorComponent implements OnInit {
     })
   }
 
-  eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
+  eliminarGestor(gestor: any,){
+    console.log('DEL_GESTOR', gestor);
 
-  save() {
-    this.blockUI.start('Guardando...');
-    // MÓDULOS
-    // if (this.data.ismodule) {
-    //   this.menu.module = this.data.isnew ? 'ADD' : 'EDT';
-    //   const sub: Subscription = this.permissionService
-    //     .postModule(this.menu)
-    //     .subscribe((resp: any) => {
-    //       this.blockUI.stop();
-    //       if (resp.status) this.dialogRef.close(this.menu);
-    //       else this.showAlertError(resp.message);
-    //       sub.unsubscribe();
-    //     });
+    Swal.fire({
+      title:'¿Eliminar gestor?',
+      text: `¿Estas seguro que deseas eliminar el gestor: ${gestor.nombresApellidos}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.liquidacionService.eliminarGestor(gestor.idGestor).subscribe(resp => {
 
-    //   // MENÚS
-    // } else {
-    //   this.menu.module = this.modecode;
-    //   const sub: Subscription = this.permissionService
-    //     .postMenu(this.menu)
-    //     .subscribe((resp: any) => {
-    //       this.blockUI.stop();
-    //       if (resp.status) this.dialogRef.close(this.menu);
-    //       else this.showAlertError(resp.message);
-    //       sub.unsubscribe();
-    //     });
-    // }
+          Swal.fire({
+            title: 'Eliminar líder',
+            text: `${gestor.gestor}: ${resp.message} exitosamente`,
+            icon: 'success',
+          });
+          this.getAllGestor()
+        });
+      };
+    });
+  };
+
+  limpiarFiltro() {
+    this.gestorForm.reset('', {emitEvent: false})
+    this.newForm()
+
+    this.getAllGestor();
   }
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyecto().subscribe(resp => {
+    this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
     })
@@ -148,7 +136,7 @@ export class ListaGestorComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalFacturas) {
+    if (this.totalfiltro != this.totalGestor) {
       this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
             this.listGestores = resp.list;
             this.spinner.hide();
@@ -162,7 +150,7 @@ export class ListaGestorComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalGestorComponent, { width: '45%', height:'60%', data: DATA })
+      .open(ModalGestorComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllGestor();

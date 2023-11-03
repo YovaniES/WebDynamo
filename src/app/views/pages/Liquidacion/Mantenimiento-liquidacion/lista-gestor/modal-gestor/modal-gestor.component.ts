@@ -135,7 +135,7 @@ export class ModalGestorComponent implements OnInit {
 
     const request = {
       nombres    : formValues.nombre,
-      apellidos  : formValues.apell_pat,
+      apellidos  : formValues.apellidos,
       correo     : formValues.correo,
       fechaInicio: formValues.fecha_ini,
       fechaFin   : formValues.fecha_fin,
@@ -175,7 +175,7 @@ export class ModalGestorComponent implements OnInit {
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyecto().subscribe(resp => {
+    this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
 

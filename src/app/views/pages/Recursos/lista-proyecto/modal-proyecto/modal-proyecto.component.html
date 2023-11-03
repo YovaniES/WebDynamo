@@ -1,0 +1,117 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_PROY ? "Actualizar" : "Crear" }} proyecto</div>
+
+  <form class="row g-3" [formGroup]="proyectoForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="row g-3">
+
+        <div class="cli-form-element col-f-3">
+          <label>Proyecto <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="proyecto"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Ingrese el Proyecto es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Líder <small style="color: red">*</small></label>
+          <select formControlName="lider" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="lider.idLider" *ngFor="let lider of listLideres">{{lider.lider}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('lider')">* Seleccione el líder es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Código Jira <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="cod_jira"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('cod_jira')">* Ingrese el Código es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Jefatura <small style="color: red">*</small></label>
+          <select formControlName="jefatura" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="jef.idJefatura" *ngFor="let jef of listJefaturas">{{jef.Jefatura}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('jefatura')">* Seleccione la jefatura es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <div class="form-group">
+            <label>Fecha inicio</label>
+             <input
+              style="padding: 0.05rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_ini"/>
+          </div>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <div class="form-group">
+            <label>Fecha fin</label>
+             <input
+              style="padding: 0.05rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_fin"/>
+          </div>
+        </div>
+
+        <ng-container *ngIf="DATA_PROY">
+          <div class="cli-form-element col-f-3" *ngIf="DATA_PROY">
+            <label>Estado</label>
+            <select formControlName="id_estado" class="cli-input">
+              <option [value]="10" disabled>-Seleccione-</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
+            </select>
+          </div>
+
+          <div class="cli-form-element form-group col-f-3">
+              <label>Fecha creación</label>
+               <input
+                style="padding: 0.05rem .75rem;"
+                type="date"
+                class="form-control"
+                formControlName="fecha_creacion"/>
+          </div>
+
+          <div class="cli-form-element col-f-1" *ngIf="DATA_PROY">
+            <label>Descripción</label>
+            <textarea
+              class="cli-input"
+              style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+              rows="1"
+              placeholder="Escriba algún Descripcion del proyecto..."
+              formControlName="descripcion"
+            ></textarea>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="cli-form-buttons" style="margin-top: 8%">
+        <button class="cli-btn btn-m btn-regresar"
+                type="submit" (click)="close()">
+                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+        </button>
+
+        <button class="cli-btn btn-m btn-turq"
+                [disabled]="proyectoForm.invalid"
+                (click)="crearOactualizarProyecto()"
+                ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

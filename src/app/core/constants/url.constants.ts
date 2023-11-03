@@ -40,6 +40,8 @@ switch (ENVIROMENT) {
     break;
 }
 
+// https://facturaciondynamo2.azurewebsites.net/api/Lider
+// https://dmantenimiento.azurewebsites.net/api/Lider
 // LOGIN
 export const AUTH_SESSION = AUTH_API + 'login';
 
@@ -50,6 +52,9 @@ export const API_SUBSERVICIO = BASE_LIQUIDACION + 'Subservicio';
 
 // MANTENIMIENTO LIQUIDACION
 export const API_PROYECTO = MANTENIM_LIQUIDACION + 'Proyecto'
+export const API_LIDER = MANTENIM_LIQUIDACION + 'Lider';
+export const API_JEFATURA = MANTENIM_LIQUIDACION + 'Jefatura';
+
 // DATA VISOR DASHBOARD
 export const API_VISOR =  PATH_VISOR_DYNAMO + 'api/visor/';
 

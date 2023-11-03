@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
-import { API_GESTOR, API_PROYECTO, API_SUBSERVICIO, PATH_IMPORT_LIQ } from '../constants/url.constants';
+import {
+  API_GESTOR,
+  API_JEFATURA,
+  API_LIDER,
+  API_PROYECTO,
+  API_SUBSERVICIO,
+  PATH_IMPORT_LIQ,
+} from '../constants/url.constants';
 import { LiquidacionModel } from '../models/liquidacion.models';
 import { Observable, map } from 'rxjs';
 
@@ -20,17 +27,18 @@ export class LiquidacionService {
   // SERVICES GESTOR
   getAllGestor() {
     return this.http.get(API_GESTOR).pipe(
-      map((resp:any) =>{
-        return resp.result
-      }));
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
   }
 
-  crearGestor(requestGestor: any): Observable<any>{
+  crearGestor(requestGestor: any): Observable<any> {
     return this.http.post(API_GESTOR, requestGestor);
   }
 
   // OJO FALTA
-  actualizarGestor(idGestor: number, requestCert: any){
+  actualizarGestor(idGestor: number, requestCert: any) {
     return this.http.put<any>(`${API_GESTOR}/${idGestor}`, requestCert);
   }
 
@@ -43,6 +51,64 @@ export class LiquidacionService {
         return resp.result;
       })
     );
+  }
+
+  eliminarGestor(idGestor: number): Observable<any> {
+    return this.http.delete<any>(`${API_GESTOR}/${idGestor}`);
+  }
+
+  // SERVICES LIDER
+  getAllLideres() {
+    return this.http.get(API_LIDER).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
+  crearLider(requestLider: any): Observable<any> {
+    return this.http.post(API_LIDER, requestLider);
+  }
+
+  getLiderById(idLider: number): Observable<any> {
+    return this.http.get(`${API_LIDER}/${idLider}`).pipe(
+      map((resp: any) => {
+        console.log('DATALIDER_BY_ID', resp.result);
+
+        return resp.result;
+      })
+    );
+  }
+
+  actualizarLider(idLider: number, request: any) {
+    return this.http.put<any>(`${API_LIDER}/${idLider}`, request);
+  }
+
+  eliminarLider(idLider: number): Observable<any> {
+    return this.http.delete<any>(`${API_LIDER}/${idLider}`);
+  }
+
+  //  SERVICES - PROYECTO
+  crearProyecto(requestProy: any): Observable<any> {
+    return this.http.post(API_PROYECTO, requestProy);
+  }
+
+  actualizarProyecto(idProy: number, request: any) {
+    return this.http.put<any>(`${API_PROYECTO}/${idProy}`, request);
+  }
+
+  getProyectoById(idLider: number): Observable<any> {
+    return this.http.get(`${API_PROYECTO}/${idLider}`).pipe(
+      map((resp: any) => {
+        console.log('DATALPROY_BY_ID', resp.result);
+
+        return resp.result;
+      })
+    );
+  }
+
+  eliminarProyecto(idProy: number): Observable<any> {
+    return this.http.delete<any>(`${API_PROYECTO}/${idProy}`);
   }
 
   // SERVICES - SUBSERVICIOS
@@ -60,26 +126,41 @@ export class LiquidacionService {
     );
   }
 
-  crearSubservicio(requestSubs: any): Observable<any>{
-    return this.http.post(API_SUBSERVICIO, requestSubs);
+  eliminarSubservicio(idSub: number): Observable<any> {
+    return this.http.delete<any>(`${API_SUBSERVICIO}/${idSub}`);
+  }
+
+  actualizarSubservicio(idSub: number, request: any) {
+    return this.http.put<any>(`${API_SUBSERVICIO}/${idSub}`, request);
+  }
+
+  crearSubservicio(requestSubs: any): Observable<any> {
+    return this.http.post<any>(API_SUBSERVICIO, requestSubs);
+  }
+
+  // SERVICES - JEFATURAS
+  getAllJefaturas() {
+    return this.http.get(API_JEFATURA).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
   }
 
   // MANTENIMIENTO
-  getAllProyecto(){
+  getAllProyectos() {
     return this.http.get(API_PROYECTO).pipe(
-      map((resp:any) => {
+      map((resp: any) => {
         return resp.result;
       })
     );
   }
 
-
-  getAllSubservicio(){
+  getAllSubservicio() {
     return this.http.get(API_SUBSERVICIO).pipe(
-      map((resp:any) => {
+      map((resp: any) => {
         return resp.result;
       })
     );
   }
-
 }

@@ -25,6 +25,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -52,6 +54,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatMenuModule,
     MatDatepickerModule,
     MatInputModule,
+    // MatAutocompleteSelectedEvent,
+    MatAutocompleteModule,
+    MatChipsModule,
 
     MatMomentDateModule,
   ],

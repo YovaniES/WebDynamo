@@ -47,6 +47,10 @@ const routes: Routes = [
       loadChildren: () => import('./views/pages/module-configuration/module-configuration.module').then(m => m.ModuleConfigurationModule)
       },
 
+      { path: 'recursos',
+      loadChildren: () => import('./views/pages/Recursos/recursos.module').then(m => m.RecursosModule)
+      },
+
       { path: 'liquidacion',
       loadChildren: () => import('./views/pages/Liquidacion/Liquidacion.module').then(m => m.LiquidacionModule)
       },

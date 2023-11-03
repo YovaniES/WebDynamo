@@ -103,8 +103,29 @@ export class ModalSubservicioComponent implements OnInit {
     })
   }
 
+  actualizarSubservicio(){
+    const formValues = this.subservicioForm.getRawValue();
 
-  actualizarSubservicio(){}
+    const requestSubservicio = {
+      idProyecto   : formValues.proyecto,
+      nombre       : formValues.subservicio,
+      representante: formValues.gestor,
+      idUsuarioCrea: this.userID,
+      fechaInicio  : formValues.fecha_ini,
+      fechaFin     : formValues.fecha_fin,
+    }
+    this.liquidacionService.actualizarSubservicio(this.DATA_SUBSERV.idSubservicio, requestSubservicio).subscribe((resp: any) => {
+      if (resp.success) {
+          Swal.fire({
+            title: 'Actualizar subservicio!',
+            text : `${resp.message}`,
+            icon : 'success',
+            confirmButtonText: 'Ok',
+          });
+          this.close(true);
+      }
+    })
+  }
 
   actionBtn: string = 'Crear';
   cargarSubservicioById(idGestor: number): void{
@@ -117,7 +138,7 @@ export class ModalSubservicioComponent implements OnInit {
 
         this.subservicioForm.reset({
           subservicio   : subserv.subservicio,
-          gestor        : subserv.representante,
+          gestor        : subserv.representante.idGestor,
           fecha_ini     : subserv.fechaInicio,
           fecha_creacion: moment.utc(subserv.fechaCreacion).format('YYYY-MM-DD'),
           fecha_fin     : subserv.fechaFin,
@@ -128,8 +149,6 @@ export class ModalSubservicioComponent implements OnInit {
     }
   }
 
-  eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
 
   userID: number = 0;
   getUserID(){
@@ -149,7 +168,7 @@ export class ModalSubservicioComponent implements OnInit {
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyecto().subscribe(resp => {
+    this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY-S', this.listProyectos);
     })

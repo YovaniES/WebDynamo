@@ -5,8 +5,8 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
-import { ModalSubservicioComponent } from './modal-subservicio/modal-subservicio.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
+import { ModalLiderComponent } from './modal-lider/modal-lider.component';
 
 export interface changeResponse {
   message: string;
@@ -15,47 +15,66 @@ export interface changeResponse {
 }
 
 @Component({
-  selector: 'app-lista-subservicio',
-  templateUrl: './lista-subservicio.component.html',
-  styleUrls: ['./lista-subservicio.component.scss'],
+  selector: 'app-lista-lider',
+  templateUrl: './lista-lider.component.html',
+  styleUrls: ['./lista-lider.component.scss'],
 })
-export class ListaSubservicioComponent implements OnInit {
+export class ListaLiderComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
 
   page = 1;
-  totalSubservicio: number = 0;
-  pageSize = 10;
+  totalLideres: number = 0;
+  pageSize = 5;
 
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
                private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
-               public dialogRef: MatDialogRef<ListaSubservicioComponent>,
+               public dialogRef: MatDialogRef<ListaLiderComponent>,
   ) {}
 
   ngOnInit(): void {
   this.newForm()
+  this.getAllLider();
   this.getAllProyecto();
-  this.getAllGestor();
-  this.getAllSubservicios()
+  this.getAllSubservicios();
   }
 
-  subservicioForm!: FormGroup;
+  liderForm!: FormGroup;
   newForm(){
-    this.subservicioForm = this.fb.group({
-     gestor      : [''],
-     subservicios: [''],
-     proyectos   : ['']
+    this.liderForm = this.fb.group({
+     lider   : [''],
+     estado  : [''],
+     proyecto: ['']
     })
   }
 
-  eliminarSubservicio(idSubs: number){
+  actionBtn: string = 'Crear';
+  limpiarFiltro(){}
+
+  listLideres: any[] = [];
+  proyectos_x: any[] = [];
+  getAllLider(){
+    this.liquidacionService.getAllLideres().subscribe((resp: any) => {
+      this.listLideres = resp
+      this.proyectos_x = resp.map((x: any) => x.proyectos)
+
+      console.log('LIST-LIDER', this.listLideres);
+      console.log('PROY_LIDER', this.proyectos_x);
+      console.log('COD_PROY', this.proyectos_x[4]);
+
+    })
+  }
+
+  eliminarLider(lider: any,){
+    console.log('DEL_LIDER', lider);
+
     Swal.fire({
-      title:'¿Eliminar subservicio?',
-      text: `¿Estas seguro que deseas eliminar el subservicio: ${idSubs}?`,
+      title:'¿Eliminar líder?',
+      text: `¿Estas seguro que deseas eliminar el líder: ${lider.lider}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -64,54 +83,39 @@ export class ListaSubservicioComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarSubservicio(idSubs).subscribe(resp => {
+        this.liquidacionService.eliminarLider(lider.idLider).subscribe(resp => {
 
           Swal.fire({
-            title: 'Eliminar Liquidación',
-            text: `${resp.message}, con el ${idSubs}`,
+            title: 'Eliminar líder',
+            text: `${lider.lider}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllSubservicios()
+          this.getAllLider()
         });
       };
     });
-  }
-
-  listGestores: any[] = [];
-  getAllGestor(){
-    this.liquidacionService.getAllGestor().subscribe( (resp: any) => {
-      this.listGestores = resp;
-      console.log('DATA_GESTOR', this.listGestores);
-    })
-  }
-
-  listSubservicios: any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
-      console.log('DATA_SUBSERV', this.listSubservicios);
-    })
-  }
-
-  limpiarFiltro() {
-    this.subservicioForm.reset('', {emitEvent: false})
-    this.newForm()
-
-    this.getAllSubservicios();
-  }
+  };
 
   listProyectos: any[] = [];
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
+    })
+  }
 
+  listSubservicios:any[] = [];
+  getAllSubservicios(){
+    this.liquidacionService.getAllSubservicio().subscribe( resp => {
+      this.listSubservicios = resp;
+      console.log('SUBS', this.listSubservicios);
     })
   }
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
+
 
   showAlertError(message: string) {
     Swal.fire({
@@ -122,7 +126,7 @@ export class ListaSubservicioComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.subservicioForm.get(campo)?.invalid && this.subservicioForm.get(campo)?.touched ) {
+    if (this.liderForm.get(campo)?.invalid && this.liderForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;
@@ -134,9 +138,9 @@ export class ListaSubservicioComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalSubservicio) {
-      this.liquidacionService.getAllSubservicio().subscribe( (resp: any) => {
-            this.listSubservicios = resp.list;
+    if (this.totalfiltro != this.totalLideres) {
+      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
+            this.listLideres = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -148,10 +152,10 @@ export class ListaSubservicioComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalSubservicioComponent, { width: '45%', height:'45%', data: DATA })
+      .open(ModalLiderComponent, { width: '45%', height:'40%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllSubservicios();
+          this.getAllLider();
         }
       });
   }

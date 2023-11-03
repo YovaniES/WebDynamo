@@ -242,65 +242,65 @@ export class AsideComponent implements OnInit {
         },
       ],
     },
-    {
-      id: 4,
-      code: 'ADM',
-      text: 'ADMINISTRACIÓN',
-      order: 1,
-      icon: 'admin_panel_settings',
-      type: 'PAREN',
-      link: 'administracion',
-      enable: true,
-      module: 'administrador4',
-      displayed: false,
-      roles: PERMISSION.MENU_FACTURACION,
-      submenus: [
-        {
-          code: 'ADM-001',
-          text: 'Usuarios',
-          order: 1,
-          icon: 'person',
-          type: 'PAREN',
-          link: 'administracion/usuarios',
-          enable: true,
-          module: 'ADM',
-          displayed: true
-        },
-        {
-          code: 'ADM-002',
-          text: 'Permisos',
-          order: 2,
-          icon: 'https',
-          type: 'PAREN',
-          link: 'administracion/permisos',
-          enable: false,
-          module: 'ADM',
-          displayed: false
-        },
-        {
-          code: 'ADM-003',
-          text: 'Módulos de config.',
-          order: 3,
-          icon: 'menu_open',
-          type: 'PAREN',
-          link: 'administracion/modulos',
-          enable: true,
-          module: 'ADM',
-          displayed: false
-        },
-        {
-          code: 'ADM-004',
-          text: 'Menú',
-          order: 20,
-          icon: 'check',
-          type: 'PAREN',
-          link: 'administracion/menu',
-          enable: true,
-          module: 'ADM',
-          displayed: false
-        }
-      ]
-    },
+    // {
+    //   id: 4,
+    //   code: 'ADM',
+    //   text: 'ADMINISTRACIÓN',
+    //   order: 1,
+    //   icon: 'admin_panel_settings',
+    //   type: 'PAREN',
+    //   link: 'administracion',
+    //   enable: true,
+    //   module: 'administrador4',
+    //   displayed: false,
+    //   roles: PERMISSION.MENU_FACTURACION,
+    //   submenus: [
+    //     {
+    //       code: 'ADM-001',
+    //       text: 'Usuarios',
+    //       order: 1,
+    //       icon: 'person',
+    //       type: 'PAREN',
+    //       link: 'administracion/usuarios',
+    //       enable: true,
+    //       module: 'ADM',
+    //       displayed: true
+    //     },
+    //     {
+    //       code: 'ADM-002',
+    //       text: 'Permisos',
+    //       order: 2,
+    //       icon: 'https',
+    //       type: 'PAREN',
+    //       link: 'administracion/permisos',
+    //       enable: false,
+    //       module: 'ADM',
+    //       displayed: false
+    //     },
+    //     {
+    //       code: 'ADM-003',
+    //       text: 'Módulos de config.',
+    //       order: 3,
+    //       icon: 'menu_open',
+    //       type: 'PAREN',
+    //       link: 'administracion/modulos',
+    //       enable: true,
+    //       module: 'ADM',
+    //       displayed: false
+    //     },
+    //     {
+    //       code: 'ADM-004',
+    //       text: 'Menú',
+    //       order: 20,
+    //       icon: 'check',
+    //       type: 'PAREN',
+    //       link: 'administracion/menu',
+    //       enable: true,
+    //       module: 'ADM',
+    //       displayed: false
+    //     }
+    //   ]
+    // },
 
     {
       id: 5,
@@ -359,6 +359,44 @@ export class AsideComponent implements OnInit {
         //   module: 'LIQ',
         //   displayed: false
         // }
+      ]
+    },
+    {
+      id: 6,
+      code: 'MAN',
+      text: 'MANTEN____TO',
+      order: 1,
+      icon: 'admin_panel_settings',
+      type: 'PAREN',
+      link: 'recursos',
+      enable: true,
+      module: 'recursos',
+      displayed: false,
+      roles: PERMISSION.MENU_FACTURACION,
+      submenus: [
+        {
+          code: 'LIQ-001',
+          text: 'Módulos',
+          order: 1,
+          icon: 'rule_folder',
+          type: 'PAREN',
+          link: 'recursos/modulos',
+          enable: true,
+          module: 'LIQ',
+          displayed: true
+        },
+        // {
+        //   code: 'LIQ-002',
+        //   text: 'Lider',
+        //   order: 2,
+        //   icon: 'perm_identity',
+        //   type: 'PAREN',
+        //   link: 'recursos/lider',
+        //   enable: false,
+        //   module: 'LIQ',
+        //   displayed: false
+        // },
+
       ]
     },
   ];
