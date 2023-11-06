@@ -51,11 +51,11 @@ export class ModalGestorComponent implements OnInit {
     this.gestorForm = this.fb.group({
      nombre        : ['', Validators.required],
      apellidos     : ['', Validators.required],
-     correo        : ['',],
-     fecha_ini     : ['',],
-     fecha_fin     : ['',],
-     proyectos     : ['',],
-     subservicios  : ['',],
+     correo        : [''],
+     fecha_ini     : [''],
+     fecha_fin     : [''],
+     proyectos     : [''],
+     subservicios  : [''],
      id_estado     : [''],
      fecha_creacion: ['']
     })
@@ -183,8 +183,15 @@ export class ModalGestorComponent implements OnInit {
 
   listSubservicios:any[] = [];
   getAllSubservicios(){
-    this.liquidacionService.getAllSubservicio().subscribe( resp => {
-      this.listSubservicios = resp;
+    // const request = this.gestorForm.value;
+    const request = {
+      idGestor     : '',
+      idProyecto   : '',
+      idSubservicio: this.gestorForm.controls['subservicios'].value,
+    }
+
+    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+      this.listSubservicios = resp.result;
       console.log('SUBS', this.listSubservicios);
     })
   }

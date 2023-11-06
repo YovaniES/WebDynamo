@@ -73,7 +73,7 @@
       </form>
 
       <!-- TABLA DE LIDERES ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 188px; color: #6c757d">
+      <div style="overflow: auto; min-height: 208px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
@@ -113,7 +113,7 @@
               <td style="text-align: left; min-width: 310px;">{{ lider.proyectos.codigo_proyecto }}</td>
               <td style="text-align: left;">{{ lider.correo }}</td>
               <td style="min-width: 240px;">{{ lider.descripcion }}</td>
-              <td>{{ lider.usuario }}</td>
+              <td>{{ lider.usuarioActualiza.username }}</td>
               <td class="moad-module">
                 <mat-icon [ngClass]="{ 'c-green_x': lider.eliminacion_logica == 1, 'c-red': lider.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
               </td>

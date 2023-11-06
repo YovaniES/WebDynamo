@@ -40,7 +40,6 @@ export class ListaLiderComponent implements OnInit {
   this.newForm()
   this.getAllLider();
   this.getAllProyecto();
-  this.getAllSubservicios();
   }
 
   liderForm!: FormGroup;
@@ -98,14 +97,6 @@ export class ListaLiderComponent implements OnInit {
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
-    })
-  }
-
-  listSubservicios:any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicio().subscribe( resp => {
-      this.listSubservicios = resp;
-      console.log('SUBS', this.listSubservicios);
     })
   }
 

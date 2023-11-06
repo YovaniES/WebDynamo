@@ -40,7 +40,7 @@ export class ModalClienteComponent implements OnInit {
   this.getAllProyecto();
 
   if (this.DATA_CLIENTE) {
-    this.cargarClienteById(this.DATA_CLIENTE);
+    this.cargarClienteById();
     console.log('CLIENTE_MODAL', this.DATA_CLIENTE);
   }
   }
@@ -48,31 +48,27 @@ export class ModalClienteComponent implements OnInit {
   clienteForm!: FormGroup;
   newForm(){
     this.clienteForm = this.fb.group({
-     nombre        : ['', Validators.required],
-     apellidos     : ['', Validators.required],
-     correo        : ['',],
-     proyecto      : ['', Validators.required],
-     descripcion   : ['',],
-     id_estado     : [''],
+     razon_social  : ['', Validators.required],
+     ruc           : ['', Validators.required],
+     estado        : [''],
      fecha_creacion: ['']
+     //  descripcion   : ['',],
     })
   }
 
   actionBtn: string = 'Crear';
-  cargarClienteById(idLider: number): void{
+  cargarClienteById(): void{
     this.blockUI.start("Cargando data...");
     if (this.DATA_CLIENTE) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getLiderById(this.DATA_CLIENTE.idCliente).subscribe((lider: any) => {
+      this.liquidacionService.getClienteById(this.DATA_CLIENTE.idCliente).subscribe((cliente: any) => {
 
         this.blockUI.stop();
         this.clienteForm.reset({
-          nombre        : lider.nombre,
-          apellidos     : lider.apellidos,
-          correo        : lider.correo,
-          descripcion   : lider.descripcion,
-          id_estado     : lider.eliminacion_logica,
-          fecha_creacion: moment.utc(lider.fecha_creacion).format('YYYY-MM-DD'),
+          razon_social  : cliente.razon_social,
+          ruc           : cliente.ruc,
+          estado        : cliente.eliminacion_logica,
+          fecha_creacion: moment.utc(cliente.fecha_creacion).format('YYYY-MM-DD'),
         })
       })
     }
@@ -85,27 +81,27 @@ export class ModalClienteComponent implements OnInit {
       })
     }
     if (this.DATA_CLIENTE ) {
-        this.actualizarLider();
+        this.actualizarCliente();
     } else {
       this.crearCliente()
     }
   }
 
-  actualizarLider(){
+  actualizarCliente(){
     const formValues = this.clienteForm.getRawValue();
 
     const requestLider = {
-      idCertificacion : this.DATA_CLIENTE.idCertificacion,
-      idFactura       : this.DATA_CLIENTE.idFactura,
-      idEstado        : this.DATA_CLIENTE.eliminacion_logica,
-      descripcion     : formValues.descripcion,
-      usuario         : this.userID
+      // idCliente         : this.DATA_CLIENTE.idCliente,
+      razon_social      : formValues.razon_social,
+      ruc               : formValues.ruc,
+      idUsuarioActualiza: this.userID,
+      eliminacion_logica: formValues.estado,
     }
 
-    this.liquidacionService.actualizarLider(this.DATA_CLIENTE.idCertificacion, requestLider).subscribe((resp: any) => {
+    this.liquidacionService.actualizarCliente(this.DATA_CLIENTE.idCliente, requestLider).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
-            title: 'Actualizar gestor!',
+            title: 'Actualizar cliente!',
             text : `${resp.message}`,
             icon : 'success',
             confirmButtonText: 'Ok',
@@ -119,24 +115,15 @@ export class ModalClienteComponent implements OnInit {
     const formValues = this.clienteForm.getRawValue();
 
     const request = {
-      nombres    : formValues.nombre,
-      apellidos  : formValues.apell_pat,
-      correo     : formValues.correo,
-      fechaInicio: formValues.fecha_ini,
-      fechaFin   : formValues.fecha_fin,
-      gestorSubservicio:[
-        {
-          idSubservicio: formValues.subservicios,
-          idProyecto   : formValues.proyectos,
-        }
-      ],
-      idUsuarioCrea  : this.userID,
+      razon_social     : formValues.razon_social,
+      ruc              : formValues.ruc,
+      idUsuarioCreacion: this.userID
     }
 
     this.liquidacionService.crearCliente(request).subscribe((resp: any) => {
       if (resp.message) {
         Swal.fire({
-          title: 'Crear gestor!',
+          title: 'Crear cliente!',
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'

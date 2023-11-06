@@ -12,7 +12,7 @@
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
               <label>Gestor</label>
-              <select formControlName="gestor" class="cli-input">
+              <select formControlName="idGestor" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
               </select>
@@ -20,7 +20,7 @@
 
             <div class="cli-form-element col-f-3">
               <label>Proyectos</label>
-              <select formControlName="proyectos" class="cli-input">
+              <select formControlName="idProyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
@@ -28,7 +28,7 @@
 
             <div class="cli-form-element col-f-3">
               <label>Subservicios</label>
-              <select formControlName="subservicios" class="cli-input">
+              <select formControlName="idSubservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="sub.idSubservicio" *ngFor="let sub of listSubservicios">{{sub.subservicio}}</option>
               </select>
@@ -40,8 +40,7 @@
                 class="cli-btn btn-m btn-regresar"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
                 (click)="limpiarFiltro()">
-                <mat-icon class="icon-18">rotate_left</mat-icon>
-                Limpiar
+                <mat-icon class="icon-18">rotate_left</mat-icon>Limpiar
               </button>
 
               <button
@@ -49,8 +48,7 @@
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
                 (click)="getAllSubservicios()"
-                ><mat-icon class="icon-18">search</mat-icon>
-                Buscar
+                ><mat-icon class="icon-18">search</mat-icon>Buscar
               </button>
             </div>
           </div>
@@ -73,7 +71,7 @@
       </form>
 
       <!-- TABLA DE GESTORES ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 250px; color: #6c757d">
+      <div style="overflow: auto; min-height: 370px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
@@ -102,7 +100,7 @@
 
                   <button
                     matTooltip="Eliminar subservicio"
-                    (click)="eliminarSubservicio(subserv.idSubservicio)"
+                    (click)="eliminarSubservicio(subserv)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>

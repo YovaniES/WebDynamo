@@ -41,3 +41,11 @@ export interface UsuarioDTO {
   rol    : string;
   company: string[];
 }
+
+
+export interface FiltroGestorModel {
+  idGestor   : string;
+  proyecto   : string;
+  subservicio: string;
+  estado     : string;
+}

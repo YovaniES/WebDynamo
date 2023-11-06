@@ -66,7 +66,7 @@ export class ListaOrdencompraComponent implements OnInit {
   listaLiquidacion: any[] = [];
 
   limpiarFiltro(){}
-  getAllGestor(){}
+  getAllOrdenCompra(){}
 
   eliminarLiquidacion(id: number){}
 
@@ -123,7 +123,7 @@ export class ListaOrdencompraComponent implements OnInit {
       .open(ModalOrdencompraComponent, { width: '45%', height:'60%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllGestor();
+          this.getAllOrdenCompra();
         }
       });
   }

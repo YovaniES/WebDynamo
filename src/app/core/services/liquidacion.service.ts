@@ -4,13 +4,15 @@ import {
   API_CLIENTE,
   API_FACTURAS,
   API_GESTOR,
+  API_GESTOR_FILTRO,
   API_JEFATURA,
   API_LIDER,
   API_PROYECTO,
   API_SUBSERVICIO,
+  API_SUBSERV_FILTRO,
   PATH_IMPORT_LIQ,
 } from '../constants/url.constants';
-import { LiquidacionModel } from '../models/liquidacion.models';
+import { FiltroGestorModel, LiquidacionModel } from '../models/liquidacion.models';
 import { Observable, map } from 'rxjs';
 
 @Injectable({
@@ -18,7 +20,7 @@ import { Observable, map } from 'rxjs';
 })
 export class LiquidacionService {
   toggleUserPanel = new EventEmitter<boolean>();
-  currentUser: any;
+  // currentUser: any;
 
   constructor(private http: HttpClient) {}
 
@@ -27,9 +29,12 @@ export class LiquidacionService {
   }
 
   // SERVICES GESTOR
-  getAllGestor() {
-    return this.http.get(API_GESTOR).pipe(
+  getAllGestor(listGestor: any) {
+    return this.http.post(API_GESTOR_FILTRO, listGestor)
+    .pipe(
       map((resp: any) => {
+        console.log('SERV-GESTOR', resp);
+
         return resp.result;
       })
     );
@@ -144,7 +149,7 @@ export class LiquidacionService {
   }
 
   //  SERVICES - CLIENTE
-  getAllCliente() {
+  getAllClientes() {
     return this.http.get(API_CLIENTE).pipe(
       map((resp: any) => {
         return resp.result;
@@ -204,8 +209,8 @@ export class LiquidacionService {
   }
 
   // SERVICES - SUBSERVICIOS
-  getAllSubservicios() {
-    return this.http.get(API_SUBSERVICIO);
+  getAllSubservicios(requestSub: any) {
+    return this.http.post(API_SUBSERV_FILTRO, requestSub);
   }
 
   getSubserviciosById(idSubserv: number): Observable<any> {
@@ -248,11 +253,11 @@ export class LiquidacionService {
     );
   }
 
-  getAllSubservicio() {
-    return this.http.get(API_SUBSERVICIO).pipe(
-      map((resp: any) => {
-        return resp.result;
-      })
-    );
-  }
+  // getAllSubservicio() {
+  //   return this.http.get(API_SUBSERVICIO).pipe(
+  //     map((resp: any) => {
+  //       return resp.result;
+  //     })
+  //   );
+  // }
 }

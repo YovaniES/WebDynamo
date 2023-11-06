@@ -9,54 +9,28 @@
     <div class="cli-form newvac-wrapper">
       <div class="row g-3">
         <div class="cli-form-element col-f-3">
-          <label>Nombre líder <small style="color: red">*</small></label>
+          <label>Razón social <small style="color: red">*</small></label>
           <input
             class="cli-input"
-            formControlName="nombre"
+            formControlName="razon_social"
             type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('nombre')">* Ingrese el nombre es obligatorio</small>
+            <small class="form-text text-alert" *ngIf="campoNoValido('razon_social')">* Ingrese la Razón social es obligatorio</small>
         </div>
 
         <div class="cli-form-element col-f-3">
-          <label>Apellidos <small style="color: red">*</small></label>
+          <label>Ruc <small style="color: red">*</small></label>
           <input
             class="cli-input"
-            formControlName="apellidos"
+            formControlName="ruc"
             type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('apellidos')">* Ingrese los apellidos son obligatorios</small>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Correo</label>
-          <input
-            class="cli-input"
-            formControlName="correo"
-            type="text"/>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Descripción</label>
-          <input
-            class="cli-input"
-            formControlName="descripcion"
-            type="text"/>
-        </div>
-
-
-        <div class="cli-form-element col-f-3">
-          <label>Proyecto <small style="color: red">*</small></label>
-          <select formControlName="proyecto" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
-          </select>
-          <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Seleccione el proyecto es obligatorio</small>
+            <small class="form-text text-alert" *ngIf="campoNoValido('ruc')">* Ingrese el Ruc es obligatorio</small>
         </div>
 
         <ng-container *ngIf="DATA_CLIENTE">
           <div class="cli-form-element col-f-3">
             <label>Estado</label>
-            <select formControlName="id_estado" class="cli-input">
-              <option [value]="0" disabled>-Seleccione-</option>
+            <select formControlName="estado" class="cli-input">
+              <option [value]="100" disabled>-Seleccione-</option>
               <option value="1">Activo</option>
               <option value="0">Inactivo</option>
             </select>

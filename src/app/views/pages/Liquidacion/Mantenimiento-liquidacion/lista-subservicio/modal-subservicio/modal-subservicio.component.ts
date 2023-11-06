@@ -3,9 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
@@ -30,10 +28,8 @@ export class ModalSubservicioComponent implements OnInit {
   pageSize = 10;
 
   constructor( private fb: FormBuilder,
-               private facturacionService: FacturacionService,
                private liquidacionService: LiquidacionService,
                private authService: AuthService,
-               private spinner: NgxSpinnerService,
                public dialogRef: MatDialogRef<ModalSubservicioComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_SUBSERV: any
   ) {}
@@ -42,6 +38,7 @@ export class ModalSubservicioComponent implements OnInit {
   this.newForm()
   this.getAllProyecto();
   this.getAllGestor();
+  this.getUserID();
 
   if (this.DATA_SUBSERV) {
     this.cargarSubservicioById(this.DATA_SUBSERV);
@@ -81,12 +78,12 @@ export class ModalSubservicioComponent implements OnInit {
     const formValues = this.subservicioForm.getRawValue();
 
     const request = {
-      idProyecto    : formValues.proyecto,
-      nombre        : formValues.subservicio,
-      representante : formValues.gestor,
-      idUsuarioCrea : this.userID,
-      fechaInicio   : formValues.fecha_ini,
-      fechaFin      : formValues.fecha_fin,
+      idProyecto      : formValues.proyecto,
+      nombre          : formValues.subservicio,
+      idRepresentante : formValues.gestor,
+      idUsuarioCrea   : this.userID,
+      fechaInicio     : formValues.fecha_ini,
+      fechaFin        : formValues.fecha_fin,
     }
 
     this.liquidacionService.crearSubservicio(request).subscribe((resp: any) => {
@@ -148,18 +145,26 @@ export class ModalSubservicioComponent implements OnInit {
     }
   }
 
-
   userID: number = 0;
   getUserID(){
    this.authService.getCurrentUser().subscribe( resp => {
      this.userID   = resp.user.userId;
-     console.log('ID-USER', this.userID);
+    //  console.log('ID-USER', this.userID);
    })
   }
 
   listGestores: any[] = [];
   getAllGestor(){
-    this.liquidacionService.getAllGestor().subscribe( (resp: any) => {
+    // const idGestor = this.subservicioForm.controls['gestor'].value;
+    console.log('id_Gestor', this.subservicioForm.controls['gestor'].value );
+
+    const request = {
+      idGestor   : this.subservicioForm.controls['gestor'].value,
+      proyecto   : '',
+      subservicio: '',
+      estado     : ''
+    }
+    this.liquidacionService.getAllGestor(request).subscribe( (resp: any) => {
       this.listGestores = resp
       // console.log('LIST-GESTOR', this.listGestores);
     })

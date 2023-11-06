@@ -6,10 +6,10 @@
   <div class="cli-card-body">
     <div class="modal-title c-male">Registro de proyectos</div>
     <div>
-      <form [formGroup]="gestorForm">
+      <form [formGroup]="proyectoForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Proyectos</label>
               <select formControlName="proyectos" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
@@ -17,8 +17,8 @@
               </select>
             </div>
 
-            <div class="cli-form-element col-f-3">
-              <label>Jefatura <small style="color: red">*</small></label>
+            <div class="cli-form-element col-f-4">
+              <label>Jefatura</label>
               <select formControlName="jefatura" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="jef.idJefatura" *ngFor="let jef of listJefaturas">{{jef.Jefatura}}</option>
@@ -26,7 +26,16 @@
               <small class="form-text text-alert" *ngIf="campoNoValido('jefatura')">* Seleccione la jefatura es obligatorio</small>
             </div>
 
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
+              <label>Cliente</label>
+              <select formControlName="cliente" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="cliente.idCliente" *ngFor="let cliente of listClientes">{{cliente.razon_social}}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('cliente')">* Seleccione el Cliente es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-4">
               <label>Estado</label>
               <select formControlName="id_estado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
@@ -60,7 +69,7 @@
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="gestorForm.invalid"
+            [disabled]="proyectoForm.invalid"
             (click)="abrirModalCrearOactualizar()">
             <mat-icon class="icon-18">add</mat-icon> Crear proyecto
           </button>

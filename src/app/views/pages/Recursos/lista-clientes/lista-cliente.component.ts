@@ -24,7 +24,7 @@ export class ListaClienteComponent implements OnInit {
   loadingItem: boolean = false;
 
   page = 1;
-  totalLideres: number = 0;
+  totalClientes: number = 0;
   pageSize = 5;
 
   constructor(
@@ -39,35 +39,32 @@ export class ListaClienteComponent implements OnInit {
   ngOnInit(): void {
     this.newForm();
     this.getAllClientes();
-    this.getAllProyecto();
-    this.getAllSubservicios();
   }
 
   clienteForm!: FormGroup;
   newForm(){
     this.clienteForm = this.fb.group({
-     lider   : [''],
-     estado  : [''],
-     proyecto: ['']
+     razon_social: [''],
+     ruc         : [''],
+     estado      : [''],
     })
   }
 
-  listLideres: any[] = [];
-  proyectos_x: any[] = [];
+  listClientes: any[] = [];
   getAllClientes() {
-    this.liquidacionService.getAllCliente().subscribe((resp: any) => {
-      this.listLideres = resp;
+    this.liquidacionService.getAllClientes().subscribe((resp: any) => {
+      this.listClientes = resp;
 
-      console.log('LIST-CLIENTE', this.listLideres);
+      console.log('LIST-CLIENTE', this.listClientes);
     });
   }
 
-  eliminarCliente(lider: any) {
-    console.log('DEL_CLIENTE', lider);
+  eliminarCliente(cliente: any) {
+    console.log('DEL_CLIENTE', cliente);
 
     Swal.fire({
-      title: '¿Eliminar líder?',
-      text: `¿Estas seguro que deseas eliminar el cliente: ${lider.lider}?`,
+      title: '¿Eliminar cliente?',
+      text: `¿Estas seguro que deseas eliminar la Razón social: ${cliente.razon_social}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -76,33 +73,16 @@ export class ListaClienteComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.liquidacionService
-          .eliminarCliente(lider.idLider)
+        this.liquidacionService.eliminarCliente(cliente.idCliente)
           .subscribe((resp) => {
             Swal.fire({
               title: 'Eliminar cliente',
-              text: `${lider.lider}: ${resp.message} exitosamente`,
+              text: `${cliente.razon_social}: eliminado exitosamente`,
               icon: 'success',
             });
             this.getAllClientes();
           });
       }
-    });
-  }
-
-  listProyectos: any[] = [];
-  getAllProyecto() {
-    this.liquidacionService.getAllProyectos().subscribe((resp) => {
-      this.listProyectos = resp;
-      console.log('PROY', this.listProyectos);
-    });
-  }
-
-  listSubservicios: any[] = [];
-  getAllSubservicios() {
-    this.liquidacionService.getAllSubservicio().subscribe((resp) => {
-      this.listSubservicios = resp;
-      console.log('SUBS', this.listSubservicios);
     });
   }
 
@@ -118,17 +98,6 @@ export class ListaClienteComponent implements OnInit {
     });
   }
 
-  campoNoValido(campo: string): boolean {
-    if (
-      this.clienteForm.get(campo)?.invalid &&
-      this.clienteForm.get(campo)?.touched
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   limpiarFiltro() {
     this.clienteForm.reset('', {emitEvent: false})
     this.newForm()
@@ -141,11 +110,11 @@ export class ListaClienteComponent implements OnInit {
     let offset = event * 10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalLideres) {
+    if (this.totalfiltro != this.totalClientes) {
       this.facturacionService
         .cargarOBuscarLiquidacion(offset.toString())
         .subscribe((resp: any) => {
-          this.listLideres = resp.list;
+          this.listClientes = resp.list;
           this.spinner.hide();
         });
     } else {
@@ -157,7 +126,7 @@ export class ListaClienteComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalClienteComponent, { width: '45%', height: '40%', data: DATA })
+      .open(ModalClienteComponent, { width: '45%', data: DATA })
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {

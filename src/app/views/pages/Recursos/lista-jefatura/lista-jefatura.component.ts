@@ -39,16 +39,13 @@ export class ListaJefaturaComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllJefatura();
-  this.getAllProyecto();
-  this.getAllSubservicios();
   }
 
   jefaturaForm!: FormGroup;
   newForm(){
     this.jefaturaForm = this.fb.group({
-     lider   : [''],
+     jefatura: [''],
      estado  : [''],
-     proyecto: ['']
     })
   }
 
@@ -60,12 +57,12 @@ export class ListaJefaturaComponent implements OnInit {
     })
   }
 
-  eliminarJefatura(lider: any,){
-    console.log('DEL_LIDER', lider);
+  eliminarJefatura(jefatura: any,){
+    console.log('DEL_JEFAT', jefatura);
 
     Swal.fire({
       title:'¿Eliminar jefatura?',
-      text: `¿Estas seguro que deseas eliminar la jefatura: ${lider.lider}?`,
+      text: `¿Estas seguro que deseas eliminar la jefatura: ${jefatura.Jefatura}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -74,11 +71,11 @@ export class ListaJefaturaComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarJefatura(lider.idLider).subscribe(resp => {
+        this.liquidacionService.eliminarJefatura(jefatura.idJefatura).subscribe(resp => {
 
           Swal.fire({
             title: 'Eliminar jefatura',
-            text: `${lider.lider}: ${resp.message} exitosamente`,
+            text: `${jefatura.Jefatura}: ${resp.message} exitosamente`,
             icon: 'success',
           });
           this.getAllJefatura()
@@ -87,26 +84,9 @@ export class ListaJefaturaComponent implements OnInit {
     });
   };
 
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY', this.listProyectos);
-    })
-  }
-
-  listSubservicios:any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicio().subscribe( resp => {
-      this.listSubservicios = resp;
-      console.log('SUBS', this.listSubservicios);
-    })
-  }
-
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
 
   showAlertError(message: string) {
     Swal.fire({

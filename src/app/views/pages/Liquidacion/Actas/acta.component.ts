@@ -41,7 +41,7 @@ export class ActaComponent implements OnInit {
     this.getAllActas();
     this.dataMenuPrueba();
     this.getAllProyecto();
-    this.getAllSubservicio()
+    // this.getAllSubservicio()
     console.log('ABX', this.listActas);
     ;
   }
@@ -265,13 +265,13 @@ export class ActaComponent implements OnInit {
   }
 
   listSubservicio: any[] = [];
-  getAllSubservicio(){
-    this.liquidacionService.getAllSubservicio().subscribe(resp => {
-      this.listSubservicio = resp;
-      console.log('SUBSERV', this.listSubservicio);
+  // getAllSubservicio(){
+  //   this.liquidacionService.getAllSubservicio().subscribe(resp => {
+  //     this.listSubservicio = resp;
+  //     console.log('SUBSERV', this.listSubservicio);
 
-    })
-  }
+  //   })
+  // }
 
   limpiarFiltro() {
     this.actasForm.reset('', {emitEvent: false})

@@ -46,16 +46,16 @@ export class ListaSubservicioComponent implements OnInit {
   subservicioForm!: FormGroup;
   newForm(){
     this.subservicioForm = this.fb.group({
-     gestor      : [''],
-     subservicios: [''],
-     proyectos   : ['']
+     idGestor     : [''],
+     idSubservicio: [''],
+     idProyecto   : ['']
     })
   }
 
-  eliminarSubservicio(idSubs: number){
+  eliminarSubservicio(subserv: any){
     Swal.fire({
       title:'¿Eliminar subservicio?',
-      text: `¿Estas seguro que deseas eliminar el subservicio: ${idSubs}?`,
+      text: `¿Estas seguro que deseas eliminar el subservicio: ${subserv.subservicio}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -64,11 +64,11 @@ export class ListaSubservicioComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarSubservicio(idSubs).subscribe(resp => {
+        this.liquidacionService.eliminarSubservicio(subserv.idSubservicio).subscribe(resp => {
 
           Swal.fire({
-            title: 'Eliminar Liquidación',
-            text: `${resp.message}, con el ${idSubs}`,
+            title: 'Eliminar subservicio',
+            text: `${resp.message}`,
             icon: 'success',
           });
           this.getAllSubservicios()
@@ -79,7 +79,16 @@ export class ListaSubservicioComponent implements OnInit {
 
   listGestores: any[] = [];
   getAllGestor(){
-    this.liquidacionService.getAllGestor().subscribe( (resp: any) => {
+    // const request = this.subservicioForm.controls['idGestor'].value;
+
+    const request = {
+      idGestor   : this.subservicioForm.controls['idGestor'].value,
+      proyecto   : '',
+      subservicio: '',
+      estado     : ''
+    }
+
+    this.liquidacionService.getAllGestor(request).subscribe( (resp: any) => {
       this.listGestores = resp;
       console.log('DATA_GESTOR', this.listGestores);
     })
@@ -87,7 +96,9 @@ export class ListaSubservicioComponent implements OnInit {
 
   listSubservicios: any[] = [];
   getAllSubservicios(){
-    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
+    const request = this.subservicioForm.value;
+
+    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
       console.log('DATA_SUBSERV', this.listSubservicios);
     })
@@ -135,7 +146,7 @@ export class ListaSubservicioComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalSubservicio) {
-      this.liquidacionService.getAllSubservicio().subscribe( (resp: any) => {
+      this.liquidacionService.getAllSubservicios(offset.toString()).subscribe( (resp: any) => {
             this.listSubservicios = resp.list;
             this.spinner.hide();
           });

@@ -52,7 +52,7 @@ export class ModalLiderComponent implements OnInit {
      nombre        : ['', Validators.required],
      apellidos     : ['', Validators.required],
      correo        : ['',],
-     proyecto      : ['', Validators.required],
+    //  proyecto      : ['', Validators.required],
      descripcion   : ['',],
      id_estado     : [''],
      fecha_creacion: ['']
@@ -130,18 +130,12 @@ export class ModalLiderComponent implements OnInit {
     const formValues = this.liderForm.getRawValue();
 
     const request = {
-      nombres    : formValues.nombre,
-      apellidos  : formValues.apell_pat,
-      correo     : formValues.correo,
-      fechaInicio: formValues.fecha_ini,
-      fechaFin   : formValues.fecha_fin,
-      gestorSubservicio:[
-        {
-          idSubservicio: formValues.subservicios,
-          idProyecto   : formValues.proyectos,
-        }
-      ],
-      idUsuarioCrea  : this.userID,
+      nombre        : formValues.nombre,
+      apellidos     : formValues.apellidos,
+      correo        : formValues.correo,
+      fechaInicio   : formValues.fecha_ini,
+      fechaFin      : formValues.fecha_fin,
+      idUsuarioCrea : this.userID,
     }
 
     this.liquidacionService.crearLider(request).subscribe((resp: any) => {

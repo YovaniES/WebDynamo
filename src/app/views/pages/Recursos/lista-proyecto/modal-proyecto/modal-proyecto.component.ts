@@ -40,9 +40,8 @@ export class ModalProyectoComponent implements OnInit {
   this.getUserID();
   this.getAllProyecto();
   this.getAllLideres();
-  this.getAllGestor();
   this.getAllJefaturas()
-
+  this.getAllClientes()
   if (this.DATA_PROY) {
     this.cargarProyectoById();
     console.log('MODAL-PROY', this.DATA_PROY);
@@ -55,10 +54,11 @@ export class ModalProyectoComponent implements OnInit {
      jefatura      : ['', Validators.required],
      lider         : ['', Validators.required],
      proyecto      : ['', Validators.required],
+     cliente       : ['', Validators.required],
+     cod_jira      : ['', Validators.required],
      fecha_creacion: [''],
      fecha_ini     : [''],
      fecha_fin     : [''],
-     cod_jira      : [''],
      id_estado     : [''],
      descripcion   : ['']
     })
@@ -93,7 +93,7 @@ export class ModalProyectoComponent implements OnInit {
       tipo              : '',
       fecha_inicio      : formValues.fecha_ini,
       fecha_fin         : formValues.fecha_fin,
-      idCliente         : 10, // falta validar cliente
+      idCliente         : formValues.cliente,
       idJefatura        : formValues.jefatura,
       idUsuarioCreacion : this.userID,
     }
@@ -157,6 +157,7 @@ export class ModalProyectoComponent implements OnInit {
           jefatura      : proy.jefaturas.idJefatura,
           lider         : proy.lideres.idLider,
           proyecto      : proy.codigo_proyecto,
+          cliente       : proy.clientes.idCliente,
           fecha_creacion: moment.utc(proy.fechaCreacion).format('YYYY-MM-DD'),
           fecha_ini     : moment.utc(proy.fecha_inicio).format('YYYY-MM-DD'),
           fecha_fin     : moment.utc(proy.fecha_fin).format('YYYY-MM-DD'),
@@ -177,20 +178,21 @@ export class ModalProyectoComponent implements OnInit {
    })
   }
 
-  listGestores: any[] = [];
-  getAllGestor(){
-    this.liquidacionService.getAllGestor().subscribe( (resp: any) => {
-      this.listGestores = resp
-      // console.log('LIST-GESTOR', this.listGestores);
-    })
-  }
-
   listLideres: any[] = [];
   getAllLideres(){
     this.liquidacionService.getAllLideres().subscribe( (resp: any) => {
       this.listLideres = resp
       console.log('LIST-LIDER', this.listLideres);
     })
+  }
+
+  listClientes: any[] = [];
+  getAllClientes() {
+    this.liquidacionService.getAllClientes().subscribe((resp: any) => {
+      this.listClientes = resp;
+
+      console.log('LIST-CLIENTE', this.listClientes);
+    });
   }
 
   listProyectos: any[] = [];

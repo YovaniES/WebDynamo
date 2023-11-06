@@ -45,7 +45,9 @@ export const AUTH_SESSION = AUTH_API + 'login';
 
 // REGISTRO-DYNAMO
 export const API_DYNAMO = PATH_BACK_NET + 'ExecuteQuery';
-export const API_GESTOR = BASE_LIQUIDACION + 'Gestor/';
+export const API_GESTOR = BASE_LIQUIDACION + 'Gestor';
+export const API_GESTOR_FILTRO = BASE_LIQUIDACION + 'Gestor/getAllGestores';
+export const API_SUBSERV_FILTRO = BASE_LIQUIDACION + 'Subservicio/GetAllSubservicio';
 export const API_SUBSERVICIO = BASE_LIQUIDACION + 'Subservicio';
 
 // MANTENIMIENTO LIQUIDACION
@@ -62,7 +64,6 @@ export const API_VISOR =  PATH_VISOR_DYNAMO + 'api/visor/';
 export const PATH_IMPORT_LIQ = API_SAVE_DATA_IMPORT;
 
 export const API_CORREO = 'https://localhost:44395/api/email'; //NO SE USA EN DYNAMOSUPPORT
-
 
 
 

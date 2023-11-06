@@ -46,6 +46,7 @@ export class ListaProyectoComponent implements OnInit {
   this.newForm()
   this.getAllProyectos();
   this.getAllJefaturas();
+  this.getAllClientes();
 
   this.searchCtrl.valueChanges
     .pipe(map(value => typeof value === 'object' ? '' : ''), startWith(''))
@@ -66,12 +67,13 @@ export class ListaProyectoComponent implements OnInit {
 
   }
 
-  gestorForm!: FormGroup;
+  proyectoForm!: FormGroup;
   newForm(){
-    this.gestorForm = this.fb.group({
+    this.proyectoForm = this.fb.group({
      id_estado: [''],
      jefatura : [''],
-     proyectos: ['']
+     proyectos: [''],
+     cliente  : [''],
     })
   }
 
@@ -103,10 +105,19 @@ export class ListaProyectoComponent implements OnInit {
   };
 
   limpiarFiltro() {
-    this.gestorForm.reset('', {emitEvent: false})
+    this.proyectoForm.reset('', {emitEvent: false})
     this.newForm()
 
     this.getAllProyectos();
+  }
+
+  listClientes: any[] = [];
+  getAllClientes() {
+    this.liquidacionService.getAllClientes().subscribe((resp: any) => {
+      this.listClientes = resp;
+
+      console.log('LIST-CLIENTE', this.listClientes);
+    });
   }
 
   listProyectos: any[] = [];
@@ -139,7 +150,7 @@ export class ListaProyectoComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.gestorForm.get(campo)?.invalid && this.gestorForm.get(campo)?.touched ) {
+    if (this.proyectoForm.get(campo)?.invalid && this.proyectoForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;

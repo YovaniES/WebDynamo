@@ -56,7 +56,7 @@
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR CLIENTE ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR JEFATURA ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
@@ -72,23 +72,23 @@
         </div>
       </form>
 
-      <!-- TABLA DE FACTURAS ------------------------------------------------------------------>
+      <!-- TABLA DE JEFATURAS ------------------------------------------------------------------>
       <div style="overflow: auto; min-height: 188px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px">N° Factura</th>
-              <th style="min-width: 150px">Proyecto</th>
-              <th style="min-width: 160px">Certificación</th>
-              <th style="min-width: 240px">Fecha facturación</th>
+              <th style="min-width: 100px; text-align: left;">N° Factura</th>
+              <th style="min-width: 100px; text-align: left;">Proyecto</th>
+              <th style="min-width: 100px; text-align: left;">Certificación</th>
+              <th style="min-width: 120px">Fecha facturación</th>
               <th>Total</th>
               <th>Tgs</th>
               <th>Adquira</th>
               <th style="min-width: 150px">Factrura TGS</th>
               <th style="min-width: 150px">Factura Adquira</th>
               <th style="min-width: 108px">Actualizado por</th>
-              <th style="min-width: 92px" >Estado</th>
+              <th style="min-width: 95px;">Estado</th>
             </tr>
           </thead>
 
@@ -115,7 +115,7 @@
                 </div>
               </td>
               <td style="text-align: left"> {{ factura.nro_factura}}</td>
-              <td style="text-align: left; min-width: 310px;">{{ factura.proyecto.codigo_proyecto }}</td>
+              <td style="text-align: left;">{{ factura.proyecto.codigo_proyecto }}</td>
               <td style="text-align: left;">{{ factura.certificacion.nro_certificacion }}</td>
               <td style="min-width: 150px;">{{ factura.fecha_facturacion }}</td>
               <td>{{ factura.total }}</td>
@@ -124,7 +124,7 @@
               <td>{{ factura.factura_tgs }}</td>
               <td>{{ factura.factura_adquira }}</td>
               <td>{{ factura.usuario_actualiza }}</td>
-              <td>{{ factura.estado.estado_facturacion }}</td>
+              <td style="text-align: left;">{{ factura.estado.estado_facturacion }}</td>
               <!-- <td class="moad-module">
                 <mat-icon [ngClass]="{ 'c-green_x': factura.eliminacion_logica == 1, 'c-red': factura.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
               </td> -->

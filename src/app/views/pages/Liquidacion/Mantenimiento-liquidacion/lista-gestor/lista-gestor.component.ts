@@ -7,6 +7,7 @@ import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalGestorComponent } from './modal-gestor/modal-gestor.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
+import { FiltroGestorModel } from 'src/app/core/models/liquidacion.models';
 
 export interface changeResponse {
   message: string;
@@ -23,7 +24,6 @@ export class ListaGestorComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalGestor: number = 0;
   pageSize = 10;
@@ -37,24 +37,29 @@ export class ListaGestorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.newForm()
-  this.getAllGestor();
-  this.getAllProyecto();
-  this.getAllSubservicios();
+    this.newForm();
+    this.getAllGestor();
+    this.getAllProyecto();
+    this.getAllSubservicios();
   }
 
   gestorForm!: FormGroup;
   newForm(){
     this.gestorForm = this.fb.group({
-     nombre_apell: [''],
-     subservicios: [''],
-     proyectos   : ['']
+    idGestor   : [''],
+    subservicio: [''],
+    proyecto   : [''],
+    estado     : [''],
     })
   }
 
   listGestores: any[] = [];
   getAllGestor(){
-    this.liquidacionService.getAllGestor().subscribe((resp: any) => {
+    this.blockUI.start('Cargando lista Gestores...');
+    const request: FiltroGestorModel = this.gestorForm.value;
+    this.liquidacionService.getAllGestor(request).subscribe((resp: any) => {
+      this.blockUI.stop();
+
       this.listGestores = resp
       console.log('LIST-GESTOR', this.listGestores);
     })
@@ -97,8 +102,14 @@ export class ListaGestorComponent implements OnInit {
 
   listSubservicios:any[] = [];
   getAllSubservicios(){
-    this.liquidacionService.getAllSubservicio().subscribe( resp => {
-      this.listSubservicios = resp;
+    const request = {
+      idGestor     : '',
+      idProyecto   : '',
+      idSubservicio: this.gestorForm.controls['subservicio'].value,
+    }
+
+    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+      this.listSubservicios = resp.result;
       console.log('SUBS', this.listSubservicios);
     })
   }
@@ -106,7 +117,6 @@ export class ListaGestorComponent implements OnInit {
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
 
   showAlertError(message: string) {
     Swal.fire({

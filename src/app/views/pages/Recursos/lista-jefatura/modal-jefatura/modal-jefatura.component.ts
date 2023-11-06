@@ -48,12 +48,9 @@ export class ModalJefaturaComponent implements OnInit {
   jefaturaForm!: FormGroup;
   newForm(){
     this.jefaturaForm = this.fb.group({
-     nombre        : ['', Validators.required],
-     apellidos     : ['', Validators.required],
-     correo        : ['',],
-     proyecto      : ['', Validators.required],
-     descripcion   : ['',],
-     id_estado     : [''],
+     jefatura      : ['', Validators.required],
+     descripcion   : [''],
+     estado        : [''],
      fecha_creacion: ['']
     })
   }
@@ -63,17 +60,16 @@ export class ModalJefaturaComponent implements OnInit {
     this.blockUI.start("Cargando data...");
     if (this.DATA_JEFATURA) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getLiderById(this.DATA_JEFATURA.idJefatura).subscribe((lider: any) => {
-        // console.log('DATA_BY_ID_lider', lider, lider.proyectos[0].idProyecto);
+      this.liquidacionService.getJefaturaById(this.DATA_JEFATURA.idJefatura).subscribe((jef: any) => {
+        console.log('DATA_BY_ID_JEFATURA', jef);
 
         this.blockUI.stop();
         this.jefaturaForm.reset({
-          nombre        : lider.nombre,
-          apellidos     : lider.apellidos,
-          correo        : lider.correo,
-          descripcion   : lider.descripcion,
-          id_estado     : lider.eliminacion_logica,
-          fecha_creacion: moment.utc(lider.fecha_creacion).format('YYYY-MM-DD'),
+          jefatura      : jef.Jefatura,
+          descripcion   : jef.descripcion,
+          estado        : jef.eliminacion_logica,
+          fecha_creacion: moment.utc(jef.fecha_creacion).format('YYYY-MM-DD'),
+          // usuarioActualiza
         })
       })
     }
