@@ -16,18 +16,18 @@
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Proyecto</label>
-              <select formControlName="id_proy" class="cli-input">
+              <label>Proyectos</label>
+              <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+                <option [value]="proy.codigo_proyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Subservicio</label>
+              <label>Subservicios</label>
               <select formControlName="subservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicio">{{subs.subservicio}}</option>
+                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
               </select>
             </div>
 
@@ -86,8 +86,8 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllActas()"
                 ><mat-icon class="icon-18">search</mat-icon>
+                <!-- (click)="getAllActas()" -->
                 Buscar
               </button>
             </div>
@@ -151,8 +151,6 @@
                 <td  *ngIf="!acta.enable" class="moad-inactive label_x" >{{acta.estado}}</td>
                 <td>[{{ acta.importe }}]</td>
                 <td style="flex: 1 1;"></td>
-                <!-- <td></td>
-                <td></td> -->
             </tbody>
           </table>
          </div>

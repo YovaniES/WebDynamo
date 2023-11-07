@@ -14,92 +14,89 @@ export interface changeResponse {
 }
 
 @Component({
-  selector: 'app-modal-jefatura',
-  templateUrl: './modal-jefatura.component.html',
-  styleUrls: ['./modal-jefatura.component.scss'],
+  selector: 'app-modal-estados',
+  templateUrl: './modal-estados.component.html',
+  styleUrls: ['./modal-estados.component.scss'],
 })
-export class ModalJefaturaComponent implements OnInit {
+export class ModalEstadosComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private liquidacionService: LiquidacionService,
-               public dialogRef: MatDialogRef<ModalJefaturaComponent>,
-               @Inject(MAT_DIALOG_DATA) public DATA_JEFATURA: any
+               public dialogRef: MatDialogRef<ModalEstadosComponent>,
+               @Inject(MAT_DIALOG_DATA) public DATA_ESTADO: any
   ) {}
 
   ngOnInit(): void {
   this.newForm()
   this.getUserID();
-  this.getAllProyecto();
 
-  if (this.DATA_JEFATURA) {
-    this.cargarJefaturaById();
-    console.log('DATA_JEFAT_MODAL', this.DATA_JEFATURA);
+  if (this.DATA_ESTADO) {
+    this.cargarEstadoById();
+    console.log('DATA_EST_MODAL', this.DATA_ESTADO);
   }
   }
 
-  jefaturaForm!: FormGroup;
+  estadosForm!: FormGroup;
   newForm(){
-    this.jefaturaForm = this.fb.group({
-     jefatura      : ['', Validators.required],
+    this.estadosForm = this.fb.group({
+     estado        : ['', Validators.required],
      descripcion   : [''],
-     estado        : [''],
      fecha_creacion: ['']
     })
   }
 
   actionBtn: string = 'Crear';
-  cargarJefaturaById(): void{
+  cargarEstadoById(): void{
     this.blockUI.start("Cargando data...");
-    if (this.DATA_JEFATURA) {
+    if (this.DATA_ESTADO) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getJefaturaById(this.DATA_JEFATURA.idJefatura).subscribe((jef: any) => {
-        console.log('DATA_BY_ID_JEFATURA', jef);
+      this.liquidacionService.getEstadoById(this.DATA_ESTADO.idEstado).subscribe((estado: any) => {
+        console.log('DATA_BY_ID_ESTADO', estado);
 
         this.blockUI.stop();
-        this.jefaturaForm.reset({
-          jefatura      : jef.Jefatura,
-          descripcion   : jef.descripcion,
-          estado        : jef.eliminacion_logica,
-          fecha_creacion: moment.utc(jef.fecha_creacion).format('YYYY-MM-DD'),
+        this.estadosForm.reset({
+          jefatura      : estado.estadoatura,
+          descripcion   : estado.descripcion,
+          estado        : estado.eliminacion_logica,
+          fecha_creacion: moment.utc(estado.fecha_creacion).format('YYYY-MM-DD'),
           // usuarioActualiza
         })
       })
     }
   }
 
-  crearOactualizarJefatura(){
-    if (this.jefaturaForm.invalid) {
-      return Object.values(this.jefaturaForm.controls).forEach((controls) => {
+  crearOactualizarEstado(){
+    if (this.estadosForm.invalid) {
+      return Object.values(this.estadosForm.controls).forEach((controls) => {
         controls.markAllAsTouched();
       })
     }
-    if (this.DATA_JEFATURA ) {
+    if (this.DATA_ESTADO ) {
         console.log('UPD_JEFA');
-        this.actualizarJefatura();
+        this.actualizarEstado();
     } else {
       console.log('CREAR_JEFA');
-      this.crearJefatura()
+      this.crearEstado()
     }
   }
 
-  actualizarJefatura(){
-    const formValues = this.jefaturaForm.getRawValue();
+  actualizarEstado(){
+    const formValues = this.estadosForm.getRawValue();
 
-    const requestJefatura = {
-      idCertificacion : this.DATA_JEFATURA.idCertificacion,
-      idFactura       : this.DATA_JEFATURA.idFactura,
-      idEstado        : this.DATA_JEFATURA.eliminacion_logica,
+    const requestEstado = {
+      idEstado : this.DATA_ESTADO.idEstado,
+      estado       : this.DATA_ESTADO.estado,
       descripcion     : formValues.descripcion,
       usuario         : this.userID
     }
 
-    this.liquidacionService.actualizarJefatura(this.DATA_JEFATURA.idCertificacion, requestJefatura).subscribe((resp: any) => {
+    this.liquidacionService.actualizarEstado(this.DATA_ESTADO.idCertificacion, requestEstado).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
-            title: 'Actualizar jefatura!',
+            title: 'Actualizar estado!',
             text : `${resp.message}`,
             icon : 'success',
             confirmButtonText: 'Ok',
@@ -109,28 +106,19 @@ export class ModalJefaturaComponent implements OnInit {
     })
   }
 
-  crearJefatura(): void{
-    const formValues = this.jefaturaForm.getRawValue();
+  crearEstado(): void{
+    const formValues = this.estadosForm.getRawValue();
 
     const request = {
-      nombres    : formValues.nombre,
-      apellidos  : formValues.apell_pat,
-      correo     : formValues.correo,
-      fechaInicio: formValues.fecha_ini,
-      fechaFin   : formValues.fecha_fin,
-      gestorSubservicio:[
-        {
-          idSubservicio: formValues.subservicios,
-          idProyecto   : formValues.proyectos,
-        }
-      ],
-      idUsuarioCrea  : this.userID,
+      estado       : formValues.estado,
+      descripcion  : formValues.descripcion,
+      idUsuarioCrea: this.userID,
     }
 
-    this.liquidacionService.crearJefatura(request).subscribe((resp: any) => {
+    this.liquidacionService.crearEstado(request).subscribe((resp: any) => {
       if (resp.message) {
         Swal.fire({
-          title: 'Crear jefatura!',
+          title: 'Crear estado!',
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'
@@ -161,6 +149,7 @@ export class ModalJefaturaComponent implements OnInit {
     this.dialogRef.close(succes);
   }
 
+
   showAlertError(message: string) {
     Swal.fire({
       title: 'Error',
@@ -170,7 +159,7 @@ export class ModalJefaturaComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.jefaturaForm.get(campo)?.invalid && this.jefaturaForm.get(campo)?.touched ) {
+    if (this.estadosForm.get(campo)?.invalid && this.estadosForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;

@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { FiltroGestorModel } from 'src/app/core/models/liquidacion.models';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
 export interface changeResponse {
@@ -29,6 +31,7 @@ export class ModalActaComponent implements OnInit {
   modecode = '';
   constructor( private fb: FormBuilder,
                private facturacionService: FacturacionService,
+               private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                public dialogRef: MatDialogRef<ModalActaComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_ACTAS: any
@@ -36,8 +39,9 @@ export class ModalActaComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getListProyectos();
-  this.getListGestores();
+  this.getAllProyecto();
+  this.getAllGestor();
+  this.getAllSubservicios();
 
   if (this.DATA_ACTAS) {
     this.cargarGestorById(this.DATA_ACTAS);
@@ -49,7 +53,7 @@ export class ModalActaComponent implements OnInit {
     this.actasForm = this.fb.group({
      proyecto     : ['',],
      subservicio  : ['',],
-     gestor       : ['',],
+     idGestor     : ['',],
      importe      : ['',],
      fecha_periodo: ['',],
      comentario   : ['',],
@@ -59,10 +63,11 @@ export class ModalActaComponent implements OnInit {
 
   actionBtn: string = 'Crear';
   cargarGestorById(idGestor: number): void{
-    // this.blockUI.start("Cargando data...");
+    this.blockUI.start("Cargando data...");
     if (this.DATA_ACTAS) {
       this.actionBtn = 'Actualizar'
       this.facturacionService.getLiquidacionById(idGestor).subscribe((resp: any) => {
+        this.blockUI.stop();
         console.log('DATA_BY_ID_GESTOR', resp);
 
         this.actasForm.reset({
@@ -78,30 +83,38 @@ export class ModalActaComponent implements OnInit {
   }
 
   listGestores: any[] = [];
-  getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
+  getAllGestor(){
+    this.blockUI.start('Cargando lista Gestores...');
+    const request: FiltroGestorModel = this.actasForm.value;
+    this.liquidacionService.getAllGestor(request).subscribe((resp: any) => {
+      this.blockUI.stop();
 
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            console.log('GESTORES', resp);
-    });
-  };
-
-  limpiarFiltro(){}
-  getAllGestor(){}
-
-  eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
+      this.listGestores = resp
+      console.log('LIST-GESTOR', this.listGestores);
+    })
+  }
 
   listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyectos().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY', this.listProyectos);
+    })
+  }
 
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            console.log('COD_PROY', resp.list);
-    });
-  };
+  listSubservicios:any[] = [];
+  getAllSubservicios(){
+    const request = {
+      idGestor     : '',
+      idProyecto   : '',
+      idSubservicio: this.actasForm.controls['subservicio'].value,
+    }
+
+    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+      this.listSubservicios = resp.result;
+      console.log('SUBS', this.listSubservicios);
+    })
+  }
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);

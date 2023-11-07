@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
@@ -27,7 +26,6 @@ export class ActaComponent implements OnInit {
   showingidx = 0;
 
   constructor(
-    private facturacionService: FacturacionService,
     private liquidacionService: LiquidacionService,
     public datepipe: DatePipe,
     private fb: FormBuilder,
@@ -36,12 +34,11 @@ export class ActaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.refreshModules();
     this.newFilfroForm();
     this.getAllActas();
     this.dataMenuPrueba();
+    this.getAllSubservicios();
     this.getAllProyecto();
-    // this.getAllSubservicio()
     console.log('ABX', this.listActas);
     ;
   }
@@ -219,17 +216,6 @@ export class ActaComponent implements OnInit {
     this.loading = false;
   }
 
-  refreshModules() {
-    // this.loading = true;
-    // const subs: Subscription = this.permissionService.getAllModules().subscribe((resp:Menu[]) => {
-    //     console.log('DATAMENU', resp)
-
-    //     this.listActas = resp;
-    //     this.loading = false;
-    //     subs.unsubscribe();
-    //   });
-  }
-
   // DATA LIQUIDACION OJO
 
 
@@ -237,7 +223,7 @@ export class ActaComponent implements OnInit {
   newFilfroForm(){
     this.actasForm = this.fb.group({
       codFact            : [''],
-      id_proy            : [''],
+      proyecto           : [''],
       importe            : [''],
       subservicio        : [''],
       f_periodo          : [''],
@@ -247,11 +233,6 @@ export class ActaComponent implements OnInit {
     })
   };
 
-  crearLiquidacion(){
-
-  }
-
-  listaLiquidacion: any[] = [];
   getAllActas(){
   }
 
@@ -264,14 +245,20 @@ export class ActaComponent implements OnInit {
     })
   }
 
-  listSubservicio: any[] = [];
-  // getAllSubservicio(){
-  //   this.liquidacionService.getAllSubservicio().subscribe(resp => {
-  //     this.listSubservicio = resp;
-  //     console.log('SUBSERV', this.listSubservicio);
+  listSubservicios:any[] = [];
+  getAllSubservicios(){
+    const request = {
+      idGestor     : '',
+      idProyecto   : '',
+      idSubservicio: this.actasForm.controls['subservicio'].value,
+    }
 
-  //   })
-  // }
+    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+      this.listSubservicios = resp.result;
+      console.log('SUBS', this.listSubservicios);
+    })
+  }
+
 
   limpiarFiltro() {
     this.actasForm.reset('', {emitEvent: false})
@@ -316,7 +303,7 @@ export class ActaComponent implements OnInit {
       .subscribe((resp) => {
         if (resp) {
           this.showingidx = idx;
-          this.refreshModules();
+          // this.refreshModules();
         }
       });
   }

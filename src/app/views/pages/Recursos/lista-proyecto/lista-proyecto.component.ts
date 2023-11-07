@@ -43,18 +43,18 @@ export class ListaProyectoComponent implements OnInit {
   selectedCustomers: any[] = [];
   searchCtrl: FormControl = new FormControl();
   ngOnInit(): void {
-  this.newForm()
+  this.newForm();
   this.getAllProyectos();
   this.getAllJefaturas();
   this.getAllClientes();
 
   this.searchCtrl.valueChanges
-    .pipe(map(value => typeof value === 'object' ? '' : ''), startWith(''))
-    .subscribe(value => {
-      // this.customers$ = this._customerContext
-      // .loadCustomers(new CustomerFilter({ searchString: value, perPage: 20}))
-      // .pipe(map(c=> c.rows))
-    })
+    // .pipe(map(value => typeof value === 'object' ? '' : ''), startWith(''))
+    // .subscribe(value => {
+    //   this.customers$ = this._customerContext
+    //   .loadCustomers(new CustomerFilter({ searchString: value, perPage: 20}))
+    //   .pipe(map(c=> c.rows))
+    // })
   }
 
   onOptionSelect(e: MatAutocompleteSelectedEvent){

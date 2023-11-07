@@ -5,7 +5,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { ModalJefaturaComponent } from './modal-jefatura/modal-jefatura.component';
+import { ModalEstadosComponent } from './modal-estados/modal-estados.component';
 
 export interface changeResponse {
   message: string;
@@ -14,53 +14,53 @@ export interface changeResponse {
 }
 
 @Component({
-  selector: 'app-lista-jefatura',
-  templateUrl: './lista-jefatura.component.html',
-  styleUrls: ['./lista-jefatura.component.scss'],
+  selector: 'app-lista-estados',
+  templateUrl: './lista-estados.component.html',
+  styleUrls: ['./lista-estados.component.scss'],
 })
-export class ListaJefaturaComponent implements OnInit {
+export class ListaEstadosComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
 
   page = 1;
-  totalJefaturas: number = 0;
+  totalEstados: number = 0;
   pageSize = 5;
 
   constructor( private fb: FormBuilder,
                private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
-               public dialogRef: MatDialogRef<ListaJefaturaComponent>,
+               public dialogRef: MatDialogRef<ListaEstadosComponent>,
   ) {}
 
   ngOnInit(): void {
   this.newForm()
-  this.getAllJefatura();
+  this.getAllEstados();
   }
 
-  jefaturaForm!: FormGroup;
+  estadosForm!: FormGroup;
   newForm(){
-    this.jefaturaForm = this.fb.group({
+    this.estadosForm = this.fb.group({
      jefatura: [''],
      estado  : [''],
     })
   }
 
-  listJefaturas: any[] = [];
-  getAllJefatura(){
-    this.liquidacionService.getAllJefatura().subscribe((resp: any) => {
-      this.listJefaturas = resp
-      console.log('LIST-JEFAT', this.listJefaturas);
+  listEstados: any[] = [];
+  getAllEstados(){
+    this.liquidacionService.getAllEstados().subscribe((resp: any) => {
+      this.listEstados = resp
+      console.log('LIST-JEFAT', this.listEstados);
     })
   }
 
-  eliminarJefatura(jefatura: any,){
-    console.log('DEL_JEFAT', jefatura);
+  eliminarEstado(estado: any,){
+    console.log('DEL_JEFAT', estado);
 
     Swal.fire({
-      title:'¿Eliminar jefatura?',
-      text: `¿Estas seguro que deseas eliminar la jefatura: ${jefatura.Jefatura}?`,
+      title:'¿Eliminar estado?',
+      text: `¿Estas seguro que deseas eliminar la estado: ${estado.estado}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -69,14 +69,14 @@ export class ListaJefaturaComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarJefatura(jefatura.idJefatura).subscribe(resp => {
+        this.liquidacionService.eliminarEstado(estado.idJefatura).subscribe(resp => {
 
           Swal.fire({
-            title: 'Eliminar jefatura',
-            text: `${jefatura.Jefatura}: ${resp.message} exitosamente`,
+            title: 'Eliminar estado',
+            text: `${estado.estado}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllJefatura()
+          this.getAllEstados()
         });
       };
     });
@@ -95,7 +95,7 @@ export class ListaJefaturaComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.jefaturaForm.get(campo)?.invalid && this.jefaturaForm.get(campo)?.touched ) {
+    if (this.estadosForm.get(campo)?.invalid && this.estadosForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;
@@ -107,9 +107,9 @@ export class ListaJefaturaComponent implements OnInit {
     let offset = event*10;
     this.spinner.show();
 
-    if (this.totalfiltro != this.totalJefaturas) {
-      this.liquidacionService.getAllFacturas().subscribe( (resp: any) => {
-            this.listJefaturas = resp.list;
+    if (this.totalfiltro != this.totalEstados) {
+      this.liquidacionService.getAllEstados().subscribe( (resp: any) => {
+            this.listEstados = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -119,19 +119,19 @@ export class ListaJefaturaComponent implements OnInit {
   }
 
   limpiarFiltro() {
-    this.jefaturaForm.reset('', {emitEvent: false})
+    this.estadosForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllJefatura();
+    this.getAllEstados();
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalJefaturaComponent, { width: '45%', height:'40%', data: DATA })
+      .open(ModalEstadosComponent, { width: '45%', height:'40%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllJefatura();
+          this.getAllEstados();
         }
       });
   }

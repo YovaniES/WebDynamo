@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import {
+  API_CERTIFICACION,
   API_CLIENTE,
+  API_ESTADOS,
   API_FACTURAS,
   API_GESTOR,
   API_GESTOR_FILTRO,
@@ -12,7 +14,10 @@ import {
   API_SUBSERV_FILTRO,
   PATH_IMPORT_LIQ,
 } from '../constants/url.constants';
-import { FiltroGestorModel, LiquidacionModel } from '../models/liquidacion.models';
+import {
+  FiltroGestorModel,
+  LiquidacionModel,
+} from '../models/liquidacion.models';
 import { Observable, map } from 'rxjs';
 
 @Injectable({
@@ -30,8 +35,7 @@ export class LiquidacionService {
 
   // SERVICES GESTOR
   getAllGestor(listGestor: any) {
-    return this.http.post(API_GESTOR_FILTRO, listGestor)
-    .pipe(
+    return this.http.post(API_GESTOR_FILTRO, listGestor).pipe(
       map((resp: any) => {
         console.log('SERV-GESTOR', resp);
 
@@ -197,7 +201,7 @@ export class LiquidacionService {
   getFacturaById(idFactura: number): Observable<any> {
     return this.http.get(`${API_FACTURAS}/${idFactura}`).pipe(
       map((resp: any) => {
-        console.log('DATA_Facturas_BY_ID', resp.result);
+        console.log('DATA_FACTURAS_BY_ID', resp.result);
 
         return resp.result;
       })
@@ -206,6 +210,62 @@ export class LiquidacionService {
 
   eliminarFacturas(idFacturas: number): Observable<any> {
     return this.http.delete<any>(`${API_FACTURAS}/${idFacturas}`);
+  }
+
+  //  SERVICES - ESTADOS
+  getAllEstados() {
+    return this.http.get(API_ESTADOS).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+  crearEstado(requestCert: any): Observable<any> {
+    return this.http.post(API_ESTADOS, requestCert);
+  }
+
+  actualizarEstado(idEstado: number, request: any) {
+    return this.http.put<any>(`${API_ESTADOS}/${idEstado}`, request);
+  }
+
+  getEstadoById(idEstado: number): Observable<any> {
+    return this.http.get(`${API_ESTADOS}/${idEstado}`).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
+  eliminarEstado(idEstado: number): Observable<any> {
+    return this.http.delete<any>(`${API_ESTADOS}/${idEstado}`);
+  }
+
+  //  SERVICES - CERTIFICACIONES
+  getAllCertificaciones() {
+    return this.http.get(API_CERTIFICACION).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+  crearCertificacion(requestCert: any): Observable<any> {
+    return this.http.post(API_CERTIFICACION, requestCert);
+  }
+
+  actualizarCertificacion(idCert: number, request: any) {
+    return this.http.put<any>(`${API_CERTIFICACION}/${idCert}`, request);
+  }
+
+  getCertificacionById(idCert: number): Observable<any> {
+    return this.http.get(`${API_CERTIFICACION}/${idCert}`).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
+  eliminarCertificacion(idCert: number): Observable<any> {
+    return this.http.delete<any>(`${API_CERTIFICACION}/${idCert}`);
   }
 
   // SERVICES - SUBSERVICIOS

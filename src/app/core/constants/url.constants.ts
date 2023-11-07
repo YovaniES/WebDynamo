@@ -56,6 +56,10 @@ export const API_LIDER    = MANTENIM_LIQUIDACION + 'Lider';
 export const API_JEFATURA = MANTENIM_LIQUIDACION + 'Jefatura';
 export const API_CLIENTE  = MANTENIM_LIQUIDACION + 'Cliente';
 export const API_FACTURAS = MANTENIM_LIQUIDACION + 'Factura';
+export const API_ESTADOS  = MANTENIM_LIQUIDACION + 'Estado';
+export const API_CERTIFICACION  = MANTENIM_LIQUIDACION + 'Certificacion';
+
+
 
 // DATA VISOR DASHBOARD
 export const API_VISOR =  PATH_VISOR_DYNAMO + 'api/visor/';

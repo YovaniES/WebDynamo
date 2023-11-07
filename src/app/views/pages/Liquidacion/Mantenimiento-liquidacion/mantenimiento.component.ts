@@ -7,6 +7,8 @@ import { ListaGestorComponent } from './lista-gestor/lista-gestor.component';
 import { ListaSubservicioComponent } from './lista-subservicio/lista-subservicio.component';
 import { ListaOrdencompraComponent } from './lista-ordencompra/lista-ordencompra.component';
 import { ListaFacturasComponent } from './lista-facturas/lista-facturas.component';
+import { ListaEstadosComponent } from './lista-estados/lista-estados.component';
+import { ListaCertificacionesComponent } from './lista-certificaciones/lista-certificaciones.component';
 
 @Component({
   selector: 'app-mantenimiento',
@@ -26,9 +28,6 @@ export class MantenimientoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.getAllGestor();
-    // this.getAllSubservicio();
-    // this.getAllOrdencompra()
   }
 
 
@@ -45,7 +44,6 @@ export class MantenimientoComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          // this.getAllGestor();
         }
       });
   }
@@ -74,13 +72,33 @@ export class MantenimientoComponent implements OnInit {
       });
   }
 
+  abrirListaCertificaciones( ) {
+    this.dialog
+      .open(ListaCertificacionesComponent, { width: '60%', data: { } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
+        }
+      });
+  }
+
   abrirListaFacturas( ) {
     this.dialog
       .open(ListaFacturasComponent, { width: '60%', data: { } })
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          // this.getAllOrdencompra();
+        }
+      });
+  }
+
+
+  abrirListaEstados( ) {
+    this.dialog
+      .open(ListaEstadosComponent, { width: '60%', data: { } })
+      .afterClosed()
+      .subscribe((resp) => {
+        if (resp) {
         }
       });
   }

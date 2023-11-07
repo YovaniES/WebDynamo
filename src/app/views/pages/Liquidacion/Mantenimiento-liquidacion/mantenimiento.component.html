@@ -1,6 +1,6 @@
 <div class="cli-card cli-shadow-1 fit-card">
   <div class="cli-card-body">
-    <div class="cli-title" style="margin-bottom: 30px; font-weight: 700; color: #0daef4;">Gestión de Mantenimiento</div>
+    <div class="cli-title" style="margin-bottom: 30px; font-weight: 700; color: #0daef4;">Gestión de Mantenimiento Actas</div>
 
     <!-- <app-usuarios-list></app-usuarios-list> -->
     <div class="d-flex flex-column options col-12">
@@ -58,6 +58,31 @@
           </a>
         </div>
 
+        <div class="col-12 col-md-4 col-lg-4 col-sm-12">
+          <a class="option-module p-2" (click)="abrirListaCertificaciones()">
+            <div class="d-flex flex-row" style="justify-content: center">
+              <div class="d-flex flex-column ml-2 option-module-title">
+                <div style="display: flex; align-items: center;">
+                  <mat-icon class="icon-50">hive</mat-icon><label style="font-size: 20px; font-weight: 700;">Certificaciones</label>
+                </div>
+                <span class="description-module">Lista de certificaciones de compra relacionado con las Actas</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-12 col-md-4 col-lg-4 col-sm-12">
+          <a class="option-module p-2" (click)="abrirListaEstados()">
+            <div class="d-flex flex-row" style="justify-content: center">
+              <div class="d-flex flex-column ml-2 option-module-title">
+                <div style="display: flex; align-items: center;">
+                  <mat-icon class="icon-50">device_hub</mat-icon><label style="font-size: 20px; font-weight: 700;">Estados Actas</label>
+                </div>
+                <span class="description-module">Lista de estados de compra relacionado con las Actas</span>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
 

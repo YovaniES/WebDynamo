@@ -4,18 +4,42 @@
 
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Registro de Jefaturas</div>
+    <div class="modal-title c-male">Registro de certificaciones</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
-      <form [formGroup]="jefaturaForm">
+      <form [formGroup]="certificacionesForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
-              <label>Jefatura</label>
+              <label>Certificación</label>
               <input
                 class="cli-input"
-                formControlName="jefatura"
+                formControlName="certificacion"
                 type="text"/>
+            </div>
+
+            <div class="cli-form-element col-f-3">
+              <label>Orden de compra</label>
+              <select formControlName="ordenCompra" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-3">
+              <label>Valor</label>
+              <input
+                class="cli-input"
+                formControlName="monto"
+                type="text"/>
+            </div>
+
+            <div class="cli-form-element col-f-3">
+              <label>Proyectos</label>
+              <select formControlName="proyecto" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-3">
@@ -40,68 +64,73 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllJefatura()"
-                ><mat-icon class="icon-18">search</mat-icon>
-                Buscar
+                (click)="getAllCertificaciones()"
+                ><mat-icon class="icon-18">search</mat-icon>Buscar
               </button>
             </div>
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR JEFATURA ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR GESTOR ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="jefaturaForm.invalid"
+            [disabled]="certificacionesForm.invalid"
             (click)="abrirModalCrearOactualizar()">
-            <mat-icon class="icon-18">add</mat-icon> Crear jefatura
+            <mat-icon class="icon-18">add</mat-icon> Crear certificacion
           </button>
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listJefaturas.length }} Jefaturas</span>
+            Total : <span class="total">{{ listCertificaciones.length }} Certificaciones</span>
           </div>
         </div>
       </form>
 
-      <!-- TABLA DE LIDERES ------------------------------------------------------------------>
-      <div style="overflow: auto; min-height: 188px; color: #6c757d">
+      <!-- TABLA DE GESTORES ------------------------------------------------------------------>
+      <div style="overflow: auto; min-height: 370px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px">Jefatura.</th>
-              <th style="min-width: 150px">Descripción</th>
-              <th style="min-width: 100px">Actualizado por:</th>
-              <th style="min-width: 92px" >Estado</th>
+              <th style="min-width: 150px">Certificación</th>
+              <th>Monto</th>
+              <th>Moneda</th>
+              <th style="min-width: 150px">Proyecto(s)</th>
+              <th style="min-width: 100px">Orden de compra</th>
+              <th style="min-width: 100px">Fecha creación</th>
+              <th style="min-width: 92px">Estado</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let jefatura of listJefaturas | paginate: {
+            <tr *ngFor="let cert of listCertificaciones | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
-                        totalItems: totalJefaturas }">
+                        totalItems: totalCerticaciones }">
               <td>
                 <div class="moad-actions">
                   <button
-                    (click)="abrirModalCrearOactualizar(jefatura)"
+                    matTooltip="Editar certificación"
+                    (click)="abrirModalCrearOactualizar(cert)"
                     class="icon-btn btn-trans c-yellow"
                     ><mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                   </button>
 
                   <button
-                    (click)="eliminarJefatura(jefatura)"
+                    matTooltip="Eliminar certificación"
+                    (click)="eliminarCertificacion(cert)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
-              <td style="text-align: left"> {{ jefatura.Jefatura | uppercase}}</td>
-              <td style="text-align: left; min-width: 250px;">{{ jefatura.descripcion }}</td>
-              <td>{{ jefatura.usuarioActualiza.username }}</td>
+              <td style="text-align: left;">{{ cert.certificacion }}</td>
+              <td style="text-align: left; min-width: 150px;">{{ cert.monto }} {{ cert.moneda | uppercase}}</td>
+              <td style="">{{ cert.proyecto }}</td>
+              <td style="text-align: left;">{{ cert.fechaCreacion | date }}</td>
               <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': jefatura.eliminacion_logica == 1, 'c-red': jefatura.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
+                <mat-icon [ngClass]="{ 'c-green_x': cert.estado == 'Activo', 'c-red': cert.estado != 'Activo' }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>
@@ -112,10 +141,10 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listJefaturas.length == 0"
+          *ngIf="!loadingItem && listCertificaciones.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
-          No hay Jefatura para mostrar
+          No hay certificaciones para mostrar
         </div>
       </div>
     </div>

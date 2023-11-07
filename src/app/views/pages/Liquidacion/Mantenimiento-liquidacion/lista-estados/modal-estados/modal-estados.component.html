@@ -1,0 +1,58 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male">{{ DATA_ESTADO ? "Actualizar" : "Crear" }} estado</div>
+
+  <form class="row g-3 mt-3" [formGroup]="estadosForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="row g-3">
+        <div class="cli-form-element col-f-3">
+          <label>Estado<small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="estado"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('estado')">* Ingrese el estado es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element form-group col-f-6">
+          <label>Descripción</label>
+          <textarea
+            class="form-control"
+            style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+            rows="2"
+            placeholder="Escriba alguna Descripción del estado .."
+            formControlName="descripcion"
+          ></textarea>
+        </div>
+
+        <ng-container *ngIf="DATA_ESTADO">
+          <div class="cli-form-element form-group col-f-3">
+            <label>Fecha creación</label>
+             <input
+              style="padding: 0.175rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_creacion"/>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="cli-form-buttons" style="margin-top: 8%">
+        <button class="cli-btn btn-m btn-regresar"
+                type="submit" (click)="close()">
+                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+        </button>
+
+        <button class="cli-btn btn-m btn-turq"
+                [disabled]="estadosForm.invalid"
+                (click)="crearOactualizarEstado()"
+                ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

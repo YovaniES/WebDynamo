@@ -96,7 +96,7 @@ export class ListaGestorComponent implements OnInit {
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
-      console.log('PROY', this.listProyectos);
+      // console.log('PROY', this.listProyectos);
     })
   }
 
@@ -110,7 +110,7 @@ export class ListaGestorComponent implements OnInit {
 
     this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
-      console.log('SUBS', this.listSubservicios);
+      // console.log('SUBS', this.listSubservicios);
     })
   }
 
