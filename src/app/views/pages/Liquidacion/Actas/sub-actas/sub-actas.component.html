@@ -1,0 +1,357 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male mt-3">{{ DATA_SUBACTA ? "Actualizar" : "Crear" }} lista acta</div>
+
+  <form class="row g-3" [formGroup]="subActasForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="chart-draw">
+        <div style="display: flex">
+          <div class="pr-subtitle mt-2">Datos del Acta</div>
+
+          <div class="flex-1" ></div>
+          <ng-container
+            class="input-group">
+            <!-- <div class="input-group-text" >
+              <mat-icon style="color: #0d6efd; margin-top: 4.5px">person</mat-icon>
+            </div> -->
+            <div class="cli-user">
+              {{ subActasForm.controls["gestor"].value | uppercase }}
+            </div>
+          </ng-container>
+          <div class="flex-1" ></div>
+          <div class="id-acta">
+            ID :
+            <span class="total">{{ DATA_SUBACTA }}</span>
+          </div>
+        </div>
+
+        <div class="pr-section mb-1">
+          <div class="pr-module-container row g-3">
+            <div class="cli-form-element col-f-4">
+              <label>Proyecto</label>
+              <select formControlName="proyecto" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="proy.codigo_proyecto" *ngFor="let proy of listProyectos">{{ proy.codigo_proyecto }}</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Subservicio</label>
+              <select formControlName="subservicio" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{ subs.subservicio }}</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-4"               >
+              <label>Estado</label>
+              <select formControlName="estado" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option value="true">Completado</option>
+                <option value="false">Pendiente</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Importe <small style="color: red">*</small></label>
+              <input class="cli-input_x" formControlName="importe" type="text" />
+              <small class="form-text text-alert" *ngIf="campoNoValido('importe')">* Ingrese el Importe es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Declarado</label>
+              <input class="cli-input_x" formControlName="declarado" type="text" />
+              <!-- <small class="form-text text-alert" *ngIf="campoNoValido('declarado')">* Ingrese el Importe es obligatorio</small> -->
+            </div>
+
+            <div class="cli-form-element col-f-4"               >
+              <label>Estado</label>
+              <select formControlName="estado" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option value="true">Completado</option>
+                <option value="false">Pendiente</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-2"               >
+              <label>Comentario</label>
+              <textarea
+                class="cli-input_x"
+                style="
+                  background-image: none;
+                  border-color: #bdbdbd;
+                  font-size: 12px;"
+                rows="1"
+                placeholder="Escriba algún comentario del Sub Acta..."
+                formControlName="comentario"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <ng-container>
+          <div class="pr-subtitle mt-1">Detalle Acta</div>
+          <div class="pr-section mb-1">
+            <div class="pr-module-container row g-3">
+              <div class="cli-card fit-card">
+                <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
+                <form [formGroup]="subActasForm">
+                  <div class="card" style="border-radius: 2px; border: none;">
+                    <div class="row g-3 card-body" style="padding: 10px">
+                      <div class="cli-form-element col-f-4">
+                        <label>ID Acta</label>
+                        <input
+                          class="cli-input"
+                          formControlName="idSubacta"
+                          type="number"
+                        />
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Proyecto</label>
+                        <select formControlName="proyecto" class="cli-input">
+                          <option [value]="0" disabled>-Seleccione-</option>
+                          <option [value]="proy.codigo_proyecto"*ngFor="let proy of listProyectos">{{ proy.codigo_proyecto }}</option>
+                        </select>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Subservicios</label>
+                        <select formControlName="subservicio" class="cli-input">
+                          <option [value]="0" disabled>-Seleccione-</option>
+                          <option [value]="subs.idSubservicio"*ngFor="let subs of listSubservicios">{{ subs.subservicio }}</option>
+                        </select>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Gestor</label>
+                        <select formControlName="gestor" class="cli-input">
+                          <option [value]="0" disabled>-Seleccione-</option>
+                          <option [value]="subs.idSubservicio"*ngFor="let subs of listSubservicios">{{ subs.subservicio }}</option>
+                        </select>
+                      </div>
+
+                      <!-- <div class="cli-form-element col-f-4">
+                        <label>Importe</label>
+                        <input
+                          class="cli-input"
+                          type="number"
+                          formControlName="importe"/>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <div class="form-group">
+                          <label>Periodo</label>
+                          <input
+                            class="cli-input"
+                            type="month"
+                            class="form-control"
+                            formControlName="periodo"/>
+                        </div>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Estado</label>
+                        <select formControlName="estado" class="cli-input">
+                          <option [value]="0" disabled>-Seleccione-</option>
+                          <option value="true">Completado</option>
+                          <option value="false">Pendiente</option>
+                        </select>
+                      </div> -->
+
+                      <div class="cli-form-buttons" style="margin-top: 5px">
+                        <button
+                          type="submit"
+                          class="cli-btn btn-m btn-regresar"
+                          style="border-radius: 2px; padding: 0.225rem 0.75rem"
+                          (click)="limpiarFiltro()"
+                          ><mat-icon class="icon-18">rotate_left</mat-icon>
+                          Limpiar
+                        </button>
+
+                        <button
+                          type="button"
+                          class="cli-btn btn-blue-light"
+                          style="border-radius: 2px; padding: 0.225rem 0.75rem"
+                          ><mat-icon class="icon-18">search</mat-icon>
+                          <!-- (click)="getAllActas()" -->
+                          Buscar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- BOTON MODAL PARA CREAR DEALLE ----------------------------------------------------->
+                  <div style="display: flex">
+                    <div class="d-flex">
+                      <button
+                        class="cli-btn btn-turq mb-1"
+                        (click)="abrirModalCrearOactualizar()"
+                        ><mat-icon class="icon-18">add</mat-icon>Crear detalle
+                      </button>
+                    </div>
+
+                    <div class="flex-1"></div>
+                    <div class="mt-1" style="color: #345df3; font-weight: 400">
+                      Total :
+                      <span class="total">{{ listSubActas.length }} Detalle actas</span>
+                    </div>
+                  </div>
+
+                  <!-- NUEVO DETALLE ACTA CON SUB MENU -->
+                  <ng-container *ngIf="!loading">
+                    <table class="cli-table_x stripedtable underlinedtable">
+                      <thead>
+                        <tr class="bgc-blue c-white">
+                          <th style="min-width: 120px"></th>
+                          <th>Nombre</th>
+                          <th>Perfil</th>
+                          <th style="min-width: 80px;">Precio unid.</th>
+                          <th>Unidades</th>
+                          <th>Total</th>
+                          <th>Observaciones</th>
+                          <th>Comentario</th>
+                          <th>Unidad</th>
+                          <th>Certificación</th>
+                        </tr>
+                      </thead>
+                    </table>
+
+                    <div class="cli-col" *ngFor="let acta of listActas; let i = index">
+                      <!-- SUB ACTAS -->
+                      <div class="moad-module">
+                        <div class="moad-module-title">
+                          <table class="cli-table_x stripedtable underlinedtable">
+                            <tbody style="background: #e9eae8">
+                              <td><button (click)="showingidx = i" class="icon-btn btn-s btn-blue"><mat-icon class="icon-20">{{showingidx == i ? "keyboard_arrow_down": "keyboard_arrow_right"}}</mat-icon></button></td>
+                              <td style="min-width: 180px; font-weight: 400"><mat-icon style="vertical-align: middle"[ngClass]="{ 'c-green': acta.enable,'c-light': !acta.enable}"class="icon-18">{{ acta.icon }}</mat-icon><small style="margin-left: 10px"> </small>{{ acta.periodo }}:<small style="margin-left: 10px; font-size: 14px">{{ acta.gestor }}</small></td>
+                              <td></td>
+                              <td></td>
+                              <td *ngIf="!acta.enable" class="moad-inactive label_x">{{ acta.estado }}</td>
+                              <td>[{{ acta.importe }}]</td>
+                              <td style="flex: 1 1"></td>
+                            </tbody>
+                          </table>
+                        </div>
+
+                        <!-- BUTTONS EDIT - ADD -->
+                        <div class="moad-actions">
+                          <button
+                            matTooltip="Eliminar acta"
+                            (click)="abrirModalCrearOactualizar()"
+                            class="icon-btn btn-trans c-fucsia"
+                            ><mat-icon class="icon-18">delete</mat-icon>
+                          </button>
+
+                          <button
+                            matTooltip="Editar acta"
+                            (click)="abrirModalCrearOactualizar()"
+                            class="icon-btn btn-trans c-yellow"
+                            ><mat-icon class="icon-18">edit</mat-icon>
+                          </button>
+
+                          <button
+                            matTooltip="Agregar detalle"
+                            (click)="abrirDetalleActas()"
+                            class="icon-btn btn-trans c-green"
+                            ><mat-icon class="icon-18">add</mat-icon>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- SUBMENUS DETALLE ACTA-->
+                      <div *ngIf="showingidx == i" class="moad-menus">
+                        <div
+                          class="moad-menu"
+                          style="color: #a4a5a6; justify-content: center"
+                          *ngIf="acta.detalle_acta.length == 0">
+                          Aún no se agregan DETALLES a esta Acta
+                        </div>
+
+                        <div style="overflow: auto; color: #6c757d">
+                          <table class="cli-table_x stripedtable underlinedtable">
+                            <tbody>
+                              <tr *ngFor="let detalle of acta.detalle_acta">
+                                <td></td>
+                                <td>
+                                  <div class="moad-actions">
+                                    <button
+                                      (click)="abrirDetalleActas()"
+                                      class="icon-btn btn-trans"
+                                      style="color: #69aafa">
+                                      <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                                    </button>
+
+                                    <button
+                                      (click)="eliminarDetalleActa()"
+                                      class="icon-btn btn-trans c-fucsia"
+                                      ><mat-icon class="icon-15">delete_forever</mat-icon>
+                                    </button>
+                                  </div>
+                                </td>
+                                <td style="text-align: left; min-width: 95px">{{ detalle.acta }}</td>
+                                <td>{{ detalle.proyecto }}</td>
+                                <td style="min-width: 125px">{{ detalle.subservicio }}</td>
+                                <td>{{ detalle.estado }}</td>
+                                <td>{{ detalle.venta_total }}</td>
+                                <td>{{ detalle.declarado }}</td>
+                                <td>{{ detalle.facturado }}</td>
+                                <td>{{ detalle.pendiente }}</td>
+                                <td style="text-align: left; min-width: 125px">{{ detalle.comentario }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <!-- <div class="cli-loader" *ngIf="loadingItem">
+                              <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
+                              cargando...
+                            </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="cli-loader" *ngIf="loading">
+                    <mat-spinner diameter="40"></mat-spinner>
+                  </div>
+                </form>
+
+                <!-- <div class="card-footer pb-0 pt-3">
+                  <pagination-controls
+                    previousLabel="Anterior"
+                    nextLabel="Siguiente"
+                    [responsive]="false"
+                    (pageChange)="cambiarPagina($event)">
+                  </pagination-controls>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="cli-form-buttons" style="margin-top: 4%">
+          <button
+            class="cli-btn btn-m btn-regresar"
+            type="submit"
+            (click)="close()"
+          >
+            <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
+          </button>
+
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="subActasForm.invalid"
+            (click)="crearOactualizarSubActa()"
+          >
+            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+

@@ -97,7 +97,7 @@
         <!-- BOTON MODAL PARA CREAR LIQUIDACION ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <div class="d-flex">
-            <button style="margin-top: 10px" class="cli-btn btn-turq"
+            <button class="cli-btn btn-turq"
               (click)="abrirModalCrearOactualizar()"
               ><mat-icon class="icon-18">add</mat-icon>Crear acta
             </button>
@@ -112,7 +112,7 @@
 
 
 
-      <!-- NUEVO LIQUID CON SUB MENU -->
+      <!-- ACTA CON SUB MENU -->
       <ng-container *ngIf="!loading">
         <table class="cli-table_x stripedtable underlinedtable">
           <thead>
@@ -176,7 +176,7 @@
 
             <button
               matTooltip="Agregar detalle"
-              (click)="openEditDialog(i, acta, false, true, acta.text)"
+              (click)="abrirSubActas()"
               class="icon-btn btn-trans c-green"
               ><mat-icon class="icon-18">add</mat-icon>
             </button>
@@ -194,12 +194,12 @@
                   <td></td>
                   <td>
                     <div class="moad-actions">
-                      <button (click)="openEditDialog(i, detalle, false, false, acta.text)"
+                      <button (click)="abrirSubActas()"
                         class="icon-btn btn-trans" style="color: #69aafa;">
                         <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                       </button>
 
-                      <button (click)="openEditDialog(i, detalle, false, false, acta.text)"
+                      <button (click)="eliminarSubActa(detalle.id)"
                         class="icon-btn btn-trans c-fucsia">
                         <mat-icon class="icon-15">delete_forever</mat-icon>
                       </button>

@@ -1,47 +1,198 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ModalEditModuleComponent } from './modal-edit-module/modal-edit-module.component';
-import { ModalActaComponent } from './modal-actas/modal-acta.component';
+import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { SubActasComponent } from './sub-actas/sub-actas.component';
+import Swal from 'sweetalert2';
+import { DetalleActasComponent } from './detalle-actas/detalle-actas.component';
+
+export interface changeResponse {
+  message: string;
+  status: boolean;
+  previous?: string;
+}
 
 @Component({
-  selector: 'app-acta',
-  templateUrl: './acta.component.html',
-  styleUrls: ['./acta.component.scss'],
+  selector: 'app-sub-actas',
+  templateUrl: './sub-actas.component.html',
+  styleUrls: ['./sub-actas.component.scss'],
 })
-export class ActaComponent implements OnInit {
+export class SubActasComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loading = false;
 
+  loadingItem: boolean = false;
+  listActas: any[] = [];
+
+
   page = 1;
   totalActas: number = 0;
-  pageSize = 5;
+  pageSize = 10;
 
-  listActas: any[] = [];
-  // listActas: Menu[] = [];
   showingidx = 0;
 
-  constructor(
-    private liquidacionService: LiquidacionService,
-    public datepipe: DatePipe,
-    private fb: FormBuilder,
-    private spinner: NgxSpinnerService,
-    private dialog: MatDialog
+  constructor( private fb: FormBuilder,
+               private facturacionService: FacturacionService,
+               private liquidacionService: LiquidacionService,
+               private spinner: NgxSpinnerService,
+               public dialogRef: MatDialogRef<SubActasComponent>,
+               private dialog: MatDialog,
+               @Inject(MAT_DIALOG_DATA) public DATA_SUBACTA: any
   ) {}
 
   ngOnInit(): void {
-    this.newFilfroForm();
-    this.getAllActas();
-    this.dataMenuPrueba();
-    this.getAllSubservicios();
-    this.getAllProyecto();
-    console.log('ABX', this.listActas);
-    ;
+  this.newFilfroForm()
+  this.dataMenuPrueba();
+  this.getAllProyecto();
+  this.getAllSubActas();
+  this.getAllSubservicios();
+  console.log('SUBACTAS', this.listActas);
+
+  if (this.DATA_SUBACTA) {
+    this.cargarGestorById(this.DATA_SUBACTA);
+  }
+  }
+
+  listSubActas: any[] = [];
+
+  subActasForm!: FormGroup;
+  newFilfroForm(){
+    this.subActasForm = this.fb.group({
+      idSubacta    : [''],
+     subservicio   : ['',],
+      proyecto     : [''],
+      gestor       : [''],
+      importe      : [''],
+      declarado    : [''],
+      f_periodo    : [''],
+      periodoActual: [true],
+      periodo      : [''],
+      estado       : [''],
+      comentario   : ['']
+    })
+  };
+
+  crearOactualizarSubActa(){
+
+  }
+
+  abrirModalCrearOactualizar(){
+
+  }
+
+  eliminarDetalleActa(){}
+
+  actionBtn: string = 'Crear';
+  cargarGestorById(idGestor: number): void{
+    this.blockUI.start("Cargando data...");
+    if (this.DATA_SUBACTA) {
+      this.actionBtn = 'Actualizar'
+      this.facturacionService.getLiquidacionById(idGestor).subscribe((resp: any) => {
+        this.blockUI.stop();
+        console.log('DATA_BY_ID_GESTOR', resp);
+
+        this.subActasForm.reset({
+          proyecto     : resp.proyecto,
+          subservicio  : resp.subservicio,
+          gestor       : resp.gestor,
+          importe      : resp.importe,
+          fecha_periodo: resp.fecha_periodo,
+          comentario   : resp.comentario,
+        })
+      })
+    }
+  }
+
+  listGestores: any[] = [];
+  getAllSubActas(){
+    // this.blockUI.start('Cargando lista Gestores...');
+    // const request: FiltroGestorModel = this.subActasForm.value;
+    // this.liquidacionService.getAllSubActas(request).subscribe((resp: any) => {
+    //   this.blockUI.stop();
+
+    //   this.listGestores = resp
+    //   console.log('LIST-GESTOR', this.listGestores);
+    // })
+  }
+
+  listProyectos: any[] = [];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyectos().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY', this.listProyectos);
+    })
+  }
+
+  listSubservicios:any[] = [];
+  getAllSubservicios(){
+    const request = {
+      idGestor     : '',
+      idProyecto   : '',
+      idSubservicio: this.subActasForm.controls['subservicio'].value,
+    }
+
+    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+      this.listSubservicios = resp.result;
+      console.log('SUBS', this.listSubservicios);
+    })
+  }
+
+  close(succes?: boolean) {
+    this.dialogRef.close(succes);
+  }
+
+
+  showAlertError(message: string) {
+    Swal.fire({
+      title: 'Error',
+      icon : 'error',
+      text : message,
+    });
+  }
+
+  campoNoValido(campo: string): boolean {
+    if (this.subActasForm.get(campo)?.invalid && this.subActasForm.get(campo)?.touched ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  totalfiltro = 0;
+  cambiarPagina(event: number) {
+    let offset = event*10;
+    this.spinner.show();
+
+    if (this.totalfiltro != this.totalActas) {
+      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
+            this.listGestores = resp.list;
+            this.spinner.hide();
+          });
+    } else {
+      this.spinner.hide();
+    }
+      this.page = event;
+  }
+
+
+  limpiarFiltro() {
+    this.subActasForm.reset('', {emitEvent: false})
+    this.newFilfroForm()
+
+    // this.getAllActas();
+  }
+
+  abrirDetalleActas(DATA?: any) {
+    console.log('DATA_SUB_ACTAS', DATA);
+    this.dialog
+      .open(DetalleActasComponent, { width: '55%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllSubActas();
+        }
+      });
   }
 
   dataMenuPrueba(){
@@ -217,112 +368,5 @@ export class ActaComponent implements OnInit {
     this.loading = false;
   }
 
-  // DATA LIQUIDACION OJO
-
-
-  actasForm!: FormGroup;
-  newFilfroForm(){
-    this.actasForm = this.fb.group({
-      codFact            : [''],
-      proyecto           : [''],
-      importe            : [''],
-      subservicio        : [''],
-      f_periodo          : [''],
-      periodoActual      : [true],
-      import             : [''],
-      estado             : ['']
-    })
-  };
-
-  getAllActas(){
-  }
-
-  getAllSubActas(){}
-
-  eliminarSubActa(id: number){
-
-  }
-
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      // console.log('PROY', this.listProyectos);
-
-    })
-  }
-
-  listSubservicios:any[] = [];
-  getAllSubservicios(){
-    const request = {
-      idGestor     : '',
-      idProyecto   : '',
-      idSubservicio: this.actasForm.controls['subservicio'].value,
-    }
-
-    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
-      // console.log('SUBS', this.listSubservicios);
-    })
-  }
-
-
-  limpiarFiltro() {
-    this.actasForm.reset('', {emitEvent: false})
-    this.newFilfroForm()
-
-    this.getAllActas();
-  }
-
-  totalfiltro = 0;
-  cambiarPagina(event: number) {
-    let offset = event*10;
-    this.spinner.show();
-
-    if (this.totalfiltro != this.totalActas) {
-      // this.facturacionService.getAllActas(offset.toString()).subscribe( (resp: any) => {
-      //       this.listaLiquidacion = resp.list;
-      //       this.spinner.hide();
-      //     });
-    } else {
-      this.spinner.hide();
-    }
-      this.page = event;
-  }
-
-
-  openEditDialog( idx: number, module:any, ismodule: boolean, isnew: boolean, modulename: any) {
-    this.dialog
-      .open(ModalEditModuleComponent, { data: { module, ismodule, isnew, modulename } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          this.showingidx = idx;
-          // this.refreshModules();
-        }
-      });
-  }
-
-  abrirModalCrearOactualizar(DATA?: any) {
-    console.log('DATA_ACTAS', DATA);
-    this.dialog
-      .open(ModalActaComponent, { width: '70%', height:'60%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        if (resp) {
-          this.getAllActas();
-        }
-      });
-  }
-
-  abrirSubActas(DATA?: any) {
-    console.log('DATA_SUB_ACTAS', DATA);
-    this.dialog
-      .open(SubActasComponent, { width: '75%', height:'80%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        if (resp) {
-          this.getAllSubActas();
-        }
-      });
-  }
-
 }
+
