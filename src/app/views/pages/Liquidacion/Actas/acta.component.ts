@@ -4,10 +4,10 @@ import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ModalEditModuleComponent } from './modal-edit-module/modal-edit-module.component';
 import { ModalActaComponent } from './modal-actas/modal-acta.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { SubActasComponent } from './sub-actas/sub-actas.component';
+import { ActasService } from 'src/app/core/services/actas.service';
 
 @Component({
   selector: 'app-acta',
@@ -20,14 +20,12 @@ export class ActaComponent implements OnInit {
 
   page = 1;
   totalActas: number = 0;
-  pageSize = 5;
-
-  listActas: any[] = [];
-  // listActas: Menu[] = [];
+  pageSize = 10;
   showingidx = 0;
 
   constructor(
     private liquidacionService: LiquidacionService,
+    private actasService: ActasService,
     public datepipe: DatePipe,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
@@ -37,12 +35,107 @@ export class ActaComponent implements OnInit {
   ngOnInit(): void {
     this.newFilfroForm();
     this.getAllActas();
-    this.dataMenuPrueba();
     this.getAllSubservicios();
     this.getAllProyecto();
-    console.log('ABX', this.listActas);
-    ;
   }
+
+  actasForm!: FormGroup;
+  newFilfroForm(){
+    this.actasForm = this.fb.group({
+      idActa       : [''],
+      idProyecto   : [''],
+      importe      : [''],
+      idSubservicio: [''],
+      periodo      : [''],
+      import       : [''],
+      idEstado     : [''],
+
+      montoMinimo  : [''],
+      montoMaximo  : ['']
+    })
+  };
+
+  listActas: any[] = [];
+  getAllActas(){
+    this.blockUI.start("Cargando lista de Actas...");
+    this.actasService.getAllActas(this.actasForm.value).subscribe(resp => {
+    this.blockUI.stop();
+
+      this.listActas = resp;
+      console.log('ACTAS-LIST', resp);
+    })
+  }
+
+  eliminarActa(idActa: number){}
+
+  listProyectos: any[] = [];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyectos().subscribe(resp => {
+      this.listProyectos = resp;
+    })
+  }
+
+  listSubservicios:any[] = [];
+  getAllSubservicios(){
+    const request = {
+      idGestor     : '',
+      idProyecto   : '',
+      idSubservicio: this.actasForm.controls['idSubservicio'].value,
+    }
+
+    this.liquidacionService.getAllSubserviciosFiltro(request).subscribe( (resp: any) => {
+      this.listSubservicios = resp.result;
+      // console.log('SUBS', this.listSubservicios);
+    })
+  }
+
+  limpiarFiltro() {
+    this.actasForm.reset('', {emitEvent: false})
+    this.newFilfroForm()
+
+    this.getAllActas();
+  }
+
+  totalfiltro = 0;
+  cambiarPagina(event: number) {
+    let offset = event*10;
+    this.spinner.show();
+
+    if (this.totalfiltro != this.totalActas) {
+      // this.facturacionService.getAllActas(offset.toString()).subscribe( (resp: any) => {
+      //       this.listaLiquidacion = resp.list;
+      //       this.spinner.hide();
+      //     });
+    } else {
+      this.spinner.hide();
+    }
+      this.page = event;
+  }
+
+  abrirModalCrearOactualizar(DATA?: any) {
+    console.log('DATA_ACTAS', DATA);
+    this.dialog
+      .open(ModalActaComponent, { width: '70%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllActas();
+        }
+      });
+  }
+
+  abrirActa(DATA?: any) {
+    console.log('DATA_ACTA', DATA);
+    this.dialog
+      .open(SubActasComponent, { width: '75%', data: DATA }) // height:'80%'
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllActas();
+        }
+      });
+  }
+
+
+
 
   dataMenuPrueba(){
     this.loading = true;
@@ -216,113 +309,4 @@ export class ActaComponent implements OnInit {
 
     this.loading = false;
   }
-
-  // DATA LIQUIDACION OJO
-
-
-  actasForm!: FormGroup;
-  newFilfroForm(){
-    this.actasForm = this.fb.group({
-      codFact            : [''],
-      proyecto           : [''],
-      importe            : [''],
-      subservicio        : [''],
-      f_periodo          : [''],
-      periodoActual      : [true],
-      import             : [''],
-      estado             : ['']
-    })
-  };
-
-  getAllActas(){
-  }
-
-  getAllSubActas(){}
-
-  eliminarSubActa(id: number){
-
-  }
-
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      // console.log('PROY', this.listProyectos);
-
-    })
-  }
-
-  listSubservicios:any[] = [];
-  getAllSubservicios(){
-    const request = {
-      idGestor     : '',
-      idProyecto   : '',
-      idSubservicio: this.actasForm.controls['subservicio'].value,
-    }
-
-    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
-      // console.log('SUBS', this.listSubservicios);
-    })
-  }
-
-
-  limpiarFiltro() {
-    this.actasForm.reset('', {emitEvent: false})
-    this.newFilfroForm()
-
-    this.getAllActas();
-  }
-
-  totalfiltro = 0;
-  cambiarPagina(event: number) {
-    let offset = event*10;
-    this.spinner.show();
-
-    if (this.totalfiltro != this.totalActas) {
-      // this.facturacionService.getAllActas(offset.toString()).subscribe( (resp: any) => {
-      //       this.listaLiquidacion = resp.list;
-      //       this.spinner.hide();
-      //     });
-    } else {
-      this.spinner.hide();
-    }
-      this.page = event;
-  }
-
-
-  openEditDialog( idx: number, module:any, ismodule: boolean, isnew: boolean, modulename: any) {
-    this.dialog
-      .open(ModalEditModuleComponent, { data: { module, ismodule, isnew, modulename } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          this.showingidx = idx;
-          // this.refreshModules();
-        }
-      });
-  }
-
-  abrirModalCrearOactualizar(DATA?: any) {
-    console.log('DATA_ACTAS', DATA);
-    this.dialog
-      .open(ModalActaComponent, { width: '70%', height:'60%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        if (resp) {
-          this.getAllActas();
-        }
-      });
-  }
-
-  abrirSubActas(DATA?: any) {
-    console.log('DATA_SUB_ACTAS', DATA);
-    this.dialog
-      .open(SubActasComponent, { width: '75%', height:'80%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        if (resp) {
-          this.getAllSubActas();
-        }
-      });
-  }
-
 }

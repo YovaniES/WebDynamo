@@ -40,7 +40,7 @@ export class ListaSubservicioComponent implements OnInit {
   this.newForm()
   this.getAllProyecto();
   this.getAllGestor();
-  this.getAllSubservicios()
+  this.getAllSubserviciosFiltro()
   }
 
   subservicioForm!: FormGroup;
@@ -71,7 +71,7 @@ export class ListaSubservicioComponent implements OnInit {
             text: `${resp.message}`,
             icon: 'success',
           });
-          this.getAllSubservicios()
+          this.getAllSubserviciosFiltro()
         });
       };
     });
@@ -95,10 +95,10 @@ export class ListaSubservicioComponent implements OnInit {
   }
 
   listSubservicios: any[] = [];
-  getAllSubservicios(){
+  getAllSubserviciosFiltro(){
     const request = this.subservicioForm.value;
 
-    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+    this.liquidacionService.getAllSubserviciosFiltro(request).subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
       console.log('DATA_SUBSERV', this.listSubservicios);
     })
@@ -108,7 +108,7 @@ export class ListaSubservicioComponent implements OnInit {
     this.subservicioForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllSubservicios();
+    this.getAllSubserviciosFiltro();
   }
 
   listProyectos: any[] = [];
@@ -146,7 +146,7 @@ export class ListaSubservicioComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalSubservicio) {
-      this.liquidacionService.getAllSubservicios(offset.toString()).subscribe( (resp: any) => {
+      this.liquidacionService.getAllSubserviciosFiltro(offset.toString()).subscribe( (resp: any) => {
             this.listSubservicios = resp.list;
             this.spinner.hide();
           });
@@ -162,7 +162,7 @@ export class ListaSubservicioComponent implements OnInit {
       .open(ModalSubservicioComponent, { width: '45%', height:'45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllSubservicios();
+          this.getAllSubserviciosFiltro();
         }
       });
   }

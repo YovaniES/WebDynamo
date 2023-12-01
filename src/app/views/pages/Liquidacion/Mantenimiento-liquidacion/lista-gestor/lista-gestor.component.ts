@@ -102,15 +102,9 @@ export class ListaGestorComponent implements OnInit {
 
   listSubservicios:any[] = [];
   getAllSubservicios(){
-    const request = {
-      idGestor     : '',
-      idProyecto   : '',
-      idSubservicio: this.gestorForm.controls['subservicio'].value,
-    }
-
-    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
-      // console.log('SUBS', this.listSubservicios);
+      console.log('SUBS', this.listSubservicios);
     })
   }
 

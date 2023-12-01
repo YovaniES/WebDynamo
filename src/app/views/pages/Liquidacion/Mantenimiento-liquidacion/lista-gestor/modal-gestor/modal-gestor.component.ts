@@ -183,14 +183,7 @@ export class ModalGestorComponent implements OnInit {
 
   listSubservicios:any[] = [];
   getAllSubservicios(){
-    // const request = this.gestorForm.value;
-    const request = {
-      idGestor     : '',
-      idProyecto   : '',
-      idSubservicio: this.gestorForm.controls['subservicios'].value,
-    }
-
-    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
       console.log('SUBS', this.listSubservicios);
     })

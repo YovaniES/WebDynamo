@@ -44,6 +44,16 @@ export class LiquidacionService {
     );
   }
 
+
+  getAllGestores() {
+    return this.http.get(API_GESTOR).pipe(
+      map((g: any) => {
+        return g.result;
+      })
+    );
+  }
+
+
   crearGestor(requestGestor: any): Observable<any> {
     return this.http.post(API_GESTOR, requestGestor);
   }
@@ -54,7 +64,6 @@ export class LiquidacionService {
   }
 
   getGestorById(idGestor: number): Observable<any> {
-    //liqById
     return this.http.get(`${API_GESTOR}/${idGestor}`).pipe(
       map((resp: any) => {
         console.log('DATAGESTOR_BY_ID', resp.result);
@@ -269,7 +278,11 @@ export class LiquidacionService {
   }
 
   // SERVICES - SUBSERVICIOS
-  getAllSubservicios(requestSub: any) {
+  getAllSubservicios() {
+    return this.http.get(API_SUBSERVICIO);
+  }
+
+  getAllSubserviciosFiltro(requestSub: any) {
     return this.http.post(API_SUBSERV_FILTRO, requestSub);
   }
 

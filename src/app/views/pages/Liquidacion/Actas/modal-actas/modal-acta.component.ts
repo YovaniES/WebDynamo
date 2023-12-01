@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { FiltroGestorModel } from 'src/app/core/models/liquidacion.models';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
+import { ActasService } from 'src/app/core/services/actas.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
+import { UtilService } from 'src/app/core/services/util.service';
 import Swal from 'sweetalert2';
+import { DetalleActasComponent } from '../sub-actas/detalle-actas/detalle-actas.component';
 
 export interface changeResponse {
   message: string;
@@ -21,76 +22,235 @@ export interface changeResponse {
 })
 export class ModalActaComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
+  loading = false;
+
   loadingItem: boolean = false;
+  showingidx = 0;
 
-
-  page = 1;
-  totalActas: number = 0;
-  pageSize = 10;
-
-  modecode = '';
   constructor( private fb: FormBuilder,
-               private facturacionService: FacturacionService,
+               private authService: AuthService,
+               private actasService: ActasService,
+               private utilService: UtilService,
                private liquidacionService: LiquidacionService,
-               private spinner: NgxSpinnerService,
                public dialogRef: MatDialogRef<ModalActaComponent>,
-               @Inject(MAT_DIALOG_DATA) public DATA_ACTAS: any
+               private dialog: MatDialog,
+               @Inject(MAT_DIALOG_DATA) public DATA_ACTA: any
   ) {}
 
   ngOnInit(): void {
-  this.newForm()
+  this.newFilfroForm()
+  this.getUserID();
+  this.getListGestor();
   this.getAllProyecto();
-  this.getAllGestor();
+  this.getAllEstadosDetActa();
+  this.getAllDetalleActas();
   this.getAllSubservicios();
+  console.log('DATA_ACTA', this.DATA_ACTA);
 
-  if (this.DATA_ACTAS) {
-    this.cargarGestorById(this.DATA_ACTAS);
+  console.log('**', this.listDetActas, this.listDetActas.length);
+
+  if (this.DATA_ACTA) {
+    this.cargarActaById(this.DATA_ACTA);
   }
   }
+
+  // listActas: any[] = [];
+  // {
+  //   "idGestor": 673,
+  //   "idProyecto": 95,
+  //   "idSubservicio": 6,
+  //   "periodo": "2023-12-01",
+  //   "idEstado": 4,
+  //   "comentario": "",
+  //   "enlaceAta": "wwww.enlance.com",
+  //   "idUsuarioCreacion": 474,
+  //   "detalleActaParams": [
+  //     {
+  //       "nombre": "Carlos Perez",
+  //       "unidades": 15,
+  //       "precio_unidad": 2,
+  //       "precio_total": 30,
+  //       "perfil": "Analista",
+  //       "observacion": "",
+  //       "unidad": "PEN",
+  //       "comentario": ""
+  //     }
+  //   ]
+  // }
 
   actasForm!: FormGroup;
-  newForm(){
+  newFilfroForm(){
     this.actasForm = this.fb.group({
-     proyecto     : ['',],
-     subservicio  : ['',],
-     idGestor     : ['',],
-     importe      : ['',],
-     fecha_periodo: ['',],
-     comentario   : ['',],
-     estado       : ['',],
+      idGestor         : ['', Validators.required],
+      idProyecto       : ['', Validators.required],
+      idSubservicio    : ['', Validators.required],
+      periodo          : ['', Validators.required],
+      idEstado         : [''],
+      comentario       : [''],
+      enlaceAta        : [''],
+      idUsuarioCreacion: [''],
+      detalleActaParams: this.fb.group({
+        analista     :['', Validators.required],
+        cantidad     :['', Validators.required],
+        precio       :['', Validators.required],
+        venta_total  :['', Validators.required],
+        perfil       :['', Validators.required],
+        idEstado     :[''],
+        observacion  :[''],
+        unidad       :[''],
+        comentario   :[''],
+      })
+    })
+  };
+
+  crearOactualizarActa(){
+    if (this.actasForm.invalid) {
+      return Object.values(this.actasForm.controls).forEach((controls) => {
+        controls.markAllAsTouched();
+      })
+    }
+    if (this.DATA_ACTA ) {
+        console.log('UPD_ACTA');
+        this.actualizarActa();
+    } else {
+      console.log('CREAR_ACTA');
+      this.crearActa() //OJO: Verificar si se usa
+    }
+  }
+
+  actualizarActa(){
+    const formValues = this.actasForm.getRawValue();
+
+    const requestSubActa = {
+      idActa       : this.DATA_ACTA.idActa,
+      idGestor     : formValues.idGestor,
+      idProyecto   : formValues.idProyecto,
+      idSubservicio: formValues.subservicio,
+      periodo      : this.utilService.generarPeriodo(formValues.periodo),
+      venta_total  : formValues.importe,
+      comentario   : formValues.comentario,
+      idEstado     : formValues.idEstado,
+      enlace_acta  : '',
+      idUsuario    : this.userID,
+    }
+
+    this.actasService.actualizarActa(this.DATA_ACTA.idActa, requestSubActa).subscribe((resp: any) => {
+
+      if (resp.success) {
+        Swal.fire({
+          title: 'Actualizar acta!',
+          text : `${resp.message}`,
+          icon : 'success',
+          confirmButtonText: 'Ok',
+        });
+        this.close(true);
+      }
+    })
+  }
+
+
+  crearActa(){ //OJO: Verificar si se usa
+    const formValues = this.actasForm.getRawValue();
+
+    const request = {
+      idGestor         : formValues.idGestor,
+      idProyecto       : formValues.idProyecto,
+      idSubservicio    : formValues.idSubservicio,
+      periodo          : "2023-12-01",
+      comentario       : formValues.comentario,
+      idEstado         : 1,
+      enlaceAta        : formValues.enlaceAta,
+      idUsuarioCreacion: this.userID,
+      detalleActaParams: [
+        {
+          nombre       : formValues.analista,
+          unidades     : formValues.cantidad,
+          precio_unidad: formValues.precio,
+          precio_total : formValues.venta_total,
+          perfil       : formValues.perfil,
+          observacion  : 'abx',
+          unidad       : "PEN",
+          comentario   : "x-y-z"
+        }
+      ]
+    }
+
+    this.actasService.crearActa(request).subscribe(resp => {
+      if (resp.success) {
+        Swal.fire({
+          title: 'Crear acta!',
+          text : `${resp.message}`,
+          icon : 'success',
+          confirmButtonText: 'Ok'
+        })
+        this.close(true);
+      }
+    })
+  }
+
+  userID: number = 0;
+  getUserID(){
+   this.authService.getCurrentUser().subscribe( resp => {
+     this.userID   = resp.user.userId;
+     console.log('ID-USER', this.userID);
+   })
+  }
+
+  eliminarDetalleActa(){}
+
+  listGestores: any[] = [];
+  getListGestor(){
+    this.liquidacionService.getAllGestores().subscribe((resp: any) => {
+      this.listGestores = resp;
+      console.log('LIST_GESTORES', this.listGestores);
     })
   }
 
   actionBtn: string = 'Crear';
-  cargarGestorById(idGestor: number): void{
+  cargarActaById(idActa: number): void{
     this.blockUI.start("Cargando data...");
-    if (this.DATA_ACTAS) {
+    if (this.DATA_ACTA) {
       this.actionBtn = 'Actualizar'
-      this.facturacionService.getLiquidacionById(idGestor).subscribe((resp: any) => {
+      this.actasService.getActaById(this.DATA_ACTA.idActa).subscribe((acta: any) => {
         this.blockUI.stop();
-        console.log('DATA_BY_ID_GESTOR', resp);
+        console.log('DATA_BY_ID_ACTA', acta);
 
         this.actasForm.reset({
-          proyecto     : resp.proyecto,
-          subservicio  : resp.subservicio,
-          gestor       : resp.gestor,
-          importe      : resp.importe,
-          fecha_periodo: resp.fecha_periodo,
-          comentario   : resp.comentario,
+          comentario        : acta.comentario,
+          declarado: acta.declaradoTotalActa,
+          enlaceActa        : acta.enlaceActa,
+          facturadoTotalActa: acta.facturadoTotalActa,
+          gestor            : acta.gestor,
+          idActa            : acta.idActa,
+          idEstado          : acta.idEstado,
+          idGestor          : acta.idGestor,
+          idProyecto        : acta.idProyecto, //proyecto: PETO21
+          subservicio       : acta.idSubservicio,
+          pendiente         : acta.pendiente,
+          periodo           : acta.periodo,
+          // proyecto          : acta.proyecto,
+          // subservicio       : acta.subservicio,
+          importe    : acta.ventaTotalActa,
         })
       })
     }
   }
 
-  listGestores: any[] = [];
-  getAllGestor(){
-    this.blockUI.start('Cargando lista Gestores...');
-    const request: FiltroGestorModel = this.actasForm.value;
-    this.liquidacionService.getAllGestor(request).subscribe((resp: any) => {
-      this.blockUI.stop();
+  listDetActas: any[] = [];
+  getAllDetalleActas(){
+    if (this.DATA_ACTA) {
+      this.actasService.getAllActas(this.DATA_ACTA.idActa).subscribe(resp => {
+        this.listDetActas = resp.detalleActas;
+        console.log('DET_ACTAS-LIST', this.listDetActas);
+      })
+    }
+  }
 
-      this.listGestores = resp
-      console.log('LIST-GESTOR', this.listGestores);
+  listEstadoDetActa: any[] = [];
+  getAllEstadosDetActa(){
+    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+      this.listEstadoDetActa = resp.filter((x:any) => x.eliminacion_logica == 1 );
+      console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
   }
 
@@ -98,21 +258,13 @@ export class ModalActaComponent implements OnInit {
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
-      console.log('PROY', this.listProyectos);
     })
   }
 
   listSubservicios:any[] = [];
   getAllSubservicios(){
-    const request = {
-      idGestor     : '',
-      idProyecto   : '',
-      idSubservicio: this.actasForm.controls['subservicio'].value,
-    }
-
-    this.liquidacionService.getAllSubservicios(request).subscribe( (resp: any) => {
+    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
-      console.log('SUBS', this.listSubservicios);
     })
   }
 
@@ -137,20 +289,21 @@ export class ModalActaComponent implements OnInit {
     }
   }
 
-  totalfiltro = 0;
-  cambiarPagina(event: number) {
-    let offset = event*10;
-    this.spinner.show();
+  limpiarFiltro() {
+    this.actasForm.reset('', {emitEvent: false})
+    this.newFilfroForm()
 
-    if (this.totalfiltro != this.totalActas) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listGestores = resp.list;
-            this.spinner.hide();
-          });
-    } else {
-      this.spinner.hide();
-    }
-      this.page = event;
+    this.getAllDetalleActas();
+  }
+
+  crearDetalleActas(DATA?: any) {
+    console.log('DATA_SUB_ACTAS', DATA);
+    this.dialog
+      .open(DetalleActasComponent, { width: '55%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllDetalleActas();
+        }
+      });
   }
 }
-

@@ -11,13 +11,13 @@
               <label>ID Acta</label>
               <input
                 class="cli-input"
-                formControlName="codFact"
+                formControlName="idActa"
                 type="number"/>
             </div>
 
             <div class="cli-form-element col-f-4">
               <label>Proyectos</label>
-              <select formControlName="proyecto" class="cli-input">
+              <select formControlName="idProyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.codigo_proyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
               </select>
@@ -25,7 +25,7 @@
 
             <div class="cli-form-element col-f-4">
               <label>Subservicios</label>
-              <select formControlName="subservicio" class="cli-input">
+              <select formControlName="idSubservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
               </select>
@@ -46,13 +46,13 @@
                   class="cli-input"
                   type="month"
                   class="form-control"
-                  formControlName="f_periodo"/>
+                  formControlName="periodo"/>
               </div>
             </div>
 
             <div class="cli-form-element col-f-4">
               <label>Estado</label>
-              <select formControlName="estado" class="cli-input">
+              <select formControlName="idEstado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option value="true">Completado</option>
                 <option value="false">Pendiente</option>
@@ -111,7 +111,6 @@
       </form>
 
 
-
       <!-- ACTA CON SUB MENU -->
       <ng-container *ngIf="!loading">
         <table class="cli-table_x stripedtable underlinedtable">
@@ -127,11 +126,16 @@
               <th>Facturado</th>
               <th>Pendiente</th>
               <th>Comentario</th>
+              <!-- <th>XYZ</th> -->
             </tr>
           </thead>
         </table>
 
-        <div class="cli-col" *ngFor="let acta of listActas; let i = index">
+        <div class="cli-col" *ngFor="let acta of listActas | paginate:
+        { itemsPerPage: pageSize,
+          currentPage : page,
+          totalItems  : totalActas
+        }; let i = index">
 
 
           <!-- ACTAS -->
@@ -140,29 +144,29 @@
           <table class="cli-table_x stripedtable underlinedtable">
             <tbody style="background: #e9eae8;">
                 <td><button (click)="showingidx = i" class="icon-btn btn-s btn-turq"><mat-icon class="icon-20">{{ showingidx == i? "keyboard_arrow_down" : "keyboard_arrow_right"}}</mat-icon></button></td>
-                <td style="min-width: 140px; font-weight: 400;"><mat-icon style="vertical-align: middle;" [ngClass]="{ 'c-green': acta.enable, 'c-light': !acta.enable }" class="icon-18">{{ acta.icon }}</mat-icon>
-                <small style="margin-left: 10px;"> </small>{{ acta.periodo }}: <small style="margin-left: 10px; font-size: 14px;">{{ acta.gestor }}</small>
+                <td style="min-width: 200px; font-weight: 400; text-align: left;"><mat-icon style="vertical-align: middle;" [ngClass]="{ 'c-green': acta.enable, 'c-light': !acta.enable }" class="icon-18">{{ acta.icon }}</mat-icon>
+                  <small style="margin-left: 10px;"> </small>{{ acta.periodo }}: <small style="margin-left: 10px; font-size: 14px;">{{ acta.gestor }}</small>
                 </td>
                 <!-- <td style="min-width: 140px; font-weight: 400;">{{ acta.periodo }}: <small style="margin-left: 10px; font-size: 14px;">{{ acta.gestor }}</small></td> -->
                 <!-- <td style="margin: 0 10px">{{ acta.gestor }}</td> -->
-                <!-- <td></td> -->
                 <td></td>
                 <td></td>
                 <td  *ngIf="!acta.enable" class="moad-inactive label_x" >{{acta.estado}}</td>
-                <td>[{{ acta.importe }}]</td>
-                <td style="flex: 1 1;"></td>
+                <td>{{ acta.ventaTotal     }}</td>
+                <td>{{ acta.declaradoTotal }}</td>
+                <td>{{ acta.facturadoTotal }}</td>
+                <td>{{ acta.pendiente      }}</td>
+                <td>{{ acta.comentario     }}</td>
             </tbody>
           </table>
          </div>
 
 
-
-
-          <!-- BUTTONS EDIT - ADD -->
+         <!-- BUTTONS EDIT - ADD -->
           <div class="moad-actions">
             <button
               matTooltip="Eliminar acta"
-              (click)="abrirModalCrearOactualizar(acta.id_acta)"
+              (click)="eliminarActa(acta.idActa)"
               class="icon-btn btn-trans c-fucsia">
               <mat-icon class="icon-18">delete</mat-icon>
             </button>
@@ -176,7 +180,7 @@
 
             <button
               matTooltip="Agregar detalle"
-              (click)="abrirSubActas()"
+              (click)="abrirActa()"
               class="icon-btn btn-trans c-green"
               ><mat-icon class="icon-18">add</mat-icon>
             </button>
@@ -185,21 +189,21 @@
 
         <!-- SUBMENUS DETALLE ACTA-->
         <div *ngIf="showingidx == i" class="moad-menus">
-          <div class="moad-menu" style="color:#a4a5a6; justify-content: center;" *ngIf="acta.detalle_acta.length == 0">Aún no se agregan DETALLES a esta Acta</div>
+          <div class="moad-menu" style="color:#a4a5a6; justify-content: center;" *ngIf="acta.actaResponses.length == 0">Aún no se agregan DETALLES a esta Acta</div>
 
           <div style="overflow: auto; color:#6c757d;">
             <table class="cli-table_x stripedtable underlinedtable">
               <tbody>
-                <tr *ngFor="let detalle of acta.detalle_acta">
+                <tr *ngFor="let detalle of acta.actaResponses">
                   <td></td>
                   <td>
                     <div class="moad-actions">
-                      <button (click)="abrirSubActas()"
+                      <button (click)="abrirActa(detalle)"
                         class="icon-btn btn-trans" style="color: #69aafa;">
                         <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                       </button>
 
-                      <button (click)="eliminarSubActa(detalle.id)"
+                      <button (click)="eliminarActa(detalle.id)"
                         class="icon-btn btn-trans c-fucsia">
                         <mat-icon class="icon-15">delete_forever</mat-icon>
                       </button>
@@ -209,7 +213,7 @@
                   <td>{{ detalle.proyecto    }}</td>
                   <td style="min-width: 125px;">{{ detalle.subservicio }}</td>
                   <td>{{ detalle.estado      }}</td>
-                  <td>{{ detalle.venta_total }}</td>
+                  <td>{{ detalle.ventaTotalActa }}</td>
                   <td>{{ detalle.declarado   }}</td>
                   <td>{{ detalle.facturado   }}</td>
                   <td>{{ detalle.pendiente   }}</td>
@@ -227,10 +231,9 @@
       </div>
 
     </ng-container>
-    <div class="cli-loader" *ngIf="loading">
-      <mat-spinner diameter="40"></mat-spinner>
-    </div>
-
+      <div class="cli-loader" *ngIf="loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
     </div>
 
     <div class="card-footer pb-0 pt-3">

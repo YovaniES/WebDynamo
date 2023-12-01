@@ -3,92 +3,197 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_ACTAS ? "Actualizar" : "Crear" }} acta</div>
+  <div class="cli-form-title c-male mt-3">{{ DATA_ACTA ? "Actualizar" : "Crear" }} acta</div>
 
   <form class="row g-3" [formGroup]="actasForm">
     <div class="cli-form newvac-wrapper">
-      <div class="row g-3">
+      <div class="chart-draw">
+        <div class="pr-subtitle mt-2">Datos del Acta</div>
+        <div class="pr-section mb-1">
+          <div class="pr-module-container row g-3">
+            <div class="cli-form-element col-f-4">
+              <label>Gestor <small style="color: red">*</small></label>
+              <select formControlName="idGestor" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombreCompleto}}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('idGestor')">* Ingrese el Gestor es obligatorio</small>
+            </div>
 
-        <div class="cli-form-element col-f-4">
-          <label>Gestor</label>
-          <select formControlName="idGestor" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
-          </select>
-        </div>
+            <div class="cli-form-element col-f-4">
+              <label>Proyecto <small style="color: red">*</small></label>
+              <select formControlName="idProyecto" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{ proy.codigo_proyecto }}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('idProyecto')">* Ingrese el Proyecto es obligatorio</small>
+            </div>
 
-        <div class="cli-form-element col-f-4">
-          <label>Proyectos</label>
-          <select formControlName="proyecto" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.codigo_proyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
-          </select>
-        </div>
+            <div class="cli-form-element col-f-4">
+              <label>Subservicio <small style="color: red">*</small></label>
+              <select formControlName="idSubservicio" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{ subs.nombreCompleto }}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio')">* Ingrese el Subservicio es obligatorio</small>
+            </div>
 
-        <div class="cli-form-element col-f-4">
-          <label>Subservicios</label>
-          <select formControlName="subservicio" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
-          </select>
-        </div>
+            <div class="cli-form-element col-f-4" >
+                <label>Periodo <small style="color: red">*</small></label>
+                 <input
+                  type="month"
+                  class="cli-input_x"
+                  formControlName="periodo"/>
+              <small class="form-text text-alert" *ngIf="campoNoValido('periodo')">* Ingrese el Periodo es obligatorio</small>
+            </div>
 
-        <div class="cli-form-element col-f-4">
-          <label>Importe <small style="color: red">*</small></label>
-          <input
-            class="cli-input"
-            formControlName="importe"
-            type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('importe')">* Ingrese el Importe es obligatorio</small>
-        </div>
+            <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
+              <label>Estado</label>
+              <select formControlName="idEstado" class="cli-input_x">
+                <option [value]="100" disabled>-Seleccione-</option>
+                <option value="1">Completado</option>
+                <option value="2">Pendiente</option>
+              </select>
+            </div>
 
-        <div class="cli-form-element col-f-4">
-          <div class="form-group">
-            <label>Fecha periodo</label>
-             <input
-              style="padding: 0.175rem .75rem;"
-              type="month"
-              class="form-control"
-              formControlName="fecha_periodo"/>
+            <div class="cli-form-element col-f-4">
+              <label>Enlace</label>
+              <input class="cli-input_x" formControlName="enlaceAta" type="text" />
+            </div>
+
+            <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
+              <label>Declarado</label>
+              <input class="cli-input_x" formControlName="declarado" type="text" />
+              <!-- <small class="form-text text-alert" *ngIf="campoNoValido('declarado')">* Ingrese el Importe es obligatorio</small> -->
+            </div>
+
+            <div class="cli-form-element col-f-2"               >
+              <label>Comentario</label>
+              <textarea
+                class="cli-input_x"
+                style="background-image: none;border-color: #bdbdbd;font-size: 12px;"
+                rows="1"
+                placeholder="Escriba algún comentario del Sub Acta..."
+                formControlName="comentario"
+              ></textarea>
+            </div>
           </div>
         </div>
 
-        <div class="cli-form-element col-f-4" *ngIf="DATA_ACTAS">
-          <label>Estado</label>
-          <select formControlName="estado" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option value="true">Completado</option>
-            <option value="false">Pendiente</option>
-          </select>
+        <!-- <ng-container> -->
+          <div class="pr-subtitle mt-1">Detalle Acta</div>
+          <div class="pr-section mb-1">
+            <div class="pr-module-container cli-card fit-card ">
+              <!-- <div class="cli-card fit-card "> -->
+                <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
+                  <div class="cli-form newvac-wrapper" class="row g-3">
+                    <ng-container formGroupName="detalleActaParams">
+                      <div class="cli-form-element col-f-4">
+                        <label>Analista <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="analista"
+                          type="text"/>
+                          <small class="form-text text-alert" *ngIf="campoNoValido('analista')">* Ingrese el Analista es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Perfil <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="perfil"
+                          type="text"/>
+                          <small class="form-text text-alert" *ngIf="campoNoValido('perfil')">* Ingrese el Perfil es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Precio x Unid. <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="precio"
+                          type="text"/>
+                          <small class="form-text text-alert" *ngIf="campoNoValido('precio')">* Ingrese el Precio es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Cantidad <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="cantidad"
+                          type="number"/>
+                          <small class="form-text text-alert" *ngIf="campoNoValido('cantidad')">* Ingrese la cantidad es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Venta total <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="venta_total"
+                          type="number"/>
+                          <small class="form-text text-alert" *ngIf="campoNoValido('venta_total')">* Ingrese la Venta total es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Estado</label>
+                        <select formControlName="idEstado" class="cli-input">
+                          <option [value]="0" disabled>-Seleccione-</option>
+                          <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.nombre}}</option>
+                        </select>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Unid. Moneda</label>
+                        <select formControlName="unidad" class="cli-input">
+                          <option [value]="0" disabled>-Seleccione-</option>
+                          <option value='PEN'>PEN</option>
+                          <option value='Otros'>Otros</option>
+                        </select>
+                      </div>
+
+                      <div class="cli-form-element col-f-2"           >
+                        <label>Comentario</label>
+                        <textarea
+                          class="cli-input"
+                          style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+                          rows="1"
+                          placeholder="Escriba algún comentario del detalle acta..."
+                          formControlName="comentario"
+                        ></textarea>
+                      </div>
+
+                      <div class="cli-form-element col-f-2"           >
+                        <label>Observación</label>
+                        <textarea
+                          class="cli-input"
+                          style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+                          rows="1"
+                          placeholder="Escriba algún observación del detalle..."
+                          formControlName="observacion"
+                        ></textarea>
+                      </div>
+                  </ng-container>
+                </div>
+              <!-- </div> -->
+            </div>
+          </div>
+        <!-- </ng-container> -->
+
+        <div class="cli-form-buttons" style="margin-top: 4%">
+          <button
+            class="cli-btn btn-m btn-regresar"
+            type="submit"
+            (click)="close()">
+            <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
+          </button>
+
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="actasForm.invalid && (listDetActas.length == 0)"
+            (click)="crearOactualizarActa()">
+            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+          </button>
         </div>
-
-        <div class="cli-form-element col-f-2" *ngIf="DATA_ACTAS">
-          <label>Comentario</label>
-          <textarea
-            class="cli-input"
-            style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
-            rows="1"
-            placeholder="Escriba algún comentario del Acta..."
-            formControlName="comentario"
-          ></textarea>
-        </div>
-
-      <div class="cli-form-buttons" style="margin-top: 8%">
-        <button class="cli-btn btn-m btn-regresar"
-                type="submit" (click)="close()">
-                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
-        </button>
-
-        <button class="cli-btn btn-m btn-turq"
-                [disabled]="actasForm.invalid"
-                >
-                <!-- (click)="save()" -->
-                <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
-        </button>
       </div>
-
     </div>
-  </div>
   </form>
 </div>
-
