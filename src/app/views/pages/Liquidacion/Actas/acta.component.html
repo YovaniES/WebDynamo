@@ -12,14 +12,22 @@
               <input
                 class="cli-input"
                 formControlName="idActa"
-                type="number"/>
+                type="text"/>
             </div>
 
             <div class="cli-form-element col-f-4">
               <label>Proyectos</label>
               <select formControlName="idProyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.codigo_proyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Gestor</label>
+              <select formControlName="idGestor" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombreCompleto}}</option>
               </select>
             </div>
 
@@ -27,7 +35,7 @@
               <label>Subservicios</label>
               <select formControlName="idSubservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
+                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.nombreCompleto}}</option>
               </select>
             </div>
 
@@ -39,38 +47,30 @@
                 formControlName="importe"/>
             </div>
 
-            <div class="cli-form-element col-f-4">
-              <div class="form-group">
-                <label>Fecha Periodo</label>
-                 <input
-                  class="cli-input"
-                  type="month"
-                  class="form-control"
-                  formControlName="periodo"/>
-              </div>
+            <div class="cli-form-element col-f-4" >
+              <label>Periodo</label>
+               <input
+                type="month"
+                class="cli-input"
+                formControlName="periodo"/>
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Estado</label>
+              <label>Estado acta</label>
               <select formControlName="idEstado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option value="true">Completado</option>
-                <option value="false">Pendiente</option>
+                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.nombre}}</option>
               </select>
             </div>
 
-
-            <!-- <div class="cli-form-element scol-f-4m-3  " style="margin-top: 45px">
-              <div class="form-group">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input"
-                         type="checkbox"
-                         id="inlineCheckbox1"
-                         formControlName="periodoActual">
-                  <label class="form-check-label" for="inlineCheckbox1">Periodo actual</label>
-                </div>
-              </div>
-            </div> -->
+            <div class="cli-form-element col-f-4">
+              <label>Estado Registro</label>
+              <select formControlName="estadoAgrupacion" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option value="Completado">Completado</option>
+                <option value="Pendiente">Pendiente</option>
+              </select>
+            </div>
 
             <div class="cli-form-buttons" style="margin-top: 8px">
               <button
@@ -86,8 +86,8 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
+                (click)="getAllActas()"
                 ><mat-icon class="icon-18">search</mat-icon>
-                <!-- (click)="getAllActas()" -->
                 Buscar
               </button>
             </div>
@@ -105,11 +105,10 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600;">
-            Total : <span class="total">{{ listActas.length }} Actas</span>
+            Total : <span class="total">{{ listActas.length }} Registros</span>
           </div>
         </div>
       </form>
-
 
       <!-- ACTA CON SUB MENU -->
       <ng-container *ngIf="!loading">
@@ -125,18 +124,14 @@
               <th>Declarado</th>
               <th>Facturado</th>
               <th>Pendiente</th>
-              <th>Comentario</th>
-              <!-- <th>XYZ</th> -->
+              <th>Responsable</th>
+              <th>Total Actas</th>
+              <!-- <th></th> -->
             </tr>
           </thead>
         </table>
 
-        <div class="cli-col" *ngFor="let acta of listActas | paginate:
-        { itemsPerPage: pageSize,
-          currentPage : page,
-          totalItems  : totalActas
-        }; let i = index">
-
+        <div class="cli-col" *ngFor="let acta of listActas | paginate:{ itemsPerPage: pageSize,currentPage : page,totalItems  : totalActas}; let i = index">
 
           <!-- ACTAS -->
         <div class="moad-module">
@@ -147,16 +142,23 @@
                 <td style="min-width: 200px; font-weight: 400; text-align: left;"><mat-icon style="vertical-align: middle;" [ngClass]="{ 'c-green': acta.enable, 'c-light': !acta.enable }" class="icon-18">{{ acta.icon }}</mat-icon>
                   <small style="margin-left: 10px;"> </small>{{ acta.periodo }}: <small style="margin-left: 10px; font-size: 14px;">{{ acta.gestor }}</small>
                 </td>
-                <!-- <td style="min-width: 140px; font-weight: 400;">{{ acta.periodo }}: <small style="margin-left: 10px; font-size: 14px;">{{ acta.gestor }}</small></td> -->
-                <!-- <td style="margin: 0 10px">{{ acta.gestor }}</td> -->
                 <td></td>
                 <td></td>
-                <td  *ngIf="!acta.enable" class="moad-inactive label_x" >{{acta.estado}}</td>
+                <td>
+                  <small style="display: flex; min-width: 85px;">
+                    <mat-icon [ngClass]="{ 'c-green_x': acta.estado == 'Completado', 'c-red': acta.estado == 'Pendiente' }" class="icon-18">report</mat-icon>{{acta.estado | uppercase}}
+                  </small>
+                </td>
                 <td>{{ acta.ventaTotal     }}</td>
                 <td>{{ acta.declaradoTotal }}</td>
                 <td>{{ acta.facturadoTotal }}</td>
-                <td>{{ acta.pendiente      }}</td>
-                <td>{{ acta.comentario     }}</td>
+                <td>{{ acta.ventaTotal  - acta.facturadoTotal }}</td>
+                <td></td>
+                <td style="font-weight: 600;">
+                  <div class="cli-table-dias">
+                    {{ acta.totalActas}}
+                  </div>
+                </td>
             </tbody>
           </table>
          </div>
@@ -164,7 +166,7 @@
 
          <!-- BUTTONS EDIT - ADD -->
           <div class="moad-actions">
-            <button
+            <!-- <button
               matTooltip="Eliminar acta"
               (click)="eliminarActa(acta.idActa)"
               class="icon-btn btn-trans c-fucsia">
@@ -176,11 +178,11 @@
               (click)="abrirModalCrearOactualizar(acta)"
               class="icon-btn btn-trans c-yellow"
               ><mat-icon class="icon-18">edit</mat-icon>
-            </button>
+            </button> -->
 
             <button
-              matTooltip="Agregar detalle"
-              (click)="abrirActa()"
+              matTooltip="Agregar acta"
+              (click)="abrirActa(ID_ACTA)"
               class="icon-btn btn-trans c-green"
               ><mat-icon class="icon-18">add</mat-icon>
             </button>
@@ -192,6 +194,8 @@
           <div class="moad-menu" style="color:#a4a5a6; justify-content: center;" *ngIf="acta.actaResponses.length == 0">Aún no se agregan DETALLES a esta Acta</div>
 
           <div style="overflow: auto; color:#6c757d;">
+            <div style="overflow: auto; min-height: 153px; max-height: 153px; color:#6c757d;">
+
             <table class="cli-table_x stripedtable underlinedtable">
               <tbody>
                 <tr *ngFor="let detalle of acta.actaResponses">
@@ -209,18 +213,34 @@
                       </button>
                     </div>
                   </td>
-                  <td style="text-align: left; min-width: 95px;">{{ detalle.acta }}</td>
+                  <td style="text-align: left; min-width: 95px; font-weight: 700;">{{ detalle.idActaConcat }}</td>
                   <td>{{ detalle.proyecto    }}</td>
                   <td style="min-width: 125px;">{{ detalle.subservicio }}</td>
-                  <td>{{ detalle.estado      }}</td>
-                  <td>{{ detalle.ventaTotalActa }}</td>
-                  <td>{{ detalle.declarado   }}</td>
-                  <td>{{ detalle.facturado   }}</td>
-                  <td>{{ detalle.pendiente   }}</td>
+                  <td>{{ detalle.estado             }}</td>
+                  <td>{{ detalle.ventaTotalActa     }}</td>
+                  <td>{{ detalle.declaradoTotalActa }}</td>
+                  <td>{{ detalle.facturadoTotalActa }}</td>
+                  <td>{{ detalle.ventaTotalActa -  detalle.facturadoTotalActa  }}</td>
+                  <!-- <td>
+                    <small class="label">
+                      {{ detalle.usuarioCreacion.usuario }}
+                    </small>
+                  </td> -->
+                  <td style="text-align:left ">
+                    <div class="cli-table_x-user">
+                      <button
+                        matTooltip={{detalle.usuarioCreacion.fullName}}
+                        class="icon-btn btn-trans"
+                        style="color: #6c757d;"
+                        ><mat-icon class="icon-13" style="color: #0dcaf0;">person_outline</mat-icon>
+                      </button>{{ detalle.usuarioCreacion.usuario }}
+                    </div>
+                  </td>
                   <td style="text-align: left; min-width: 125px">{{ detalle.comentario }}</td>
                 </tr>
               </tbody>
             </table>
+          </div>
 
             <!-- <div class="cli-loader" *ngIf="loadingItem">
               <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>

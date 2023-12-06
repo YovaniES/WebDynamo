@@ -54,7 +54,7 @@
   &:disabled {
     background-color: transparent;
     color: #86888c;
-    border-color: transparent;
+    border-color: solid 0.5px #f4f4f3;
   }
 }
 
@@ -94,7 +94,7 @@
   &:disabled {
     background-color: transparent;
     color: #86888c;
-    border-color: transparent;
+    border-color: solid 0.5px #f4f4f3;
   }
 }
 

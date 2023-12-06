@@ -23,6 +23,7 @@ export class ActaComponent implements OnInit {
   pageSize = 10;
   showingidx = 0;
 
+  ID_ACTA: number = 632;
   constructor(
     private liquidacionService: LiquidacionService,
     private actasService: ActasService,
@@ -36,33 +37,57 @@ export class ActaComponent implements OnInit {
     this.newFilfroForm();
     this.getAllActas();
     this.getAllSubservicios();
+    this.getListGestor();
+    this.getAllEstadosDetActa();
     this.getAllProyecto();
   }
 
   actasForm!: FormGroup;
   newFilfroForm(){
     this.actasForm = this.fb.group({
-      idActa       : [''],
-      idProyecto   : [''],
-      importe      : [''],
-      idSubservicio: [''],
-      periodo      : [''],
-      import       : [''],
-      idEstado     : [''],
-
-      montoMinimo  : [''],
-      montoMaximo  : ['']
+      idActa          : [''],
+      idProyecto      : [''],
+      importe         : [''],
+      idSubservicio   : [''],
+      idGestor        : [''],
+      periodo         : [''],
+      import          : [''],
+      idEstado        : [''],
+      montoMinimo     : [''],
+      montoMaximo     : [''],
+      estadoAgrupacion: ['']
     })
   };
 
   listActas: any[] = [];
   getAllActas(){
     this.blockUI.start("Cargando lista de Actas...");
-    this.actasService.getAllActas(this.actasForm.value).subscribe(resp => {
+    const request = {... this.actasForm.value}
+    request.periodo = request.periodo? '' : request.periodo + '-' + '01';
+
+    const formaValues = this.actasForm.getRawValue();
+
+    const req = {
+        idActa          : formaValues.idActa,
+        idProyecto      : formaValues.proyecto,
+        idSubservicio   : formaValues.idSubservicio,
+        idEstado        : formaValues.idEstado,
+        periodo         : this.actasForm.controls['periodo'].value? '': formaValues.periodo,
+        // periodo         : formaValues.periodo? '' : formaValues.periodo + '-' + '01',
+        montoMinimo     : formaValues.montoMinimo,
+        montoMaximo     : formaValues.montoMaximo,
+        idGestor        : formaValues.idGestor,
+        estadoAgrupacion: formaValues.estadoAgrupacion
+      }
+
+    this.actasService.getAllActas(req).subscribe(resp => {
     this.blockUI.stop();
 
       this.listActas = resp;
-      console.log('ACTAS-LIST', resp);
+      this.ID_ACTA = resp.actaResponses.idActa;
+      console.log('ACTAS-LIST-FILTRO', resp);
+      console.log('ID_ACTA', this.ID_ACTA);
+
     })
   }
 
@@ -72,20 +97,31 @@ export class ActaComponent implements OnInit {
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
+      console.log('PROY', this.listProyectos);
+
+    })
+  }
+
+  listGestores: any[] = [];
+  getListGestor(){
+    this.liquidacionService.getAllGestores().subscribe((resp: any) => {
+      this.listGestores = resp;
     })
   }
 
   listSubservicios:any[] = [];
   getAllSubservicios(){
-    const request = {
-      idGestor     : '',
-      idProyecto   : '',
-      idSubservicio: this.actasForm.controls['idSubservicio'].value,
-    }
-
-    this.liquidacionService.getAllSubserviciosFiltro(request).subscribe( (resp: any) => {
+    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
-      // console.log('SUBS', this.listSubservicios);
+      // console.log('SUBSERV', this.listSubservicios);
+    })
+  };
+
+  listEstadoDetActa: any[] = [];
+  getAllEstadosDetActa(){
+    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+      this.listEstadoDetActa = resp.filter((x:any) => x.eliminacion_logica == 1 );
+      // console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
   }
 
@@ -125,6 +161,7 @@ export class ActaComponent implements OnInit {
 
   abrirActa(DATA?: any) {
     console.log('DATA_ACTA', DATA);
+    console.log('ACTA_ID', DATA);
     this.dialog
       .open(SubActasComponent, { width: '75%', data: DATA }) // height:'80%'
       .afterClosed().subscribe((resp) => {
@@ -134,179 +171,4 @@ export class ActaComponent implements OnInit {
       });
   }
 
-
-
-
-  dataMenuPrueba(){
-    this.loading = true;
-    this.listActas = [
-      {
-        id_acta: 1,
-        gestor: 'Alberto Regalado',
-        proyecto: 'TQACOR',
-        subservicio: 'H DE SERV- H DE Testing Hispam',
-        estado: 'Pendiente',
-        importe: '20000',
-        periodo: '09-2023',
-        comentario: 'No hay presupuesto suficiente',
-        usu_act: 'jysantiago',
-        icon: 'settings_suggest',
-        enable: true,
-        detalle_acta: [
-          {
-            id_det: 101,
-            acta: 'TQACOR-A0017',
-            proyecto: 'TQACOR',
-            subservicio: 'Tren Post Venta',
-            estado:'completado',
-            venta_total: '181,45',
-            declarado:'10000',
-            facturado:'10000',
-            pendiente:'10000',
-            comentario: 'Cantidad total 2',
-            icon:'delete',
-            enable: false,
-          },
-          {
-            id_det: 102,
-            acta: 'TQAFAB-A0012',
-            proyecto: 'TQACOR',
-            subservicio: 'COM',
-            estado:'completado',
-            venta_total: '181,45',
-            declarado:'10000',
-            facturado:'10000',
-            pendiente:'10000',
-            comentario: 'Cantidad total 2',
-            icon:'delete',
-            enable: false,
-          },
-          {
-            id_det: 103,
-            acta: 'TQACOR-A0017',
-            proyecto: 'TQACOR',
-            subservicio: 'Tren Post Venta',
-            estado:'completado',
-            venta_total: '181,45',
-            declarado:'10000',
-            facturado:'10000',
-            pendiente:'10000',
-            comentario: '-',
-            icon:'delete',
-            enable: false,
-          }
-        ],
-      },
-
-      {
-        id_acta: 2,
-        gestor: 'Bedwer Hernandez',
-        proyecto: 'TQACOR',
-        subservicio: 'H DE SERV- H DE Testing Hispam',
-        estado: 'completado',
-        importe: '12000',
-        periodo: '08-2023',
-        comentario: 'No hay presupuesto suficiente',
-        usu_act: 'rxayala',
-        icon: 'grid_view',
-        enable: false,
-        detalle_acta: [
-          {
-            id_det: 201,
-            acta: 'TQACOR-A0017',
-            proyecto: 'TQACOR',
-            subservicio: 'Tren Post Venta',
-            estado:'completado',
-            venta_total: '181,45',
-            declarado:'10000',
-            facturado:'10000',
-            pendiente:'10000',
-            comentario: 'Cantidad total 2',
-            // gestor: 'Bedwer Hernandez',
-            // categoria: 'Analista de calidad',
-            // analista: 'SOTELO GUTIERREZ, FRANCISCO            ',
-            // jornadas: '25,46',
-            icon:'delete',
-            enable: false,
-          },
-          {
-            id_det: 202,
-            acta: 'TQACOR-A0017',
-            proyecto: 'TQACOR',
-            subservicio: 'Tren Post Venta',
-            estado:'completado',
-            venta_total: '181,45',
-            declarado:'10000',
-            facturado:'10000',
-            pendiente:'10000',
-            comentario: 'Cantidad total 2',
-            icon:'delete',
-            enable: false,
-        }
-       ]
-      },
-
-      {
-        id_acta: 3,
-        gestor: 'Bedwer Hernandez',
-        proyecto: 'TQACOM',
-        subservicio: 'H DE SERV- H DE Testing Hispam',
-        estado: 'Pendiente',
-        importe: '13000',
-        periodo: '09-2023',
-        comentario: 'No hay presupuesto suficiente',
-        usu_act: 'rxayala',
-        icon: 'currency_exchange',
-        enable: false,
-        detalle_acta: [
-          {
-            id_det: 301,
-            acta: 'TRATDP-A00212',
-            proyecto: 'TQACOR',
-            subservicio: 'Averías',
-            estado:'completado',
-            venta_total: '8000',
-            declarado:'8000',
-            facturado:'6000',
-            pendiente: '1',
-            comentario: 'Cantidad total 1',
-            icon:'delete',
-            enable: false,
-
-          },
-          {
-            id_det: 302,
-            acta: 'TDPNEG-A00110',
-            proyecto: 'TQACOR',
-            subservicio: 'Chatbot',
-            estado:'completado',
-            venta_total: '5000',
-            declarado:'3000',
-            facturado:'20000',
-            pendiente:'20000',
-            comentario: 'Cantidad total 2',
-            icon:'delete',
-            enable: false,
-        }
-       ]
-      },
-
-      {
-        id_acta: 4,
-        gestor: 'Bedwer Hernandez',
-        proyecto: 'TRAPRO',
-        subservicio: 'H DE SERV- H DE Testing Hispam',
-        estado: 'Pendiente',
-        importe: '12000',
-        periodo: '10-2023',
-        comentario: 'No hay presupuesto suficiente',
-        usu_act: 'rxayala',
-        icon: 'currency_exchange',
-        enable: true,
-        detalle_acta: [  ]
-      }
-    ]
-
-    this.loading = false;
-  }
 }

@@ -191,6 +191,11 @@ export class SubActasComponent implements OnInit {
           periodo           : acta.periodo,
           importe           : acta.ventaTotalActa,
         })
+
+        this.subActasForm.controls['idGestor'  ].disable();
+        this.subActasForm.controls['idProyecto'].disable();
+        this.subActasForm.controls['idEstado'  ].disable();
+        this.subActasForm.controls['periodo'   ].disable();
       })
     }
   }

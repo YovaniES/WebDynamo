@@ -17,6 +17,24 @@
             <small class="form-text text-alert" *ngIf="campoNoValido('estado')">* Ingrese el estado es obligatorio</small>
         </div>
 
+          <div class="cli-form-element form-group col-f-3" *ngIf="DATA_ESTADO">
+            <label>Fecha creación</label>
+             <input
+              style="padding: 0.175rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_creacion"/>
+          </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Eliminación</label>
+          <select formControlName="eliminacion_logica" class="cli-input">
+            <option [value]="10" disabled>-Seleccione-</option>
+            <option [value]=1>Activo</option>
+            <option [value]=0>Inactivo</option>
+          </select>
+        </div>
+
         <div class="cli-form-element form-group col-f-6">
           <label>Descripción</label>
           <textarea
@@ -28,16 +46,7 @@
           ></textarea>
         </div>
 
-        <ng-container *ngIf="DATA_ESTADO">
-          <div class="cli-form-element form-group col-f-3">
-            <label>Fecha creación</label>
-             <input
-              style="padding: 0.175rem .75rem;"
-              type="date"
-              class="form-control"
-              formControlName="fecha_creacion"/>
-          </div>
-        </ng-container>
+
       </div>
 
       <div class="cli-form-buttons" style="margin-top: 8%">

@@ -8,7 +8,7 @@
   <form class="row g-3" [formGroup]="actasForm">
     <div class="cli-form newvac-wrapper">
       <div class="chart-draw">
-        <div class="pr-subtitle mt-2">Datos del Acta</div>
+        <div class="pr-subtitle mt-2">Datos agrupación</div>
         <div class="pr-section mb-1">
           <div class="pr-module-container row g-3">
             <div class="cli-form-element col-f-4">
@@ -80,11 +80,9 @@
           </div>
         </div>
 
-        <!-- <ng-container> -->
-          <div class="pr-subtitle mt-1">Detalle Acta</div>
+          <div class="pr-subtitle mt-1">Datos del Acta</div>
           <div class="pr-section mb-1">
             <div class="pr-module-container cli-card fit-card ">
-              <!-- <div class="cli-card fit-card "> -->
                 <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
                   <div class="cli-form newvac-wrapper" class="row g-3">
                     <ng-container formGroupName="detalleActaParams">
@@ -111,7 +109,7 @@
                         <input
                           class="cli-input"
                           formControlName="precio"
-                          type="text"/>
+                          type="number"/>
                           <small class="form-text text-alert" *ngIf="campoNoValido('precio')">* Ingrese el Precio es obligatorio</small>
                       </div>
 
@@ -173,10 +171,8 @@
                       </div>
                   </ng-container>
                 </div>
-              <!-- </div> -->
             </div>
           </div>
-        <!-- </ng-container> -->
 
         <div class="cli-form-buttons" style="margin-top: 4%">
           <button

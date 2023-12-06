@@ -42,15 +42,16 @@ export class ModalEstadosComponent implements OnInit {
   estadosForm!: FormGroup;
   newForm(){
     this.estadosForm = this.fb.group({
-     estado        : ['', Validators.required],
-     descripcion   : [''],
-     fecha_creacion: ['']
+     estado            : ['', Validators.required],
+     descripcion       : [''],
+     fecha_creacion    : [''],
+     eliminacion_logica: ['']
     })
   }
 
   actionBtn: string = 'Crear';
   cargarEstadoById(): void{
-    this.blockUI.start("Cargando data...");
+    this.blockUI.start("Cargando estado...");
     if (this.DATA_ESTADO) {
       this.actionBtn = 'Actualizar'
       this.liquidacionService.getEstadoById(this.DATA_ESTADO.idEstado).subscribe((estado: any) => {
@@ -58,11 +59,10 @@ export class ModalEstadosComponent implements OnInit {
 
         this.blockUI.stop();
         this.estadosForm.reset({
-          jefatura      : estado.estadoatura,
+          estado        : estado.nombre,
           descripcion   : estado.descripcion,
-          estado        : estado.eliminacion_logica,
-          fecha_creacion: moment.utc(estado.fecha_creacion).format('YYYY-MM-DD'),
-          // usuarioActualiza
+          fecha_creacion: moment.utc(estado.fecha_creacion).format('YYYY-MM-DD') ,
+          eliminacion_logica: estado.eliminacion_logica
         })
       })
     }

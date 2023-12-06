@@ -35,12 +35,11 @@ switch (ENVIROMENT) {
     MANTENIM_LIQUIDACION = 'https://mantenimientodynamo.azurewebsites.net/api/'
 
     PATH_BACK_NET = 'http://backdynamosupport.indratools.com/api/configurador/' //SUBSITE 21
-    // PATH_BACK_NET = 'http://changestatevacations.indratools.com/api/configurador/' //BACK DE PRUEBA OJO | SUBSITE 25
-    // PATH_BACK_NET  = 'https://localhost:3061/api/configurador/';
     break;
   default:
     break;
 }
+
 
 // LOGIN
 export const AUTH_SESSION = AUTH_API + 'login';
@@ -63,7 +62,7 @@ export const API_LIDER    = MANTENIM_LIQUIDACION + 'Lider';
 export const API_JEFATURA = MANTENIM_LIQUIDACION + 'Jefatura';
 export const API_CLIENTE  = MANTENIM_LIQUIDACION + 'Cliente';
 export const API_FACTURAS = MANTENIM_LIQUIDACION + 'Factura';
-export const API_ESTADOS  = MANTENIM_LIQUIDACION + 'Estado';
+// export const API_ESTADOS  = MANTENIM_LIQUIDACION + 'Estado';
 export const API_CERTIFICACION  = MANTENIM_LIQUIDACION + 'Certificacion';
 
 
@@ -78,6 +77,9 @@ export const API_CORREO = 'https://localhost:44395/api/email'; //NO SE USA EN DY
 
 
 
+
+
+
 // https://localhost:7247/api/Facturacion/Guardar
 // http://localhost:5167/swagger/v1/swagger.json // LOGIN SEGURIDAD WEB
 
@@ -87,3 +89,6 @@ export const API_CORREO = 'https://localhost:44395/api/email'; //NO SE USA EN DY
 // NOTA: SUBSITE 28 => http://saveimporteddata.indratools.com
 // NOTA: SUBSITE 33 => 'http://backendpruebasdev.indratools.com' | BACKEN SOLO PRUEBAS EN DEV
 // changestatevacations.indratools.com : NOTA => SE ESTA USANDO PARA PRUEBAS DE DEV. Ya luego regresar con su API de cambiar estado de las vacaciones. 13/09/2023
+
+
+// PATH_BACK_NET = 'http://changestatevacations.indratools.com/api/configurador/' //BACK DE PRUEBA OJO | SUBSITE 25

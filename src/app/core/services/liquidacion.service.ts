@@ -3,7 +3,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import {
   API_CERTIFICACION,
   API_CLIENTE,
-  API_ESTADOS,
+  API_ESTADOS_DET_ACTA,
   API_FACTURAS,
   API_GESTOR,
   API_GESTOR_FILTRO,
@@ -223,22 +223,22 @@ export class LiquidacionService {
 
   //  SERVICES - ESTADOS
   getAllEstados() {
-    return this.http.get(API_ESTADOS).pipe(
+    return this.http.get(API_ESTADOS_DET_ACTA).pipe(
       map((resp: any) => {
         return resp.result;
       })
     );
   }
   crearEstado(requestCert: any): Observable<any> {
-    return this.http.post(API_ESTADOS, requestCert);
+    return this.http.post(API_ESTADOS_DET_ACTA, requestCert);
   }
 
   actualizarEstado(idEstado: number, request: any) {
-    return this.http.put<any>(`${API_ESTADOS}/${idEstado}`, request);
+    return this.http.put<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`, request);
   }
 
   getEstadoById(idEstado: number): Observable<any> {
-    return this.http.get(`${API_ESTADOS}/${idEstado}`).pipe(
+    return this.http.get(`${API_ESTADOS_DET_ACTA}/${idEstado}`).pipe(
       map((resp: any) => {
         return resp.result;
       })
@@ -246,7 +246,7 @@ export class LiquidacionService {
   }
 
   eliminarEstado(idEstado: number): Observable<any> {
-    return this.http.delete<any>(`${API_ESTADOS}/${idEstado}`);
+    return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
   }
 
   //  SERVICES - CERTIFICACIONES

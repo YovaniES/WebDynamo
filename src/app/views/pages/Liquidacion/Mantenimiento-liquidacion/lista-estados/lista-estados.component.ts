@@ -51,12 +51,12 @@ export class ListaEstadosComponent implements OnInit {
   getAllEstados(){
     this.liquidacionService.getAllEstados().subscribe((resp: any) => {
       this.listEstados = resp
-      console.log('LIST-JEFAT', this.listEstados);
+      console.log('LIST-ESTADOS', this.listEstados);
     })
   }
 
   eliminarEstado(estado: any,){
-    console.log('DEL_JEFAT', estado);
+    console.log('X_EST', estado);
 
     Swal.fire({
       title:'¿Eliminar estado?',
@@ -128,7 +128,7 @@ export class ListaEstadosComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalEstadosComponent, { width: '45%', height:'40%', data: DATA })
+      .open(ModalEstadosComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllEstados();

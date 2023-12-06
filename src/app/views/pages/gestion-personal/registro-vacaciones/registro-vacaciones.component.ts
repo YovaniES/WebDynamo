@@ -248,8 +248,8 @@ export class RegistroVacacionesComponent implements OnInit {
      this.userID   =  resp.user.userId;
     //  this.userID   = resp,  resp.user.userId;
      this.userLogeado = `${resp.user.nombres} ${resp.user.apellidoPaterno}`
-     console.log('USER_lOGEADO', this.userID, this.userLogeado);
-     console.log('USER_ID_LOG', this.userID);
+    //  console.log('USER_lOGEADO', this.userID, this.userLogeado);
+    //  console.log('USER_ID_LOG', this.userID);
    })
   };
 

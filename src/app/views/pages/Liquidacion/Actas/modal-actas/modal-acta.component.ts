@@ -103,6 +103,28 @@ export class ModalActaComponent implements OnInit {
     })
   };
 
+  // phoneRegex: RegExp = /^((3[0-9])|(6[0-9])|(8[1-9])|(9[0-8]))[0-9]{6}$/;
+  // companyForm!: FormGroup;
+  // createForm() {
+  // this.companyForm = this.fb.group({
+  //   companyName: ['', Validators.required],
+  //   address: this.fb.group({
+  //     unit  : ['', Validators.required],
+  //     street: ['', Validators.required],
+  //   }),
+  //   emails: this.fb.array([
+  //     this.fb.control('', Validators.required),
+  //     this.fb.control('')
+  //   ]),
+  //   contacts: this.fb.array([
+  //     this.fb.group({
+  //       name : ['', Validators.required],
+  //       phone: ['', [ Validators.required, Validators.pattern(this.phoneRegex)]],
+  //     })
+  //   ])
+  // });
+  // }
+
   crearOactualizarActa(){
     if (this.actasForm.invalid) {
       return Object.values(this.actasForm.controls).forEach((controls) => {
@@ -151,6 +173,7 @@ export class ModalActaComponent implements OnInit {
 
   crearActa(){ //OJO: Verificar si se usa
     const formValues = this.actasForm.getRawValue();
+    // const detalleformValues = this.actasForm.detalleActaParams.getRawValue();
 
     const request = {
       idGestor         : formValues.idGestor,

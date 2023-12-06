@@ -3,7 +3,7 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male mt-3">{{ DATA_ACTA ? "Actualizar" : "Crear" }} acta</div>
+  <div class="cli-form-title c-male mt-3">{{ DATA_ACTA ? "Actualizar" : "Crear" }} acta_</div>
 
   <form class="row g-3" [formGroup]="subActasForm">
     <div class="cli-form newvac-wrapper">
@@ -22,7 +22,7 @@
             </div>
           </ng-container>
           <div class="flex-1" ></div>
-          <div class="id-acta">ID :<span class="total">{{ DATA_ACTA.idActa }}</span></div>
+          <div class="id-acta"><span class="total">{{ DATA_ACTA.idActaConcat }}</span></div>
         </div>
 
         <div class="pr-section mb-1">
@@ -68,7 +68,7 @@
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Importe</label>
+              <label>Venta total</label>
               <input class="cli-input_x" formControlName="importe" type="text" />
               <small class="form-text text-alert" *ngIf="campoNoValido('importe')">* Ingrese el Importe es obligatorio</small>
             </div>
@@ -88,7 +88,7 @@
                   border-color: #bdbdbd;
                   font-size: 12px;"
                 rows="1"
-                placeholder="Escriba algún comentario del Sub Acta..."
+                placeholder="Escriba algún comentario del Acta..."
                 formControlName="comentario"
               ></textarea>
             </div>
@@ -175,10 +175,13 @@
 
                   <!-- NUEVO DETALLE ACTA CON SUB MENU -->
                   <ng-container *ngIf="!loading">
-                    <table class="cli-table_x stripedtable underlinedtable" *ngIf="listDetActas.length > 0">
+                    <div style="overflow: auto; min-height: 100px; max-height: 185px; color:#6c757d;">
+
+                    <table class="cli-table_x stripedtable underlinedtable" *ngIf="listDetActas.length > 0" >
                       <thead>
                         <tr class="bgc-blue c-white">
                           <th style="min-width: 120px"></th>
+                          <th>ID DET.</th>
                           <th>Analista</th>
                           <th>Perfil</th>
                           <th style="min-width: 80px;">Precio unid.</th>
@@ -210,7 +213,8 @@
                               </button>
                             </div>
                           </td>
-                          <td style="min-width: 135px; text-align: left;">{{detalle.nombre}}</td>
+                          <td>{{detalle.idDetalleActaConcat}}</td>
+                          <td style="min-width: 150px; text-align: left;">{{detalle.nombre}}</td>
                           <td style="min-width: 100px;">{{detalle.perfil}}</td>
                           <td>{{detalle.precioUnidad}}</td>
                           <td>{{detalle.unidades    }}</td>
@@ -218,10 +222,11 @@
                           <td>{{detalle.observacion }}</td>
                           <td>{{detalle.comentario  }}</td>
                           <td>{{detalle.unidad      }}</td>
-                          <td>{{detalle.unidad      }}</td>
+                          <td>{{'¿?' }}</td>
                         </tr>
                       </tbody>
                     </table>
+                  </div>
 
                     <div class="cli-loader" *ngIf="loadingItem">
                       <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
