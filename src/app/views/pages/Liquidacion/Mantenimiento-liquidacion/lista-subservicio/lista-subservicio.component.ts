@@ -159,7 +159,7 @@ export class ListaSubservicioComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalSubservicioComponent, { width: '45%', height:'45%', data: DATA })
+      .open(ModalSubservicioComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllSubserviciosFiltro();

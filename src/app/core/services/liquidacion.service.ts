@@ -9,13 +9,13 @@ import {
   API_GESTOR_FILTRO,
   API_JEFATURA,
   API_LIDER,
+  API_ORDEN_COMPRA,
   API_PROYECTO,
   API_SUBSERVICIO,
   API_SUBSERV_FILTRO,
   PATH_IMPORT_LIQ,
 } from '../constants/url.constants';
 import {
-  FiltroGestorModel,
   LiquidacionModel,
 } from '../models/liquidacion.models';
 import { Observable, map } from 'rxjs';
@@ -44,7 +44,6 @@ export class LiquidacionService {
     );
   }
 
-
   getAllGestores() {
     return this.http.get(API_GESTOR).pipe(
       map((g: any) => {
@@ -52,7 +51,6 @@ export class LiquidacionService {
       })
     );
   }
-
 
   crearGestor(requestGestor: any): Observable<any> {
     return this.http.post(API_GESTOR, requestGestor);
@@ -333,4 +331,46 @@ export class LiquidacionService {
   //     })
   //   );
   // }
+
+  // SERVICES ORDEN COMPRA
+  postAllOrdenCompra(listOrdenCompra: any) {
+    return this.http.post(API_ORDEN_COMPRA, listOrdenCompra).pipe(
+      map((resp: any) => {
+        console.log('SERV-OC', resp);
+        return resp.result;
+      })
+    );
+  }
+
+  getAllOrdenCompra() {
+    return this.http.get(API_ORDEN_COMPRA).pipe(
+      map((oc: any) => {
+        return oc.result;
+      })
+    );
+  }
+
+  crearOrdenCompra(requestOrden: any): Observable<any> {
+    return this.http.post(API_ORDEN_COMPRA, requestOrden);
+  }
+
+  actualizarOrdenCompra(idOrden: number, requestCert: any) {
+    return this.http.put<any>(
+      `${API_ORDEN_COMPRA}/${idOrden}`,
+      requestCert
+    );
+  }
+
+  getOrdenCompraById(idOrden: number): Observable<any> {
+    return this.http.get(`${API_ORDEN_COMPRA}/${idOrden}`).pipe(
+      map((resp: any) => {
+        console.log('DATA_OC_BY_ID', resp.result);
+        return resp.result;
+      })
+    );
+  }
+
+  eliminarOrdenCompra(idOrden: number): Observable<any> {
+    return this.http.delete<any>(`${API_ORDEN_COMPRA}/${idOrden}`);
+  }
 }

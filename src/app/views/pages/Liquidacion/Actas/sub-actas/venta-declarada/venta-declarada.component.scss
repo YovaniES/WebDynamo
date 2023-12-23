@@ -14,6 +14,42 @@
   }
 }
 
+.total {
+  color: #97999b;
+}
+
+.id-score {
+  font-size: 12px;
+  text-align: center;
+  font-weight: 500;
+  color: #5cb615;
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+}
+
+.s-dni {
+  font-size: 12px;
+  text-align: center;
+  font-weight: 500;
+  color: #ff65b1;
+  background: #f8f9fa;
+  padding: 5px;
+}
+
+.cli-user {
+  display: flex;
+  align-items: center;
+  color: #25cf9d;
+  background: #f8f9fa;
+}
+
+.input-group-text {
+  background-color: #ffffff;
+  border: none;
+  padding: 0.5px 5px;
+}
+
 .cli-modalclose{
   position: relative;
   & mat-icon{

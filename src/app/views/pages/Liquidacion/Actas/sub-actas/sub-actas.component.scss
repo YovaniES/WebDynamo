@@ -1,23 +1,21 @@
 @import "variables.scss";
 
-// .cli-table_x{
-//   width: 100%;
-//   background-color: #fff;
-//   & th{
-//       padding: 4px;
-//       font-weight: 300;
-//       text-align: center;
-//       width: 60px;
-//   }
-//   & td{
-//       vertical-align: middle;
-//       font-weight: 300;
-//       text-align: center;
-//       font-size: 11px;
-//       width: 80px;
-//       // padding: 3px 8px;
-//   }
-// }
+.btn-asignar {
+  border-radius: 2px;
+  display: flex;
+  height: 18px;
+  align-items: center;
+  border: solid 0.5px #4a93ff;
+  color: #4a93ff;
+  justify-content: center;
+  & mat-icon {
+    margin: 0 5px;
+  }
+  &:disabled {
+    background-color: #bcd7ff;
+    color: #fff;
+  }
+}
 
 .c-male {
   color: #00bec0;
@@ -36,35 +34,13 @@
   }
 }
 
-.cli-input_x {
-  // border: solid 0.5px #F4F4F3;
-  border: solid 0.5px #dee2e6;
-  // background-color: #f4f4f3;
-  border-radius: 2px;
-  padding: 4px 2px;
-  transition: ease 0.3s;
-  text-align: center;
-  &:hover:enabled {
-    background-color: #f2f4ff;
-  }
-  &:focus:enabled {
-    background-color: transparent;
-    border-color: #00bec0;
-  }
-  &:disabled {
-    background-color: transparent;
-    color: #86888c;
-    border-color: solid 0.5px #f4f4f3;
-  }
-}
-
 .cli-btn {
   border: none;
   border-radius: 2px;
   margin: 0 5px;
   height: 30px;
   padding: 0 10px;
-  font-family: "Telefonica-Bold" !important;
+  font-family: "Webapp" !important;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -132,25 +108,6 @@
   flex-direction: column;
 }
 
-.cli-table_x {
-  width: 100%;
-  background-color: #fff;
-  & th {
-    padding: 4px;
-    font-weight: 300;
-    text-align: center;
-    width: 60px;
-  }
-  & td {
-    vertical-align: middle;
-    font-weight: 400;
-    text-align: center;
-    font-size: 11px;
-    width: 80px;
-    // padding: 3px 8px;
-  }
-}
-
 .label_x {
   padding: 2px 6px;
   line-height: 13px;
@@ -213,7 +170,7 @@
   &-actions {
     display: flex;
     justify-content: center;
-    width: 70px;
+    // width: 70px;
   }
 }
 
@@ -278,7 +235,7 @@
 }
 
 .bold {
-  font-family: "Telefonica-Bold";
+  font-family: "Webapp";
 }
 .d-flex {
   display: flex;

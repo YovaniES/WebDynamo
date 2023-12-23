@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  API_ACTAS, API_ACTAS_FILTRO, API_DET_ACTA, API_ESTADOS_DET_ACTA, API_GESTOR,
+  API_ACTAS, API_ACTAS_FILTRO, API_DET_ACTA, API_ESTADOS_DET_ACTA, API_GESTOR, API_VENTA_DECLARADA,
 } from '../constants/url.constants';
 import { Observable, map } from 'rxjs';
 
@@ -37,8 +37,7 @@ export class ActasService {
   getActaById(idActa: any): Observable<any> {
     return this.http.get(`${API_ACTAS}${idActa}`).pipe(
       map((resp: any) => {
-        console.log('SERV_DATA_ACTA_BY_ID', resp.result);
-
+        // console.log('SERV_DATA_ACTA_BY_ID', resp.result);
         return resp.result;
       })
     );
@@ -94,5 +93,26 @@ export class ActasService {
   eliminarEstadosDetActa(idEstado: number): Observable<any> {
     return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
   }
+
+
+
+
+    // DETALLE ACTA - OJO CAMBIAR POR SUBACTAS, FALTA API
+    crearVentaDeclarada(requestVD: any): Observable<any>{
+      return this.http.post(API_VENTA_DECLARADA, requestVD)
+    }
+
+    cargarVentaDeclaradaById(idVD: number){
+      return this.http.get<any>(`${API_VENTA_DECLARADA}/${idVD}`).pipe(
+        map((resp: any) => {
+          return resp.result;
+        })
+      );
+    }
+
+    actualizarVentaDeclarada(idVD: number, reqDetActa: any){
+      return this.http.put(`${API_VENTA_DECLARADA}/${idVD}`, reqDetActa);
+    }
+
 
 }

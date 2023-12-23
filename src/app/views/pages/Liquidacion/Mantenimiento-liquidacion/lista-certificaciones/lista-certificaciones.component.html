@@ -22,12 +22,12 @@
               <label>Orden de compra</label>
               <select formControlName="ordenCompra" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
+                <!-- <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option> -->
               </select>
             </div>
 
             <div class="cli-form-element col-f-3">
-              <label>Valor</label>
+              <label>Total</label>
               <input
                 class="cli-input"
                 formControlName="monto"
@@ -87,19 +87,22 @@
         </div>
       </form>
 
-      <!-- TABLA DE GESTORES ------------------------------------------------------------------>
+      <!-- TABLA DE CERTIFICACIONES ------------------------------------------------------------------>
       <div style="overflow: auto; min-height: 370px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
-              <th class="w50">Acción</th>
+              <th>Acción</th>
+              <th>ID</th>
+              <th style="min-width: 120px">Orden de compra</th>
               <th style="min-width: 150px">Certificación</th>
-              <th>Monto</th>
-              <th>Moneda</th>
               <th style="min-width: 150px">Proyecto(s)</th>
-              <th style="min-width: 100px">Orden de compra</th>
+              <th>Total</th>
+              <th>Consumido</th>
+              <th>Disponible</th>
               <th style="min-width: 100px">Fecha creación</th>
-              <th style="min-width: 92px">Estado</th>
+              <th style="min-width: 92px">Responsable</th>
+              <th style="min-width: 92px"></th>
             </tr>
           </thead>
 
@@ -125,12 +128,24 @@
                   </button>
                 </div>
               </td>
-              <td style="text-align: left;">{{ cert.certificacion }}</td>
-              <td style="text-align: left; min-width: 150px;">{{ cert.monto }} {{ cert.moneda | uppercase}}</td>
-              <td style="">{{ cert.proyecto }}</td>
-              <td style="text-align: left;">{{ cert.fechaCreacion | date }}</td>
-              <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': cert.estado == 'Activo', 'c-red': cert.estado != 'Activo' }" class="icon-18">report</mat-icon>
+              <td>{{ cert.idCertificacion }}</td>
+              <td>{{ cert.ordenCompra.nro_orden }}</td>
+              <td style="text-align: left;">{{ cert.nro_certificacion }}</td>
+              <td style="text-align: left; min-width: 150px;">{{ cert.proyecto.codigo_proyecto }}</td>
+              <td>{{ cert.valorTotal }}</td>
+              <td>{{ cert.valorUsado }}</td>
+              <td>{{ cert.valorDisponible }}</td>
+              <td>{{ cert.fecha_creacion | date:'dd/MM/yy HH:mm' }}</td>
+              <td>{{ cert.usuarioActualiza.usuario }}</td>
+              <td>
+                <div class="moad-actions">
+                  <button
+                    matTooltip="Agregar factura"
+                    (click)="abrirModalCrearFactura(cert)"
+                    class="icon-btn btn-trans c-green_x"
+                    ><mat-icon class="icon-15">add</mat-icon>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>

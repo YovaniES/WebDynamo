@@ -1,14 +1,12 @@
 // const ENVIROMENT: string = 'DEV';
 const ENVIROMENT: string = 'PROD';
 
-// let PATH_CORREO  = 'https://localhost:44395/';
 let PATH_VISOR_DYNAMO = '';
 let PATH_BACK_NET     = '';
 let AUTH_API          = '';
 let BASE_LIQUIDACION  = ''
 let MANTENIM_LIQUIDACION = '';
 let API_SAVE_DATA_IMPORT = '';
-let PATH_MANTENIMIENTO = ''
 
 switch (ENVIROMENT) {
   case 'DEV':
@@ -28,10 +26,10 @@ switch (ENVIROMENT) {
 
     API_SAVE_DATA_IMPORT = 'http://saveimporteddata.indratools.com/api/importar' // CONECTADO con: db_support
     // API_SAVE_DATA_IMPORT = 'http://backendpruebasdev.indratools.com/api/importar'
-    // API_SAVE_DATA_IMPORT = 'https://localhost:7247/api/importar'
 
-    BASE_LIQUIDACION = 'https://facturaciondynamo2.azurewebsites.net/api/';
-    // MANTENIM_LIQUIDACION = 'https://dmantenimiento.azurewebsites.net/api/'
+    BASE_LIQUIDACION = 'https://facturaciondynamo2.azurewebsites.net/api/'
+    // BASE_LIQUIDACION = 'http://facturaciondynamoprueba.indratools.com/api/'
+
     MANTENIM_LIQUIDACION = 'https://mantenimientodynamo.azurewebsites.net/api/'
 
     PATH_BACK_NET = 'http://backdynamosupport.indratools.com/api/configurador/' //SUBSITE 21
@@ -46,24 +44,28 @@ export const AUTH_SESSION = AUTH_API + 'login';
 
 // REGISTRO-DYNAMO
 export const API_DYNAMO = PATH_BACK_NET + 'ExecuteQuery';
-export const API_GESTOR          = BASE_LIQUIDACION + 'Gestor';
-export const API_GESTOR_FILTRO   = BASE_LIQUIDACION + 'Gestor/getAllGestores';
-export const API_SUBSERV_FILTRO  = BASE_LIQUIDACION + 'Subservicio/GetAllSubservicio';
-export const API_SUBSERVICIO     = BASE_LIQUIDACION + 'Subservicio';
-export const API_ACTAS           = BASE_LIQUIDACION + 'acta/';
-export const API_ACTAS_FILTRO    = BASE_LIQUIDACION + 'acta/GetAllActas';
+export const API_GESTOR         = BASE_LIQUIDACION + 'Gestor';
+export const API_GESTOR_FILTRO  = BASE_LIQUIDACION + 'Gestor/getAllGestores';
+export const API_SUBSERV_FILTRO = BASE_LIQUIDACION + 'Subservicio/GetAllSubservicio';
+export const API_SUBSERVICIO    = BASE_LIQUIDACION + 'Subservicio';
+export const API_ACTAS          = BASE_LIQUIDACION + 'acta/';
+export const API_ACTAS_FILTRO   = BASE_LIQUIDACION + 'acta/GetAllActas';
+export const API_ORDEN_COMPRA   = BASE_LIQUIDACION + 'OrdenCompra';
 
 export const API_DET_ACTA        = BASE_LIQUIDACION + 'detalleActa';
 export const API_ESTADOS_DET_ACTA= BASE_LIQUIDACION + 'EstadoDetalleActa';
+export const API_VENTA_DECLARADA = BASE_LIQUIDACION + 'Declarado';
+export const API_CERTIFICACION   = BASE_LIQUIDACION + 'Certificacion';
+
+export const API_FACTURAS        = BASE_LIQUIDACION + 'Factura';
+
 
 // MANTENIMIENTO LIQUIDACION
 export const API_PROYECTO = MANTENIM_LIQUIDACION + 'Proyecto'
 export const API_LIDER    = MANTENIM_LIQUIDACION + 'Lider';
 export const API_JEFATURA = MANTENIM_LIQUIDACION + 'Jefatura';
 export const API_CLIENTE  = MANTENIM_LIQUIDACION + 'Cliente';
-export const API_FACTURAS = MANTENIM_LIQUIDACION + 'Factura';
 // export const API_ESTADOS  = MANTENIM_LIQUIDACION + 'Estado';
-export const API_CERTIFICACION  = MANTENIM_LIQUIDACION + 'Certificacion';
 
 
 // DATA VISOR DASHBOARD

@@ -25,6 +25,8 @@ import { ListaCertificacionesComponent } from './Mantenimiento-liquidacion/lista
 import { ModalCertificacionesComponent } from './Mantenimiento-liquidacion/lista-certificaciones/modal-certificaciones/modal-certificaciones.component';
 import { SubActasComponent } from './Actas/sub-actas/sub-actas.component';
 import { DetalleActasComponent } from './Actas/sub-actas/detalle-actas/detalle-actas.component';
+import { VentaDeclaradaComponent } from './Actas/sub-actas/venta-declarada/venta-declarada.component';
+import { CrearFacturasComponent } from './Mantenimiento-liquidacion/lista-certificaciones/crear-facturas/crear-facturas.component';
 
 
 @NgModule({
@@ -45,8 +47,10 @@ import { DetalleActasComponent } from './Actas/sub-actas/detalle-actas/detalle-a
     ModalEstadosComponent,
     ListaCertificacionesComponent,
     ModalCertificacionesComponent,
+    CrearFacturasComponent,
     SubActasComponent,
     DetalleActasComponent,
+    VentaDeclaradaComponent
   ],
   imports: [
     CommonModule,

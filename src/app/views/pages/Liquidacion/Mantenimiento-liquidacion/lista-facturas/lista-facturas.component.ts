@@ -146,7 +146,7 @@ export class ListaFacturasComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalFacturasComponent, { width: '45%', height: '40%', data: DATA })
+      .open(ModalFacturasComponent, { width: '45%', data: DATA })
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {

@@ -12,9 +12,9 @@
           <label>N° Orden de compra <small style="color: red">*</small></label>
           <input
             class="cli-input"
-            formControlName="orden_compra"
+            formControlName="nro_orden"
             type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('orden_compra')">* Ingrese la Orden de compra es obligatorio</small>
+            <small class="form-text text-alert" *ngIf="campoNoValido('nro_orden')">* Ingrese la Orden de compra es obligatorio</small>
         </div>
 
         <div class="cli-form-element col-f-3">
@@ -27,22 +27,32 @@
         </div>
 
         <div class="cli-form-element col-f-3">
-          <label>N° Certificación <small style="color: red">*</small></label>
+          <label>N° Certificación</label>
           <input
             class="cli-input"
-            formControlName="certificacion"
+            formControlName="certificaciones"
             type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('certificacion')">* Ingrese la Certificación es obligatorio</small>
         </div>
 
-        <!-- <div class="cli-form-element col-f-3">
-          <label>Estado</label>
-          <select formControlName="id_estado" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option value="true">Activo</option>
-            <option value="false">Inactivo</option>
-          </select>
-        </div> -->
+        <ng-container *ngIf="this.DATA_ORDENCOMPRA">
+          <div class="cli-form-element col-f-3">
+            <label>Estado</label>
+            <select formControlName="id_estado" class="cli-input_x">
+              <option [value]="0" disabled>-Seleccione-</option>
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </div>
+
+          <div class="cli-form-element form-group col-f-3">
+            <label>Fecha creación</label>
+             <input
+              style="padding: 0.175rem .75rem;"
+              type="date"
+              class="form-control"
+              formControlName="fecha_creacion"/>
+          </div>
+        </ng-container>
       </div>
 
       <div class="cli-form-buttons" style="margin-top: 8%">
@@ -53,8 +63,8 @@
 
         <button class="cli-btn btn-m btn-turq"
                 [disabled]="ordencompraForm.invalid"
+                (click)="crearOactualizarOrdenCompra()"
                 >
-                <!-- (click)="save()" -->
                 <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
         </button>
       </div>

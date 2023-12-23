@@ -29,6 +29,19 @@
       }
   }
 }
+
+.id-acta {
+  font-size: 18px;
+  text-align: center;
+  font-weight: 400;
+
+  color: #212529;
+  border: solid 0.5px #0daef4;
+  border-radius: 4px;
+  background: #f8f9fa;
+  padding: 5px;
+}
+
 .c-male {
   color: #00bec0;
 }
@@ -52,7 +65,7 @@
   flex-direction: column;
   &-title {
     width: 100%;
-    font-family: "Telefonica-Bold";
+    font-family: "Webapp";
     text-align: center;
     font-size: 1.6rem;
     margin-bottom: 10px;
@@ -65,7 +78,7 @@
     width: 100%;
     margin-bottom: 10px;
     margin-top: 20px;
-    font-family: 'Telefonica-Bold';
+    font-family: 'Webapp';
     border-bottom: 1px solid #D3D4D3;
     display: flex;
     align-items: center;
@@ -83,7 +96,7 @@
   }
   &-element {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     flex-direction: column;
 
     & label {
@@ -160,7 +173,7 @@
   margin: 0 5px;
   height: 30px;
   padding: 0 10px;
-  font-family: "Telefonica-Bold" !important;
+  font-family: "Webapp" !important;
   display: flex;
   align-items: center;
   cursor: pointer;

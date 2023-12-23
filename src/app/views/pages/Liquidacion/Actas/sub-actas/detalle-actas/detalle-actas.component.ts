@@ -137,6 +137,7 @@ export class DetalleActasComponent implements OnInit {
 
   }
   // precioTotal
+  listCertificaciones: any[] = [];
   actionBtn: string = 'Crear'
   cargarDetActaById(): void {
     this.blockUI.start('Cargando detalle ...');
@@ -147,6 +148,7 @@ export class DetalleActasComponent implements OnInit {
         this.blockUI.stop();
         console.log('DET_ACTA_BY_ID', detalle);
 
+        this.listCertificaciones = detalle.detalleActaCertificacions;
         this.detalleactasForm.reset({
           analista   : detalle.nombre,
           perfil     : detalle.perfil,
@@ -157,7 +159,7 @@ export class DetalleActasComponent implements OnInit {
           precio     : detalle.precioUnidad,
           comentario : detalle.comentario,
           unidad     : detalle.unidad,
-          idEstado   : detalle.estado,
+          idEstado   : detalle.idEstado,
         })
       })
     }
@@ -173,8 +175,8 @@ export class DetalleActasComponent implements OnInit {
   listEstadoDetActa: any[] = [];
   getAllEstadosDetActa(){
     this.actasService.getAllEstadosDetActa().subscribe(resp => {
-      this.listEstadoDetActa = resp.filter((x:any) => x.eliminacion_logica == 1 );
-      // console.log('EST_DET_ACTA', this.listEstadoDetActa);
+      this.listEstadoDetActa = resp;
+      console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
   }
 

@@ -1,16 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
 
 @Component({
   selector: 'app-modal-ordencompra',
@@ -27,77 +24,133 @@ export class ModalOrdencompraComponent implements OnInit {
   pageSize = 10;
 
   constructor( private fb: FormBuilder,
-               private facturacionService: FacturacionService,
+               private liquidacionService: LiquidacionService,
+               private authService: AuthService,
                private spinner: NgxSpinnerService,
                public dialogRef: MatDialogRef<ModalOrdencompraComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_ORDENCOMPRA: any
   ) {}
 
   ngOnInit(): void {
-  this.newForm()
-  this.getListProyectos();
-  this.getListGestores();
+  this.newForm();
+  this.getUserID();
 
   if (this.DATA_ORDENCOMPRA) {
-    this.cargarGestorById(this.DATA_ORDENCOMPRA);
+    this.cargarOrdenCompraById();
+    console.log('DATA_OC', this.DATA_ORDENCOMPRA);
+
   }
   }
 
   ordencompraForm!: FormGroup;
   newForm(){
     this.ordencompraForm = this.fb.group({
-     orden_compra : ['',],
-     monto        : ['',],
-     certificacion: ['',],
+     nro_orden       : ['', Validators.required],
+     monto           : ['', Validators.required],
+     certificaciones : [''],
+     fecha_creacion  : [''],
+     id_estado       : ['']
+    })
+  };
+
+
+  crearOactualizarOrdenCompra(){
+    if (this.ordencompraForm.invalid) {
+      return Object.values(this.ordencompraForm.controls).forEach((controls) => {
+        controls.markAllAsTouched();
+      })
+    }
+    if (this.DATA_ORDENCOMPRA ) {
+        this.actualizarOrdenCompra();
+    } else {
+      this.crearOrdenCompra()
+    }
+  }
+
+  actualizarOrdenCompra(){
+    const formValues = this.ordencompraForm.getRawValue();
+
+    const requestOrden = {
+      idOrden            : this.DATA_ORDENCOMPRA.idOrden,
+      nroOrden           : formValues.nro_orden,
+      monto              : formValues.monto,
+      idUsuarioActualiza : this.userID
+    }
+
+    this.liquidacionService.actualizarOrdenCompra(this.DATA_ORDENCOMPRA.idOrden, requestOrden).subscribe((resp: any) => {
+      if (resp.success) {
+          Swal.fire({
+            title: 'Actualizar orden de compra!',
+            text : `${resp.message}`,
+            icon : 'success',
+            confirmButtonText: 'Ok',
+          });
+          this.close(true);
+      }
     })
   }
 
+  crearOrdenCompra(){
+
+  }
+
+  // "nroOrden": "string",
+  // "monto": 0,
+  // "idUsuarioCreacion": 0,
+  // "certificacions": [
+  //   {
+  //     "nro_certificacion": "string",
+  //     "valor": 0,
+  //     "moneda": "string",
+  //     "idOrden": 0,
+  //     "idProyecto": 0,
+  //     "idUsuarioCreacion": 0
+  //   }
+
   actionBtn: string = 'Crear';
-  cargarGestorById(idGestor: number): void{
-    // this.blockUI.start("Cargando data...");
+  cargarOrdenCompraById(): void{
+    this.blockUI.start("Cargando Orden de Compra...");
     if (this.DATA_ORDENCOMPRA) {
       this.actionBtn = 'Actualizar'
-      this.facturacionService.getLiquidacionById(idGestor).subscribe((resp: any) => {
-        console.log('DATA_BY_ID_OC', resp);
+      this.liquidacionService.getOrdenCompraById(this.DATA_ORDENCOMPRA.idOrden).subscribe((oc: any) => {
+        console.log('DATA_BY_ID_OC', oc);
 
+        this.blockUI.stop();
         this.ordencompraForm.reset({
-          orden_compra : resp.orden_compra,
-          monto        : resp.monto,
-          certificacion: resp.certificacion,
-        })
+          idOrden        : this.DATA_ORDENCOMPRA.idOrden,
+          nro_orden      : oc.nro_orden,
+          monto          : oc.monto,
+          fecha_creacion : moment.utc(oc.fecha_creacion).format('YYYY-MM-DD'),
+          certificaciones: oc.certificacions,
+          id_estado      : oc.estado
+          // certificacionList : [
+          //     {
+          //         "idCertificacion": 9,
+          //         "nro_certificacion": "5040513931",
+          //         "valor": 4.07,
+          //         "moneda": "PEN"
+          //     }
+          //   ]
+        });
+
+        this.ordencompraForm.controls['fecha_creacion'].disable();
+        this.ordencompraForm.controls['id_estado'     ].disable();
       })
     }
   }
 
-  listGestores: any[] = [];
-  getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
-
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            console.log('GESTORES', resp);
-    });
-  };
-
-  limpiarFiltro(){}
-  getAllGestor(){}
-
-  eliminarLiquidacion(id: number){}
-
-  listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
-
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            console.log('COD_PROY', resp.list);
-    });
-  };
-
-  close(succes?: boolean) {
-    this.dialogRef.close(succes);
+  userID: number = 0;
+  getUserID(){
+   this.authService.getCurrentUser().subscribe( resp => {
+     this.userID   = resp.user.userId;
+     console.log('ID-USER', this.userID);
+   })
   }
 
+
+  limpiarFiltro(){}
+
+  eliminarLiquidacion(id: number){}
 
   showAlertError(message: string) {
     Swal.fire({
@@ -113,6 +166,11 @@ export class ModalOrdencompraComponent implements OnInit {
     } else {
       return false;
     }
+  };
+
+
+  close(succes?: boolean) {
+    this.dialogRef.close(succes);
   }
 
   totalfiltro = 0;
@@ -121,8 +179,8 @@ export class ModalOrdencompraComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalFacturas) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listGestores = resp.list;
+      this.liquidacionService.getAllOrdenCompra().subscribe( (resp: any) => {
+            // this.listGestores = resp.list;
             this.spinner.hide();
           });
     } else {

@@ -4,7 +4,7 @@
   margin: 0 5px;
   height: 30px;
   padding: 0 10px;
-  font-family: "Telefonica-Bold" !important;
+  font-family: "Webapp" !important;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -61,7 +61,7 @@
   flex-direction: column;
   &-title {
     width: 100%;
-    font-family: "Telefonica-Bold";
+    font-family: "Webapp";
     text-align: center;
     font-size: 1.6rem;
     margin-bottom: 10px;
@@ -74,7 +74,7 @@
     width: 100%;
     margin-bottom: 10px;
     margin-top: 20px;
-    font-family: "Telefonica-Bold";
+    font-family: "Webapp";
     border-bottom: 1px solid #d3d4d3;
     display: flex;
     align-items: center;
@@ -127,31 +127,6 @@
     border: solid 1px #0daef4;
     border-radius: 18px;
     display: inline-block;
-  }
-}
-
-.cli-table_x {
-  width: 100%;
-  background-color: #fff;
-  &-user {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    color: #6c757d;
-  }
-  & th {
-    padding: 4px;
-    font-weight: 400;
-    text-align: center;
-    width: 60px;
-  }
-  & td {
-    vertical-align: middle;
-    font-weight: 400;
-    text-align: center;
-    font-size: 11px;
-    width: 80px;
-    // padding: 3px 8px;
   }
 }
 
@@ -291,7 +266,7 @@
 }
 
 .bold {
-  font-family: "Telefonica-Bold";
+  font-family: "Webapp";
 }
 .d-flex {
   display: flex;

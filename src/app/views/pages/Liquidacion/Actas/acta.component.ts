@@ -23,7 +23,7 @@ export class ActaComponent implements OnInit {
   pageSize = 10;
   showingidx = 0;
 
-  ID_ACTA: number = 632;
+  ID_ACTA: number | undefined ;
   constructor(
     private liquidacionService: LiquidacionService,
     private actasService: ActasService,
@@ -84,10 +84,9 @@ export class ActaComponent implements OnInit {
     this.blockUI.stop();
 
       this.listActas = resp;
-      this.ID_ACTA = resp.actaResponses.idActa;
+      // this.ID_ACTA = resp.actaResponses.idActa;
       console.log('ACTAS-LIST-FILTRO', resp);
       console.log('ID_ACTA', this.ID_ACTA);
-
     })
   }
 
@@ -98,7 +97,6 @@ export class ActaComponent implements OnInit {
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
-
     })
   }
 
@@ -151,7 +149,7 @@ export class ActaComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     console.log('DATA_ACTAS', DATA);
     this.dialog
-      .open(ModalActaComponent, { width: '70%', data: DATA })
+      .open(ModalActaComponent, { width: '70%', data: {DATA, proyectos_x: this.listProyectos} })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllActas();
@@ -160,8 +158,7 @@ export class ActaComponent implements OnInit {
   }
 
   abrirActa(DATA?: any) {
-    console.log('DATA_ACTA', DATA);
-    console.log('ACTA_ID', DATA);
+    // console.log('DATA_ACTA', DATA);
     this.dialog
       .open(SubActasComponent, { width: '75%', data: DATA }) // height:'80%'
       .afterClosed().subscribe((resp) => {

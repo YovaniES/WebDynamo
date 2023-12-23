@@ -147,7 +147,7 @@ export class ListaLiderComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalLiderComponent, { width: '45%', height:'40%', data: DATA })
+      .open(ModalLiderComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllLider();

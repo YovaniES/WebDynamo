@@ -8,11 +8,11 @@ import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-modal-facturas',
-  templateUrl: './modal-facturas.component.html',
-  styleUrls: ['./modal-facturas.component.scss'],
+  selector: 'app-crear-facturas',
+  templateUrl: './crear-facturas.component.html',
+  styleUrls: ['./crear-facturas.component.scss'],
 })
-export class ModalFacturasComponent implements OnInit {
+export class CrearFacturasComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
@@ -24,30 +24,31 @@ export class ModalFacturasComponent implements OnInit {
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private liquidacionService: LiquidacionService,
-               public dialogRef: MatDialogRef<ModalFacturasComponent>,
+               public dialogRef: MatDialogRef<CrearFacturasComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_FACTURA: any
   ) {}
 
   ngOnInit(): void {
   this.newForm()
   this.getUserID();
-  this.getAllProyecto();
-
+  this.getAllCertificaciones();
+  this.getListEstadoCertificacion();
   if (this.DATA_FACTURA) {
-    this.cargarFacturaById(this.DATA_FACTURA);
-    console.log('FACTURA_MODAL', this.DATA_FACTURA);
+    // this.cargarFacturaById(this.DATA_FACTURA);
+    // console.log('FACTURA_MODAL', this.DATA_FACTURA);
     }
   }
 
   facturaForm!: FormGroup;
   newForm(){
     this.facturaForm = this.fb.group({
-      nro_factura       : [''],
-      idEstado          : [''],
-      idCertificacion   : [''],
+      nro_factura       : ['', Validators.required],
+      idEstado          : ['', Validators.required],
+      idCertificacion   : ['', Validators.required],
       fecha_facturacion : [''],
       factura_tgs       : [''],
       factura_adquira   : [''],
+      fecha_creacion    : [''],
       idUsuarioCreacion : [''],
     })
   }
@@ -57,16 +58,16 @@ export class ModalFacturasComponent implements OnInit {
     this.blockUI.start("Cargando data...");
     if (this.DATA_FACTURA) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getLiderById(this.DATA_FACTURA.idFactura).subscribe((lider: any) => {
+      this.liquidacionService.getLiderById(this.DATA_FACTURA.idFactura).subscribe((cert: any) => {
 
         this.blockUI.stop();
         this.facturaForm.reset({
-          nombre        : lider.nombre,
-          apellidos     : lider.apellidos,
-          correo        : lider.correo,
-          descripcion   : lider.descripcion,
-          id_estado     : lider.eliminacion_logica,
-          fecha_creacion: moment.utc(lider.fecha_creacion).format('YYYY-MM-DD'),
+          nombre        : cert.nombre,
+          apellidos     : cert.apellidos,
+          correo        : cert.correo,
+          descripcion   : cert.descripcion,
+          id_estado     : cert.eliminacion_logica,
+          fecha_creacion: moment.utc(cert.fecha_creacion).format('YYYY-MM-DD'),
         })
       })
     }
@@ -130,7 +131,7 @@ export class ModalFacturasComponent implements OnInit {
       fecha_facturacion : formValues.fecha_facturacion,
       factura_tgs       : formValues.factura_tgs,
       factura_adquira   : formValues.factura_adquira,
-      idUsuarioCreacion : this.userID,
+      idUsuarioCreacion : formValues.idUsuarioCreacion,
     }
 
     this.liquidacionService.crearFactura(request).subscribe((resp: any) => {
@@ -140,17 +141,27 @@ export class ModalFacturasComponent implements OnInit {
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'
-        });
+        })
+
         this.close(true);
       }
     })
   }
 
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY-S', this.listProyectos);
+  listEstadoDetalleActa:any[] = [];
+  getListEstadoCertificacion(){
+    this.liquidacionService.getAllEstados().subscribe(resp => {
+      this.listEstadoDetalleActa = resp.filter((x:any) => x.idEstado != 2);
+      console.log('EST-CERT', this.listEstadoDetalleActa);
+
+    })
+  }
+
+  listCertificaciones: any[] = [];
+  getAllCertificaciones(){
+    this.liquidacionService.getAllCertificaciones().subscribe(resp => {
+      this.listCertificaciones = resp;
+      console.log('CERTIFICACIONES', this.listCertificaciones);
     })
   }
 

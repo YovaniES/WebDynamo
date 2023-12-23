@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalCertificacionesComponent } from './modal-certificaciones/modal-certificaciones.component';
+import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
 
 export interface changeResponse {
   message: string;
@@ -37,18 +38,17 @@ export class ListaCertificacionesComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllGestor();
   this.getAllCertificaciones()
   }
 
   certificacionesForm!: FormGroup;
   newForm(){
     this.certificacionesForm = this.fb.group({
-     certicacion: [''],
-     proyecto   : [''],
-     ordenCompra: [''],
-     monto      : [''],
-     estado     : ['']
+     certificacion: [''],
+     proyecto     : [''],
+     ordenCompra  : [''],
+     monto        : [''],
+     estado       : ['']
     })
   }
 
@@ -77,29 +77,12 @@ export class ListaCertificacionesComponent implements OnInit {
     });
   }
 
-  listGestores: any[] = [];
-  getAllGestor(){
-    // const request = this.certificacionesForm.controls['idGestor'].value;
-
-    const request = {
-      // idGestor   : this.certificacionesForm.controls['idGestor'].value,
-      // proyecto   : '',
-      // subservicio: '',
-      // estado     : ''
-    }
-
-    this.liquidacionService.getAllGestor(request).subscribe( (resp: any) => {
-      this.listGestores = resp;
-      console.log('DATA_GESTOR', this.listGestores);
-    })
-  }
-
   listCertificaciones: any[] = [];
   getAllCertificaciones(){
     // const request = this.certificacionesForm.value;
 
     this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
-      this.listCertificaciones = resp.result;
+      this.listCertificaciones = resp;
       console.log('DATA_CERTIF', this.listCertificaciones);
     })
   }
@@ -159,10 +142,21 @@ export class ListaCertificacionesComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalCertificacionesComponent, { width: '45%', height:'45%', data: DATA })
+      .open(ModalCertificacionesComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllCertificaciones();
+        }
+      });
+  };
+
+  abrirModalCrearFactura(DATA?: any) {
+    console.log('DATA_CERTIF', DATA);
+    this.dialog
+      .open(CrearFacturasComponent, { width: '45%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          // this.getAllCertificaciones();
         }
       });
   }

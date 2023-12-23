@@ -38,7 +38,7 @@
     &-element{
         display: flex;
         flex-direction: column;
-        margin-top: 12px;
+        margin-top: 6px;
         & label{
             padding: 0;
             margin: 0 2px;
@@ -116,6 +116,28 @@
         color: $color-grey-5;
         border-color: transparent;
     }
+}
+
+.cli-input_x {
+  // border: solid 0.5px #F4F4F3;
+  border: solid 0.5px #dee2e6;
+  // background-color: #f4f4f3;
+  border-radius: 2px;
+  padding: 4px 2px;
+  transition: ease 0.3s;
+  text-align: center;
+  &:hover:enabled {
+    background-color: #f2f4ff;
+  }
+  &:focus:enabled {
+    background-color: transparent;
+    border-color: #00bec0;
+  }
+  &:disabled {
+    background-color: transparent;
+    color: #86888c;
+    border-color: solid 0.5px #f4f4f3;
+  }
 }
 
 .cli-input-white{

@@ -6,12 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalOrdencompraComponent } from './modal-ordencompra/modal-ordencompra.component';
-
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 
 @Component({
   selector: 'app-lista-ordencompra',
@@ -22,13 +17,12 @@ export class ListaOrdencompraComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalOrdencompra: number = 0;
   pageSize = 10;
 
   constructor( private fb: FormBuilder,
-               private facturacionService: FacturacionService,
+               private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
                public dialogRef: MatDialogRef<ListaOrdencompraComponent>,
@@ -36,8 +30,7 @@ export class ListaOrdencompraComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getListProyectos();
-  this.getListGestores();
+  this.getAllOrdenCompra();
   }
 
   ordencompraForm!: FormGroup;
@@ -46,44 +39,24 @@ export class ListaOrdencompraComponent implements OnInit {
      orden_compra : [''],
      certificacion: [''],
      monto        : [''],
-     proyecto     : ['']
     })
   }
 
-  listGestores: any[] = [];
-  getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
+  eliminarOrdenCompra(id: number){
 
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            console.log('GESTORES', resp);
-    });
-  };
+  }
 
-
-  actionBtn: string = 'Crear';
-
-  listaLiquidacion: any[] = [];
-
-  limpiarFiltro(){}
-  getAllOrdenCompra(){}
-
-  eliminarLiquidacion(id: number){}
-
-  listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
-
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            // console.log('COD_PROY', resp.list);
+  listOrdenCompra: any[] = [];
+  getAllOrdenCompra(){
+    this.liquidacionService.getAllOrdenCompra().subscribe((resp: any) => {
+        this.listOrdenCompra = resp;
+        console.log('LIST-OC', this.listOrdenCompra);
     });
   };
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
 
   showAlertError(message: string) {
     Swal.fire({
@@ -107,20 +80,22 @@ export class ListaOrdencompraComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalOrdencompra) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
-            this.listaLiquidacion = resp.list;
+      this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
+            this.listOrdenCompra = resp.list;
             this.spinner.hide();
           });
     } else {
       this.spinner.hide();
     }
       this.page = event;
-  }
+  };
+
+  limpiarFiltro(){}
 
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalOrdencompraComponent, { width: '45%', height:'60%', data: DATA })
+      .open(ModalOrdencompraComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllOrdenCompra();

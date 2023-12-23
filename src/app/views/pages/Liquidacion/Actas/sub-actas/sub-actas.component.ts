@@ -8,6 +8,7 @@ import { DetalleActasComponent } from './detalle-actas/detalle-actas.component';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UtilService } from 'src/app/core/services/util.service';
+import { VentaDeclaradaComponent } from './venta-declarada/venta-declarada.component';
 
 @Component({
   selector: 'app-sub-actas',
@@ -37,14 +38,16 @@ export class SubActasComponent implements OnInit {
   this.getUserID();
   this.getListGestor();
   this.getAllProyecto();
-  this.getAllDetalleActas();
   this.getAllSubservicios();
   this.getAllEstadosDetActa();
-  console.log('DATA_ACTA', this.DATA_ACTA);
+  // console.log('DATA_ACTA', this.DATA_ACTA);
 
 
   if (this.DATA_ACTA) {
     this.cargarActaById();
+
+    this.listProyectos = this.DATA_ACTA.proyectos;
+    // console.log('PROYEC*', this.listProyectos);
   }
   }
 
@@ -62,10 +65,6 @@ export class SubActasComponent implements OnInit {
       periodo        : [''],
       idEstado       : [''],
       comentario     : [''],
-      // idSubacta      : [''],
-      // proyecto_filtro: [''],
-      // serv_filtro    : [''],
-      // gestor_filtro  : ['']
     })
   };
 
@@ -80,7 +79,7 @@ export class SubActasComponent implements OnInit {
         this.actualizarSubActa();
     } else {
       console.log('CREAR_SUB_ACTA');
-      this.crearSubActa()
+      // this.crearSubActa()
     }
   }
 
@@ -115,58 +114,15 @@ export class SubActasComponent implements OnInit {
   }
 
 
-  crearSubActa(){
-    const formValues = this.subActasForm.getRawValue();
+  eliminarDetalleActa(idDetActa: number){
 
-    const request = {
-      idGestor         : 673,
-      idProyecto       : 95,
-      idSubservicio    : 6,
-      periodo          : "2023-12-01",
-      comentario       : "",
-      idEstado         : 4,
-      enlaceAta        : "wwww.enlance.com",
-      idUsuarioCreacion: 474,
-      detalleActaParams: [
-        {
-          nombre: "Carlos Perez",
-          unidades: 15,
-          precio_unidad: 2,
-          precio_total: 30,
-          perfil: "Analista",
-          observacion: "",
-          unidad: "PEN",
-          comentario: ""
-        }
-      ]
-    }
   }
 
-  userID: number = 0;
-  getUserID(){
-   this.authService.getCurrentUser().subscribe( resp => {
-     this.userID   = resp.user.userId;
-    //  console.log('ID-USER', this.userID);
-   })
-  }
+  eliminarVentaDeclarada(idDeclarado: number){}
 
-  eliminarDetalleActa(){}
-
-  listEstadoDetActa: any[] = [];
-  getAllEstadosDetActa(){
-    this.actasService.getAllEstadosDetActa().subscribe(resp => {
-      this.listEstadoDetActa = resp.filter((x:any) => x.eliminacion_logica == 1 );
-      // console.log('EST_DET_ACTA', this.listEstadoDetActa);
-    })
-  }
-
-  listGestores: any[] = [];
-  getListGestor(){
-    this.liquidacionService.getAllGestores().subscribe((resp: any) => {
-      this.listGestores = resp;
-    })
-  }
-
+  // listProyectos: any[] = []
+  listDetActas: any[] = [];
+  listDeclarados: any[] = [];
   actionBtn: string = 'Crear';
   cargarActaById(): void{
     this.blockUI.start("Cargando acta y su detalle...");
@@ -175,6 +131,9 @@ export class SubActasComponent implements OnInit {
       this.actasService.getActaById(this.DATA_ACTA.idActa).subscribe((acta: any) => {
         this.blockUI.stop();
         console.log('DATA_BY_ID_ACTA', acta);
+
+        this.listDetActas   = acta.detalleActas;
+        this.listDeclarados = acta.actaDeclarados;
 
         this.subActasForm.reset({
           comentario        : acta.comentario,
@@ -194,21 +153,35 @@ export class SubActasComponent implements OnInit {
 
         this.subActasForm.controls['idGestor'  ].disable();
         this.subActasForm.controls['idProyecto'].disable();
-        this.subActasForm.controls['idEstado'  ].disable();
+        // this.subActasForm.controls['idEstado'  ].disable();
         this.subActasForm.controls['periodo'   ].disable();
       })
     }
+  };
+
+  listEstadoDetActa: any[] = [];
+  getAllEstadosDetActa(){
+    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+      this.listEstadoDetActa = resp;
+      console.log('EST_DET_ACTA', this.listEstadoDetActa);
+    })
   }
 
-  listDetActas: any[] = [];
-  getAllDetalleActas(){
-    if (this.DATA_ACTA) {
-      this.actasService.getActaById(this.DATA_ACTA.idActa).subscribe(resp => {
-        this.listDetActas = resp.detalleActas;
-        console.log('DET_ACTAS-LIST', this.listDetActas);
-      })
-    }
+  listGestores: any[] = [];
+  getListGestor(){
+    this.liquidacionService.getAllGestores().subscribe((resp: any) => {
+      this.listGestores = resp;
+    })
+  };
+
+  userID: number = 0;
+  getUserID(){
+   this.authService.getCurrentUser().subscribe( resp => {
+     this.userID   = resp.user.userId;
+    //  console.log('ID-USER', this.userID);
+   })
   }
+  // listProyectos: any[] = this.DATA_ACTA.proyectos;
 
   listProyectos: any[] = [];
   getAllProyecto(){
@@ -249,7 +222,7 @@ export class SubActasComponent implements OnInit {
     this.subActasForm.reset('', {emitEvent: false})
     this.newFilfroForm()
 
-    this.getAllDetalleActas();
+    // this.getAllDetalleActas();
   }
 
   crearOactualizarDetActa(DATA?: any) {
@@ -261,7 +234,21 @@ export class SubActasComponent implements OnInit {
         console.log('RESP_DET_ACT', resp);
 
         if (resp) {
-          this.getAllDetalleActas();
+          // this.getAllDetalleActas();
+        }
+      });
+  }
+
+  abrirVentaDeclarada(ACTA?: any) {
+    console.log('DATA_ACTA', ACTA);
+    this.dialog
+      // .open(DetalleActasComponent, { width: '55%', data: this.subActasForm.value })
+      .open(VentaDeclaradaComponent, { width: '55%', data: ACTA })
+      .afterClosed().subscribe((resp) => {
+        console.log('RESP_ACT_DECL', resp);
+
+        if (resp) {
+          // this.getAllActasDeclarados();
         }
       });
   }

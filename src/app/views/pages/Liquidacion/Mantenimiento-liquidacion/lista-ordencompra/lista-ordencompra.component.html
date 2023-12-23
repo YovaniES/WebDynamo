@@ -34,15 +34,6 @@
                 type="text"/>
             </div>
 
-            <div class="cli-form-element col-f-3">
-              <label>Proyecto</label>
-              <select formControlName="proyecto" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="liq.id" *ngFor="let liq of listProyectos">{{liq.valor_texto_1}}</option>
-              </select>
-              <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Seleccione el proyecto es obligatorio</small>
-            </div>
-
             <div class="cli-form-buttons" style="margin-top: 8px">
               <button
                 type="submit"
@@ -76,7 +67,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listGestores.length }} Orden de compra</span>
+            Total : <span class="total">{{ listOrdenCompra.length }} Orden de compra</span>
           </div>
         </div>
       </form>
@@ -86,17 +77,18 @@
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
-              <th class="w50">Acción</th>
+              <th>Acción</th>
+              <th style="min-width: 45px">ID OC</th>
               <th style="min-width: 150px">Orden de compra.</th>
-              <th class="w100">Monto</th>
-              <th style="min-width: 240px">Proyectos</th>
-              <th style="min-width: 115px">Certificaciones</th>
+              <th>Monto</th>
+              <th style="min-width: 250px">Certificaciones</th>
+              <th style="min-width: 92px">Responsable</th>
               <th style="min-width: 92px">Estado</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let orden of listProyectos | paginate: {
+            <tr *ngFor="let orden of listOrdenCompra | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalOrdencompra }">
@@ -111,18 +103,19 @@
 
                   <button
                     matTooltip="Eliminar orden de compra"
-                    (click)="eliminarLiquidacion(orden.id)"
+                    (click)="eliminarOrdenCompra(orden.idOrden)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
                 </div>
               </td>
-              <td style="font-weight: 600">{{ orden.id }}</td>
-              <td style="text-align: left">{{ orden.nombre | uppercase}}</td>
-              <td style="font-weight: 600">{{ orden.id }}</td>
-              <td style="font-weight: 600">{{ orden.id }}</td>
+              <td style="font-weight: 600">{{ orden.idOrden   }}</td>
+              <td style="text-align: left">{{ orden.nro_orden }}</td>
+              <td>{{ orden.monto }}</td>
+              <td>{{ orden.certificacions }}</td>
+              <td>{{ 'JYSANTIAGO*' }}</td>
               <td>
-                <span *ngIf="orden.estado == 'Aprobado'" class="label">{{orden.estado | uppercase}}</span>
+                <span *ngIf="orden.estado == 'Activo'" class="label">{{orden.estado | uppercase}}</span>
               </td>
             </tr>
           </tbody>
@@ -133,7 +126,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listGestores.length == 0"
+          *ngIf="!loadingItem && listOrdenCompra.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
           No hay Orden de compra para mostrar

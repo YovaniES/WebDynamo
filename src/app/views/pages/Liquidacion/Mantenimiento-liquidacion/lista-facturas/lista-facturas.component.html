@@ -89,6 +89,7 @@
               <th style="min-width: 150px">Factura Adquira</th>
               <th style="min-width: 108px">Actualizado por</th>
               <th style="min-width: 95px;">Estado</th>
+              <th style="min-width: 100px;">Fecha creación</th>
             </tr>
           </thead>
 
@@ -123,11 +124,9 @@
               <td>{{ factura.adquira }}</td>
               <td>{{ factura.factura_tgs }}</td>
               <td>{{ factura.factura_adquira }}</td>
-              <td>{{ factura.usuario_actualiza }}</td>
+              <td>{{ factura.usuarioActualiza.username }}</td>
               <td style="text-align: left;">{{ factura.estado.estado_facturacion }}</td>
-              <!-- <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': factura.eliminacion_logica == 1, 'c-red': factura.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
-              </td> -->
+              <td>{{ factura.fecha_creacion | date:'dd/MM/yyyy'}}</td>
             </tr>
           </tbody>
         </table>
