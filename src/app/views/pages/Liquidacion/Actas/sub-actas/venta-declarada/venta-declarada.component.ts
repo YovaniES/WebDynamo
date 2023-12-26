@@ -8,12 +8,6 @@ import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { UtilService } from 'src/app/core/services/util.service';
 import Swal from 'sweetalert2';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-venta-declarada',
   templateUrl: './venta-declarada.component.html',
@@ -29,15 +23,14 @@ export class VentaDeclaradaComponent implements OnInit {
                private utilService: UtilService,
                private liquidacionService: LiquidacionService,
                public dialogRef: MatDialogRef<VentaDeclaradaComponent>,
-               @Inject(MAT_DIALOG_DATA) public DATA_VD: any
-  ) {}
+               @Inject(MAT_DIALOG_DATA) public DATA_VD: any)
+            {};
 
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
   this.getAllEstadosDetActa();
   this.getUserID();
-
   console.log('DATA_ACTA***', this.DATA_VD);
 
   if (this.DATA_VD.idActa) {
@@ -49,7 +42,7 @@ export class VentaDeclaradaComponent implements OnInit {
   ventadeclaradaForm!: FormGroup;
   newForm(){
     this.ventadeclaradaForm = this.fb.group({
-     periodo        : [''],
+     periodo        : ['', Validators.required],
      montoDeclarado : ['', Validators.required],
      comentario     : [''],
     })
@@ -81,7 +74,6 @@ export class VentaDeclaradaComponent implements OnInit {
       comentario        : formValues.comentario,
       idUsuarioActualiza: this.userID
     }
-
     this.actasService.actualizarVentaDeclarada(this.DATA_VD.idDeclarado, requestVD ).subscribe((resp: any) => {
       if (resp.success) {
         Swal.fire({
@@ -93,18 +85,17 @@ export class VentaDeclaradaComponent implements OnInit {
         this.close(true);
       }
     })
-  }
+  };
 
   crearVD(){
     const formValues = this.ventadeclaradaForm.getRawValue();
     const request = {
-      idActa            : this.DATA_VD,
-      periodo           : this.utilService.generarPeriodo(formValues.periodo),
-      montoDeclarado    : formValues.montoDeclarado,
-      comentario        : formValues.comentario,
-      idUsuarioCreacion : this.userID
-    }
-
+      idActa           : this.DATA_VD,
+      periodo          : this.utilService.generarPeriodo(formValues.periodo),
+      montoDeclarado   : formValues.montoDeclarado,
+      comentario       : formValues.comentario,
+      idUsuarioCreacion: this.userID
+    };
     this.actasService.crearVentaDeclarada(request).subscribe((resp:any) => {
       if (resp.message) {
         Swal.fire({
@@ -112,11 +103,10 @@ export class VentaDeclaradaComponent implements OnInit {
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'
-        })
+        });
         this.close(true);
       }
     })
-
   }
 
   actionBtn: string = 'Crear'

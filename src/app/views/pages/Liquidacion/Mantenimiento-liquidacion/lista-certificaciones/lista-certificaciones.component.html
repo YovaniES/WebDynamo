@@ -42,12 +42,11 @@
               </select>
             </div>
 
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
               </select>
             </div>
 
@@ -94,14 +93,16 @@
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
               <th>ID</th>
-              <th style="min-width: 120px">Orden de compra</th>
+              <th style="min-width: 120px">Orden compra</th>
               <th style="min-width: 150px">Certificación</th>
               <th style="min-width: 150px">Proyecto(s)</th>
               <th>Total</th>
               <th>Consumido</th>
               <th>Disponible</th>
+              <th>Moneda</th>
               <th style="min-width: 100px">Fecha creación</th>
-              <th style="min-width: 92px">Responsable</th>
+              <th style="min-width: 105px">Actualizado por:</th>
+              <th style="min-width: 92px">Estado</th>
               <th style="min-width: 92px"></th>
             </tr>
           </thead>
@@ -135,8 +136,10 @@
               <td>{{ cert.valorTotal }}</td>
               <td>{{ cert.valorUsado }}</td>
               <td>{{ cert.valorDisponible }}</td>
+              <td>{{ cert.moneda }}</td>
               <td>{{ cert.fecha_creacion | date:'dd/MM/yy HH:mm' }}</td>
               <td>{{ cert.usuarioActualiza.usuario }}</td>
+              <td>{{ cert.estado.estado }}</td>
               <td>
                 <div class="moad-actions">
                   <button

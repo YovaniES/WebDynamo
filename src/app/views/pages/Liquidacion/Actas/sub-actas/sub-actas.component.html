@@ -155,11 +155,7 @@
                       </tbody>
                     </table>
                     <div class="cli-loader" *ngIf="loadingItem">
-                      <mat-spinner
-                        style="margin-right: 20px"
-                        diameter="20"
-                      ></mat-spinner
-                      >cargando...
+                      <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
                     </div>
                   </div>
                   <div
@@ -172,6 +168,7 @@
           </div>
         </div>
 
+        <!-- LISTA DETALLES ACTA -->
         <ng-container>
           <div *ngIf="DATA_ACTA" class="pr-subtitle mt-1">Detalle Acta</div>
           <div class="pr-section">
@@ -194,7 +191,7 @@
 
                   <!-- NUEVO DETALLE  -->
                   <ng-container *ngIf="!loading">
-                    <div style="overflow: auto; min-height: 100px; max-height: 180px; color:#6c757d;">
+                    <div style="overflow: auto; min-height: 166px; max-height: 166px; color:#6c757d;">
 
                     <table class="cli-table_x stripedtable underlinedtable" *ngIf="listDetActas.length > 0" >
                       <thead>
@@ -210,7 +207,8 @@
                           <th>Observaciones</th>
                           <th style="min-width: 100px;">Comentario</th>
                           <th>Unidad</th>
-                          <th>Certificados</th>
+                          <th>Certificado(s)</th>
+                          <th>Facturado(s)</th>
                           <th style="min-width: 175px;">Cod. Certificación</th>
                         </tr>
                       </thead>
@@ -242,8 +240,9 @@
                           <td>{{ detalle.observacion }}</td>
                           <td>{{ detalle.comentario  }}</td>
                           <td>{{ detalle.unidad      }}</td>
-                          <td>{{'1000' }}</td>
-                          <td>{{'1501445474; 1001445004' }}</td>
+                          <td>{{ detalle.certificado }}</td>
+                          <td>{{ detalle.facturado   }}</td>
+                          <td>{{ detalle.certificacionConcat }}</td>
                         </tr>
                       </tbody>
                     </table>

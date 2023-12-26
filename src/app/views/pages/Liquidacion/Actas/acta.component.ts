@@ -149,7 +149,8 @@ export class ActaComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     console.log('DATA_ACTAS', DATA);
     this.dialog
-      .open(ModalActaComponent, { width: '70%', data: {DATA, proyectos_x: this.listProyectos} })
+      .open(ModalActaComponent, { width: '70%', data: {DATA,} })
+      // .open(ModalActaComponent, { width: '70%', data: {DATA, proyectos_x: this.listProyectos} })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllActas();

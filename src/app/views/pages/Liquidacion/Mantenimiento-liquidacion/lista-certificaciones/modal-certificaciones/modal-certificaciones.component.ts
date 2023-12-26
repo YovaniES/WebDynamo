@@ -3,15 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { ActasService } from 'src/app/core/services/actas.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
-
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
 
 @Component({
   selector: 'app-modal-certificaciones',
@@ -23,6 +18,7 @@ export class ModalCertificacionesComponent implements OnInit {
   loadingItem: boolean = false;
 
   constructor( private fb: FormBuilder,
+               private actasService: ActasService,
                private liquidacionService: LiquidacionService,
                private authService: AuthService,
                public dialogRef: MatDialogRef<ModalCertificacionesComponent>,
@@ -32,59 +28,58 @@ export class ModalCertificacionesComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllGestor();
+  this.getAllOrdenCompra();
   this.getUserID();
 
   if (this.DATA_CERTIF) {
-    this.cargarSubservicioById(this.DATA_CERTIF);
-    // console.log('MODAL-SUBSERV', this.DATA_CERTIF);
+    this.cargarCertificacionById(this.DATA_CERTIF);
+    this.getAllEstadosDetActa();
+    console.log('MODAL-CERT', this.DATA_CERTIF);
     }
   }
 
-  subservicioForm!: FormGroup;
+  certificacionForm!: FormGroup;
   newForm(){
-    this.subservicioForm = this.fb.group({
-    certificacion : ['', Validators.required],
-    monto         : ['', Validators.required],
-    moneda        : [''],
-    proyecto      : ['', Validators.required],
-    ordenCompra   : ['', Validators.required],
-    fecha_creacion: [''],
-    estado        : ['']
+    this.certificacionForm = this.fb.group({
+        certificacion     : ['', Validators.required],
+        monto_total       : ['', Validators.required],
+        idProyecto        : ['', Validators.required],
+        idOrden           : ['', Validators.required],
+        moneda            : [''],
+        estado            : [''],
+        fecha_creacion    : ['']
     })
   }
 
   crearOactualizarSubservicio(){
-    if (this.subservicioForm.invalid) {
-      return Object.values(this.subservicioForm.controls).forEach((controls) => {
+    if (this.certificacionForm.invalid) {
+      return Object.values(this.certificacionForm.controls).forEach((controls) => {
         controls.markAllAsTouched();
       })
     }
     if (this.DATA_CERTIF ) {
-        console.log('UPD_SUBS');
-        this.actualizarSubservicio();
+        this.actualizarCertificacion();
     } else {
-      console.log('CREAR_SUBS');
-      this.crearSubservicio()
+      this.crearCertificacion()
     }
   }
 
-  crearSubservicio(): void{
-    const formValues = this.subservicioForm.getRawValue();
+  crearCertificacion(): void{
+    const formValues = this.certificacionForm.getRawValue();
 
     const request = {
-      idProyecto      : formValues.proyecto,
-      nombre          : formValues.subservicio,
-      idRepresentante : formValues.gestor,
-      idUsuarioCrea   : this.userID,
-      fechaInicio     : formValues.fecha_ini,
-      fechaFin        : formValues.fecha_fin,
+      nro_certificacion : formValues.nro_certificacion,
+      valor             : formValues.monto_total,
+      moneda            : formValues.moneda,
+      idOrden           : formValues.idOrden,
+      idProyecto        : formValues.idProyecto,
+      idUsuarioCreacion : this.userID,
     }
 
-    this.liquidacionService.crearSubservicio(request).subscribe((resp: any) => {
+    this.liquidacionService.crearCertificacion(request).subscribe((resp: any) => {
       if (resp.message) {
         Swal.fire({
-          title: 'Crear subservicio!',
+          title: 'Crear certificación!',
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'
@@ -94,10 +89,10 @@ export class ModalCertificacionesComponent implements OnInit {
     })
   }
 
-  actualizarSubservicio(){
-    const formValues = this.subservicioForm.getRawValue();
+  actualizarCertificacion(){
+    const formValues = this.certificacionForm.getRawValue();
 
-    const requestSubservicio = {
+    const requestCertificacion = {
       idProyecto   : formValues.proyecto,
       nombre       : formValues.subservicio,
       representante: formValues.gestor,
@@ -105,10 +100,10 @@ export class ModalCertificacionesComponent implements OnInit {
       fechaInicio  : formValues.fecha_ini,
       fechaFin     : formValues.fecha_fin,
     }
-    this.liquidacionService.actualizarSubservicio(this.DATA_CERTIF.idSubservicio, requestSubservicio).subscribe((resp: any) => {
+    this.liquidacionService.actualizarCertificacion(this.DATA_CERTIF.idCertificacion, requestCertificacion).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
-            title: 'Actualizar subservicio!',
+            title: 'Actualizar certificación!',
             text : `${resp.message}`,
             icon : 'success',
             confirmButtonText: 'Ok',
@@ -119,25 +114,34 @@ export class ModalCertificacionesComponent implements OnInit {
   }
 
   actionBtn: string = 'Crear';
-  cargarSubservicioById(idGestor: number): void{
-    this.blockUI.start("Cargando Subservicio...");
+  cargarCertificacionById(idCerti: number): void{
+    this.blockUI.start("Cargando Certificación...");
     if (this.DATA_CERTIF) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getSubserviciosById(this.DATA_CERTIF.idSubservicio).subscribe((subserv: any) => {
-        console.log('DATA_BY_ID_SUBSERV', subserv);
+      this.liquidacionService.getCertificacionById(this.DATA_CERTIF.idCertificacion).subscribe((cert: any) => {
+        console.log('DATA_BY_ID_CERTIF', cert);
         this.blockUI.stop();
 
-        this.subservicioForm.reset({
-          subservicio   : subserv.subservicio,
-          gestor        : subserv.representante.idGestor,
-          fecha_ini     : subserv.fechaInicio,
-          fecha_creacion: moment.utc(subserv.fechaCreacion).format('YYYY-MM-DD'),
-          fecha_fin     : subserv.fechaFin,
-          proyecto      : subserv.idProyecto,
-          id_estado     : subserv.estado,
+        this.certificacionForm.reset({
+          idCertificacion  : this.DATA_CERTIF.idCertificacion,
+          certificacion    : cert.nro_certificacion,
+          monto_total      : cert.valorTotal,
+          moneda           : cert.moneda,
+          idOrden          : cert.ordenCompra.idOrden,
+          idProyecto       : cert.proyecto.idProyecto,
+          fecha_creacion   : moment.utc(cert.fecha_creacion).format('YYYY-MM-DD'),
+          estado           : cert.estado
         })
       })
     }
+  };
+
+  listEstadoDetActa: any[] = [];
+  getAllEstadosDetActa(){
+    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+      this.listEstadoDetActa = resp;
+      console.log('EST_DET_ACTA', this.listEstadoDetActa);
+    })
   }
 
   userID: number = 0;
@@ -148,28 +152,19 @@ export class ModalCertificacionesComponent implements OnInit {
    })
   }
 
-  listGestores: any[] = [];
-  getAllGestor(){
-    // const idGestor = this.subservicioForm.controls['gestor'].value;
-    console.log('id_Gestor', this.subservicioForm.controls['gestor'].value );
-
-    const request = {
-      idGestor   : this.subservicioForm.controls['gestor'].value,
-      proyecto   : '',
-      subservicio: '',
-      estado     : ''
-    }
-    this.liquidacionService.getAllGestor(request).subscribe( (resp: any) => {
-      this.listGestores = resp
-      // console.log('LIST-GESTOR', this.listGestores);
-    })
-  }
-
   listProyectos: any[] = [];
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY-S', this.listProyectos);
+    })
+  }
+
+  listOrdenCompra: any[] = [];
+  getAllOrdenCompra(){
+    this.liquidacionService.getAllOrdenCompra().subscribe(resp => {
+      this.listOrdenCompra = resp;
+      console.log('ORDEN_C', this.listOrdenCompra);
     })
   }
 
@@ -182,7 +177,7 @@ export class ModalCertificacionesComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.subservicioForm.get(campo)?.invalid && this.subservicioForm.get(campo)?.touched ) {
+    if (this.certificacionForm.get(campo)?.invalid && this.certificacionForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;

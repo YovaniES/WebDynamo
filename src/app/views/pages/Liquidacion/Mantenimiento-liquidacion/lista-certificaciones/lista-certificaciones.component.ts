@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalCertificacionesComponent } from './modal-certificaciones/modal-certificaciones.component';
 import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
+import { ActasService } from 'src/app/core/services/actas.service';
 
 export interface changeResponse {
   message: string;
@@ -23,12 +24,12 @@ export class ListaCertificacionesComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalCerticaciones: number = 0;
   pageSize = 10;
 
   constructor( private fb: FormBuilder,
+               private actasService: ActasService,
                private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
@@ -38,7 +39,8 @@ export class ListaCertificacionesComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllCertificaciones()
+  this.getAllEstadosDetActa();
+  this.getAllCertificaciones();
   }
 
   certificacionesForm!: FormGroup;
@@ -65,7 +67,6 @@ export class ListaCertificacionesComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed){
         this.liquidacionService.eliminarCertificacion(cert.idSubservicio).subscribe(resp => {
-
           Swal.fire({
             title: 'Eliminar certificación',
             text: `${resp.message}`,
@@ -79,8 +80,6 @@ export class ListaCertificacionesComponent implements OnInit {
 
   listCertificaciones: any[] = [];
   getAllCertificaciones(){
-    // const request = this.certificacionesForm.value;
-
     this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
       this.listCertificaciones = resp;
       console.log('DATA_CERTIF', this.listCertificaciones);
@@ -99,9 +98,16 @@ export class ListaCertificacionesComponent implements OnInit {
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
-
     })
-  }
+  };
+
+  listEstadoDetActa: any[] = [];
+  getAllEstadosDetActa(){
+    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+      this.listEstadoDetActa = resp;
+      console.log('EST_DET_ACTA', this.listEstadoDetActa);
+    })
+  };
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);

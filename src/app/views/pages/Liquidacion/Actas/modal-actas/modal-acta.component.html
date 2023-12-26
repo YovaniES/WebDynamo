@@ -3,7 +3,7 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male mt-3">{{ DATA_ACTA ? "Actualizar" : "Crear" }} acta</div>
+  <div class="cli-form-title c-male mt-3">{{ "Crear" }} acta*</div>
 
   <form class="row g-3" [formGroup]="actasForm">
     <div class="cli-form newvac-wrapper">
@@ -15,7 +15,7 @@
               <label>Gestor <small style="color: red">*</small></label>
               <select formControlName="idGestor" class="cli-input_x">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombreCompleto}}</option>
+                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{ gestor.nombreCompleto }}</option>
               </select>
               <small class="form-text text-alert" *ngIf="campoNoValido('idGestor')">* Ingrese el Gestor es obligatorio</small>
             </div>
@@ -38,7 +38,7 @@
               <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio')">* Ingrese el Subservicio es obligatorio</small>
             </div>
 
-            <div class="cli-form-element col-f-4" >
+            <div class="cli-form-element col-f-4">
                 <label>Periodo <small style="color: red">*</small></label>
                  <input
                   type="month"
@@ -47,7 +47,7 @@
               <small class="form-text text-alert" *ngIf="campoNoValido('periodo')">* Ingrese el Periodo es obligatorio</small>
             </div>
 
-            <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
+            <div class="cli-form-element col-f-4">
               <label>Estado</label>
               <select formControlName="idEstado" class="cli-input_x">
                 <option [value]="100" disabled>-Seleccione-</option>
@@ -61,13 +61,7 @@
               <input class="cli-input_x" formControlName="enlaceAta" type="text" />
             </div>
 
-            <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
-              <label>Declarado</label>
-              <input class="cli-input_x" formControlName="declarado" type="text" />
-              <!-- <small class="form-text text-alert" *ngIf="campoNoValido('declarado')">* Ingrese el Importe es obligatorio</small> -->
-            </div>
-
-            <div class="cli-form-element col-f-2"               >
+            <div class="cli-form-element col-f-2">
               <label>Comentario</label>
               <textarea
                 class="cli-input_x"
@@ -83,7 +77,6 @@
           <div class="pr-subtitle mt-1">Datos del Acta</div>
           <div class="pr-section mb-1">
             <div class="pr-module-container cli-card fit-card ">
-                <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
                   <div class="cli-form newvac-wrapper" class="row g-3">
                     <ng-container formGroupName="detalleActaParams">
                       <div class="cli-form-element col-f-4">
@@ -108,9 +101,9 @@
                         <label>Precio x Unid. <small style="color: red">*</small></label>
                         <input
                           class="cli-input"
-                          formControlName="precio"
+                          formControlName="precio_unidad"
                           type="number"/>
-                          <small class="form-text text-alert" *ngIf="campoNoValido('precio')">* Ingrese el Precio es obligatorio</small>
+                          <small class="form-text text-alert" *ngIf="campoNoValido('precio_unidad')">* Ingrese el Precio es obligatorio</small>
                       </div>
 
                       <div class="cli-form-element col-f-4">
@@ -132,20 +125,23 @@
                       </div>
 
                       <div class="cli-form-element col-f-4">
-                        <label>Estado</label>
-                        <select formControlName="idEstado" class="cli-input">
-                          <option [value]="0" disabled>-Seleccione-</option>
-                          <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.nombre}}</option>
-                        </select>
-                      </div>
-
-                      <div class="cli-form-element col-f-4">
                         <label>Unid. Moneda</label>
-                        <select formControlName="unidad" class="cli-input">
+                        <select formControlName="moneda" class="cli-input">
                           <option [value]="0" disabled>-Seleccione-</option>
                           <option value='PEN'>PEN</option>
                           <option value='Otros'>Otros</option>
                         </select>
+                      </div>
+
+                      <div class="cli-form-element col-f-2"           >
+                        <label>Observación</label>
+                        <textarea
+                          class="cli-input"
+                          style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+                          rows="1"
+                          placeholder="Escriba alguna observación del detalle acta..."
+                          formControlName="observacion"
+                        ></textarea>
                       </div>
 
                       <div class="cli-form-element col-f-2"           >
@@ -155,18 +151,7 @@
                           style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
                           rows="1"
                           placeholder="Escriba algún comentario del detalle acta..."
-                          formControlName="comentario"
-                        ></textarea>
-                      </div>
-
-                      <div class="cli-form-element col-f-2"           >
-                        <label>Observación</label>
-                        <textarea
-                          class="cli-input"
-                          style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
-                          rows="1"
-                          placeholder="Escriba algún observación del detalle..."
-                          formControlName="observacion"
+                          formControlName="comentarioDet"
                         ></textarea>
                       </div>
                   </ng-container>
@@ -181,12 +166,12 @@
             (click)="close()">
             <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
           </button>
-
+          <!-- && (listDetActas.length == 0) -->
           <button
             class="cli-btn btn-m btn-turq"
-            [disabled]="actasForm.invalid && (listDetActas.length == 0)"
-            (click)="crearOactualizarActa()">
-            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+            [disabled]="actasForm.invalid"
+            (click)="crearAgrupacionConActa()">
+            <mat-icon class="icon-18">save</mat-icon>Crear
           </button>
         </div>
       </div>

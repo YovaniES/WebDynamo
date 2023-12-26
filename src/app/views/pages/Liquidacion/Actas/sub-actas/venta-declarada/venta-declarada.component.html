@@ -7,63 +7,61 @@
 
   <form class="row g-3" [formGroup]="ventadeclaradaForm">
     <div class="cli-form newvac-wrapper">
-
-      <div style="display: flex" >
-        <div class="id-score">Periodo : <span  class="total">{{ventadeclaradaForm.controls['periodo'].value}}</span></div>
-        <div class="flex-1" style="background: #f8f9fa;"></div>
-          <ng-container class="input-group">
-            <div class="input-group-text" style="background: #f8f9fa; color: #858d95;"><mat-icon class="icon-13">attach_money</mat-icon></div>
-            <div class="cli-user">{{ventadeclaradaForm.controls['montoDeclarado'].value }}</div>
-          </ng-container>
-          <div class="flex-1" style="background: #f8f9fa;"></div>
-          <div class="s-dni">Proyecto : <span  class="total">TQACOM</span></div>
+      <div style="display: flex">
+        <div class="id-score">Periodo :<span class="total">{{ventadeclaradaForm.controls["periodo"].value}}</span></div>
+        <div class="flex-1" style="background: #f8f9fa"></div>
+        <ng-container class="input-group">
+          <div class="input-group-text" style="background: #f8f9fa; color: #858d95">
+            <mat-icon class="icon-13">attach_money</mat-icon>
+          </div>
+          <div class="cli-user">{{ ventadeclaradaForm.controls["montoDeclarado"].value }}</div>
+        </ng-container>
+        <div class="flex-1" style="background: #f8f9fa"></div>
+        <div class="s-dni">Proyecto : <span class="total">TQACOM-</span></div>
       </div>
 
       <div class="row">
         <div class="cli-form-element col-f-4">
           <label>Monto Declarado <small style="color: red">*</small></label>
-          <input
-            class="cli-input"
+          <input class="cli-input"
             formControlName="montoDeclarado"
             type="number"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('montoDeclarado')">* Ingrese la cantidad es obligatorio</small>
+          <small class="form-text text-alert" *ngIf="campoNoValido('montoDeclarado')">* Ingrese la cantidad es obligatorio</small>
         </div>
 
-        <div class="cli-form-element col-f-4" >
+        <div class="cli-form-element col-f-4">
           <label>Periodo <small style="color: red">*</small></label>
-           <input
-            type="month"
-            class="cli-input"
-            formControlName="periodo"/>
-        <small class="form-text text-alert" *ngIf="campoNoValido('periodo')">* Ingrese el Periodo es obligatorio</small>
-      </div>
+          <input type="month" class="cli-input" formControlName="periodo" />
+          <small class="form-text text-alert" *ngIf="campoNoValido('periodo')">* Ingrese el Periodo es obligatorio</small>
+        </div>
 
-        <div class="cli-form-element col-f-2"           >
+        <div class="cli-form-element col-f-2">
           <label>Comentario</label>
           <textarea
             class="cli-input"
-            style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+            style="background-image: none;border-color: #bdbdbd;font-size: 14px;font-size: 12px;"
             rows="1"
             placeholder="Escriba algún comentario de la venta declarada..."
             formControlName="comentario"
           ></textarea>
         </div>
 
-      <div class="cli-form-buttons" style="margin-top: 8%">
-        <button class="cli-btn btn-m btn-regresar"
-                type="submit" (click)="close()">
-                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
-        </button>
+        <div class="cli-form-buttons" style="margin-top: 8%">
+          <button
+            class="cli-btn btn-m btn-regresar"
+            type="submit"
+            (click)="close()">
+            <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+          </button>
 
-        <button class="cli-btn btn-m btn-turq"
-                [disabled]="ventadeclaradaForm.invalid"
-                (click)="crearOactualizarVD()">
-                <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
-        </button>
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="ventadeclaradaForm.invalid"
+            (click)="crearOactualizarVD()">
+            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+          </button>
+        </div>
       </div>
-
     </div>
-  </div>
   </form>
 </div>
-

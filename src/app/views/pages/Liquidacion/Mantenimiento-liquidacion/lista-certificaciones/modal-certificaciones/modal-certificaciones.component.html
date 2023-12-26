@@ -3,11 +3,29 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_CERTIF ? "Actualizar" : "Crear" }} certificaciones</div>
+  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_CERTIF ? "Actualizar" : "Crear" }} certificación</div>
 
-  <form class="row g-3" [formGroup]="subservicioForm">
+  <form class="row g-3" [formGroup]="certificacionForm">
     <div class="cli-form newvac-wrapper">
       <div class="row g-3">
+
+        <div class="cli-form-element col-f-3">
+          <label>Proyecto <small style="color: red">*</small></label>
+          <select formControlName="idProyecto" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idProyecto')">* Seleccione el proyecto es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Orden de compra <small style="color: red">*</small></label>
+          <select formControlName="idOrden" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="oc.idOrden" *ngFor="let oc of listOrdenCompra">{{oc.nro_orden}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idOrden')">* Seleccione la Orden de compra es obligatorio</small>
+        </div>
 
         <div class="cli-form-element col-f-3">
           <label>Certificación <small style="color: red">*</small></label>
@@ -22,9 +40,9 @@
           <label>Monto <small style="color: red">*</small></label>
           <input
             class="cli-input"
-            formControlName="monto"
+            formControlName="monto_total"
             type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('monto')">* Ingrese el Monto es obligatorio</small>
+            <small class="form-text text-alert" *ngIf="campoNoValido('monto_total')">* Ingrese el Monto es obligatorio</small>
         </div>
 
         <div class="cli-form-element col-f-3">
@@ -35,31 +53,12 @@
             type="text"/>
         </div>
 
-        <div class="cli-form-element col-f-3">
-          <label>Orden de compra <small style="color: red">*</small></label>
-          <select formControlName="ordenCompra" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
-          </select>
-          <small class="form-text text-alert" *ngIf="campoNoValido('ordenCompra')">* Seleccione el Orden de compra es obligatorio</small>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Proyecto <small style="color: red">*</small></label>
-          <select formControlName="proyecto" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
-          </select>
-          <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Seleccione el proyecto es obligatorio</small>
-        </div>
-
         <ng-container *ngIf="DATA_CERTIF">
-          <div class="cli-form-element col-f-3" *ngIf="DATA_CERTIF">
+          <div class="cli-form-element col-f-4">
             <label>Estado</label>
-            <select formControlName="id_estado" class="cli-input">
+            <select formControlName="estado" class="cli-input">
               <option [value]="0" disabled>-Seleccione-</option>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
+              <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
             </select>
           </div>
 
@@ -81,7 +80,7 @@
         </button>
 
         <button class="cli-btn btn-m btn-turq"
-                [disabled]="subservicioForm.invalid"
+                [disabled]="certificacionForm.invalid"
                 (click)="crearOactualizarSubservicio()"
                 ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
         </button>

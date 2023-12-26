@@ -165,7 +165,7 @@ export class SubActasComponent implements OnInit {
       this.listEstadoDetActa = resp;
       console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
-  }
+  };
 
   listGestores: any[] = [];
   getListGestor(){

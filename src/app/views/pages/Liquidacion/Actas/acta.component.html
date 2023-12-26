@@ -94,12 +94,12 @@
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR LIQUIDACION ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR ACTA ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <div class="d-flex">
             <button class="cli-btn btn-turq"
               (click)="abrirModalCrearOactualizar()"
-              ><mat-icon class="icon-18">add</mat-icon>Crear acta
+              ><mat-icon class="icon-18">add</mat-icon>Crear acta:
             </button>
           </div>
 
@@ -124,7 +124,7 @@
               <th>Declarado</th>
               <th>Facturado</th>
               <th>Pendiente</th>
-              <th>Responsable</th>
+              <th>Actualizado por:</th>
               <th>Total Actas</th>
               <!-- <th></th> -->
             </tr>
@@ -228,7 +228,7 @@
                   </td> -->
                   <td style="text-align:left ">
                     <div class="cli-table_x-user">
-                      <button
+                      <button *ngIf="detalle.usuarioCreacion.usuario"
                         matTooltip={{detalle.usuarioCreacion.fullName}}
                         class="icon-btn btn-trans"
                         style="color: #6c757d;"
