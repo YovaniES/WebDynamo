@@ -21,8 +21,6 @@ export class SubActasComponent implements OnInit {
 
   loadingItem: boolean = false;
 
-  showingidx = 0;
-
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private actasService: ActasService,

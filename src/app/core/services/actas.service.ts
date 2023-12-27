@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  API_ACTAS, API_ACTAS_FILTRO, API_DET_ACTA, API_ESTADOS_DET_ACTA, API_GESTOR, API_VENTA_DECLARADA,
+  API_ACTAS, API_ACTAS_FILTRO, API_CERTIFICACION, API_DET_ACTA, API_DET_CERTIFICACION, API_ESTADOS_DET_ACTA, API_GESTOR, API_VENTA_DECLARADA,
 } from '../constants/url.constants';
 import { Observable, map } from 'rxjs';
 
@@ -114,5 +114,41 @@ export class ActasService {
       return this.http.put(`${API_VENTA_DECLARADA}/${idVD}`, reqDetActa);
     }
 
+
+    // CRUD CERTIFICACION
+    actualizarCertificacion(idVD: number, reqCert: any){
+      return this.http.put(`${API_CERTIFICACION}/${idVD}`, reqCert);
+    }
+
+    crearCertificacion(requestCert: any){
+      return this.http.post(`${API_CERTIFICACION}`, requestCert);
+    };
+
+
+    cargarCertificacionById(idCert: number){
+      return this.http.get<any>(`${API_CERTIFICACION}/${idCert}`).pipe(
+        map((resp: any) => {
+          return resp.result;
+        })
+      );
+    }
+
+
+    // CRUD DETALLE ACTA - CERTIFICACION
+    crearDetalleCertificacion(requestCert: any){
+      return this.http.post(`${API_DET_CERTIFICACION}`, requestCert);
+    };
+
+    cargarDetalleCertificacionById(idCert: number){
+      return this.http.get<any>(`${API_DET_CERTIFICACION}/${idCert}`).pipe(
+        map((resp: any) => {
+          return resp.result;
+        })
+      );
+    };
+
+    actualizarDetalleCertificacion(idCert: number, reqCert: any){
+      return this.http.put(`${API_DET_CERTIFICACION}/${idCert}`, reqCert);
+    }
 
 }

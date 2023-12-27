@@ -1,10 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
+import { VentaDeclaradaComponent } from '../venta-declarada/venta-declarada.component';
+import { ModalCertificacionComponent } from './modal-certificacion/modal-certificacion.component';
 
 export interface changeResponse {
   message: string;
@@ -25,6 +27,7 @@ export class DetalleActasComponent implements OnInit {
                private actasService: ActasService,
                private liquidacionService: LiquidacionService,
                public dialogRef: MatDialogRef<DetalleActasComponent>,
+               private dialog: MatDialog,
                @Inject(MAT_DIALOG_DATA) public DATA_DET_ACTAS: any
   ) {}
 
@@ -32,14 +35,12 @@ export class DetalleActasComponent implements OnInit {
   this.newForm()
   this.getAllProyecto();
   this.getAllEstadosDetActa();
-
-  // console.log('ID_DET_ACTA', this.DATA_DET_ACTAS.idActa);
-  console.log('DATA_DET_ACTAS', this.DATA_DET_ACTAS);
-  console.log('DATA_DET_ACTAS=>ID', this.DATA_DET_ACTAS.idActa);
+  // console.log('DATA_DET_ACTAS', this.DATA_DET_ACTAS);
+  // console.log('DATA_DET_ACTAS=>ID', this.DATA_DET_ACTAS.idActa);
 
   if (this.DATA_DET_ACTAS.idDetalleActa) {
     this.cargarDetActaById();
-    console.log('DETALLE_ACTA', this.DATA_DET_ACTAS);
+    // console.log('DETALLE_ACTA', this.DATA_DET_ACTAS);
     }
   }
 
@@ -47,16 +48,16 @@ export class DetalleActasComponent implements OnInit {
   newForm(){
     this.detalleactasForm = this.fb.group({
      analista    : ['', Validators.required],
-     perfil      : ['', Validators.required],
-     precio      : ['', Validators.required],
-     cantidad    : ['', Validators.required],
+     perfil      : [''],
+     precio      : [''],
+     cantidad    : [''],
      venta_total : [''],
-    //  categoria_1: ['', Validators.required],
      importe     : [''],
      observacion : [''],
      comentario  : [''],
      idEstado    : [''],
      unidad      : ['']
+     //  categoria_1: ['', Validators.required],
     })
   }
 
@@ -146,9 +147,10 @@ export class DetalleActasComponent implements OnInit {
       this.actionBtn = 'Actualizar'
       this.actasService.getDetActaById(this.DATA_DET_ACTAS.idDetalleActa).subscribe((detalle:any) => {
         this.blockUI.stop();
-        console.log('DET_ACTA_BY_ID', detalle);
+        // console.log('DET_ACTA_BY_ID', detalle);
 
         this.listCertificaciones = detalle.detalleActaCertificacions;
+
         this.detalleactasForm.reset({
           analista   : detalle.nombre,
           perfil     : detalle.perfil,
@@ -163,6 +165,10 @@ export class DetalleActasComponent implements OnInit {
         })
       })
     }
+  };
+
+  eliminarCertificacion(idCert: number){
+
   }
 
   listProyectos: any[] = [];
@@ -176,7 +182,7 @@ export class DetalleActasComponent implements OnInit {
   getAllEstadosDetActa(){
     this.actasService.getAllEstadosDetActa().subscribe(resp => {
       this.listEstadoDetActa = resp;
-      console.log('EST_DET_ACTA', this.listEstadoDetActa);
+      // console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
   }
 
@@ -198,7 +204,24 @@ export class DetalleActasComponent implements OnInit {
     } else {
       return false;
     }
-  }
+  };
+
+
+  abrirCertificacion(DET_ACTA?: any) {
+    console.log('DATA_DET_ACTA', DET_ACTA);
+    // console.log('data_x', this.listCertificaciones);
+
+    this.dialog
+      .open(ModalCertificacionComponent, { width: '45%', data: {data: this.listCertificaciones, detalle: DET_ACTA , isCreate: true} })
+      .afterClosed().subscribe((resp) => {
+        console.log('RESP_DET_ACTA', resp);
+
+        if (resp) {
+          // this.getAllEstadosDetActa();
+          this.listCertificaciones
+        }
+      });
+  };
 
 }
 

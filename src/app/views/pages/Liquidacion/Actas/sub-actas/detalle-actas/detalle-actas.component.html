@@ -9,7 +9,7 @@
     <div class="cli-form newvac-wrapper">
       <div class="chart-draw">
         <div style="display: flex" *ngIf="DATA_DET_ACTAS">
-          <div class="pr-subtitle mt-2">Detalle Acta *</div>
+          <div class="pr-subtitle mt-2">Detalle acta</div>
 
           <div class="flex-1"></div>
           <ng-container class="input-group">
@@ -40,7 +40,7 @@
           </div> -->
 
             <div class="cli-form-element col-f-4">
-              <label>Analista <small style="color: red">*</small></label>
+              <label>Nombre <small style="color: red">*</small></label>
               <input class="cli-input" formControlName="analista" type="text" />
               <small class="form-text text-alert" *ngIf="campoNoValido('analista')">* Ingrese el Analista es obligatorio</small>
             </div>
@@ -52,13 +52,13 @@
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Precio x Unid. <small style="color: red">*</small></label>
+              <label>Precio x Unid.</label>
               <input class="cli-input" formControlName="precio" type="text" />
               <small class="form-text text-alert" *ngIf="campoNoValido('precio')">* Ingrese el Precio es obligatorio</small>
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Cantidad <small style="color: red">*</small></label>
+              <label>Cantidad</label>
               <input class="cli-input"
                 formControlName="cantidad"
                 type="number"/>
@@ -81,13 +81,13 @@
               type="text"/>
           </div> -->
 
-            <div class="cli-form-element col-f-4">
+            <!-- <div class="cli-form-element col-f-4">
               <label>Estado</label>
               <select formControlName="idEstado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{ estado.estado }}</option>
               </select>
-            </div>
+            </div> -->
 
             <div class="cli-form-element col-f-4">
               <label>Unid. Moneda</label>
@@ -125,15 +125,26 @@
         <div class="pr-subtitle">Certificación</div>
         <div class="pr-section">
           <div class="pr-module-container mb-2">
+
+            <div style="background-color: #f6f3f3">
+              <button
+                class="btn-asignar btn-grey mb-1"
+                matTooltip="Agregar certificación"
+                type="submit"
+                (click)="abrirCertificacion(DATA_DET_ACTAS)">
+                <mat-icon class="icon-18">add</mat-icon>
+              </button>
+            </div>
             <div style="overflow: auto; min-height: 50px; color: #6c757d">
               <div *ngIf="listCertificaciones.length > 0">
                 <table class="cli-table_x stripedtable underlinedtable">
                   <thead>
                     <tr class="bgc-green c-white">
+                      <th style="min-width: 35px">Acción</th>
                       <th style="min-width: 35px">ID Cert.</th>
                       <th>Factura</th>
                       <th>Monto</th>
-                      <th style="min-width: 90px;">Orden de compra</th>
+                      <th style="min-width: 92px;">Orden de compra</th>
                       <th>Certificación</th>
                       <th>Estado</th>
                       <th>Responsable</th>
@@ -141,14 +152,31 @@
                   </thead>
 
                   <tbody>
-                    <tr *ngFor="let declarado of listCertificaciones;let i = index">
-                      <td>{{ declarado.idDetalleCertificacion }}</td>
-                      <td>{{ declarado.factura }}</td>
-                      <td style="font-weight: 600"><small style="font-weight: 200; margin-right: 3px">S/</small>{{ declarado.monto | number : "1.0-2" }}</td>
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.ordenCompra }}</td>
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.certificacion }}</td>
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.estado }}</td>
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.usuarioCrea.usuario }}</td>
+                    <tr *ngFor="let cert of listCertificaciones;let i = index">
+                      <td>
+                        <div class="moad-actions" style="justify-content: left;">
+                          <button
+                            matTooltip="Actualizar"
+                            class="icon-btn btn-trans"
+                            style="color: #69aafa"
+                            (click)="abrirCertificacion(cert)">
+                            <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                          </button>
+                          <button
+                            matTooltip="Eliminar"
+                            class="icon-btn btn-trans b-fucsia"
+                            (click)="eliminarCertificacion(cert.idcert)">
+                            <mat-icon class="icon-15">delete_forever</mat-icon>
+                          </button>
+                        </div>
+                      </td>
+                      <td>{{ cert.idDetalleCertificacion }}</td>
+                      <td>{{ cert.factura }}</td>
+                      <td style="font-weight: 600"><small style="font-weight: 200; margin-right: 3px">S/</small>{{ cert.monto | number : "1.0-2" }}</td>
+                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.ordenCompra }}</td>
+                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.certificacion }}</td>
+                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.estado }}</td>
+                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.usuarioCrea.usuario }}</td>
                     </tr>
                   </tbody>
                 </table>

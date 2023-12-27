@@ -4,6 +4,7 @@ import {
   API_CERTIFICACION,
   API_CLIENTE,
   API_ESTADOS_DET_ACTA,
+  API_ESTADO_ACTA,
   API_FACTURAS,
   API_GESTOR,
   API_GESTOR_FILTRO,
@@ -221,7 +222,7 @@ export class LiquidacionService {
 
   //  SERVICES - ESTADOS
   getAllEstados() {
-    return this.http.get(API_ESTADOS_DET_ACTA).pipe(
+    return this.http.get(API_ESTADO_ACTA).pipe(
       map((resp: any) => {
         return resp.result;
       })
