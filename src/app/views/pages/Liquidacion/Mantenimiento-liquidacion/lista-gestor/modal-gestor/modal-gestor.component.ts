@@ -78,8 +78,8 @@ export class ModalGestorComponent implements OnInit {
           fecha_fin     : moment.utc(gestor.fecha_fin).format('YYYY-MM-DD'),
           proyectos     : gestor.proyectos[0].idProyecto,
           subservicios  : gestor.subservicios[0].idSubservicio,
-          id_estado     : gestor.estado,
-          fecha_creacion: moment.utc(gestor.fechaCreacion).format('YYYY-MM-DD'),
+          id_estado     : gestor.estado.estadoId,
+          fecha_creacion: moment.utc(gestor.fechaCreacion).format('DD-MM-YYYY'),
         })
       })
     }

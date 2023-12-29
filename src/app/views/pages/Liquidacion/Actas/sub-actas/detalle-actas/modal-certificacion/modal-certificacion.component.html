@@ -38,8 +38,16 @@
           <small class="form-text text-alert" *ngIf="campoNoValido('monto')">* Ingrese la Monto es obligatorio</small>
         </div>
 
+        <div class="cli-form-element col-f-4" *ngIf="DATA_DET_ACTA.detalle.idDetalleCertificacion">
+          <label>Estado</label>
+          <select formControlName="idEstado" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
+          </select>
+        </div>
+
         <div class="cli-form-element col-f-3">
-          <label>Fecha Facturación <small style="color: red">*</small></label>
+          <label>Fecha certificación <small style="color: red">*</small></label>
           <input type="date" class="cli-input" formControlName="fechaCertificacion" />
           <small class="form-text text-alert" *ngIf="campoNoValido('fechaCertificacion')">* Ingrese el Periodo es obligatorio</small>
         </div>

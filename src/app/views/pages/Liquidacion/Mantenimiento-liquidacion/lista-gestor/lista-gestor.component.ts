@@ -40,7 +40,8 @@ export class ListaGestorComponent implements OnInit {
     this.newForm();
     this.getAllGestor();
     this.getAllProyecto();
-    this.getAllSubservicios();
+    this.getAllSubserviciosCombo();
+    this.getAllGestorCombo()
   }
 
   gestorForm!: FormGroup;
@@ -62,6 +63,18 @@ export class ListaGestorComponent implements OnInit {
 
       this.listGestores = resp
       console.log('LIST-GESTOR', this.listGestores);
+    })
+  }
+
+
+  listGestorCombo: any[] = [];
+  getAllGestorCombo(){
+    this.blockUI.start('Cargando lista Gestores...');
+    this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
+      this.blockUI.stop();
+
+      this.listGestorCombo = resp
+      console.log('LIST-GESTOR-COMBO', this.listGestorCombo);
     })
   }
 
@@ -101,10 +114,10 @@ export class ListaGestorComponent implements OnInit {
   }
 
   listSubservicios:any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
+  getAllSubserviciosCombo(){
+    this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
       this.listSubservicios = resp.result;
-      console.log('SUBS', this.listSubservicios);
+      console.log('SUBS_COMBO', this.listSubservicios);
     })
   }
 

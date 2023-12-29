@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -31,11 +32,12 @@ export class ModalCertificacionComponent implements OnInit {
   this.getAllCertificaciones();
   this.getUserID();
   console.log('DATA_DET_ACTA_CERT', this.DATA_DET_ACTA.detalle);
-
   console.log('X-Z', this.DATA_DET_ACTA.detalle.idDetalleCertificacion);
+  console.log('XL', this.DATA_DET_ACTA.detalle.idDetalleActa);
 
   if (this.DATA_DET_ACTA.detalle.idDetalle > 0) {
     this.cargarDetalleCertificacionById();
+    this.getAllEstadosDetActa();
     }
   };
 
@@ -46,6 +48,7 @@ export class ModalCertificacionComponent implements OnInit {
      monto             : ['', Validators.required],
      fechaCertificacion: ['', Validators.required],
      idUsuarioCrea     : [''],
+     idEstado          : [''],
     })
   };
 
@@ -56,13 +59,11 @@ export class ModalCertificacionComponent implements OnInit {
       })
     }
 
-    if (this.DATA_DET_ACTA.data > 0) {
-      console.log('CREATE');
-
+    if (this.DATA_DET_ACTA.detalle.idDetalleCertificacion > 0) {
+      console.log('UPDATE');
       this.actualizarDetalleCertificacion();
     } else {
-      console.log('UPDATE');
-
+      console.log('CREATE');
       this.crearDetalleCertificacion();
     }
   };
@@ -95,7 +96,7 @@ export class ModalCertificacionComponent implements OnInit {
   crearDetalleCertificacion(){
     const formValues = this.certificacionForm.getRawValue();
     const request = {
-      idDetalle         : this.DATA_DET_ACTA.detalle.idDetalle,
+      idDetalle         : this.DATA_DET_ACTA.detalle.idDetalleActa,
       idCertificacion   : formValues.idCertificacion,
       monto             : formValues.monto,
       fechaCertificacion: formValues.fechaCertificacion,
@@ -128,11 +129,20 @@ export class ModalCertificacionComponent implements OnInit {
         this.certificacionForm.reset({
           idCertificacion   : cert.idCertificacion,
           monto             : cert.monto,
+          idEstado          : cert.idEstado,
           // fechaCertificacion: this.utilService.generarPeriodo(cert.fechaCertificacion),
-          fechaCertificacion: cert.fechaCertificacion,
+          fechaCertificacion: moment.utc(cert.fechaCertificacion).format('YYYY-MM-DD'), //2023-12-30
         })
       })
     }
+  };
+
+  listEstadoDetActa: any[] = [];
+  getAllEstadosDetActa(){
+    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+      this.listEstadoDetActa = resp;
+      console.log('EST_DET_ACTA', this.listEstadoDetActa);
+    })
   };
 
   listCertificaciones: any[] = [];

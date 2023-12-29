@@ -35,8 +35,6 @@ export class DetalleActasComponent implements OnInit {
   this.newForm()
   this.getAllProyecto();
   this.getAllEstadosDetActa();
-  // console.log('DATA_DET_ACTAS', this.DATA_DET_ACTAS);
-  // console.log('DATA_DET_ACTAS=>ID', this.DATA_DET_ACTAS.idActa);
 
   if (this.DATA_DET_ACTAS.idDetalleActa) {
     this.cargarDetActaById();
@@ -57,7 +55,6 @@ export class DetalleActasComponent implements OnInit {
      comentario  : [''],
      idEstado    : [''],
      unidad      : ['']
-     //  categoria_1: ['', Validators.required],
     })
   }
 
@@ -137,7 +134,7 @@ export class DetalleActasComponent implements OnInit {
     })
 
   }
-  // precioTotal
+
   listCertificaciones: any[] = [];
   actionBtn: string = 'Crear'
   cargarDetActaById(): void {
@@ -217,8 +214,8 @@ export class DetalleActasComponent implements OnInit {
         console.log('RESP_DET_ACTA', resp);
 
         if (resp) {
-          // this.getAllEstadosDetActa();
-          this.listCertificaciones
+          // this.listCertificaciones
+          this.cargarDetActaById()
         }
       });
   };

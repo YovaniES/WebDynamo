@@ -36,8 +36,8 @@ export class ActaComponent implements OnInit {
   ngOnInit(): void {
     this.newFilfroForm();
     this.getAllActas();
-    this.getAllSubservicios();
-    this.getListGestor();
+    this.getAllSubserviciosCombo();
+    this.getListGestorCombo();
     this.getAllEstadosDetActa();
     this.getAllProyecto();
   }
@@ -100,17 +100,17 @@ export class ActaComponent implements OnInit {
     })
   }
 
-  listGestores: any[] = [];
-  getListGestor(){
-    this.liquidacionService.getAllGestores().subscribe((resp: any) => {
-      this.listGestores = resp;
+  listGestoresCombo: any[] = [];
+  getListGestorCombo(){
+    this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
+      this.listGestoresCombo = resp;
     })
   }
 
-  listSubservicios:any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
+  listSubserviciosCombo:any[] = [];
+  getAllSubserviciosCombo(){
+    this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
+      this.listSubserviciosCombo = resp.result;
       // console.log('SUBSERV', this.listSubservicios);
     })
   };

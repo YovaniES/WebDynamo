@@ -34,9 +34,9 @@ export class SubActasComponent implements OnInit {
   ngOnInit(): void {
   this.newFilfroForm()
   this.getUserID();
-  this.getListGestor();
+  this.getListGestorCombo();
   this.getAllProyecto();
-  this.getAllSubservicios();
+  this.getAllSubserviciosCombo();
   this.getAllEstadosDetActa();
   // console.log('DATA_ACTA', this.DATA_ACTA);
 
@@ -151,7 +151,8 @@ export class SubActasComponent implements OnInit {
 
         this.subActasForm.controls['idGestor'  ].disable();
         this.subActasForm.controls['idProyecto'].disable();
-        // this.subActasForm.controls['idEstado'  ].disable();
+        this.subActasForm.controls['declarado' ].disable();
+        this.subActasForm.controls['importe'   ].disable();
         this.subActasForm.controls['periodo'   ].disable();
       })
     }
@@ -159,16 +160,16 @@ export class SubActasComponent implements OnInit {
 
   listEstadoDetActa: any[] = [];
   getAllEstadosDetActa(){
-    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+    this.liquidacionService.getAllEstados().subscribe(resp => {
       this.listEstadoDetActa = resp;
-      console.log('EST_DET_ACTA', this.listEstadoDetActa);
+      console.log('EST_ACTA', this.listEstadoDetActa);
     })
   };
 
-  listGestores: any[] = [];
-  getListGestor(){
-    this.liquidacionService.getAllGestores().subscribe((resp: any) => {
-      this.listGestores = resp;
+  listGestoresCombo: any[] = [];
+  getListGestorCombo(){
+    this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
+      this.listGestoresCombo = resp;
     })
   };
 
@@ -189,10 +190,10 @@ export class SubActasComponent implements OnInit {
     })
   }
 
-  listSubservicios:any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
+  listSubserviciosCombo:any[] = [];
+  getAllSubserviciosCombo(){
+    this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
+      this.listSubserviciosCombo = resp.result;
     });
   }
 

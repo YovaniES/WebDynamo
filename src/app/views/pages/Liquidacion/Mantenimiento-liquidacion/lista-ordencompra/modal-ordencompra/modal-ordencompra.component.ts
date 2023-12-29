@@ -53,7 +53,6 @@ export class ModalOrdencompraComponent implements OnInit {
     })
   };
 
-
   crearOactualizarOrdenCompra(){
     if (this.ordencompraForm.invalid) {
       return Object.values(this.ordencompraForm.controls).forEach((controls) => {
@@ -94,19 +93,6 @@ export class ModalOrdencompraComponent implements OnInit {
 
   }
 
-  // "nroOrden": "string",
-  // "monto": 0,
-  // "idUsuarioCreacion": 0,
-  // "certificacions": [
-  //   {
-  //     "nro_certificacion": "string",
-  //     "valor": 0,
-  //     "moneda": "string",
-  //     "idOrden": 0,
-  //     "idProyecto": 0,
-  //     "idUsuarioCreacion": 0
-  //   }
-
   actionBtn: string = 'Crear';
   cargarOrdenCompraById(): void{
     this.blockUI.start("Cargando Orden de Compra...");
@@ -134,7 +120,7 @@ export class ModalOrdencompraComponent implements OnInit {
         });
 
         this.ordencompraForm.controls['fecha_creacion'].disable();
-        this.ordencompraForm.controls['id_estado'     ].disable();
+        // this.ordencompraForm.controls['id_estado'     ].disable();
       })
     }
   }

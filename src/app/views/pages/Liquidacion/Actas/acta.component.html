@@ -19,7 +19,7 @@
               <label>Proyectos</label>
               <select formControlName="idProyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
               </select>
             </div>
 
@@ -27,7 +27,7 @@
               <label>Gestor</label>
               <select formControlName="idGestor" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombreCompleto}}</option>
+                <option [value]="gestor.id" *ngFor="let gestor of listGestoresCombo">{{gestor.nombre}}</option>
               </select>
             </div>
 
@@ -35,7 +35,7 @@
               <label>Subservicios</label>
               <select formControlName="idSubservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.nombreCompleto}}</option>
+                <option [value]="subs.id" *ngFor="let subs of listSubserviciosCombo">{{subs.nombre}}</option>
               </select>
             </div>
 

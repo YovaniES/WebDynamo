@@ -130,7 +130,7 @@ export class ModalCertificacionesComponent implements OnInit {
           idOrden          : cert.ordenCompra.idOrden,
           idProyecto       : cert.proyecto.idProyecto,
           fecha_creacion   : moment.utc(cert.fecha_creacion).format('YYYY-MM-DD'),
-          estado           : cert.estado
+          estado           : cert.estado.idEstado
         })
       })
     }

@@ -5,14 +5,19 @@ import {
   API_CLIENTE,
   API_ESTADOS_DET_ACTA,
   API_ESTADO_ACTA,
+  API_ESTADO_FACTURAS,
   API_FACTURAS,
   API_GESTOR,
+  API_GESTOR_COMBO,
   API_GESTOR_FILTRO,
   API_JEFATURA,
   API_LIDER,
   API_ORDEN_COMPRA,
+  API_ORDEN_COMPRA_COMBO,
+  API_ORDEN_COMPRA_FILTRO,
   API_PROYECTO,
   API_SUBSERVICIO,
+  API_SUBSERV_COMBO,
   API_SUBSERV_FILTRO,
   PATH_IMPORT_LIQ,
 } from '../constants/url.constants';
@@ -41,6 +46,14 @@ export class LiquidacionService {
         console.log('SERV-GESTOR', resp);
 
         return resp.result;
+      })
+    );
+  }
+
+  getAllGestorCombo() {
+    return this.http.get(API_GESTOR_COMBO).pipe(
+      map((g: any) => {
+        return g.result;
       })
     );
   }
@@ -190,14 +203,23 @@ export class LiquidacionService {
     return this.http.delete<any>(`${API_CLIENTE}/${idCliente}`);
   }
 
-  //  SERVICES - Facturas
+  //  SERVICES - FACTURA
+  getListaEstadosFactura() {
+    return this.http.get(API_ESTADO_FACTURAS).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  };
+
   getAllFacturas() {
     return this.http.get(API_FACTURAS).pipe(
       map((resp: any) => {
         return resp.result;
       })
     );
-  }
+  };
+
   crearFactura(requestFactura: any): Observable<any> {
     return this.http.post(API_FACTURAS, requestFactura);
   }
@@ -228,6 +250,7 @@ export class LiquidacionService {
       })
     );
   }
+
   crearEstado(requestCert: any): Observable<any> {
     return this.http.post(API_ESTADOS_DET_ACTA, requestCert);
   }
@@ -281,8 +304,16 @@ export class LiquidacionService {
     return this.http.get(API_SUBSERVICIO);
   }
 
+  getAllSubserviciosCombo() {
+    return this.http.get(API_SUBSERV_COMBO);
+  }
+
   getAllSubserviciosFiltro(requestSub: any) {
-    return this.http.post(API_SUBSERV_FILTRO, requestSub);
+    return this.http.post(API_SUBSERV_FILTRO, requestSub).pipe(
+      map( (resp: any) => {
+        return resp.result;
+      })
+    );
   }
 
   getSubserviciosById(idSubserv: number): Observable<any> {
@@ -325,20 +356,20 @@ export class LiquidacionService {
     );
   }
 
-  // getAllSubservicio() {
-  //   return this.http.get(API_SUBSERVICIO).pipe(
-  //     map((resp: any) => {
-  //       return resp.result;
-  //     })
-  //   );
-  // }
-
   // SERVICES ORDEN COMPRA
-  postAllOrdenCompra(listOrdenCompra: any) {
-    return this.http.post(API_ORDEN_COMPRA, listOrdenCompra).pipe(
+  getAllOrdenCompraFiltro(listOrdenCompra: any) {
+    return this.http.post(API_ORDEN_COMPRA_FILTRO, listOrdenCompra).pipe(
       map((resp: any) => {
-        console.log('SERV-OC', resp);
+        console.log('SERV-OC-FILTRO', resp);
         return resp.result;
+      })
+    );
+  }
+
+  getAllOrdenCompraCombo() {
+    return this.http.get(API_ORDEN_COMPRA_COMBO).pipe(
+      map((oc: any) => {
+        return oc.result;
       })
     );
   }

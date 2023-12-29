@@ -38,6 +38,7 @@ export class ListaFacturasComponent implements OnInit {
     this.newForm();
     this.getAllFacturas();
     this.getAllProyecto();
+    this.getListaEstadosFactura()
   }
 
   facturaForm!: FormGroup;
@@ -92,6 +93,14 @@ export class ListaFacturasComponent implements OnInit {
     this.liquidacionService.getAllProyectos().subscribe((resp) => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
+    });
+  };
+
+  listEstadoFacturas: any[] = [];
+  getListaEstadosFactura() {
+    this.liquidacionService.getListaEstadosFactura().subscribe((resp) => {
+      this.listEstadoFacturas = resp;
+      console.log('EST_FACTURA', this.listEstadoFacturas);
     });
   }
 

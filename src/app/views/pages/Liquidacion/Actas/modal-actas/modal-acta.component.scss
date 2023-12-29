@@ -1,5 +1,35 @@
 @import "variables.scss";
 
+.tabs-container {
+  // background: #eee;
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 0;
+  height: 30px;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  color: #6c757d;
+}
+
+.tabs-container .tab-link {
+  width: 50.0%;
+  position: relative;
+  height: 100%;
+  padding: 4px;
+  float: left;
+  text-align: center;
+  cursor: pointer;
+}
+
+.active {
+  border-bottom: 3px solid #03bccf;
+  transition: ease-in-out 0.3s;
+  font-weight: 700;
+  color: #03bccf;
+  background: #e9fdff;
+
+  border-radius: 4px 4px 4px 4px;
+}
 
 .c-male {
   color: #00bec0;
@@ -24,7 +54,7 @@
   margin: 0 5px;
   height: 30px;
   padding: 0 10px;
-  font-family: "Telefonica-Bold" !important;
+  font-family: "Webapp" !important;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -219,7 +249,7 @@
 }
 
 .bold {
-  font-family: "Telefonica-Bold";
+  font-family: "Webapp";
 }
 .d-flex {
   display: flex;

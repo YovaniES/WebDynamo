@@ -31,7 +31,7 @@
               <label>Gestor</label>
               <select formControlName="idGestor" class="cli-input_x">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombreCompleto}}</option>
+                <option [value]="gestor.id" *ngFor="let gestor of listGestoresCombo">{{gestor.nombre}}</option>
               </select>
             </div>
 
@@ -39,7 +39,7 @@
               <label>Proyecto</label>
               <select formControlName="idProyecto" class="cli-input_x">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{ proy.codigo_proyecto }}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{ proy.codigoProyecto }}</option>
               </select>
             </div>
 
@@ -47,7 +47,7 @@
               <label>Subservicio</label>
               <select formControlName="subservicio" class="cli-input_x">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{ subs.nombreCompleto }}</option>
+                <option [value]="subs.id" *ngFor="let subs of listSubserviciosCombo">{{ subs.nombre }}</option>
               </select>
             </div>
 
@@ -63,7 +63,7 @@
               <label>Estado</label>
               <select formControlName="idEstado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
+                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.nombre}}</option>
               </select>
             </div>
 
@@ -189,7 +189,7 @@
                     </div>
                   </div>
 
-                  <!-- NUEVO DETALLE  -->
+                  <!-- DETALLE ACTA -->
                   <ng-container *ngIf="!loading">
                     <div style="overflow: auto; min-height: 167px; max-height: 167px; color:#6c757d;">
 

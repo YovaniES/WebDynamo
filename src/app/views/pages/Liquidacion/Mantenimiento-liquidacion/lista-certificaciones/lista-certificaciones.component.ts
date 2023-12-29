@@ -162,7 +162,7 @@ export class ListaCertificacionesComponent implements OnInit {
       .open(CrearFacturasComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          // this.getAllCertificaciones();
+          this.getAllCertificaciones();
         }
       });
   }

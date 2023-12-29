@@ -16,7 +16,6 @@ export class CrearFacturasComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
@@ -34,7 +33,7 @@ export class CrearFacturasComponent implements OnInit {
   this.getAllCertificaciones();
   this.getListEstadoCertificacion();
   if (this.DATA_FACTURA) {
-    // this.cargarFacturaById(this.DATA_FACTURA);
+    this.cargarFacturaById();
     // console.log('FACTURA_MODAL', this.DATA_FACTURA);
     }
   }
@@ -54,22 +53,28 @@ export class CrearFacturasComponent implements OnInit {
   }
 
   actionBtn: string = 'Crear';
-  cargarFacturaById(idLider: number): void{
-    this.blockUI.start("Cargando data...");
+  cargarFacturaById(): void{
+    this.blockUI.start("Cargando data_...");
     if (this.DATA_FACTURA) {
-      this.actionBtn = 'Actualizar'
-      this.liquidacionService.getLiderById(this.DATA_FACTURA.idFactura).subscribe((cert: any) => {
+      // this.actionBtn = 'Actualizar'
 
-        this.blockUI.stop();
-        this.facturaForm.reset({
-          nombre        : cert.nombre,
-          apellidos     : cert.apellidos,
-          correo        : cert.correo,
-          descripcion   : cert.descripcion,
-          id_estado     : cert.eliminacion_logica,
-          fecha_creacion: moment.utc(cert.fecha_creacion).format('YYYY-MM-DD'),
-        })
+      this.blockUI.stop();
+      this.facturaForm.reset({
+        idCertificacion: this.DATA_FACTURA.idCertificacion,
+        idEstado       : this.DATA_FACTURA.estado.idEstado
       })
+      // this.liquidacionService.getLiderById(this.DATA_FACTURA.idFactura).subscribe((cert: any) => {
+
+      //   this.blockUI.stop();
+      //   this.facturaForm.reset({
+      //     nombre        : cert.nombre,
+      //     apellidos     : cert.apellidos,
+      //     correo        : cert.correo,
+      //     descripcion   : cert.descripcion,
+      //     id_estado     : cert.eliminacion_logica,
+      //     fecha_creacion: moment.utc(cert.fecha_creacion).format('YYYY-MM-DD'),
+      //   })
+      // })
     }
   }
 
@@ -79,10 +84,12 @@ export class CrearFacturasComponent implements OnInit {
         controls.markAllAsTouched();
       })
     }
-    if (this.DATA_FACTURA ) {
-        this.actualizarFactura();
-    } else {
+    if (this.DATA_FACTURA.idCertificacion > 0 ) {
+      console.log('CREATE');
       this.crearFactura()
+    } else {
+      console.log('UPDATE');
+      this.actualizarFactura();
     }
   }
 
@@ -110,28 +117,17 @@ export class CrearFacturasComponent implements OnInit {
     })
   }
 
-  // {
-  //   "nro_factura": "F-0101011",
-  //   "idEstado": 1,
-  //   "idCertificacion": 18,
-  //   "fecha_facturacion": "2023-12-19",
-  //   "factura_tgs": "",
-  //   "factura_adquira": "",
-  // }
-  //   "idUsuarioCreacion": 474
-
   crearFactura(): void{
     const formValues = this.facturaForm.getRawValue();
 
     const request = {
-
       nro_factura       : formValues.nro_factura,
       idEstado          : formValues.idEstado,
-      idCertificacion   : formValues.idCertificacion,
+      idCertificacion   : this.DATA_FACTURA.idCertificacion,
       fecha_facturacion : formValues.fecha_facturacion,
       factura_tgs       : formValues.factura_tgs,
       factura_adquira   : formValues.factura_adquira,
-      idUsuarioCreacion : formValues.idUsuarioCreacion,
+      idUsuarioCreacion : this.userID,
     }
 
     this.liquidacionService.crearFactura(request).subscribe((resp: any) => {
@@ -142,7 +138,6 @@ export class CrearFacturasComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok'
         })
-
         this.close(true);
       }
     })
@@ -153,14 +148,13 @@ export class CrearFacturasComponent implements OnInit {
     this.liquidacionService.getAllEstados().subscribe(resp => {
       this.listEstadoDetalleActa = resp.filter((x:any) => x.idEstado != 2);
       console.log('EST-CERT', this.listEstadoDetalleActa);
-
     })
   }
 
   listCertificaciones: any[] = [];
   getAllCertificaciones(){
     this.liquidacionService.getAllCertificaciones().subscribe(resp => {
-      this.listCertificaciones = resp;
+      this.listCertificaciones = resp //.filter((x: any) => x.idCertificacion == this.DATA_FACTURA.idCertificacion);
       console.log('CERTIFICACIONES', this.listCertificaciones);
     })
   }
@@ -176,7 +170,6 @@ export class CrearFacturasComponent implements OnInit {
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
 
   showAlertError(message: string) {
     Swal.fire({

@@ -30,15 +30,18 @@ export class ListaOrdencompraComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getAllOrdenCompra();
+  // this.getAllOrdenCompra();
+  this.getAllOrdenCompraFiltro()
   }
 
   ordencompraForm!: FormGroup;
   newForm(){
     this.ordencompraForm = this.fb.group({
-     orden_compra : [''],
+     ordenCompra  : [''],
      certificacion: [''],
+     estado       : [''],
      monto        : [''],
+     proyecto     : [''],
     })
   }
 
@@ -46,11 +49,22 @@ export class ListaOrdencompraComponent implements OnInit {
 
   }
 
-  listOrdenCompra: any[] = [];
-  getAllOrdenCompra(){
-    this.liquidacionService.getAllOrdenCompra().subscribe((resp: any) => {
-        this.listOrdenCompra = resp;
-        console.log('LIST-OC', this.listOrdenCompra);
+  // listOrdenCompra: any[] = [];
+  // getAllOrdenCompra(){
+  //   this.liquidacionService.getAllOrdenCompra().subscribe((resp: any) => {
+  //       this.listOrdenCompra = resp;
+  //       console.log('LIST-OC', this.listOrdenCompra);
+  //   });
+  // };
+
+  // API_ORDEN_COMPRA_FILTRO
+  listOrdenFiltro: any[] = [];
+  getAllOrdenCompraFiltro(){
+    const request = this.ordencompraForm.value;
+
+    this.liquidacionService.getAllOrdenCompraFiltro(request).subscribe((resp: any) => {
+        this.listOrdenFiltro = resp;
+        console.log('LIST-OC_FILTRO', this.listOrdenFiltro);
     });
   };
 
@@ -81,7 +95,7 @@ export class ListaOrdencompraComponent implements OnInit {
 
     if (this.totalfiltro != this.totalOrdencompra) {
       this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
-            this.listOrdenCompra = resp.list;
+            this.listOrdenFiltro = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -98,7 +112,7 @@ export class ListaOrdencompraComponent implements OnInit {
       .open(ModalOrdencompraComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllOrdenCompra();
+          this.getAllOrdenCompraFiltro();
         }
       });
   }

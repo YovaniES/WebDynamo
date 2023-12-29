@@ -16,7 +16,6 @@ export class ModalFacturasComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
@@ -32,10 +31,12 @@ export class ModalFacturasComponent implements OnInit {
   this.newForm()
   this.getUserID();
   this.getAllProyecto();
+  this.getListOrdenCompraCombo();
 
   if (this.DATA_FACTURA) {
-    this.cargarFacturaById(this.DATA_FACTURA);
+    this.cargarFacturaById();
     console.log('FACTURA_MODAL', this.DATA_FACTURA);
+    this.getListaEstadosFactura();
     }
   }
 
@@ -44,29 +45,42 @@ export class ModalFacturasComponent implements OnInit {
     this.facturaForm = this.fb.group({
       nro_factura       : [''],
       idEstado          : [''],
+      proyecto          : [''],
+      ordenCompra       : [''],
       idCertificacion   : [''],
       fecha_facturacion : [''],
+      tgs               : [''],
+      adquira           : [''],
+      total             : [''],
       factura_tgs       : [''],
       factura_adquira   : [''],
       idUsuarioCreacion : [''],
+      fecha_creacion    : [''],
     })
   }
 
   actionBtn: string = 'Crear';
-  cargarFacturaById(idLider: number): void{
+  cargarFacturaById(): void{
     this.blockUI.start("Cargando data...");
     if (this.DATA_FACTURA) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getLiderById(this.DATA_FACTURA.idFactura).subscribe((lider: any) => {
+      this.liquidacionService.getFacturaById(this.DATA_FACTURA.idFactura).subscribe((fact: any) => {
 
         this.blockUI.stop();
         this.facturaForm.reset({
-          nombre        : lider.nombre,
-          apellidos     : lider.apellidos,
-          correo        : lider.correo,
-          descripcion   : lider.descripcion,
-          id_estado     : lider.eliminacion_logica,
-          fecha_creacion: moment.utc(lider.fecha_creacion).format('YYYY-MM-DD'),
+          idFactura        : this.DATA_FACTURA.idFactura,
+          nro_factura      : fact.nro_factura,
+          proyecto         : fact.proyecto,
+          idEstado         : fact.estado.idEstado,
+          ordenCompra      : fact.ordenCompra.idOrdenCompra,
+          fecha_facturacion: fact.fecha_facturacion,
+          tgs              : fact.tgs,
+          adquira          : fact.adquira,
+          total            : fact.total,
+          factura_tgs      : fact.factura_tgs,
+          factura_adquira  : fact.factura_adquira,
+          fecha_creacion   : moment.utc(fact.fecha_creacion).format('YYYY-MM-DD'),
+          usuarioActualiza : this.userID,
         })
       })
     }
@@ -109,21 +123,10 @@ export class ModalFacturasComponent implements OnInit {
     })
   }
 
-  // {
-  //   "nro_factura": "F-0101011",
-  //   "idEstado": 1,
-  //   "idCertificacion": 18,
-  //   "fecha_facturacion": "2023-12-19",
-  //   "factura_tgs": "",
-  //   "factura_adquira": "",
-  // }
-  //   "idUsuarioCreacion": 474
-
   crearFactura(): void{
     const formValues = this.facturaForm.getRawValue();
 
     const request = {
-
       nro_factura       : formValues.nro_factura,
       idEstado          : formValues.idEstado,
       idCertificacion   : formValues.idCertificacion,
@@ -146,11 +149,27 @@ export class ModalFacturasComponent implements OnInit {
     })
   }
 
+  listEstadoFacturas: any[] = [];
+  getListaEstadosFactura() {
+    this.liquidacionService.getListaEstadosFactura().subscribe((resp) => {
+      this.listEstadoFacturas = resp;
+      console.log('EST_FACTURA', this.listEstadoFacturas);
+    });
+  }
+
   listProyectos: any[] = [];
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY-S', this.listProyectos);
+    })
+  }
+
+  listOrdenCompraCombo: any[] = [];
+  getListOrdenCompraCombo(){
+    this.liquidacionService.getAllOrdenCompraCombo().subscribe(resp => {
+      this.listOrdenCompraCombo = resp;
+      console.log('OC-COMBO', this.listOrdenCompraCombo);
     })
   }
 
@@ -165,7 +184,6 @@ export class ModalFacturasComponent implements OnInit {
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
 
   showAlertError(message: string) {
     Swal.fire({

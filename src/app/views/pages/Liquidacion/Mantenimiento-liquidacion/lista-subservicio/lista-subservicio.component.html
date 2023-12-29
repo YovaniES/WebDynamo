@@ -14,7 +14,7 @@
               <label>Gestor</label>
               <select formControlName="idGestor" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
+                <option [value]="gestor.id" *ngFor="let gestor of listGestorCombo">{{gestor.nombre}}</option>
               </select>
             </div>
 
@@ -22,15 +22,24 @@
               <label>Proyectos</label>
               <select formControlName="idProyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
               </select>
             </div>
 
             <div class="cli-form-element col-f-3">
               <label>Subservicios</label>
-              <select formControlName="idSubservicio" class="cli-input">
+              <select formControlName="subservicio" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="sub.idSubservicio" *ngFor="let sub of listSubservicios">{{sub.subservicio}}</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Estado</label>
+              <select formControlName="estado" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option value=1>Activo</option>
+                <option value=0>Inactivo</option>
               </select>
             </div>
 
@@ -109,9 +118,9 @@
               <td style="text-align: left;">{{ subserv.subservicio }}</td>
               <td style="text-align: left; min-width: 150px;">{{ subserv.representante.nombre | uppercase}} {{ subserv.representante.apellidos | uppercase}}</td>
               <td style="">{{ subserv.proyecto }}</td>
-              <td style="text-align: left;">{{ subserv.fechaCreacion | date }}</td>
+              <td style="text-align: left;">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - {{ subserv.fechaFin | date: 'dd/MM/yyyy' }}</td>
               <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': subserv.estado == 'Activo', 'c-red': subserv.estado != 'Activo' }" class="icon-18">report</mat-icon>
+                <mat-icon [ngClass]="{ 'c-green_x': subserv.estado.estadoId == 1, 'c-red': subserv.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>

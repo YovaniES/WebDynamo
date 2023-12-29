@@ -60,7 +60,7 @@
           <label>Proyecto(s)</label>
           <select formControlName="proyectos" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
           </select>
           <!-- <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small> -->
         </div>
@@ -69,7 +69,7 @@
           <label>Subservicios</label>
           <select formControlName="subservicios" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.subservicio}}</option>
+            <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.nombreCompleto}}</option>
           </select>
           <!-- <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small> -->
         </div>
@@ -78,9 +78,9 @@
           <div class="cli-form-element col-f-3">
             <label>Estado</label>
             <select formControlName="id_estado" class="cli-input">
-              <option [value]="0" disabled>-Seleccione-</option>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
+              <option [value]="10" disabled>-Seleccione-</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
             </select>
           </div>
 

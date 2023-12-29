@@ -14,7 +14,7 @@
               <label>Orden de compra</label>
               <input
                 class="cli-input"
-                formControlName="orden_compra"
+                formControlName="ordenCompra"
                 type="text"/>
             </div>
 
@@ -48,7 +48,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllOrdenCompra()"
+                (click)="getAllOrdenCompraFiltro()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -67,7 +67,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listOrdenCompra.length }} Orden de compra</span>
+            Total : <span class="total">{{ listOrdenFiltro.length }} Orden de compra</span>
           </div>
         </div>
       </form>
@@ -88,7 +88,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let orden of listOrdenCompra | paginate: {
+            <tr *ngFor="let orden of listOrdenFiltro | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalOrdencompra }">
@@ -115,7 +115,7 @@
               <td>{{ orden.certificacions }}</td>
               <td>{{ 'JYSANTIAGO*' }}</td>
               <td>
-                <span *ngIf="orden.estado == 'Activo'" class="label">{{orden.estado | uppercase}}</span>
+                <span *ngIf="orden.estado.estado == 'Activo'" class="label">{{orden.estado.estado | uppercase}}</span>
               </td>
             </tr>
           </tbody>
@@ -126,7 +126,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listOrdenCompra.length == 0"
+          *ngIf="!loadingItem && listOrdenFiltro.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
           No hay Orden de compra para mostrar

@@ -81,8 +81,9 @@
               <th style="min-width: 70px">ID Cliente.</th>
               <th>Razón social</th>
               <th>Ruc</th>
-              <th style="min-width: 240px">Descripción</th>
+              <th style="min-width: 240px">Proyecto(s)</th>
               <th style="min-width: 100px">Actualizado por</th>
+              <th style="min-width: 100px">Fecha creación</th>
               <th style="min-width: 92px" >Estado</th>
             </tr>
           </thead>
@@ -112,10 +113,11 @@
               <td style="text-align: left">CLI-{{ cliente.idCliente }}</td>
               <td style="text-align: left; min-width: 240px;">{{ cliente.razon_social }}</td>
               <td style="text-align: left; min-width: 100px;">{{ cliente.ruc }}</td>
-              <td>{{ cliente.usuario }}</td>
-              <td>{{ cliente.fecha_actualiza }}</td>
+              <td>{{ cliente.proyectos }}</td>
+              <td>{{ cliente.usuarioActualiza.username }}</td>
+              <td>{{ cliente.fecha_creacion }}</td>
               <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': cliente.eliminacion_logica == 1, 'c-red': cliente.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
+                <mat-icon [ngClass]="{ 'c-green_x': cliente.estado.estadoId == 1, 'c-red': cliente.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>

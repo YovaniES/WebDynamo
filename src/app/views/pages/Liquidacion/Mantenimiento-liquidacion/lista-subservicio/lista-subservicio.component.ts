@@ -39,7 +39,7 @@ export class ListaSubservicioComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllGestor();
+  this.getAllGestorCombo();
   this.getAllSubserviciosFiltro()
   }
 
@@ -47,8 +47,9 @@ export class ListaSubservicioComponent implements OnInit {
   newForm(){
     this.subservicioForm = this.fb.group({
      idGestor     : [''],
-     idSubservicio: [''],
-     idProyecto   : ['']
+     idProyecto   : [''],
+     subservicio: [''],
+     estado       : ['']
     })
   }
 
@@ -75,22 +76,17 @@ export class ListaSubservicioComponent implements OnInit {
         });
       };
     });
-  }
+  };
 
-  listGestores: any[] = [];
-  getAllGestor(){
-    // const request = this.subservicioForm.controls['idGestor'].value;
 
-    const request = {
-      idGestor   : this.subservicioForm.controls['idGestor'].value,
-      proyecto   : '',
-      subservicio: '',
-      estado     : ''
-    }
+  listGestorCombo: any[] = [];
+  getAllGestorCombo(){
+    this.blockUI.start('Cargando lista Gestores...');
+    this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
+      this.blockUI.stop();
 
-    this.liquidacionService.getAllGestor(request).subscribe( (resp: any) => {
-      this.listGestores = resp;
-      console.log('DATA_GESTOR', this.listGestores);
+      this.listGestorCombo = resp
+      console.log('LIST-GESTOR-COMBO', this.listGestorCombo);
     })
   }
 
@@ -98,9 +94,9 @@ export class ListaSubservicioComponent implements OnInit {
   getAllSubserviciosFiltro(){
     const request = this.subservicioForm.value;
 
-    this.liquidacionService.getAllSubserviciosFiltro(request).subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
-      console.log('DATA_SUBSERV', this.listSubservicios);
+    this.liquidacionService.getAllSubserviciosFiltro(request).subscribe(resp => {
+      this.listSubservicios = resp;
+      console.log('DATA_SUBSERV-FILTRO', this.listSubservicios);
     })
   }
 

@@ -22,7 +22,7 @@
               <label>Proyecto <small style="color: red">*</small></label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
               </select>
             </div>
 
@@ -30,8 +30,7 @@
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option [value]="est.idEstado" *ngFor="let est of listEstadoFacturas">{{est.nombre}}</option>
               </select>
             </div>
 
@@ -80,7 +79,6 @@
               <th class="w50">Acción</th>
               <th style="min-width: 100px; text-align: left;">N° Factura</th>
               <th style="min-width: 100px; text-align: left;">Proyecto</th>
-              <th style="min-width: 100px; text-align: left;">Certificación</th>
               <th style="min-width: 120px">Fecha facturación</th>
               <th>Total</th>
               <th>Tgs</th>
@@ -116,8 +114,7 @@
                 </div>
               </td>
               <td style="text-align: left"> {{ factura.nro_factura}}</td>
-              <td style="text-align: left;">{{ factura.proyecto.codigo_proyecto }}</td>
-              <td style="text-align: left;">{{ factura.certificacion.nro_certificacion }}</td>
+              <td style="text-align: left;">{{ factura.proyecto }}</td>
               <td style="min-width: 150px;">{{ factura.fecha_facturacion }}</td>
               <td>{{ factura.total }}</td>
               <td>{{ factura.tgs }}</td>
