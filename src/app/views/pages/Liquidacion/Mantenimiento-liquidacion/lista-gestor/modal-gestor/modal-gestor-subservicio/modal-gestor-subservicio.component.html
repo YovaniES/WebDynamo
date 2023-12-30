@@ -1,0 +1,61 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male" style="margin-bottom: 20px; color: #adadad; font-size: 18px;">{{ DATA_GESTOR_SUB? "Actualizar" : "Crear" }} gestor subservicio</div>
+
+  <form class="row g-3" [formGroup]="gestorSubservicioForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="row">
+        <div class="cli-form-element col-f-3">
+          <label>Gestor</label>
+          <select formControlName="idGestor" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="gestor.id" *ngFor="let gestor of listGestoresCombo">{{gestor.nombre}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idGestor')">* Ingrese el Subservicio es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Proyecto</label>
+          <select formControlName="idGestor" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idGestor')">* Ingrese el Subservicio es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-4">
+          <label>Subservicio <small style="color: red">*</small></label>
+          <select formControlName="idSubservicio" class="cli-input_x">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="subs.id" *ngFor="let subs of listSubserviciosCombo">{{ subs.nombre }}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio')">* Ingrese el Subservicio es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Fecha creación <small style="color: red">*</small></label>
+          <input type="date" class="cli-input" formControlName="fecha_creacion" />
+        </div>
+
+        <div class="cli-form-buttons" style="margin-top: 8%">
+          <button
+            class="cli-btn btn-m btn-regresar"
+            type="submit"
+            (click)="close()">
+            <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+          </button>
+
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="gestorSubservicioForm.invalid"
+            (click)="crearOactualizarDetalleCertificacion()">
+            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -47,6 +47,7 @@ export const API_DYNAMO = PATH_BACK_NET + 'ExecuteQuery';
 export const API_GESTOR              = BASE_LIQUIDACION + 'Gestor';
 export const API_GESTOR_FILTRO       = BASE_LIQUIDACION + 'Gestor/getAllGestores';
 export const API_GESTOR_COMBO        = BASE_LIQUIDACION + 'Gestor/GestorListado';
+export const API_GESTOR_SUBS         = BASE_LIQUIDACION + 'GestorSubservicio';
 export const API_SUBSERV_COMBO       = BASE_LIQUIDACION + 'Subservicio/SubservicioListado';
 export const API_SUBSERV_FILTRO      = BASE_LIQUIDACION + 'Subservicio/GetAllSubservicio';
 export const API_SUBSERVICIO         = BASE_LIQUIDACION + 'Subservicio';

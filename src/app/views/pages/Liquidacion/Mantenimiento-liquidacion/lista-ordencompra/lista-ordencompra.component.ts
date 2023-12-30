@@ -7,6 +7,7 @@ import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalOrdencompraComponent } from './modal-ordencompra/modal-ordencompra.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
+import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
 
 @Component({
   selector: 'app-lista-ordencompra',
@@ -48,14 +49,6 @@ export class ListaOrdencompraComponent implements OnInit {
   eliminarOrdenCompra(id: number){
 
   }
-
-  // listOrdenCompra: any[] = [];
-  // getAllOrdenCompra(){
-  //   this.liquidacionService.getAllOrdenCompra().subscribe((resp: any) => {
-  //       this.listOrdenCompra = resp;
-  //       console.log('LIST-OC', this.listOrdenCompra);
-  //   });
-  // };
 
   // API_ORDEN_COMPRA_FILTRO
   listOrdenFiltro: any[] = [];
@@ -110,6 +103,17 @@ export class ListaOrdencompraComponent implements OnInit {
     // console.log('DATA_G', DATA);
     this.dialog
       .open(ModalOrdencompraComponent, { width: '45%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllOrdenCompraFiltro();
+        }
+      });
+  };
+
+  abrirModalCrearFactura(DATA?: any) {
+    console.log('DATA_OC', DATA);
+    this.dialog
+      .open(CrearFacturasComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllOrdenCompraFiltro();

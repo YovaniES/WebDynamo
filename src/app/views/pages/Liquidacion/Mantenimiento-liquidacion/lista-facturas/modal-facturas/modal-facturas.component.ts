@@ -45,7 +45,7 @@ export class ModalFacturasComponent implements OnInit {
     this.facturaForm = this.fb.group({
       nro_factura       : [''],
       idEstado          : [''],
-      proyecto          : [''],
+      // proyecto          : [''],
       ordenCompra       : [''],
       idCertificacion   : [''],
       fecha_facturacion : [''],
@@ -70,7 +70,7 @@ export class ModalFacturasComponent implements OnInit {
         this.facturaForm.reset({
           idFactura        : this.DATA_FACTURA.idFactura,
           nro_factura      : fact.nro_factura,
-          proyecto         : fact.proyecto,
+          // proyecto         : fact.proyecto,
           idEstado         : fact.estado.idEstado,
           ordenCompra      : fact.ordenCompra.idOrdenCompra,
           fecha_facturacion: fact.fecha_facturacion,

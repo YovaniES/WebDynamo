@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  API_ACTAS, API_ACTAS_FILTRO, API_CERTIFICACION, API_DET_ACTA, API_DET_CERTIFICACION, API_ESTADOS_DET_ACTA, API_GESTOR, API_IMPORT_ACTAS, API_VENTA_DECLARADA,
+  API_ACTAS, API_ACTAS_FILTRO, API_CERTIFICACION, API_DET_ACTA, API_DET_CERTIFICACION, API_ESTADOS_DET_ACTA, API_GESTOR, API_GESTOR_SUBS, API_IMPORT_ACTAS, API_VENTA_DECLARADA,
 } from '../constants/url.constants';
 import { Observable, map } from 'rxjs';
 
@@ -160,5 +160,22 @@ export class ActasService {
       return this.http.post(`${API_IMPORT_ACTAS}`, formData, {
         headers: headers
       });
+    };
+
+    // CRUD GESTOR SUBSERIVICIO
+    crearGestorSubservicio(requestGestor: any){
+      return this.http.post(`${API_GESTOR_SUBS}`, requestGestor);
+    };
+
+    cargarGestorSubservicioById(idGestor: number){
+      return this.http.get<any>(`${API_GESTOR_SUBS}/${idGestor}`).pipe(
+        map((resp: any) => {
+          return resp.result;
+        })
+      );
+    };
+
+    actualizarGestorSubservicio(idGestor: number, reqGestor: any){
+      return this.http.put(`${API_GESTOR_SUBS}/${idGestor}`, reqGestor);
     };
 }

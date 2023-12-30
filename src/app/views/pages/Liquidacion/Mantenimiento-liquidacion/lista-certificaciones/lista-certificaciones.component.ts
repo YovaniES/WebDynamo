@@ -6,7 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalCertificacionesComponent } from './modal-certificaciones/modal-certificaciones.component';
-import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
+import { CrearFacturasComponent } from '../lista-ordencompra/crear-facturas/crear-facturas.component';
 import { ActasService } from 'src/app/core/services/actas.service';
 
 export interface changeResponse {
@@ -156,16 +156,7 @@ export class ListaCertificacionesComponent implements OnInit {
       });
   };
 
-  abrirModalCrearFactura(DATA?: any) {
-    console.log('DATA_CERTIF', DATA);
-    this.dialog
-      .open(CrearFacturasComponent, { width: '45%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        if (resp) {
-          this.getAllCertificaciones();
-        }
-      });
-  }
+
 
 }
 

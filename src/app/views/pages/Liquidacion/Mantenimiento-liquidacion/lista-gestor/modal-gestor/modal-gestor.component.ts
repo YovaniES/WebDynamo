@@ -1,27 +1,22 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
-
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
+import { ModalGestorSubservicioComponent } from './modal-gestor-subservicio/modal-gestor-subservicio.component';
 
 @Component({
   selector: 'app-modal-gestor',
   templateUrl: './modal-gestor.component.html',
   styleUrls: ['./modal-gestor.component.scss'],
 })
+
 export class ModalGestorComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
-
 
   page = 1;
   totalFacturas: number = 0;
@@ -31,24 +26,23 @@ export class ModalGestorComponent implements OnInit {
                private authService: AuthService,
                private liquidacionService: LiquidacionService,
                public dialogRef: MatDialogRef<ModalGestorComponent>,
+               private dialog: MatDialog,
                @Inject(MAT_DIALOG_DATA) public DATA_GESTOR: any
   ) {}
 
   ngOnInit(): void {
   this.newForm()
   this.getUserID();
-  this.getAllProyecto();
-  this.getAllSubservicios();
 
   if (this.DATA_GESTOR) {
-    this.cargarGestorById(this.DATA_GESTOR);
+    this.cargarGestorById();
     console.log('DATA_G_MODAL', this.DATA_GESTOR);
-  }
+    }
   }
 
-  gestorForm!: FormGroup;
+  gestorCertForm!: FormGroup;
   newForm(){
-    this.gestorForm = this.fb.group({
+    this.gestorCertForm = this.fb.group({
      nombre        : ['', Validators.required],
      apellidos     : ['', Validators.required],
      correo        : [''],
@@ -62,15 +56,18 @@ export class ModalGestorComponent implements OnInit {
   }
 
   actionBtn: string = 'Crear';
-  cargarGestorById(idGestor: number): void{
+  listGestorSubservicio: any[] = [];
+  cargarGestorById(): void{
     this.blockUI.start("Cargando data...");
     if (this.DATA_GESTOR) {
       this.actionBtn = 'Actualizar'
       this.liquidacionService.getGestorById(this.DATA_GESTOR.idGestor).subscribe((gestor: any) => {
         // console.log('DATA_BY_ID_GESTOR', gestor, gestor.proyectos[0].idProyecto);
 
+
+        this.listGestorSubservicio = gestor.gestorSubservicio;
         this.blockUI.stop();
-        this.gestorForm.reset({
+        this.gestorCertForm.reset({
           nombre        : gestor.nombres,
           apellidos     : gestor.apellidos,
           correo        : gestor.correo,
@@ -79,15 +76,15 @@ export class ModalGestorComponent implements OnInit {
           proyectos     : gestor.proyectos[0].idProyecto,
           subservicios  : gestor.subservicios[0].idSubservicio,
           id_estado     : gestor.estado.estadoId,
-          fecha_creacion: moment.utc(gestor.fechaCreacion).format('DD-MM-YYYY'),
+          fecha_creacion: moment.utc(gestor.fechaCreacion).format('YYYY-MM-DD'),
         })
       })
     }
-  }
+  };
 
   crearOactualizarGestor(){
-    if (this.gestorForm.invalid) {
-      return Object.values(this.gestorForm.controls).forEach((controls) => {
+    if (this.gestorCertForm.invalid) {
+      return Object.values(this.gestorCertForm.controls).forEach((controls) => {
         controls.markAllAsTouched();
       })
     }
@@ -98,10 +95,10 @@ export class ModalGestorComponent implements OnInit {
       console.log('CREAR_SUBS');
       this.crearGestor()
     }
-  }
+  };
 
   actualizarGestor(){
-    const formValues = this.gestorForm.getRawValue();
+    const formValues = this.gestorCertForm.getRawValue();
 
     const requestGestor = {
       idCertificacion : this.DATA_GESTOR.idCertificacion,
@@ -127,10 +124,10 @@ export class ModalGestorComponent implements OnInit {
           this.close(true);
       }
     })
-  }
+  };
 
   crearGestor(): void{
-    const formValues = this.gestorForm.getRawValue();
+    const formValues = this.gestorCertForm.getRawValue();
 
     const request = {
       nombres    : formValues.nombre,
@@ -172,27 +169,10 @@ export class ModalGestorComponent implements OnInit {
   eliminarLiquidacion(id: number){}
   // actualizarFactura(data: any){}
 
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY', this.listProyectos);
-
-    })
-  }
-
-  listSubservicios:any[] = [];
-  getAllSubservicios(){
-    this.liquidacionService.getAllSubservicios().subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
-      console.log('SUBS', this.listSubservicios);
-    })
-  }
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
 
   showAlertError(message: string) {
     Swal.fire({
@@ -203,12 +183,22 @@ export class ModalGestorComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.gestorForm.get(campo)?.invalid && this.gestorForm.get(campo)?.touched ) {
+    if (this.gestorCertForm.get(campo)?.invalid && this.gestorCertForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;
     }
   }
 
+  abrirModalCrearOactualizar(DATA?: any) {
+    // console.log('DATA_G', DATA);
+    this.dialog
+      .open(ModalGestorSubservicioComponent, { width: '35%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          // this.getAllCertificaciones();
+        }
+      });
+  };
 }
 

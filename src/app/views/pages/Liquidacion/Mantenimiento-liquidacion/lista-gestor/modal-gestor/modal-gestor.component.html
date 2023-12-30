@@ -5,109 +5,179 @@
 <div class="cli-form mt-3">
   <div class="cli-form-title c-male">{{ DATA_GESTOR ? "Actualizar" : "Crear" }} gestor</div>
 
-  <form class="row g-3 mt-3" [formGroup]="gestorForm">
-    <div class="cli-form newvac-wrapper">
-      <div class="row g-3">
-        <div class="cli-form-element col-f-3">
-          <label>Nombre <small style="color: red">*</small></label>
-          <input
-            class="cli-input"
-            formControlName="nombre"
-            type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('nombre')">* Ingrese el nombre es obligatorio</small>
-        </div>
+      <div class="pr-subtitle">Data gestor</div>
+        <div class="pr-section">
+          <div class="pr-module-container mb-2">
+            <form class="row g-3" [formGroup]="gestorCertForm">
+              <div class="cli-form newvac-wrapper">
+                <div class="row g-3">
+                  <div class="cli-form-element col-f-3">
+                    <label>Nombre <small style="color: red">*</small></label>
+                    <input
+                      class="cli-input"
+                      formControlName="nombre"
+                      type="text"/>
+                      <small class="form-text text-alert" *ngIf="campoNoValido('nombre')">* Ingrese el nombre es obligatorio</small>
+                  </div>
 
-        <div class="cli-form-element col-f-3">
-          <label>Apellidos <small style="color: red">*</small></label>
-          <input
-            class="cli-input"
-            formControlName="apellidos"
-            type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('apellidos')">* Ingrese los Apellidos es obligatorio</small>
-        </div>
+                  <div class="cli-form-element col-f-3">
+                    <label>Apellidos <small style="color: red">*</small></label>
+                    <input
+                      class="cli-input"
+                      formControlName="apellidos"
+                      type="text"/>
+                      <small class="form-text text-alert" *ngIf="campoNoValido('apellidos')">* Ingrese los Apellidos es obligatorio</small>
+                  </div>
 
-        <div class="cli-form-element col-f-3">
-          <label>Correo</label>
-          <input
-            class="cli-input"
-            formControlName="correo"
-            type="text"/>
-        </div>
+                  <div class="cli-form-element col-f-3">
+                    <label>Correo</label>
+                    <input
+                      class="cli-input"
+                      formControlName="correo"
+                      type="text"/>
+                  </div>
 
-        <div class="cli-form-element col-f-3">
-          <div class="form-group">
-            <label>Fecha inicio</label>
-             <input
-              style="padding: 0.175rem .75rem;"
-              type="date"
-              class="form-control"
-              formControlName="fecha_ini"/>
+                  <div class="cli-form-element col-f-3">
+                    <div class="form-group">
+                      <label>Fecha inicio</label>
+                       <input
+                        style="padding: 0.175rem .75rem;"
+                        type="date"
+                        class="form-control"
+                        formControlName="fecha_ini"/>
+                    </div>
+                  </div>
+
+                  <div class="cli-form-element col-f-3">
+                    <div class="form-group">
+                      <label>Fecha fin</label>
+                       <input
+                        style="padding: 0.175rem .75rem;"
+                        type="date"
+                        class="form-control"
+                        formControlName="fecha_fin"/>
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="DATA_GESTOR">
+                    <div class="cli-form-element col-f-3">
+                      <label>Estado</label>
+                      <select formControlName="id_estado" class="cli-input">
+                        <option [value]="10" disabled>-Seleccione-</option>
+                        <option value="1">Activo</option>
+                        <option value="0">Inactivo</option>
+                      </select>
+                    </div>
+
+                    <div class="cli-form-element form-group col-f-3">
+                      <label>Fecha creación</label>
+                       <input
+                        style="padding: 0.175rem .75rem;"
+                        type="date"
+                        class="form-control"
+                        formControlName="fecha_creacion"/>
+                    </div>
+                  </ng-container>
+                </div>
+
+              </div>
+            </form>
+
+          </div>
+       </div>
+
+  <div class="pr-subtitle">Proyecto(s) - Subservicio(s)</div>
+    <div class="pr-section">
+      <div class="pr-module-container mb-2">
+        <div style="display: flex">
+          <div style="background-color: #f6f3f3">
+            <button
+              class="btn-asignar btn-grey mb-1"
+              matTooltip="Agregar proyecto"
+              type="submit"
+              (click)="abrirModalCrearOactualizar()">
+              <mat-icon class="icon-18">add</mat-icon>
+            </button>
+          </div>
+
+          <div class="flex-1"></div>
+          <div class="mt-1" style="color: #345df3; font-weight: 400" *ngIf="listGestorSubservicio.length > 0">
+            Total : <span class="total">{{ listGestorSubservicio.length }} Proyectos</span>
           </div>
         </div>
 
-        <div class="cli-form-element col-f-3">
-          <div class="form-group">
-            <label>Fecha fin</label>
-             <input
-              style="padding: 0.175rem .75rem;"
-              type="date"
-              class="form-control"
-              formControlName="fecha_fin"/>
+        <div style="overflow: auto; min-height: 50px; color: #6c757d">
+          <div *ngIf="listGestorSubservicio.length > 0">
+            <table class="cli-table_x stripedtable underlinedtable">
+              <thead>
+                <tr class="bgc-green c-white">
+                  <th style="min-width: 35px">Acción</th>
+                  <!-- <th style="min-width: 45px">ID .</th> -->
+                  <th>Proyecto</th>
+                  <th>Subservicio</th>
+                  <th style="min-width: 116px;">Fecha creación</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let gestor of listGestorSubservicio;let i = index">
+                  <td>
+                    <div class="moad-actions" style="justify-content: left; display: flex;">
+                      <button
+                      matTooltip="Actualizar"
+                      (click)="abrirModalCrearOactualizar(gestor)"
+                        class="icon-btn btn-trans"
+                        style="color: #69aafa"
+                        >
+                        <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                      </button>
+
+                      <!-- (click)="eliminarCertificacion(cert.idcert)" -->
+                      <button
+                        matTooltip="Eliminar"
+                        class="icon-btn btn-trans b-fucsia"
+                        >
+                        <mat-icon class="icon-15">delete_forever</mat-icon>
+                      </button>
+                    </div>
+                  </td>
+                  <!-- <td>{{ cert.idDetalleCertificacion }}</td> -->
+                  <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.proyecto }}</td>
+                  <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.subservicio }}</td>
+                  <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.fecha_creacion }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="cli-loader" *ngIf="loadingItem">
+              <mat-spinner
+                style="margin-right: 20px"
+                diameter="20"
+              ></mat-spinner
+              >cargando...
+            </div>
+          </div>
+          <div
+            *ngIf="!loadingItem && listGestorSubservicio.length == 0"
+            class="cli-loader mt-2"
+            style="color: #c9c9c9; font-size: 12px">
+            Aún no existen SUBSERVICIOS ...
           </div>
         </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Proyecto(s)</label>
-          <select formControlName="proyectos" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
-          </select>
-          <!-- <small class="form-text text-alert" *ngIf="campoNoValido('proyectos')">* Seleccione el proyecto es obligatorio</small> -->
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Subservicios</label>
-          <select formControlName="subservicios" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="subs.idSubservicio" *ngFor="let subs of listSubservicios">{{subs.nombreCompleto}}</option>
-          </select>
-          <!-- <small class="form-text text-alert" *ngIf="campoNoValido('subservicios')">* Seleccione el subservicios es obligatorio</small> -->
-        </div>
-
-        <ng-container *ngIf="DATA_GESTOR">
-          <div class="cli-form-element col-f-3">
-            <label>Estado</label>
-            <select formControlName="id_estado" class="cli-input">
-              <option [value]="10" disabled>-Seleccione-</option>
-              <option value="1">Activo</option>
-              <option value="0">Inactivo</option>
-            </select>
-          </div>
-
-          <div class="cli-form-element form-group col-f-3">
-            <label>Fecha creación</label>
-             <input
-              style="padding: 0.175rem .75rem;"
-              type="date"
-              class="form-control"
-              formControlName="fecha_creacion"/>
-          </div>
-        </ng-container>
-      </div>
-
-      <div class="cli-form-buttons" style="margin-top: 8%">
-        <button class="cli-btn btn-m btn-regresar"
-                type="submit" (click)="close()">
-                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
-        </button>
-
-        <button class="cli-btn btn-m btn-turq"
-                [disabled]="gestorForm.invalid"
-                (click)="crearOactualizarGestor()"
-                ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
-        </button>
-      </div>
     </div>
-  </form>
+  </div>
+
+  <div class="cli-form-buttons" style="margin-top: 8%">
+    <button class="cli-btn btn-m btn-regresar"
+            type="submit" (click)="close()">
+            <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+    </button>
+
+    <button class="cli-btn btn-m btn-turq"
+            [disabled]="gestorCertForm.invalid"
+            (click)="crearOactualizarGestor()"
+            ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
+    </button>
+  </div>
+
 </div>
 

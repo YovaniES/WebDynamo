@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
@@ -33,7 +32,7 @@ export class CrearFacturasComponent implements OnInit {
   this.getAllCertificaciones();
   this.getListEstadoCertificacion();
   if (this.DATA_FACTURA) {
-    this.cargarFacturaById();
+    this.cargarFacturaByOrden();
     // console.log('FACTURA_MODAL', this.DATA_FACTURA);
     }
   }
@@ -53,28 +52,14 @@ export class CrearFacturasComponent implements OnInit {
   }
 
   actionBtn: string = 'Crear';
-  cargarFacturaById(): void{
+  cargarFacturaByOrden(): void{
     this.blockUI.start("Cargando data_...");
     if (this.DATA_FACTURA) {
-      // this.actionBtn = 'Actualizar'
-
       this.blockUI.stop();
       this.facturaForm.reset({
         idCertificacion: this.DATA_FACTURA.idCertificacion,
         idEstado       : this.DATA_FACTURA.estado.idEstado
       })
-      // this.liquidacionService.getLiderById(this.DATA_FACTURA.idFactura).subscribe((cert: any) => {
-
-      //   this.blockUI.stop();
-      //   this.facturaForm.reset({
-      //     nombre        : cert.nombre,
-      //     apellidos     : cert.apellidos,
-      //     correo        : cert.correo,
-      //     descripcion   : cert.descripcion,
-      //     id_estado     : cert.eliminacion_logica,
-      //     fecha_creacion: moment.utc(cert.fecha_creacion).format('YYYY-MM-DD'),
-      //   })
-      // })
     }
   }
 
@@ -185,7 +170,7 @@ export class CrearFacturasComponent implements OnInit {
     } else {
       return false;
     }
-  }
+  };
 
 }
 
