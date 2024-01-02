@@ -129,7 +129,7 @@ export class ModalCertificacionComponent implements OnInit {
         this.certificacionForm.reset({
           idCertificacion   : cert.idCertificacion,
           monto             : cert.monto,
-          idEstado          : cert.idEstado,
+          idEstado          : cert.estado,
           // fechaCertificacion: this.utilService.generarPeriodo(cert.fechaCertificacion),
           fechaCertificacion: moment.utc(cert.fechaCertificacion).format('YYYY-MM-DD'), //2023-12-30
         })

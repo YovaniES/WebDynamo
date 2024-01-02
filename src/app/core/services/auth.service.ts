@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import { Router } from '@angular/router';
 import { AUTH_SESSION } from '../constants/url.constants';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ROLES_ENUM, ROL_ADMIN, ROL_COORD_LIDER, ROL_COOR_TDP, ROL_GESTOR, ROL_LIDER, ROL_SUPER_ADMIN } from '../constants/rol.constants';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(loginData: any) {
+  login(loginData: any): Observable<any> {
     return this.http.post<any>(AUTH_SESSION, loginData).pipe(
       tap((resp: any) => {
         console.log('LOGIN_ACCESO: ', resp.user.acceso);

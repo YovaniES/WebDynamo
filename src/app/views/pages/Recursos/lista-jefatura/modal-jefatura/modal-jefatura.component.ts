@@ -46,6 +46,7 @@ export class ModalJefaturaComponent implements OnInit {
      jefatura      : ['', Validators.required],
      descripcion   : [''],
      estado        : [''],
+     proyecto      : [''],
      fecha_creacion: ['']
     })
   }
@@ -53,19 +54,22 @@ export class ModalJefaturaComponent implements OnInit {
   actionBtn: string = 'Crear';
   cargarJefaturaById(): void{
     this.blockUI.start("Cargando data...");
-    if (this.DATA_JEFATURA) {
+    if (this.DATA_JEFATURA.idJefatura > 0) {
       this.actionBtn = 'Actualizar'
       this.liquidacionService.getJefaturaById(this.DATA_JEFATURA.idJefatura).subscribe((jef: any) => {
-        console.log('DATA_BY_ID_JEFATURA', jef);
+        // console.log('DATA_BY_ID_JEFATURA', jef);
 
         this.blockUI.stop();
         this.jefaturaForm.reset({
-          jefatura      : jef.Jefatura,
+          jefatura      : jef.nombre,
           descripcion   : jef.descripcion,
-          estado        : jef.eliminacion_logica,
+          proyecto      : jef.proyectos,
+          estado        : jef.estado.estadoId,
           fecha_creacion: moment.utc(jef.fecha_creacion).format('YYYY-MM-DD'),
-          // usuarioActualiza
         })
+
+        this.jefaturaForm.controls['proyecto'      ].disable();
+        this.jefaturaForm.controls['fecha_creacion'].disable();
       })
     }
   }
@@ -89,14 +93,13 @@ export class ModalJefaturaComponent implements OnInit {
     const formValues = this.jefaturaForm.getRawValue();
 
     const requestJefatura = {
-      idCertificacion : this.DATA_JEFATURA.idCertificacion,
-      idFactura       : this.DATA_JEFATURA.idFactura,
-      idEstado        : this.DATA_JEFATURA.eliminacion_logica,
-      descripcion     : formValues.descripcion,
-      usuario         : this.userID
+      nombre            : formValues.jefatura,
+      descripcion       : formValues.descripcion,
+      idUsuarioActualiza: this.userID,
+      isActive          : formValues.estado,
     }
 
-    this.liquidacionService.actualizarJefatura(this.DATA_JEFATURA.idCertificacion, requestJefatura).subscribe((resp: any) => {
+    this.liquidacionService.actualizarJefatura(this.DATA_JEFATURA.idJefatura, requestJefatura).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
             title: 'Actualizar jefatura!',

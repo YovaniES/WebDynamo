@@ -8,7 +8,7 @@
   <form class="row g-3 mt-3" [formGroup]="jefaturaForm">
     <div class="cli-form newvac-wrapper">
       <div class="row g-3">
-        <div class="cli-form-element col-f-3">
+        <div class="cli-form-element col-f-2">
           <label>Jefatura<small style="color: red">*</small></label>
           <input
             class="cli-input"
@@ -18,7 +18,15 @@
         </div>
 
         <ng-container *ngIf="DATA_JEFATURA">
-          <div class="cli-form-element col-f-3">
+          <div class="cli-form-element col-f-2">
+            <label>Proyecto(s)</label>
+            <input
+              class="cli-input"
+              formControlName="proyecto"
+              type="text"/>
+          </div>
+
+          <div class="cli-form-element col-f-2">
             <label>Estado</label>
             <select formControlName="estado" class="cli-input">
               <option [value]="100" disabled>-Seleccione-</option>
@@ -27,7 +35,7 @@
             </select>
           </div>
 
-          <div class="cli-form-element form-group col-f-3">
+          <div class="cli-form-element form-group col-f-2">
             <label>Fecha creación</label>
              <input
               style="padding: 0.175rem .75rem;"

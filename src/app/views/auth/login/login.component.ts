@@ -26,18 +26,16 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private spinner: NgxSpinnerService
   ) {}
 
   login() {
     this.blockUI.start('Iniciando Sesión...');
-    this.authService
-      .login(this.loginForm.value)
-      .pipe(first())
+    this.authService.login(this.loginForm.value)
+      // .pipe(first())
       .subscribe(
         (resp) => {
+          // this.spinner.hide();
           if (resp.user.acceso == 1 && resp.user.aplicacion == 1) {
-            // this.spinner.hide();
             this.blockUI.stop();
 
             Swal.fire(

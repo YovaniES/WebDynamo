@@ -1,0 +1,81 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male">{{ "Crear" }} Certificación</div>
+
+  <form class="row g-3 mt-3" [formGroup]="facturaForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="row g-3">
+        <div class="cli-form-element col-f-3">
+          <label>N° Factura <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="nro_factura"
+            placeholder="F001-000123"
+            type="text"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('nro_factura')">* Ingrese el N° de factura es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Certificación <small style="color: red">*</small></label>
+          <select formControlName="idCertificacion" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="cert.idCertificacion" *ngFor="let cert of listCertificaciones">{{cert.nro_certificacion}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idCertificacion')">* Seleccione el proyecto es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element form-group col-f-3">
+          <label>Fecha facturación</label>
+           <input
+            style="padding: 0.175rem .75rem;"
+            type="date"
+            class="form-control"
+            formControlName="fecha_facturacion"/>
+          <small class="form-text text-alert" *ngIf="campoNoValido('fecha_facturacion')">* Seleccione el proyecto es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Factura TGS <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="factura_tgs"
+            type="text"/>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Factura Adquira <small style="color: red">*</small></label>
+          <input
+            class="cli-input"
+            formControlName="factura_adquira"
+            type="text"/>
+        </div>
+
+          <div class="cli-form-element col-f-3">
+            <label>Estado certificación<small style="color: red">*</small></label>
+            <select formControlName="idEstado" class="cli-input">
+              <option [value]="0" disabled>-Seleccione-</option>
+              <option [value]="est.idEstado" *ngFor="let est of listEstadoDetalleActa">{{est.nombre}}</option>
+            </select>
+            <small class="form-text text-alert" *ngIf="campoNoValido('idEstado')">* Ingrese el Estado es obligatorio</small>
+          </div>
+      </div>
+
+      <div class="cli-form-buttons" style="margin-top: 8%">
+        <button class="cli-btn btn-m btn-regresar"
+                type="submit" (click)="close()">
+                <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+        </button>
+
+        <button class="cli-btn btn-m btn-turq"
+                [disabled]="facturaForm.invalid"
+                (click)="crearOactualizarFactura()"
+                ><mat-icon class="icon-18">save</mat-icon> Crear
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

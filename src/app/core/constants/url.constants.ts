@@ -10,18 +10,15 @@ let API_SAVE_DATA_IMPORT = '';
 
 switch (ENVIROMENT) {
   case 'DEV':
-    // PATH_BACK_NET  = 'https://localhost:3061/api/configurador/';
     break;
   case 'QA':
     AUTH_API = '';
     break;
   case 'PROD':
     AUTH_API      = 'http://seguridadweb.indratools.com/aut/seguridad/';
-    // AUTH_API      = 'http://localhost:5167/aut/seguridad/';
-
+    // AUTH_API = 'https://seguridadweb.azurewebsites.net/api/auth/'
 
     PATH_VISOR_DYNAMO  = 'http://visordynamosupportapi.indratools.com/';
-    // PATH_VISOR_DYNAMO  = 'https://localhost:7197/';
 
 
     API_SAVE_DATA_IMPORT = 'http://saveimporteddata.indratools.com/api/importar' // CONECTADO con: db_support

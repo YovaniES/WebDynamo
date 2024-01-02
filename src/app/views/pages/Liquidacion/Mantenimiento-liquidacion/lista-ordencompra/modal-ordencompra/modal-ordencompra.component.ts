@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
+import { OcCertificacionesComponent } from './modal-oc-certificaciones/oc-certificaciones.component';
 
 
 @Component({
@@ -18,7 +19,6 @@ export class ModalOrdencompraComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
@@ -27,6 +27,7 @@ export class ModalOrdencompraComponent implements OnInit {
                private liquidacionService: LiquidacionService,
                private authService: AuthService,
                private spinner: NgxSpinnerService,
+               private dialog: MatDialog,
                public dialogRef: MatDialogRef<ModalOrdencompraComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_ORDENCOMPRA: any
   ) {}
@@ -38,7 +39,6 @@ export class ModalOrdencompraComponent implements OnInit {
   if (this.DATA_ORDENCOMPRA) {
     this.cargarOrdenCompraById();
     console.log('DATA_OC', this.DATA_ORDENCOMPRA);
-
   }
   }
 
@@ -49,6 +49,7 @@ export class ModalOrdencompraComponent implements OnInit {
      monto           : ['', Validators.required],
      certificaciones : [''],
      fecha_creacion  : [''],
+     proyecto        : [''],
      id_estado       : ['']
     })
   };
@@ -89,10 +90,34 @@ export class ModalOrdencompraComponent implements OnInit {
     })
   }
 
+  //   "nroOrden": "string",
+  //   "monto": 0,
+  //   "idUsuarioCreacion": 0,
+  //   "certificacions": [
+  //     {
+  //       "nro_certificacion": "string",
+  //       "valor": 0,
+  //       "moneda": "string",
+  //       "idOrden": 0,
+  //       "idProyecto": 0,
+  //       "idUsuarioCreacion": 0
+  //     }
+  //   ]
   crearOrdenCompra(){
+    const formValues = this.ordencompraForm.getRawValue();
 
+    const request = {
+      nroOrden         : formValues.nro_orden,
+      monto            : formValues.monto,
+      idUsuarioCreacion: this.userID,
+      certificacions   : formValues.certificaciones,
+    }
+    this.liquidacionService.crearOrdenCompra(request).subscribe((oc: any) => {
+
+    })
   }
 
+  listOcCertificaciones: any[] = [];
   actionBtn: string = 'Crear';
   cargarOrdenCompraById(): void{
     this.blockUI.start("Cargando Orden de Compra...");
@@ -101,26 +126,19 @@ export class ModalOrdencompraComponent implements OnInit {
       this.liquidacionService.getOrdenCompraById(this.DATA_ORDENCOMPRA.idOrden).subscribe((oc: any) => {
         console.log('DATA_BY_ID_OC', oc);
 
+        this.listOcCertificaciones = oc.certificacionResponse;
         this.blockUI.stop();
         this.ordencompraForm.reset({
           idOrden        : this.DATA_ORDENCOMPRA.idOrden,
           nro_orden      : oc.nro_orden,
           monto          : oc.monto,
+          proyecto       : oc.proyectos,
           fecha_creacion : moment.utc(oc.fecha_creacion).format('YYYY-MM-DD'),
           certificaciones: oc.certificacions,
-          id_estado      : oc.estado
-          // certificacionList : [
-          //     {
-          //         "idCertificacion": 9,
-          //         "nro_certificacion": "5040513931",
-          //         "valor": 4.07,
-          //         "moneda": "PEN"
-          //     }
-          //   ]
+          id_estado      : oc.estado.estadoId
         });
 
         this.ordencompraForm.controls['fecha_creacion'].disable();
-        // this.ordencompraForm.controls['id_estado'     ].disable();
       })
     }
   }
@@ -173,6 +191,17 @@ export class ModalOrdencompraComponent implements OnInit {
       this.spinner.hide();
     }
       this.page = event;
-  }
+  };
+
+  abrirModalCrearOactualizar(DATA?: any) {
+    console.log('DATA_OC', DATA);
+    this.dialog
+      .open(OcCertificacionesComponent, { width: '35%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          // this.getAllCertificaciones();
+        }
+      });
+  };
 }
 

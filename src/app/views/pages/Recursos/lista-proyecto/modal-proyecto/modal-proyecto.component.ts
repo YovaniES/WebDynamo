@@ -22,7 +22,6 @@ export class ModalProyectoComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
@@ -55,10 +54,11 @@ export class ModalProyectoComponent implements OnInit {
      lider         : ['', Validators.required],
      proyecto      : ['', Validators.required],
      cliente       : ['', Validators.required],
-     cod_jira      : ['', Validators.required],
+     cod_jira      : [''],
      fecha_creacion: [''],
      fecha_ini     : [''],
      fecha_fin     : [''],
+     reemplaza_a   : [''],
      id_estado     : [''],
      descripcion   : ['']
     })
@@ -96,6 +96,7 @@ export class ModalProyectoComponent implements OnInit {
       idCliente         : formValues.cliente,
       idJefatura        : formValues.jefatura,
       idUsuarioCreacion : this.userID,
+      reemplazaA        :formValues.reemplaza_a
     }
 
     this.liquidacionService.crearProyecto(request).subscribe((resp: any) => {
@@ -154,17 +155,19 @@ export class ModalProyectoComponent implements OnInit {
         this.blockUI.stop();
 
         this.proyectoForm.reset({
-          jefatura      : proy.jefaturas.idJefatura,
-          lider         : proy.lideres.idLider,
-          proyecto      : proy.codigo_proyecto,
-          cliente       : proy.clientes.idCliente,
+          jefatura      : proy.jefatura.idJefatura,
+          lider         : proy.lider.idLider,
+          proyecto      : proy.codigoProyecto,
+          cliente       : proy.cliente.idCliente,
           fecha_creacion: moment.utc(proy.fechaCreacion).format('YYYY-MM-DD'),
           fecha_ini     : moment.utc(proy.fecha_inicio).format('YYYY-MM-DD'),
           fecha_fin     : moment.utc(proy.fecha_fin).format('YYYY-MM-DD'),
           cod_jira      : proy.codigo_jira,
-          id_estado     : proy.eliminacion_logica,
+          id_estado     : proy.estado.estadoId,
           descripcion   : proy.descripcion,
         })
+
+        this.proyectoForm.controls['fecha_creacion'].disable();
       })
     }
   }

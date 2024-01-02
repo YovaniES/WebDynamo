@@ -15,9 +15,9 @@
                     <label>Nombre <small style="color: red">*</small></label>
                     <input
                       class="cli-input"
-                      formControlName="nombre"
+                      formControlName="nombres"
                       type="text"/>
-                      <small class="form-text text-alert" *ngIf="campoNoValido('nombre')">* Ingrese el nombre es obligatorio</small>
+                      <small class="form-text text-alert" *ngIf="campoNoValido('nombres')">* Ingrese el nombre es obligatorio</small>
                   </div>
 
                   <div class="cli-form-element col-f-3">
@@ -86,6 +86,7 @@
           </div>
        </div>
 
+  <ng-container *ngIf="DATA_GESTOR">
   <div class="pr-subtitle">Proyecto(s) - Subservicio(s)</div>
     <div class="pr-section">
       <div class="pr-module-container mb-2">
@@ -165,6 +166,7 @@
         </div>
     </div>
   </div>
+  </ng-container>
 
   <div class="cli-form-buttons" style="margin-top: 8%">
     <button class="cli-btn btn-m btn-regresar"
@@ -178,6 +180,5 @@
             ><mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
     </button>
   </div>
-
 </div>
 

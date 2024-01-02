@@ -1,5 +1,22 @@
 @import "variables.scss";
 
+.btn-asignar {
+  border-radius: 2px;
+  display: flex;
+  height: 18px;
+  align-items: center;
+  border: solid 0.5px #4a93ff;
+  color: #4a93ff;
+  justify-content: center;
+  & mat-icon {
+    margin: 0 5px;
+  }
+  &:disabled {
+    background-color: #bcd7ff;
+    color: #fff;
+  }
+}
+
 .inputiconcont{
   display: flex;
   align-items: center;

@@ -81,7 +81,7 @@
               <th style="min-width: 70px">ID Cliente.</th>
               <th>Razón social</th>
               <th>Ruc</th>
-              <th style="min-width: 240px">Proyecto(s)</th>
+              <th style="min-width: 330px">Proyecto(s)</th>
               <th style="min-width: 100px">Actualizado por</th>
               <th style="min-width: 100px">Fecha creación</th>
               <th style="min-width: 92px" >Estado</th>
@@ -114,7 +114,7 @@
               <td style="text-align: left; min-width: 240px;">{{ cliente.razon_social }}</td>
               <td style="text-align: left; min-width: 100px;">{{ cliente.ruc }}</td>
               <td>{{ cliente.proyectos }}</td>
-              <td>{{ cliente.usuarioActualiza.username }}</td>
+              <td style="color: #0d6efd;;">{{ cliente.usuarioActualiza.username }}</td>
               <td>{{ cliente.fecha_creacion }}</td>
               <td class="moad-module">
                 <mat-icon [ngClass]="{ 'c-green_x': cliente.estado.estadoId == 1, 'c-red': cliente.estado.estadoId != 1 }" class="icon-18">report</mat-icon>

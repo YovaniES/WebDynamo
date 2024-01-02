@@ -22,7 +22,6 @@ export class ModalClienteComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
@@ -52,7 +51,6 @@ export class ModalClienteComponent implements OnInit {
      ruc           : ['', Validators.required],
      estado        : [''],
      fecha_creacion: ['']
-     //  descripcion   : ['',],
     })
   }
 
@@ -67,8 +65,8 @@ export class ModalClienteComponent implements OnInit {
         this.clienteForm.reset({
           razon_social  : cliente.razon_social,
           ruc           : cliente.ruc,
-          estado        : cliente.eliminacion_logica,
-          fecha_creacion: moment.utc(cliente.fecha_creacion).format('YYYY-MM-DD'),
+          estado        : cliente.estado.estadoId,
+          fecha_creacion: moment.utc(cliente.fecha_creacion).format('DD-MM-YYYY'),
         })
       })
     }

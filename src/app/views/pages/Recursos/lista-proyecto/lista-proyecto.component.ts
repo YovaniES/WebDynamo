@@ -176,7 +176,7 @@ export class ListaProyectoComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalProyectoComponent, { width: '45%', height:'45%', data: DATA })
+      .open(ModalProyectoComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllProyectos();

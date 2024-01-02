@@ -10,7 +10,7 @@
       <div class="row">
         <div class="cli-form-element col-f-3">
           <label>Gestor</label>
-          <select formControlName="idGestor" class="cli-input">
+          <select formControlName="idGestor" class="cli-input_x">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="gestor.id" *ngFor="let gestor of listGestoresCombo">{{gestor.nombre}}</option>
           </select>
@@ -19,14 +19,14 @@
 
         <div class="cli-form-element col-f-3">
           <label>Proyecto</label>
-          <select formControlName="idGestor" class="cli-input">
+          <select formControlName="idProyecto" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
           </select>
-          <small class="form-text text-alert" *ngIf="campoNoValido('idGestor')">* Ingrese el Subservicio es obligatorio</small>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idProyecto')">* Ingrese el Proyecto es obligatorio</small>
         </div>
 
-        <div class="cli-form-element col-f-4">
+        <div class="cli-form-element col-f-3">
           <label>Subservicio <small style="color: red">*</small></label>
           <select formControlName="idSubservicio" class="cli-input_x">
             <option [value]="0" disabled>-Seleccione-</option>
@@ -37,7 +37,7 @@
 
         <div class="cli-form-element col-f-3">
           <label>Fecha creación <small style="color: red">*</small></label>
-          <input type="date" class="cli-input" formControlName="fecha_creacion" />
+          <input type="date" class="cli-input_x" formControlName="fecha_creacion" />
         </div>
 
         <div class="cli-form-buttons" style="margin-top: 8%">

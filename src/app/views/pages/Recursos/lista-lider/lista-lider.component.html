@@ -22,7 +22,7 @@
               <label>Proyecto</label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
               </select>
             </div>
 
@@ -30,8 +30,8 @@
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
               </select>
             </div>
 
@@ -115,7 +115,7 @@
               <td style="min-width: 240px;">{{ lider.descripcion }}</td>
               <td style="color: #007bff;">{{ lider.usuarioActualiza.username }}</td>
               <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': lider.eliminacion_logica == 1, 'c-red': lider.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
+                <mat-icon [ngClass]="{ 'c-green_x': lider.estado.estadoId == 1, 'c-red': lider.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>

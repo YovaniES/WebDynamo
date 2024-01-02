@@ -43,7 +43,7 @@ export class ModalGestorComponent implements OnInit {
   gestorCertForm!: FormGroup;
   newForm(){
     this.gestorCertForm = this.fb.group({
-     nombre        : ['', Validators.required],
+     nombres       : ['', Validators.required],
      apellidos     : ['', Validators.required],
      correo        : [''],
      fecha_ini     : [''],
@@ -63,21 +63,20 @@ export class ModalGestorComponent implements OnInit {
       this.actionBtn = 'Actualizar'
       this.liquidacionService.getGestorById(this.DATA_GESTOR.idGestor).subscribe((gestor: any) => {
         // console.log('DATA_BY_ID_GESTOR', gestor, gestor.proyectos[0].idProyecto);
-
-
         this.listGestorSubservicio = gestor.gestorSubservicio;
         this.blockUI.stop();
         this.gestorCertForm.reset({
-          nombre        : gestor.nombres,
+          nombres       : gestor.nombres,
           apellidos     : gestor.apellidos,
           correo        : gestor.correo,
           fecha_ini     : moment.utc(gestor.fecha_inicio).format('YYYY-MM-DD'),
           fecha_fin     : moment.utc(gestor.fecha_fin).format('YYYY-MM-DD'),
-          proyectos     : gestor.proyectos[0].idProyecto,
-          subservicios  : gestor.subservicios[0].idSubservicio,
+          proyectos     : gestor.proyectos,
+          subservicios  : gestor.subservicios,
           id_estado     : gestor.estado.estadoId,
           fecha_creacion: moment.utc(gestor.fechaCreacion).format('YYYY-MM-DD'),
         })
+        this.gestorCertForm.controls['fecha_creacion'].disable();
       })
     }
   };
@@ -101,19 +100,16 @@ export class ModalGestorComponent implements OnInit {
     const formValues = this.gestorCertForm.getRawValue();
 
     const requestGestor = {
-      idCertificacion : this.DATA_GESTOR.idCertificacion,
-      idFactura       : this.DATA_GESTOR.idFactura,
-      fechaFacturacion: formValues.fechaFact,
-      importe         : formValues.importe,
-      orden_compra    : formValues.ordenCompra,
-      certificacion   : formValues.certificacion,
-      idEstado        : 663,
-      factura         : formValues.factura,
-      comentario      : formValues.comentario,
-      usuario         : this.userID
+      idGestor           : this.DATA_GESTOR.idGestor,
+      nombres            : formValues.nombres,
+      apellidos          : formValues.apellidos,
+      correo             : formValues.correo,
+      fechaInicio        : formValues.fecha_ini,
+      fechaFin           : formValues.fecha_fin,
+      idUsuarioActualiza : this.userID,
     }
 
-    this.liquidacionService.actualizarGestor(this.DATA_GESTOR.idCertificacion, requestGestor).subscribe((resp: any) => {
+    this.liquidacionService.actualizarGestor(this.DATA_GESTOR.idGestor, requestGestor).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
             title: 'Actualizar gestor!',
@@ -130,7 +126,7 @@ export class ModalGestorComponent implements OnInit {
     const formValues = this.gestorCertForm.getRawValue();
 
     const request = {
-      nombres    : formValues.nombre,
+      nombres    : formValues.nombres,
       apellidos  : formValues.apellidos,
       correo     : formValues.correo,
       fechaInicio: formValues.fecha_ini,

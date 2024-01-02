@@ -126,7 +126,7 @@ export class ListaJefaturaComponent implements OnInit {
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
-    // console.log('DATA_G', DATA);
+    console.log('DATA_G', DATA);
     this.dialog
       .open(ModalJefaturaComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {

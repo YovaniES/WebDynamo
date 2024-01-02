@@ -72,7 +72,7 @@ export class ModalGestorSubservicioComponent implements OnInit {
 
       idGestorSubservicio: this.DATA_GESTOR_SUB.idProyectoSubservicioGestor,
       idGestor           : formValues.idGestor,
-      idProyecto         : formValues.idProyecto, // OJO
+      idProyecto         : formValues.idProyecto,
       idSubservicio      : formValues.idSubservicio,
       idUsuarioActualiza : this.userID
     }
@@ -124,8 +124,11 @@ export class ModalGestorSubservicioComponent implements OnInit {
         this.gestorSubservicioForm.reset({
           idGestor      : gestor.idGestor,
           idSubservicio : gestor.idSubservicio,
-          fecha_creacion: moment.utc(gestor.fecha_creacion).format('SS-MM-YYYY'),
+          idProyecto    : gestor.idProyecto,
+          fecha_creacion: moment.utc(gestor.fecha_creacion).format('YYYY-MM-DD'),
         })
+        this.gestorSubservicioForm.controls['fecha_creacion'].disable();
+        this.gestorSubservicioForm.controls['idGestor'      ].disable();
       })
     }
   };

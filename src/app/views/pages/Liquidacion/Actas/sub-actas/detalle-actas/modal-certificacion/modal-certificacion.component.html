@@ -38,11 +38,11 @@
           <small class="form-text text-alert" *ngIf="campoNoValido('monto')">* Ingrese la Monto es obligatorio</small>
         </div>
 
-        <div class="cli-form-element col-f-4" *ngIf="DATA_DET_ACTA.detalle.idDetalleCertificacion">
+        <div class="cli-form-element col-f-3" *ngIf="DATA_DET_ACTA.detalle.idDetalleCertificacion">
           <label>Estado</label>
           <select formControlName="idEstado" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
+            <option [value]="estado.estado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
           </select>
         </div>
 

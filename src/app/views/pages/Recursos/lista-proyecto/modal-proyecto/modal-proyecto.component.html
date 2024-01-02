@@ -37,7 +37,7 @@
         </div>
 
         <div class="cli-form-element col-f-3">
-          <label>Código Jira <small style="color: red">*</small></label>
+          <label>Código Jira</label>
           <input
             class="cli-input"
             formControlName="cod_jira"
@@ -49,7 +49,7 @@
           <label>Jefatura <small style="color: red">*</small></label>
           <select formControlName="jefatura" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="jef.idJefatura" *ngFor="let jef of listJefaturas">{{jef.Jefatura}}</option>
+            <option [value]="jef.idJefatura" *ngFor="let jef of listJefaturas">{{jef.nombre}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('jefatura')">* Seleccione la jefatura es obligatorio</small>
         </div>

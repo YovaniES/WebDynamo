@@ -21,7 +21,7 @@
               <label>Jefatura</label>
               <select formControlName="jefatura" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="jef.idJefatura" *ngFor="let jef of listJefaturas">{{jef.Jefatura}}</option>
+                <option [value]="jef.idJefatura" *ngFor="let jef of listJefaturas">{{jef.nombre}}</option>
               </select>
               <small class="form-text text-alert" *ngIf="campoNoValido('jefatura')">* Seleccione la jefatura es obligatorio</small>
             </div>
@@ -86,11 +86,13 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px" >Proyecto</th>
+              <th>Proyecto</th>
+              <th style="min-width: 325px" >Descripción</th>
               <th style="min-width: 110px;">Líder</th>
               <th>Código Jira</th>
               <th style="min-width: 120px">Jefatura</th>
-              <th style="min-width: 205px">Clientes</th>
+              <th style="min-width: 100px">Reemplaza a:</th>
+              <th style="min-width: 312px">Cliente(s)</th>
               <th style="min-width: 92px" >Estado</th>
             </tr>
           </thead>
@@ -117,13 +119,15 @@
                   </button>
                 </div>
               </td>
-              <td style="text-align: left;">{{ proy.codigo_proyecto }}</td>
-              <td style="text-align: left;">{{ proy.lideres.lider }}</td>
-              <td style="text-align: left; min-width: 100px;">{{ proy.codigo_jira | uppercase}}</td>
-              <td style="text-align: left;">{{ proy.jefaturas.jefatura }}</td>
-              <td style="text-align: left;">{{ proy.clientes.razon_social }}</td>
+              <td>{{ proy.codigoProyecto }}</td>
+              <td style="text-align: left;">{{ proy.nombreDescriptivo }}</td>
+              <td style="text-align: left;">{{ proy.lider.lider }}</td>
+              <td style="text-align: left; min-width: 100px;">{{ proy.codigoJira | uppercase}}</td>
+              <td style="text-align: left;">{{ proy.jefatura.jefatura }}</td>
+              <td style="text-align: left;">{{ proy.reemplazaA }}</td>
+              <td style="text-align: left;">{{ proy.cliente.razon_social }}</td>
               <td class="moad-module">
-                <mat-icon [ngClass]="{ 'c-green_x': proy.eliminacion_logica == 1, 'c-red': proy.eliminacion_logica != 1 }" class="icon-18">report</mat-icon>
+                <mat-icon [ngClass]="{ 'c-green_x': proy.estado.estadoId == 1, 'c-red': proy.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>
             </tr>
           </tbody>
