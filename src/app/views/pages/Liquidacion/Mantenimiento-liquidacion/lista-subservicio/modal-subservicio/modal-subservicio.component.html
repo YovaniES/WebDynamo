@@ -22,7 +22,7 @@
           <label>Gestor <small style="color: red">*</small></label>
           <select formControlName="gestor" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option>
+            <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombres}} {{gestor.apellidos}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('gestor')">* Seleccione el Gestor es obligatorio</small>
         </div>
@@ -31,7 +31,7 @@
           <label>Proyecto <small style="color: red">*</small></label>
           <select formControlName="proyecto" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('proyecto')">* Seleccione el proyecto es obligatorio</small>
         </div>
@@ -64,8 +64,8 @@
             <label>Estado</label>
             <select formControlName="id_estado" class="cli-input">
               <option [value]="0" disabled>-Seleccione-</option>
-              <option value="Activo">Activo</option>
-              <option value="Inactivo">Inactivo</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
             </select>
           </div>
 

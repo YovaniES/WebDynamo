@@ -139,8 +139,10 @@ export class ModalSubservicioComponent implements OnInit {
           fecha_creacion: moment.utc(subserv.fechaCreacion).format('YYYY-MM-DD'),
           fecha_fin     : subserv.fechaFin,
           proyecto      : subserv.idProyecto,
-          id_estado     : subserv.estado,
+          id_estado     : subserv.estado.estadoId,
         })
+
+        this.subservicioForm.controls['fecha_creacion'].disable();
       })
     }
   }

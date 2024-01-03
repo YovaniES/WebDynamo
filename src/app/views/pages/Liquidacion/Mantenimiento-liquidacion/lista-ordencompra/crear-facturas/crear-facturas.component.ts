@@ -100,7 +100,7 @@ export class CrearFacturasComponent implements OnInit {
           this.close(true);
       }
     })
-  }
+  };
 
   crearFactura(): void{
     const formValues = this.facturaForm.getRawValue();
@@ -126,15 +126,15 @@ export class CrearFacturasComponent implements OnInit {
         this.close(true);
       }
     })
-  }
+  };
 
   listEstadoDetalleActa:any[] = [];
   getListEstadoCertificacion(){
-    this.liquidacionService.getAllEstados().subscribe(resp => {
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
       this.listEstadoDetalleActa = resp.filter((x:any) => x.idEstado != 2);
       console.log('EST-CERT', this.listEstadoDetalleActa);
     })
-  }
+  };
 
   listCertificaciones: any[] = [];
   getAllCertificaciones(){

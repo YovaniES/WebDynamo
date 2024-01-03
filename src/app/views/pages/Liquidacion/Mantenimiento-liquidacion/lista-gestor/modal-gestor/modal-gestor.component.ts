@@ -40,9 +40,9 @@ export class ModalGestorComponent implements OnInit {
     }
   }
 
-  gestorCertForm!: FormGroup;
+  gestorForm!: FormGroup;
   newForm(){
-    this.gestorCertForm = this.fb.group({
+    this.gestorForm = this.fb.group({
      nombres       : ['', Validators.required],
      apellidos     : ['', Validators.required],
      correo        : [''],
@@ -65,7 +65,7 @@ export class ModalGestorComponent implements OnInit {
         // console.log('DATA_BY_ID_GESTOR', gestor, gestor.proyectos[0].idProyecto);
         this.listGestorSubservicio = gestor.gestorSubservicio;
         this.blockUI.stop();
-        this.gestorCertForm.reset({
+        this.gestorForm.reset({
           nombres       : gestor.nombres,
           apellidos     : gestor.apellidos,
           correo        : gestor.correo,
@@ -76,14 +76,14 @@ export class ModalGestorComponent implements OnInit {
           id_estado     : gestor.estado.estadoId,
           fecha_creacion: moment.utc(gestor.fechaCreacion).format('YYYY-MM-DD'),
         })
-        this.gestorCertForm.controls['fecha_creacion'].disable();
+        this.gestorForm.controls['fecha_creacion'].disable();
       })
     }
   };
 
   crearOactualizarGestor(){
-    if (this.gestorCertForm.invalid) {
-      return Object.values(this.gestorCertForm.controls).forEach((controls) => {
+    if (this.gestorForm.invalid) {
+      return Object.values(this.gestorForm.controls).forEach((controls) => {
         controls.markAllAsTouched();
       })
     }
@@ -97,7 +97,7 @@ export class ModalGestorComponent implements OnInit {
   };
 
   actualizarGestor(){
-    const formValues = this.gestorCertForm.getRawValue();
+    const formValues = this.gestorForm.getRawValue();
 
     const requestGestor = {
       idGestor           : this.DATA_GESTOR.idGestor,
@@ -123,21 +123,21 @@ export class ModalGestorComponent implements OnInit {
   };
 
   crearGestor(): void{
-    const formValues = this.gestorCertForm.getRawValue();
+    const formValues = this.gestorForm.getRawValue();
 
     const request = {
-      nombres    : formValues.nombres,
-      apellidos  : formValues.apellidos,
-      correo     : formValues.correo,
-      fechaInicio: formValues.fecha_ini,
-      fechaFin   : formValues.fecha_fin,
-      gestorSubservicio:[
-        {
-          idSubservicio: formValues.subservicios,
-          idProyecto   : formValues.proyectos,
-        }
-      ],
-      idUsuarioCrea  : this.userID,
+      nombres      : formValues.nombres,
+      apellidos    : formValues.apellidos,
+      correo       : formValues.correo,
+      fechaInicio  : formValues.fecha_ini,
+      fechaFin     : formValues.fecha_fin,
+      idUsuarioCrea: this.userID,
+      // gestorSubservicio:[
+      //   {
+      //     idSubservicio: formValues.subservicios,
+      //     idProyecto   : formValues.proyectos,
+      //   }
+      // ],
     }
 
     this.liquidacionService.crearGestor(request).subscribe((resp: any) => {
@@ -162,10 +162,6 @@ export class ModalGestorComponent implements OnInit {
    })
   }
 
-  eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
-
-
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
@@ -179,7 +175,7 @@ export class ModalGestorComponent implements OnInit {
   }
 
   campoNoValido(campo: string): boolean {
-    if (this.gestorCertForm.get(campo)?.invalid && this.gestorCertForm.get(campo)?.touched ) {
+    if (this.gestorForm.get(campo)?.invalid && this.gestorForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;
@@ -187,7 +183,7 @@ export class ModalGestorComponent implements OnInit {
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
-    // console.log('DATA_G', DATA);
+    console.log('DATA_GESTOR_BY_MODAL', DATA);
     this.dialog
       .open(ModalGestorSubservicioComponent, { width: '35%', data: DATA })
       .afterClosed().subscribe((resp) => {

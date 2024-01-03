@@ -243,7 +243,7 @@ export class LiquidacionService {
   }
 
   //  SERVICES - ESTADOS
-  getAllEstados() {
+  getAllEstadosActa() {
     return this.http.get(API_ESTADO_ACTA).pipe(
       map((resp: any) => {
         return resp.result;
@@ -366,7 +366,7 @@ export class LiquidacionService {
     );
   }
 
-  getAllOrdenCompraCombo() {
+  getAllOrdenCombo() {
     return this.http.get(API_ORDEN_COMPRA_COMBO).pipe(
       map((oc: any) => {
         return oc.result;

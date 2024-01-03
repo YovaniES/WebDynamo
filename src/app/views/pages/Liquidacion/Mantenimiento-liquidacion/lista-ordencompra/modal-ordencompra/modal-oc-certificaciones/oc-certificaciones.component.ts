@@ -100,7 +100,7 @@ export class OcCertificacionesComponent implements OnInit {
           this.close(true);
       }
     })
-  }
+  };
 
   crearFactura(): void{
     const formValues = this.facturaForm.getRawValue();
@@ -130,7 +130,7 @@ export class OcCertificacionesComponent implements OnInit {
 
   listEstadoDetalleActa:any[] = [];
   getListEstadoCertificacion(){
-    this.liquidacionService.getAllEstados().subscribe(resp => {
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
       this.listEstadoDetalleActa = resp.filter((x:any) => x.idEstado != 2);
       console.log('EST-CERT', this.listEstadoDetalleActa);
     })
@@ -140,9 +140,9 @@ export class OcCertificacionesComponent implements OnInit {
   getAllCertificaciones(){
     this.liquidacionService.getAllCertificaciones().subscribe(resp => {
       this.listCertificaciones = resp //.filter((x: any) => x.idCertificacion == this.DATA_FACTURA.idCertificacion);
-      console.log('CERTIFICACIONES', this.listCertificaciones);
+      // console.log('CERTIFICACIONES', this.listCertificaciones);
     })
-  }
+  };
 
   userID: number = 0;
   getUserID(){
@@ -150,7 +150,7 @@ export class OcCertificacionesComponent implements OnInit {
      this.userID   = resp.user.userId;
      console.log('ID-USER', this.userID);
    })
-  }
+  };
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
@@ -162,7 +162,7 @@ export class OcCertificacionesComponent implements OnInit {
       icon : 'error',
       text : message,
     });
-  }
+  };
 
   campoNoValido(campo: string): boolean {
     if (this.facturaForm.get(campo)?.invalid && this.facturaForm.get(campo)?.touched ) {

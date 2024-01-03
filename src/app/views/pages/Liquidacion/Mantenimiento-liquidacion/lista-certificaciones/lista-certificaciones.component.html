@@ -22,7 +22,7 @@
               <label>Orden de compra</label>
               <select formControlName="ordenCompra" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <!-- <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombresApellidos}}</option> -->
+                <option [value]="oc.id" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
               </select>
             </div>
 
@@ -102,7 +102,8 @@
               <th>Moneda</th>
               <th style="min-width: 100px">Fecha creación</th>
               <th style="min-width: 105px">Actualizado por:</th>
-              <th style="min-width: 92px">Estado</th>
+              <th style="min-width: 100px">Estado factura</th>
+              <th style="min-width: 92px" >Estado</th>
               <!-- <th style="min-width: 92px"></th> -->
             </tr>
           </thead>
@@ -138,8 +139,9 @@
               <td>{{ cert.valorDisponible }}</td>
               <td>{{ cert.moneda }}</td>
               <td>{{ cert.fecha_creacion | date:'dd/MM/yy HH:mm' }}</td>
-              <td>{{ cert.usuarioActualiza.usuario }}</td>
-              <td>{{ cert.estado.estado }}</td>
+              <td style="color: #007bff;">{{ cert.usuarioActualiza.usuario }}</td>
+              <td>{{ cert.estadoFactura     }}</td>
+              <td>{{ cert.estado.estado     }}</td>
               <!-- <td>
                 <div class="moad-actions">
                   <button

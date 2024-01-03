@@ -92,6 +92,8 @@
               <th style="min-width: 115px">Subservicios</th>
               <th style="min-width: 108px">Actualizado por</th>
               <th style="min-width: 92px" >Estado</th>
+              <th style="min-width: 145px" >Fecha inicio - fecha fin</th>
+              <th style="min-width: 100px" >Fecha creación</th>
             </tr>
           </thead>
 
@@ -117,7 +119,7 @@
                   </button>
                 </div>
               </td>
-              <td style="text-align: left">{{ gestor.nombres | uppercase}} {{ gestor.apellidos | uppercase}}</td>
+              <td style="text-align: left">{{ gestor.nombres}} {{ gestor.apellidos}}</td>
               <td style="text-align: left">{{ gestor.correo }}</td>
               <td>
                 <span *ngIf="gestor.proyectos" class="label ">{{ gestor.proyectos | uppercase }}</span>
@@ -126,6 +128,9 @@
               <td class="moad-module">
                 <mat-icon matTooltip="Activo" [ngClass]="{ 'c-green_x': gestor.estado.estadoId == 1, 'c-red': gestor.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>
+              <td style="text-align: left" *ngIf="gestor.fecha_Fin == 'Actual'">{{ gestor.fecha_inicio | date:'dd/MM/yyyy' }} -  Actual</td>
+              <td style="text-align: left" *ngIf="gestor.fecha_Fin != 'Actual'">{{ gestor.fecha_inicio | date:'dd/MM/yyyy' }} -  {{ gestor.fecha_Fin | date:'dd/MM/yyyy' }}</td>
+              <td style="text-align: left">{{ gestor.fechaCreacion | date:'dd/MM/yyyy' }}</td>
             </tr>
           </tbody>
         </table>

@@ -88,7 +88,7 @@
               <th style="min-width: 150px">Subservicio</th>
               <th class="w100">Gestor</th>
               <th style="min-width: 240px">Proyecto(s)</th>
-              <th style="min-width: 115px">Fecha inicio - fin</th>
+              <th style="min-width: 145px">Fecha inicio - fecha fin</th>
               <th style="min-width: 92px">Estado</th>
             </tr>
           </thead>
@@ -118,7 +118,8 @@
               <td style="text-align: left;">{{ subserv.subservicio }}</td>
               <td style="text-align: left; min-width: 150px;">{{ subserv.representante.nombre | uppercase}} {{ subserv.representante.apellidos | uppercase}}</td>
               <td style="">{{ subserv.proyecto }}</td>
-              <td style="text-align: left;">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - {{ subserv.fechaFin | date: 'dd/MM/yyyy' }}</td>
+              <td style="text-align: left;" *ngIf="subserv.fechaFin == 'Actual'">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - Actual</td>
+              <td style="text-align: left;" *ngIf="subserv.fechaFin != 'Actual'">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - {{ subserv.fechaFin | date: 'dd/MM/yyyy' }}</td>
               <td class="moad-module">
                 <mat-icon [ngClass]="{ 'c-green_x': subserv.estado.estadoId == 1, 'c-red': subserv.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>

@@ -31,7 +31,7 @@ export class ModalFacturasComponent implements OnInit {
   this.newForm()
   this.getUserID();
   this.getAllProyecto();
-  this.getListOrdenCompraCombo();
+  this.getListOrdenCombo();
 
   if (this.DATA_FACTURA) {
     this.cargarFacturaById();
@@ -166,8 +166,8 @@ export class ModalFacturasComponent implements OnInit {
   }
 
   listOrdenCompraCombo: any[] = [];
-  getListOrdenCompraCombo(){
-    this.liquidacionService.getAllOrdenCompraCombo().subscribe(resp => {
+  getListOrdenCombo(){
+    this.liquidacionService.getAllOrdenCombo().subscribe(resp => {
       this.listOrdenCompraCombo = resp;
       console.log('OC-COMBO', this.listOrdenCompraCombo);
     })

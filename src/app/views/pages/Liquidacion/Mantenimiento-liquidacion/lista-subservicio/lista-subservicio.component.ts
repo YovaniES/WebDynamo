@@ -3,16 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalSubservicioComponent } from './modal-subservicio/modal-subservicio.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
 
 @Component({
   selector: 'app-lista-subservicio',
@@ -23,13 +16,11 @@ export class ListaSubservicioComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalSubservicio: number = 0;
   pageSize = 10;
 
   constructor( private fb: FormBuilder,
-               private facturacionService: FacturacionService,
                private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
@@ -41,6 +32,7 @@ export class ListaSubservicioComponent implements OnInit {
   this.getAllProyecto();
   this.getAllGestorCombo();
   this.getAllSubserviciosFiltro()
+
   }
 
   subservicioForm!: FormGroup;
@@ -48,10 +40,10 @@ export class ListaSubservicioComponent implements OnInit {
     this.subservicioForm = this.fb.group({
      idGestor     : [''],
      idProyecto   : [''],
-     subservicio: [''],
+     subservicio  : [''],
      estado       : ['']
     })
-  }
+  };
 
   eliminarSubservicio(subserv: any){
     Swal.fire({
@@ -78,7 +70,6 @@ export class ListaSubservicioComponent implements OnInit {
     });
   };
 
-
   listGestorCombo: any[] = [];
   getAllGestorCombo(){
     this.blockUI.start('Cargando lista Gestores...');
@@ -102,8 +93,7 @@ export class ListaSubservicioComponent implements OnInit {
 
   limpiarFiltro() {
     this.subservicioForm.reset('', {emitEvent: false})
-    this.newForm()
-
+    this.newForm();
     this.getAllSubserviciosFiltro();
   }
 
@@ -111,8 +101,7 @@ export class ListaSubservicioComponent implements OnInit {
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
-      console.log('PROY', this.listProyectos);
-
+      // console.log('PROY', this.listProyectos);
     })
   }
 

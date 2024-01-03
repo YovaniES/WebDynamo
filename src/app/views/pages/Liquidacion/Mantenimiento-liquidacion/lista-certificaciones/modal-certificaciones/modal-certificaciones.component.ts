@@ -28,12 +28,11 @@ export class ModalCertificacionesComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllOrdenCompra();
+  this.getAllOrdenCombo();
   this.getUserID();
 
   if (this.DATA_CERTIF) {
     this.cargarCertificacionById(this.DATA_CERTIF);
-    this.getAllEstadosDetActa();
     console.log('MODAL-CERT', this.DATA_CERTIF);
     }
   }
@@ -41,12 +40,13 @@ export class ModalCertificacionesComponent implements OnInit {
   certificacionForm!: FormGroup;
   newForm(){
     this.certificacionForm = this.fb.group({
-        certificacion     : ['', Validators.required],
+        nro_certificacion : ['', Validators.required],
         monto_total       : ['', Validators.required],
         idProyecto        : ['', Validators.required],
         idOrden           : ['', Validators.required],
         moneda            : [''],
         estado            : [''],
+        isActive          : [''],
         fecha_creacion    : ['']
     })
   }
@@ -93,12 +93,13 @@ export class ModalCertificacionesComponent implements OnInit {
     const formValues = this.certificacionForm.getRawValue();
 
     const requestCertificacion = {
-      idProyecto   : formValues.proyecto,
-      nombre       : formValues.subservicio,
-      representante: formValues.gestor,
-      idUsuarioCrea: this.userID,
-      fechaInicio  : formValues.fecha_ini,
-      fechaFin     : formValues.fecha_fin,
+      nro_certificacion  : formValues.nro_certificacion,
+      valor              : formValues.monto_total,
+      moneda             : formValues.moneda,
+      idOrden            : formValues.idOrden,
+      idProyecto         : formValues.idProyecto,
+      isActive           : formValues.isActive,
+      idUsuarioActualiza : this.userID,
     }
     this.liquidacionService.actualizarCertificacion(this.DATA_CERTIF.idCertificacion, requestCertificacion).subscribe((resp: any) => {
       if (resp.success) {
@@ -124,25 +125,20 @@ export class ModalCertificacionesComponent implements OnInit {
 
         this.certificacionForm.reset({
           idCertificacion  : this.DATA_CERTIF.idCertificacion,
-          certificacion    : cert.nro_certificacion,
+          nro_certificacion: cert.nro_certificacion,
           monto_total      : cert.valorTotal,
           moneda           : cert.moneda,
           idOrden          : cert.ordenCompra.idOrden,
           idProyecto       : cert.proyecto.idProyecto,
           fecha_creacion   : moment.utc(cert.fecha_creacion).format('YYYY-MM-DD'),
-          estado           : cert.estado.idEstado
-        })
+          estado           : cert.estadoFactura,
+          isActive         : cert.estado.estadoId
+        });
+        this.certificacionForm.controls['estado'        ].disable();
+        this.certificacionForm.controls['fecha_creacion'].disable();
       })
     }
   };
-
-  listEstadoDetActa: any[] = [];
-  getAllEstadosDetActa(){
-    this.actasService.getAllEstadosDetActa().subscribe(resp => {
-      this.listEstadoDetActa = resp;
-      console.log('EST_DET_ACTA', this.listEstadoDetActa);
-    })
-  }
 
   userID: number = 0;
   getUserID(){
@@ -160,13 +156,13 @@ export class ModalCertificacionesComponent implements OnInit {
     })
   }
 
-  listOrdenCompra: any[] = [];
-  getAllOrdenCompra(){
-    this.liquidacionService.getAllOrdenCompra().subscribe(resp => {
-      this.listOrdenCompra = resp;
-      console.log('ORDEN_C', this.listOrdenCompra);
+  listOrdenCombo: any[] = [];
+  getAllOrdenCombo(){
+    this.liquidacionService.getAllOrdenCombo().subscribe(resp => {
+      this.listOrdenCombo = resp;
+      console.log('OC-COMBO', this.listOrdenCombo);
     })
-  }
+  };
 
   showAlertError(message: string) {
     Swal.fire({

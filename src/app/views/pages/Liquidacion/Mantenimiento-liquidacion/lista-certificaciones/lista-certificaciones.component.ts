@@ -6,7 +6,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalCertificacionesComponent } from './modal-certificaciones/modal-certificaciones.component';
-import { CrearFacturasComponent } from '../lista-ordencompra/crear-facturas/crear-facturas.component';
 import { ActasService } from 'src/app/core/services/actas.service';
 
 export interface changeResponse {
@@ -40,6 +39,7 @@ export class ListaCertificacionesComponent implements OnInit {
   this.newForm()
   this.getAllProyecto();
   this.getAllEstadosDetActa();
+  this.getAllOrdenCombo();
   this.getAllCertificaciones();
   }
 
@@ -91,7 +91,16 @@ export class ListaCertificacionesComponent implements OnInit {
     this.newForm()
 
     this.getAllCertificaciones();
-  }
+  };
+
+
+  listOrdenCompraCombo: any[] = [];
+  getAllOrdenCombo(){
+    this.liquidacionService.getAllOrdenCombo().subscribe(resp => {
+      this.listOrdenCompraCombo = resp;
+      console.log('OC-COMBO', this.listOrdenCompraCombo);
+    })
+  };
 
   listProyectos: any[] = [];
   getAllProyecto(){

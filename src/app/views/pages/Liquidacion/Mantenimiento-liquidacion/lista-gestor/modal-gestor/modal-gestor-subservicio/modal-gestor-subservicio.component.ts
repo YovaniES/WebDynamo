@@ -31,8 +31,10 @@ export class ModalGestorSubservicioComponent implements OnInit {
   this.getUserID();
   this.getAllProyecto();
   this.getListGestorCombo();
-  this.getAllSubserviciosCombo()
+  this.getAllSubserviciosCombo();
+  this.cargarDataGestor();
   console.log('DATA_GESTOR_SUB', this.DATA_GESTOR_SUB);
+  this.gestorSubservicioForm.controls['idGestor'].disable();
 
   if (this.DATA_GESTOR_SUB.idProyectoSubservicioGestor > 0) {
     this.cargarGestorSubservicioById();
@@ -44,8 +46,8 @@ export class ModalGestorSubservicioComponent implements OnInit {
     this.gestorSubservicioForm = this.fb.group({
      idSubservicio     : ['', Validators.required],
      idGestor          : ['', Validators.required],
-     idProyecto        : [''],
-     fecha_creacion    : ['', Validators.required],
+     idProyecto        : ['', Validators.required],
+     fecha_creacion    : [''],
     })
   };
 
@@ -132,6 +134,17 @@ export class ModalGestorSubservicioComponent implements OnInit {
       })
     }
   };
+
+
+
+  cargarDataGestor(){
+
+    this.gestorSubservicioForm.reset({
+      idGestor      : this.DATA_GESTOR_SUB.idGestor,
+      // idSubservicio : gestor.idSubservicio,
+      // idProyecto    : gestor.idProyecto,
+    })
+  }
 
   listSubserviciosCombo:any[] = [];
   getAllSubserviciosCombo(){

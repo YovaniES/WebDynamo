@@ -22,7 +22,6 @@ export class ListaEstadosComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalEstados: number = 0;
   pageSize = 5;
@@ -35,8 +34,8 @@ export class ListaEstadosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.newForm()
-  this.getAllEstados();
+    this.newForm()
+    this.getAllEstadosActa();
   }
 
   estadosForm!: FormGroup;
@@ -48,10 +47,10 @@ export class ListaEstadosComponent implements OnInit {
   }
 
   listEstados: any[] = [];
-  getAllEstados(){
-    this.liquidacionService.getAllEstados().subscribe((resp: any) => {
+  getAllEstadosActa(){
+    this.liquidacionService.getAllEstadosActa().subscribe((resp: any) => {
       this.listEstados = resp
-      console.log('LIST-ESTADOS', this.listEstados);
+      console.log('LIST-ESTADOS-ACTA', this.listEstados);
     })
   }
 
@@ -76,7 +75,7 @@ export class ListaEstadosComponent implements OnInit {
             text: `${estado.estado}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllEstados()
+          this.getAllEstadosActa()
         });
       };
     });
@@ -108,7 +107,7 @@ export class ListaEstadosComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalEstados) {
-      this.liquidacionService.getAllEstados().subscribe( (resp: any) => {
+      this.liquidacionService.getAllEstadosActa().subscribe( (resp: any) => {
             this.listEstados = resp.list;
             this.spinner.hide();
           });
@@ -122,7 +121,7 @@ export class ListaEstadosComponent implements OnInit {
     this.estadosForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllEstados();
+    this.getAllEstadosActa();
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
@@ -131,7 +130,7 @@ export class ListaEstadosComponent implements OnInit {
       .open(ModalEstadosComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllEstados();
+          this.getAllEstadosActa();
         }
       });
   }

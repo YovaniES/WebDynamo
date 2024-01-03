@@ -114,7 +114,7 @@
                         <th>Monto</th>
                         <th style="min-width: 110px;">Orden de compra</th>
                         <th>Certificación</th>
-                        <th>Factura</th>
+                        <th style="min-width: 70px;">Factura</th>
                         <th style="min-width: 120px;">Fecha certificación</th>
                         <th>Estado</th>
                         <th>Responsable</th>
@@ -145,7 +145,7 @@
                         <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.ordenCompra }}</td>
                         <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.certificacion }}</td>
                         <td>{{ cert.factura }}</td>
-                        <td>{{ cert.fechaCertificacion }}</td>
+                        <td>{{ cert.fechaCertificacion | date:'dd/MM/yyyy'}}</td>
                         <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.estado }}</td>
                         <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.usuarioCrea.usuario }}</td>
                       </tr>

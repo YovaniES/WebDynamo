@@ -67,7 +67,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listOrdenFiltro.length }} Orden de compra</span>
+            Total : <span class="total">{{ listOrdenFiltro.length }} órdenes de compra</span>
           </div>
         </div>
       </form>
@@ -78,17 +78,17 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th>Acción</th>
-              <th style="min-width: 45px">ID OC</th>
-              <th style="min-width: 150px">Orden de compra.</th>
-              <th style="min-width: 250px">Certificaciones</th>
-              <th style="min-width: 250px">Proyecto(s)</th>
+              <th style="min-width: 45px"  >ID OC</th>
+              <th style="min-width: 150px" >Orden de compra.</th>
+              <th style="min-width: 250px" >Certificaciones</th>
+              <th style="min-width: 250px" >Proyecto(s)</th>
               <th style="min-width: 118px;">Monto Total</th>
               <th style="min-width: 118px;">Monto Usado</th>
               <th style="min-width: 118px;">Monto Disponible</th>
-              <th style="min-width: 106px">Factura</th>
-              <th style="min-width: 106px">Estado Factura</th>
-              <th style="min-width: 92px">Responsable</th>
-              <th style="min-width: 106px">Fecha Creación</th>
+              <th style="min-width: 106px" >Factura</th>
+              <th style="min-width: 106px" >Estado Factura</th>
+              <th style="min-width: 92px"  >Responsable</th>
+              <th style="min-width: 106px" >Fecha Creación</th>
               <th></th>
             </tr>
           </thead>
@@ -106,6 +106,7 @@
                     class="icon-btn btn-trans c-yellow"
                     ><mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                   </button>
+
                   <button
                     matTooltip="Eliminar orden de compra"
                     (click)="eliminarOrdenCompra(orden.idOrden)"

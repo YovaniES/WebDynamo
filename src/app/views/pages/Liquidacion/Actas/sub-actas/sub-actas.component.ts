@@ -32,21 +32,17 @@ export class SubActasComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.newFilfroForm()
-  this.getUserID();
-  this.getListGestorCombo();
-  this.getAllProyecto();
-  this.getAllSubserviciosCombo();
-  this.getAllEstadosDetActa();
-  // console.log('DATA_ACTA', this.DATA_ACTA);
+    this.newFilfroForm()
+    this.getUserID();
+    this.getListGestorCombo();
+    this.getAllProyecto();
+    this.getAllSubserviciosCombo();
+    this.getAllEstadosDetActa();
+    // console.log('DATA_ACTA', this.DATA_ACTA);
 
-
-  if (this.DATA_ACTA) {
-    this.cargarActaById();
-
-    this.listProyectos = this.DATA_ACTA.proyectos;
-    // console.log('PROYEC*', this.listProyectos);
-  }
+    if (this.DATA_ACTA) {
+      this.cargarActaById();
+      }
   }
 
   subActasForm!: FormGroup;
@@ -109,7 +105,7 @@ export class SubActasComponent implements OnInit {
         this.close(true);
       }
     })
-  }
+  };
 
 
   eliminarDetalleActa(idDetActa: number){
@@ -119,7 +115,7 @@ export class SubActasComponent implements OnInit {
   eliminarVentaDeclarada(idDeclarado: number){}
 
   // listProyectos: any[] = []
-  listDetActas: any[] = [];
+  listDetActas  : any[] = [];
   listDeclarados: any[] = [];
   actionBtn: string = 'Crear';
   cargarActaById(): void{
@@ -149,18 +145,18 @@ export class SubActasComponent implements OnInit {
           importe           : acta.ventaTotalActa,
         })
 
-        this.subActasForm.controls['idGestor'  ].disable();
+        // this.subActasForm.controls['idGestor'  ].disable();
         this.subActasForm.controls['idProyecto'].disable();
         this.subActasForm.controls['declarado' ].disable();
         this.subActasForm.controls['importe'   ].disable();
-        this.subActasForm.controls['periodo'   ].disable();
+        // this.subActasForm.controls['periodo'   ].disable();
       })
     }
   };
 
   listEstadoDetActa: any[] = [];
   getAllEstadosDetActa(){
-    this.liquidacionService.getAllEstados().subscribe(resp => {
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
       this.listEstadoDetActa = resp;
       console.log('EST_ACTA', this.listEstadoDetActa);
     })
@@ -180,13 +176,11 @@ export class SubActasComponent implements OnInit {
     //  console.log('ID-USER', this.userID);
    })
   }
-  // listProyectos: any[] = this.DATA_ACTA.proyectos;
 
   listProyectos: any[] = [];
   getAllProyecto(){
     this.liquidacionService.getAllProyectos().subscribe(resp => {
       this.listProyectos = resp;
-      // console.log('PROY', this.listProyectos);
     })
   }
 
@@ -217,23 +211,15 @@ export class SubActasComponent implements OnInit {
     }
   }
 
-  limpiarFiltro() {
-    this.subActasForm.reset('', {emitEvent: false})
-    this.newFilfroForm()
-
-    // this.getAllDetalleActas();
-  }
-
   crearOactualizarDetActa(DATA?: any) {
     console.log('DATA_DET_ACTA', DATA);
     this.dialog
-      // .open(DetalleActasComponent, { width: '55%', data: this.subActasForm.value })
       .open(DetalleActasComponent, { width: '55%', data: DATA })
       .afterClosed().subscribe((resp) => {
         console.log('RESP_DET_ACT', resp);
 
         if (resp) {
-          // this.getAllDetalleActas();
+          this.cargarActaById();
         }
       });
   }
@@ -241,13 +227,12 @@ export class SubActasComponent implements OnInit {
   abrirVentaDeclarada(ACTA?: any) {
     console.log('DATA_ACTA', ACTA);
     this.dialog
-      // .open(DetalleActasComponent, { width: '55%', data: this.subActasForm.value })
       .open(VentaDeclaradaComponent, { width: '55%', data: ACTA })
       .afterClosed().subscribe((resp) => {
         console.log('RESP_ACT_DECL', resp);
 
         if (resp) {
-          // this.getAllActasDeclarados();
+          this.cargarActaById();
         }
       });
   }

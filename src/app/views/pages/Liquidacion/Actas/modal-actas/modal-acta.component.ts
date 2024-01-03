@@ -215,7 +215,7 @@ export class ModalActaComponent implements OnInit {
   getUserID(){
    this.authService.getCurrentUser().subscribe( resp => {
      this.userID   = resp.user.userId;
-     console.log('ID-USER', this.userID);
+    //  console.log('ID-USER', this.userID);
    })
   }
 
@@ -273,7 +273,7 @@ export class ModalActaComponent implements OnInit {
   };
 
   crearOactualizarDetActa(DATA?: any) {
-    console.log('DATA_DET_ACTA', DATA);
+    // console.log('DATA_DET_ACTA', DATA);
     this.dialog
       .open(DetalleActasComponent, { width: '55%', data: DATA })
       .afterClosed().subscribe((resp) => {

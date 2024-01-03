@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ListaGestorComponent } from './lista-gestor/lista-gestor.component';
 import { ListaSubservicioComponent } from './lista-subservicio/lista-subservicio.component';
 import { ListaOrdencompraComponent } from './lista-ordencompra/lista-ordencompra.component';
@@ -15,93 +13,52 @@ import { ListaCertificacionesComponent } from './lista-certificaciones/lista-cer
   templateUrl: './mantenimiento.component.html',
   styleUrls: ['./mantenimiento.component.scss'],
 })
-export class MantenimientoComponent implements OnInit {
-  @BlockUI() blockUI!: NgBlockUI;
-
-  loading = false;
-  showingidx = 0;
+export class MantenimientoComponent {
 
   constructor(
     public datepipe: DatePipe,
-    private fb: FormBuilder,
     private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
+  abrirModalGestor() {
+    this.dialog
+      .open(ListaGestorComponent, { width: '60%', data: {} })
+      .afterClosed()
+      .subscribe();
   }
 
+  abrirListaSubservicio() {
+    this.dialog
+      .open(ListaSubservicioComponent, { width: '60%', data: {} })
+      .afterClosed()
+      .subscribe();
+  }
 
-  liquidacionForm!: FormGroup;
-  newFilfroForm(){
-    this.liquidacionForm = this.fb.group({
-      import             : ['']
-    })
+  abrirListaOrdecompra() {
+    this.dialog
+      .open(ListaOrdencompraComponent, { width: '60%', data: {} })
+      .afterClosed()
+      .subscribe();
+  }
+
+  abrirListaCertificaciones() {
+    this.dialog
+      .open(ListaCertificacionesComponent, { width: '60%', data: {} })
+      .afterClosed()
+      .subscribe();
+  }
+
+  abrirListaFacturas() {
+    this.dialog
+      .open(ListaFacturasComponent, { width: '60%', data: {} })
+      .afterClosed()
+      .subscribe();
   };
 
-  abrirModalGestor( ) {
+  abrirListaEstados() {
     this.dialog
-      .open(ListaGestorComponent, { width: '60%', data: { } })
+      .open(ListaEstadosComponent, { width: '60%', data: {} })
       .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-        }
-      });
-  }
-
-
-  abrirListaSubservicio( ) {
-    this.dialog
-      .open(ListaSubservicioComponent, { width: '60%', data: { } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          // this.getAllSubservicio();
-        }
-      });
-  }
-
-
-  abrirListaOrdecompra( ) {
-    this.dialog
-      .open(ListaOrdencompraComponent, { width: '60%', data: { } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-          // this.getAllOrdencompra();
-        }
-      });
-  }
-
-  abrirListaCertificaciones( ) {
-    this.dialog
-      .open(ListaCertificacionesComponent, { width: '60%', data: { } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-        }
-      });
-  }
-
-  abrirListaFacturas( ) {
-    this.dialog
-      .open(ListaFacturasComponent, { width: '60%', data: { } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-        }
-      });
-  }
-
-
-  abrirListaEstados( ) {
-    this.dialog
-      .open(ListaEstadosComponent, { width: '60%', data: { } })
-      .afterClosed()
-      .subscribe((resp) => {
-        if (resp) {
-        }
-      });
+      .subscribe();
   }
 }
-
-

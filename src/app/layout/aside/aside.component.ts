@@ -319,7 +319,7 @@ export class AsideComponent implements OnInit {
           code: 'LIQ-001',
           text: 'Actas',
           order: 1,
-          icon: 'pix',
+          icon: 'motion_photos_auto',
           type: 'PAREN',
           link: 'liquidacion/actas',
           enable: true,

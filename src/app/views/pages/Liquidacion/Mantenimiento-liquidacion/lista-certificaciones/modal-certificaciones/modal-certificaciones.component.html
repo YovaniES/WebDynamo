@@ -22,18 +22,19 @@
           <label>Orden de compra <small style="color: red">*</small></label>
           <select formControlName="idOrden" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="oc.idOrden" *ngFor="let oc of listOrdenCompra">{{oc.nro_orden}}</option>
+            <option [value]="oc.id" *ngFor="let oc of listOrdenCombo">{{oc.nombre}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('idOrden')">* Seleccione la Orden de compra es obligatorio</small>
         </div>
+
 
         <div class="cli-form-element col-f-3">
           <label>Certificación <small style="color: red">*</small></label>
           <input
             class="cli-input"
-            formControlName="certificacion"
+            formControlName="nro_certificacion"
             type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('certificacion')">* Ingrese el Certificación es obligatorio</small>
+            <small class="form-text text-alert" *ngIf="campoNoValido('nro_certificacion')">* Ingrese el Certificación es obligatorio</small>
         </div>
 
         <div class="cli-form-element col-f-3">
@@ -54,11 +55,20 @@
         </div>
 
         <ng-container *ngIf="DATA_CERTIF">
-          <div class="cli-form-element col-f-4">
+          <div class="cli-form-element col-f-3">
+            <label>Estado certificación</label>
+            <input
+              class="cli-input_x"
+              formControlName="estado"
+              type="text"/>
+          </div>
+
+          <div class="cli-form-element col-f-3" *ngIf="DATA_CERTIF">
             <label>Estado</label>
-            <select formControlName="estado" class="cli-input">
-              <option [value]="0" disabled>-Seleccione-</option>
-              <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
+            <select formControlName="isActive" class="cli-input">
+              <option [value]="10" disabled>-Seleccione-</option>
+              <option value="1">Activo</option>
+              <option value="0">Inactivo</option>
             </select>
           </div>
 
