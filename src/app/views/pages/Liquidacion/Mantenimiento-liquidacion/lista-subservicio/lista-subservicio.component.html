@@ -11,14 +11,6 @@
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
-              <label>Gestor</label>
-              <select formControlName="idGestor" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="gestor.id" *ngFor="let gestor of listGestorCombo">{{gestor.nombre}}</option>
-              </select>
-            </div>
-
-            <div class="cli-form-element col-f-3">
               <label>Proyectos</label>
               <select formControlName="idProyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
@@ -27,14 +19,14 @@
             </div>
 
             <div class="cli-form-element col-f-3">
-              <label>Subservicios</label>
-              <select formControlName="subservicio" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="sub.idSubservicio" *ngFor="let sub of listSubservicios">{{sub.subservicio}}</option>
-              </select>
+              <label>subservicio <small style="color: red">*</small></label>
+              <input
+                class="cli-input"
+                formControlName="subservicio"
+                type="text"/>
             </div>
 
-            <div class="cli-form-element col-f-4">
+            <div class="cli-form-element col-f-3">
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
@@ -85,7 +77,7 @@
           <thead>
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
-              <th style="min-width: 150px">Subservicio</th>
+              <th style="min-width: 175px">Subservicio</th>
               <th class="w100">Gestor</th>
               <th style="min-width: 240px">Proyecto(s)</th>
               <th style="min-width: 145px">Fecha inicio - fecha fin</th>

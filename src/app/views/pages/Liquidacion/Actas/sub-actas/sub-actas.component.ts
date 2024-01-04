@@ -18,7 +18,6 @@ import { VentaDeclaradaComponent } from './venta-declarada/venta-declarada.compo
 export class SubActasComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loading = false;
-
   loadingItem: boolean = false;
 
   constructor( private fb: FormBuilder,
@@ -48,17 +47,18 @@ export class SubActasComponent implements OnInit {
   subActasForm!: FormGroup;
   newFilfroForm(){
     this.subActasForm = this.fb.group({
-      subservicio    : [''],
-      idProyecto     : [''],
-      gestor         : [''],
-      idGestor       : [''],
-      importe        : [''],
-      declarado      : [''],
-      f_periodo      : [''],
-      periodoActual  : [true],
-      periodo        : [''],
-      idEstado       : [''],
-      comentario     : [''],
+      subservicio  : [''],
+      idProyecto   : [''],
+      gestor       : [''],
+      idGestor     : [''],
+      importe      : [''],
+      declarado    : [''],
+      f_periodo    : [''],
+      periodoActual: [true],
+      periodo      : [''],
+      enlace       : [''],
+      idEstado     : [''],
+      comentario   : [''],
     })
   };
 
@@ -89,7 +89,7 @@ export class SubActasComponent implements OnInit {
       venta_total  : formValues.importe,
       comentario   : formValues.comentario,
       idEstado     : formValues.idEstado,
-      enlace_acta  : '',
+      enlace_acta  : formValues.enlace,
       idUsuario    : this.userID,
     }
 
@@ -97,7 +97,7 @@ export class SubActasComponent implements OnInit {
 
       if (resp.success) {
         Swal.fire({
-          title: 'Actualizar SubActa!',
+          title: 'Actualizar Acta.*!',
           text : `${resp.message}`,
           icon : 'success',
           confirmButtonText: 'Ok',
@@ -106,7 +106,6 @@ export class SubActasComponent implements OnInit {
       }
     })
   };
-
 
   eliminarDetalleActa(idDetActa: number){
 
@@ -132,7 +131,7 @@ export class SubActasComponent implements OnInit {
         this.subActasForm.reset({
           comentario        : acta.comentario,
           declarado         : acta.declaradoTotalActa,
-          enlaceActa        : acta.enlaceActa,
+          enlace            : acta.enlaceActa,
           facturadoTotalActa: acta.facturadoTotalActa,
           gestor            : acta.gestor,
           idActa            : acta.idActa,
@@ -173,7 +172,6 @@ export class SubActasComponent implements OnInit {
   getUserID(){
    this.authService.getCurrentUser().subscribe( resp => {
      this.userID   = resp.user.userId;
-    //  console.log('ID-USER', this.userID);
    })
   }
 
@@ -217,7 +215,6 @@ export class SubActasComponent implements OnInit {
       .open(DetalleActasComponent, { width: '55%', data: DATA })
       .afterClosed().subscribe((resp) => {
         console.log('RESP_DET_ACT', resp);
-
         if (resp) {
           this.cargarActaById();
         }
@@ -230,7 +227,6 @@ export class SubActasComponent implements OnInit {
       .open(VentaDeclaradaComponent, { width: '55%', data: ACTA })
       .afterClosed().subscribe((resp) => {
         console.log('RESP_ACT_DECL', resp);
-
         if (resp) {
           this.cargarActaById();
         }

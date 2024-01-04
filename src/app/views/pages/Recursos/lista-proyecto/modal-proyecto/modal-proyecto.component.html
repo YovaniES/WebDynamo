@@ -37,12 +37,28 @@
         </div>
 
         <div class="cli-form-element col-f-3">
+          <label>Tipo</label>
+          <input
+            class="cli-input"
+            formControlName="tipo"
+            type="text"/>
+        </div>
+
+        <div class="cli-form-element col-f-3">
           <label>Código Jira</label>
           <input
             class="cli-input"
             formControlName="cod_jira"
             type="text"/>
             <small class="form-text text-alert" *ngIf="campoNoValido('cod_jira')">* Ingrese el Código es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Código contrato</label>
+          <input
+            class="cli-input"
+            formControlName="codigo_contrato"
+            type="text"/>
         </div>
 
         <div class="cli-form-element col-f-3">
@@ -77,7 +93,7 @@
         </div>
 
         <ng-container *ngIf="DATA_PROY">
-          <div class="cli-form-element col-f-3" *ngIf="DATA_PROY">
+          <div class="cli-form-element col-f-3">
             <label>Estado</label>
             <select formControlName="id_estado" class="cli-input">
               <option [value]="10" disabled>-Seleccione-</option>
@@ -95,7 +111,18 @@
                 formControlName="fecha_creacion"/>
           </div>
 
-          <div class="cli-form-element col-f-1" *ngIf="DATA_PROY">
+          <div class="cli-form-element col-f-2" *ngIf="DATA_PROY">
+            <label>Nombre Descriptivo</label>
+            <textarea
+              class="cli-input"
+              style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+              rows="1"
+              placeholder="Escriba el Nombre Descriptivo del proyecto..."
+              formControlName="nombre_descriptivo"
+            ></textarea>
+          </div>
+
+          <div class="cli-form-element col-f-2" *ngIf="DATA_PROY">
             <label>Descripción</label>
             <textarea
               class="cli-input"

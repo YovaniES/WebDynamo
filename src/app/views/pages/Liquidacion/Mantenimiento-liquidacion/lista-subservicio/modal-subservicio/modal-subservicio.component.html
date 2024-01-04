@@ -58,12 +58,11 @@
           </div>
         </div>
 
-
         <ng-container *ngIf="DATA_SUBSERV">
           <div class="cli-form-element col-f-3" *ngIf="DATA_SUBSERV">
             <label>Estado</label>
             <select formControlName="id_estado" class="cli-input">
-              <option [value]="0" disabled>-Seleccione-</option>
+              <option [value]="10" disabled>-Seleccione-</option>
               <option value="1">Activo</option>
               <option value="0">Inactivo</option>
             </select>

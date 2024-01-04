@@ -50,17 +50,21 @@ export class ModalProyectoComponent implements OnInit {
   proyectoForm!: FormGroup;
   newForm(){
     this.proyectoForm = this.fb.group({
-     jefatura      : ['', Validators.required],
-     lider         : ['', Validators.required],
-     proyecto      : ['', Validators.required],
-     cliente       : ['', Validators.required],
-     cod_jira      : [''],
-     fecha_creacion: [''],
-     fecha_ini     : [''],
-     fecha_fin     : [''],
-     reemplaza_a   : [''],
-     id_estado     : [''],
-     descripcion   : ['']
+     jefatura          : ['', Validators.required],
+     lider             : ['', Validators.required],
+     proyecto          : ['', Validators.required],
+     cliente           : ['', Validators.required],
+     cod_jira          : [''],
+     fecha_creacion    : [''],
+     fecha_ini         : [''],
+     fecha_fin         : [''],
+     reemplaza_a       : [''],
+     id_estado         : [''],
+     descripcion       : [''],
+     codigo_contrato   : [''],
+     tipo              : [''],
+     detalle_adicional : [''],
+     nombre_descriptivo: ['']
     })
   }
 
@@ -130,7 +134,8 @@ export class ModalProyectoComponent implements OnInit {
       idCliente         : formValues.cliente,
       idJefatura        : formValues.jefatura,
       idUsuarioActualiza: this.userID,
-      eliminacion_logica: formValues.id_estado,
+      isActive          : formValues.id_estado,
+      codigo_contrato   : formValues.codigo_contrato
     }
     this.liquidacionService.actualizarProyecto(this.DATA_PROY.idProyecto, requestProyecto).subscribe((resp: any) => {
       if (resp.success) {
@@ -155,23 +160,25 @@ export class ModalProyectoComponent implements OnInit {
         this.blockUI.stop();
 
         this.proyectoForm.reset({
-          jefatura      : proy.jefatura.idJefatura,
-          lider         : proy.lider.idLider,
-          proyecto      : proy.codigoProyecto,
-          cliente       : proy.cliente.idCliente,
-          fecha_creacion: moment.utc(proy.fechaCreacion).format('YYYY-MM-DD'),
-          fecha_ini     : moment.utc(proy.fecha_inicio).format('YYYY-MM-DD'),
-          fecha_fin     : moment.utc(proy.fecha_fin).format('YYYY-MM-DD'),
-          cod_jira      : proy.codigo_jira,
-          id_estado     : proy.estado.estadoId,
-          descripcion   : proy.descripcion,
+          jefatura          : proy.jefatura.idJefatura,
+          lider             : proy.lider.idLider,
+          proyecto          : proy.codigoProyecto,
+          cliente           : proy.cliente.idCliente,
+          fecha_creacion    : moment.utc(proy.fechaCreacion).format('YYYY-MM-DD'),
+          fecha_ini         : moment.utc(proy.fecha_inicio).format('YYYY-MM-DD'),
+          fecha_fin         : moment.utc(proy.fecha_fin).format('YYYY-MM-DD'),
+          cod_jira          : proy.codigo_jira,
+          id_estado         : proy.estado.estadoId,
+          descripcion       : proy.descripcion,
+          codigo_contrato   : proy.codigoContrato,
+          nombre_descriptivo: proy.nombreDescriptivo,
+          tipo              : proy.tipo,
         })
 
         this.proyectoForm.controls['fecha_creacion'].disable();
       })
     }
   }
-
 
   userID: number = 0;
   getUserID(){

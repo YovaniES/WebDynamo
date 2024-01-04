@@ -85,15 +85,17 @@
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
-              <th class="w50">Acción</th>
+              <th>Acción</th>
               <th>Proyecto</th>
-              <th style="min-width: 325px" >Descripción</th>
+              <th style="min-width: 350px" >Descripción</th>
               <th style="min-width: 110px;">Líder</th>
-              <th>Código Jira</th>
-              <th style="min-width: 120px">Jefatura</th>
-              <th style="min-width: 100px">Reemplaza a:</th>
-              <th style="min-width: 312px">Cliente(s)</th>
-              <th style="min-width: 92px" >Estado</th>
+              <th style="min-width: 100px;">Código Jira</th>
+              <th style="min-width: 120px" >Jefatura</th>
+              <th style="min-width: 100px" >Reemplaza a:</th>
+              <th style="min-width: 105px" >Código contrato</th>
+              <th style="min-width: 100px" >Tipo</th>
+              <th style="min-width: 200px" >Cliente(s)</th>
+              <th style="min-width: 92px"  >Estado</th>
             </tr>
           </thead>
 
@@ -120,12 +122,14 @@
                 </div>
               </td>
               <td>{{ proy.codigoProyecto }}</td>
-              <td style="text-align: left;">{{ proy.nombreDescriptivo }}</td>
-              <td style="text-align: left;">{{ proy.lider.lider }}</td>
-              <td style="text-align: left; min-width: 100px;">{{ proy.codigoJira | uppercase}}</td>
-              <td style="text-align: left;">{{ proy.jefatura.jefatura }}</td>
-              <td style="text-align: left;">{{ proy.reemplazaA }}</td>
-              <td style="text-align: left;">{{ proy.cliente.razon_social }}</td>
+              <td style="text-align: left;"  >{{ proy.nombreDescriptivo     }}</td>
+              <td style="text-align: center;">{{ proy.lider.lider           }}</td>
+              <td style="text-align: left;"  >{{ proy.codigoJira | uppercase}}</td>
+              <td style="text-align: left;"  >{{ proy.jefatura.jefatura     }}</td>
+              <td style="text-align: center;">{{ proy.reemplazaA            }}</td>
+              <td style="text-align: left;"  >{{ proy.codigoContrato        }}</td>
+              <td style="text-align: left;"  >{{ proy.tipo                  }}</td>
+              <td style="text-align: left;"  >{{ proy.cliente.razon_social  }}</td>
               <td class="moad-module">
                 <mat-icon [ngClass]="{ 'c-green_x': proy.estado.estadoId == 1, 'c-red': proy.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>

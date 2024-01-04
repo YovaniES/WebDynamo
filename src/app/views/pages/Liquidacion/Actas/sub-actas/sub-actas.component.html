@@ -60,6 +60,11 @@
             </div>
 
             <div class="cli-form-element col-f-4">
+              <label>Enlace</label>
+              <input class="cli-input_x" formControlName="enlace" type="text" />
+            </div>
+
+            <div class="cli-form-element col-f-4">
               <label>Estado acta</label>
               <select formControlName="idEstado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
@@ -76,7 +81,6 @@
             <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
               <label>Declarado</label>
               <input class="cli-input_x" formControlName="declarado" type="text" />
-              <!-- <small class="form-text text-alert" *ngIf="campoNoValido('declarado')">* Ingrese el Importe es obligatorio</small> -->
             </div>
 
             <div class="cli-form-element col-f-2"               >
