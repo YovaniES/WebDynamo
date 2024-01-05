@@ -37,9 +37,9 @@
             <div class="cli-form-element col-f-4">
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option [value]="10" disabled>-Seleccione-</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
               </select>
             </div>
 
@@ -87,13 +87,13 @@
             <tr class="bgc-blue-light c-white">
               <th class="w50">Acción</th>
               <th style="min-width: 150px">Gestor.</th>
-              <th class="w100">Correo</th>
+              <th>Correo</th>
               <th style="min-width: 240px">Proyectos</th>
               <th style="min-width: 115px">Subservicios</th>
               <th style="min-width: 108px">Actualizado por</th>
+              <th style="min-width: 145px">Fecha inicio - fecha fin</th>
               <th style="min-width: 92px" >Estado</th>
-              <th style="min-width: 145px" >Fecha inicio - fecha fin</th>
-              <th style="min-width: 100px" >Fecha creación</th>
+              <th style="min-width: 100px">Fecha creación</th>
             </tr>
           </thead>
 
@@ -125,11 +125,11 @@
                 <span *ngIf="gestor.proyectos" class="label ">{{ gestor.proyectos | uppercase }}</span>
               <td style="min-width: 240px; text-align: left" >{{ gestor.subservicios }}</td>
               <td style="text-align: left; color: #7287fd" >{{ gestor.usuarioActualiza? gestor.usuarioActualiza.usuario: '-' }}</td>
+              <td style="text-align: left" *ngIf="gestor.fecha_Fin == 'Actual'">{{ gestor.fecha_inicio | date:'dd/MM/yyyy' }} -  Actual</td>
+              <td style="text-align: left" *ngIf="gestor.fecha_Fin != 'Actual'">{{ gestor.fecha_inicio | date:'dd/MM/yyyy' }} -  {{ gestor.fecha_Fin | date:'dd/MM/yyyy' }}</td>
               <td class="moad-module">
                 <mat-icon matTooltip="Activo" [ngClass]="{ 'c-green_x': gestor.estado.estadoId == 1, 'c-red': gestor.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>
-              <td style="text-align: left" *ngIf="gestor.fecha_Fin == 'Actual'">{{ gestor.fecha_inicio | date:'dd/MM/yyyy' }} -  Actual</td>
-              <td style="text-align: left" *ngIf="gestor.fecha_Fin != 'Actual'">{{ gestor.fecha_inicio | date:'dd/MM/yyyy' }} -  {{ gestor.fecha_Fin | date:'dd/MM/yyyy' }}</td>
               <td style="text-align: left">{{ gestor.fechaCreacion | date:'dd/MM/yyyy' }}</td>
             </tr>
           </tbody>

@@ -48,6 +48,7 @@ export class ModalOrdencompraComponent implements OnInit {
      nro_orden       : ['', Validators.required],
      monto           : ['', Validators.required],
      certificaciones : [''],
+     moneda          : [''],
      fecha_creacion  : [''],
      proyecto        : [''],
      id_estado       : ['']
@@ -73,8 +74,10 @@ export class ModalOrdencompraComponent implements OnInit {
     const requestOrden = {
       idOrden            : this.DATA_ORDENCOMPRA.idOrden,
       nroOrden           : formValues.nro_orden,
+      moneda             : formValues.moneda,
       monto              : formValues.monto,
-      idUsuarioActualiza : this.userID
+      idUsuarioActualiza : this.userID,
+      isActive           : formValues.id_estado
     }
 
     this.liquidacionService.actualizarOrdenCompra(this.DATA_ORDENCOMPRA.idOrden, requestOrden).subscribe((resp: any) => {
@@ -90,8 +93,10 @@ export class ModalOrdencompraComponent implements OnInit {
     })
   }
 
+  // {
   //   "nroOrden": "string",
   //   "monto": 0,
+  //     "moneda": "PEN",
   //   "idUsuarioCreacion": 0,
   //   "certificacions": [
   //     {
@@ -103,6 +108,7 @@ export class ModalOrdencompraComponent implements OnInit {
   //       "idUsuarioCreacion": 0
   //     }
   //   ]
+  // }
   crearOrdenCompra(){
     const formValues = this.ordencompraForm.getRawValue();
 
@@ -110,7 +116,7 @@ export class ModalOrdencompraComponent implements OnInit {
       nroOrden         : formValues.nro_orden,
       monto            : formValues.monto,
       idUsuarioCreacion: this.userID,
-      certificacions   : formValues.certificaciones,
+      certificacions   : formValues.certificaciones, //OJO FALTA
     }
     this.liquidacionService.crearOrdenCompra(request).subscribe((oc: any) => {
 
@@ -132,6 +138,7 @@ export class ModalOrdencompraComponent implements OnInit {
           idOrden        : this.DATA_ORDENCOMPRA.idOrden,
           nro_orden      : oc.nro_orden,
           monto          : oc.monto,
+          moneda         : oc.moneda,
           proyecto       : oc.proyectos,
           fecha_creacion : moment.utc(oc.fecha_creacion).format('YYYY-MM-DD'),
           certificaciones: oc.certificacions,

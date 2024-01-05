@@ -16,15 +16,23 @@
             type="text"/>
             <small class="form-text text-alert" *ngIf="campoNoValido('nro_factura')">* Ingrese el N° de factura es obligatorio</small>
         </div>
-        <!--
+
+        <div class="cli-form-element col-f-3">
+          <label>Proyecto</label>
+          <input
+            class="cli-input"
+            formControlName="proyecto"
+            type="text"/>
+        </div>
+
         <div class="cli-form-element col-f-3">
           <label>Certificación <small style="color: red">*</small></label>
           <select formControlName="idCertificacion" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.ididCertificacion" *ngFor="let proy of listProyectos">{{proy.codigo_proyecto}}</option>
+            <option [value]="cert.idCertificacion" *ngFor="let cert of listCertificacionesCombo">{{cert.nro_certificacion}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('idCertificacion')">* Seleccione el proyecto es obligatorio</small>
-        </div> -->
+        </div>
 
         <!-- <div class="cli-form-element col-f-3">
           <label>Proyecto <small style="color: red">*</small></label>
@@ -35,14 +43,14 @@
           <small class="form-text text-alert" *ngIf="campoNoValido('idCertificacion')">* Seleccione el proyecto es obligatorio</small>
         </div> -->
 
-        <div class="cli-form-element col-f-3">
+        <!-- <div class="cli-form-element col-f-3">
           <label>Orden Compra <small style="color: red">*</small></label>
           <select formControlName="ordenCompra" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="oc.id" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('ordenCompra')">* Seleccione la Orden de compra es obligatorio</small>
-        </div>
+        </div> -->
 
         <div class="cli-form-element form-group col-f-3">
           <label>Fecha facturación</label>

@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 import { DetalleActasComponent } from '../sub-actas/detalle-actas/detalle-actas.component';
+import { Detalle } from 'src/app/core/models/actas.models';
 
 @Component({
   selector: 'app-modal-acta',
@@ -75,87 +76,102 @@ export class ModalActaComponent implements OnInit {
     this.importarActas(formData);
   }
 
-  listDetActas: any[] = [];
-  listActas   : any[] = [];
+  listDetActas: Detalle[] = [];
   importarActas(formData: FormData){
-    this.actasService.importarActas(formData).subscribe((acta: any) => {
+    this.actasService.importarActas(formData).subscribe((resp: any) => {
       this.blockUI.stop();
 
-      console.log('IMPORT_DATA', acta);
+      console.log('IMPORT_DATA', resp);
 
-      this.listDetActas = acta.result.detalleActas;
-      this.listActas = acta.result;
+      let acta = resp.result;
+
+      this.listDetActas = acta.detalleActas;
       console.log('IMP_DET', this.listDetActas);
-      console.log('IMP_ACTAS', this.listActas);
+      console.log('IMP_ACTAS', acta);
 
         this.actasForm.reset({
-          comentario        : acta.result.comentario,
-          declarado         : acta.result.declaradoTotalActa,
-          enlaceActa        : acta.result.enlaceActa,
-          facturadoTotalActa: acta.result.facturadoTotalActa,
-          gestor            : acta.result.gestor,
-          idActa            : acta.result.idActa,
-          idEstado          : acta.result.idEstado,
-          idGestor          : acta.result.idGestor,
-          idProyecto        : acta.result.idProyecto,
-          idSubservicio     : acta.result.idSubservicio,
-          venta_total_acta  : acta.result.ventaTotalActa,
-          pendiente         : acta.result.pendiente,
-          periodo           : acta.result.periodo,
-          importe           : acta.result.precioTotal,
-        })
+          declarado         : acta.declaradoTotalActa,
+          enlaceActa        : acta.enlaceActa,
+          comentario        : acta.comentario,
+          facturadoTotalActa: acta.facturadoTotalActa,
+          gestor            : acta.gestor,
+          idActa            : acta.idActa,
+          idEstado          : acta.idEstado,
+          idGestor          : acta.idGestor,
+          idProyecto        : acta.idProyecto,
+          idSubservicio     : acta.idSubservicio,
+          venta_total_acta  : acta.ventaTotalActa,
+          pendiente         : acta.pendiente,
+          periodo           : acta.periodo,
+          importe           : acta.precioTotal,
+        });
     })
   };
+
+  generarDetalle_x(){
+    let listadoDetalle: any[] = [];
+    this.listDetActas.forEach(x => {
+      const detalle: any = {
+        nombre         : x.nombre,
+        unidades       : x.unidades,
+        precio_unidad  : x.precio_unidad,
+        precioTotal    : x.precioTotal,
+        perfil         : x.perfil,
+        observacion    : x.observacion,
+        unidad         : x.unidad,
+        comentario     : x.comentario
+        };
+      listadoDetalle.push(detalle)
+      })
+      return listadoDetalle;
+  }
+
+
+  generarDetalle(){
+    return this.listDetActas.map(x => {
+      return {
+        nombre       : x.nombre,
+        unidades     : x.unidades,
+        precio_unidad: x.precio_unidad,
+        precioTotal  : x.precioTotal,
+        perfil       : x.perfil,
+        observacion  : x.observacion,
+        unidad       : x.unidad,
+        comentario   : x.comentario
+        };
+      })
+  }
 
   guardarActaImportado(){
     const formValues = this.actasForm.getRawValue();
     console.log('IMP-DET-ACTAS', this.listDetActas);
-    let detalle = this.listDetActas.forEach(x => console.log('ABC', x))
 
     const request = {
-      idGestor         : formValues.idGestor,
-      idProyecto       : formValues.idProyecto,
-      idSubservicio    : formValues.idSubservicio,
-      periodo          : "2024-12-01",
-      comentario       : formValues.comentario,
-      idEstado         : formValues.idEstado,
-      enlaceAta        : formValues.enlaceAta,
-      idUsuarioCreacion: this.userID,
-      detalleActaParams: this.listDetActas.forEach((x: any) => [{
-        nombre       : this.listDetActas[x].nombre,
-        unidades     : this.listDetActas[x].unidades,
-        precio_unidad: this.listDetActas[x].precio_unidad,
-        precio_total : this.listDetActas[x].precioTotal,
-        perfil       : this.listDetActas[x].perfil,
-        observacion  : this.listDetActas[x].observacion,
-        unidad       : this.listDetActas[x].unidad,
-        comentario   : this.listDetActas[x].comentario
-      }])
-      // : [
-      //    {
-      //     nombre       : this.listDetActas[0].nombre,
-      //     unidades     : this.listDetActas[0].unidades,
-      //     precio_unidad: this.listDetActas[0].precio_unidad,
-      //     precio_total : this.listDetActas[0].precioTotal,
-      //     perfil       : this.listDetActas[0].perfil,
-      //     observacion  : this.listDetActas[0].observacion,
-      //     unidad       : this.listDetActas[0].unidad,
-      //     comentario   : this.listDetActas[0].comentario
-      //   }
-      // ]
-    }
+        idGestor         : formValues.idGestor,
+        idProyecto       : formValues.idProyecto,
+        idSubservicio    : formValues.idSubservicio,
+        periodo          : formValues.periodo + '-01',
+        comentario       : formValues.comentario,
+        idEstado         : formValues.idEstado,
+        enlaceAta        : formValues.enlaceAta,
+        idUsuarioCreacion: this.userID,
 
-    this.actasService.crearActa(request).subscribe(resp => {
-      if (resp.success) {
-        Swal.fire({
-          title: 'Guardar acta Importado!',
-          text : `${resp.message}`,
-          icon : 'success',
-          confirmButtonText: 'Ok'
-        })
-        this.close(true);
+        detalleActaParams: this.generarDetalle()
       }
-    })
+      console.log('GUARDAR', request);
+
+      this.actasService.crearActa(request).subscribe(resp => {
+        if (resp.success) {
+          Swal.fire({
+            title: 'Guardar acta Importado!',
+            text : `${resp.message}`,
+            icon : 'success',
+            confirmButtonText: 'Ok'
+          })
+          this.close(true);
+        }
+      })
+
   }
 
   crearAgrupacionConActa(){
@@ -164,7 +180,7 @@ export class ModalActaComponent implements OnInit {
       idGestor         : formValues.idGestor,
       idProyecto       : formValues.idProyecto,
       idSubservicio    : formValues.idSubservicio,
-      periodo          : "2024-12-01",
+      periodo          : formValues.periodo + '-01',
       comentario       : formValues.comentario,
       idEstado         : formValues.idEstado,
       enlaceAta        : formValues.enlaceAta,
@@ -255,19 +271,6 @@ export class ModalActaComponent implements OnInit {
       return false;
     }
   };
-
-  crearOactualizarDetActa(DATA?: any) {
-    // console.log('DATA_DET_ACTA', DATA);
-    this.dialog
-      .open(DetalleActasComponent, { width: '55%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        console.log('RESP_DET_ACT', resp);
-
-        if (resp) {
-          // this.getAllDetalleActas();
-        }
-      });
-  }
 }
 
 

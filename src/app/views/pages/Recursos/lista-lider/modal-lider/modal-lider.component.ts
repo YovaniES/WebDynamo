@@ -22,7 +22,6 @@ export class ModalLiderComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
@@ -36,14 +35,14 @@ export class ModalLiderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.newForm()
-  this.getUserID();
-  this.getAllProyecto();
+    this.newForm()
+    this.getUserID();
+    this.getAllProyecto();
 
-  if (this.DATA_LIDER) {
-    this.cargarLiderById(this.DATA_LIDER);
-    console.log('DATA_LID_MODAL', this.DATA_LIDER);
-  }
+    if (this.DATA_LIDER) {
+      this.cargarLiderById();
+      console.log('DATA_LID_MODAL', this.DATA_LIDER);
+      }
   }
 
   liderForm!: FormGroup;
@@ -51,23 +50,16 @@ export class ModalLiderComponent implements OnInit {
     this.liderForm = this.fb.group({
      nombre        : ['', Validators.required],
      apellidos     : ['', Validators.required],
-     correo        : ['',],
-    //  proyecto      : ['', Validators.required],
-     descripcion   : ['',],
+     correo        : [''],
+     descripcion   : [''],
+     proyectos     : [''],
      id_estado     : [''],
      fecha_creacion: ['']
     })
   }
 
-  // idLider": 879,
-  //       "nombre_apellidos": "Johan Torres",
-  //       "correo": "jtorres@indracompany.com",
-  //       "descripcion": "no tiene ",
-  //       "fecha_creacion": "2023-10-31T18:42:19",
-  //       "eliminacion_logica": 1
-
   actionBtn: string = 'Crear';
-  cargarLiderById(idLider: number): void{
+  cargarLiderById(): void{
     this.blockUI.start("Cargando data...");
     if (this.DATA_LIDER) {
       this.actionBtn = 'Actualizar'
@@ -80,9 +72,12 @@ export class ModalLiderComponent implements OnInit {
           apellidos     : lider.apellidos,
           correo        : lider.correo,
           descripcion   : lider.descripcion,
-          id_estado     : lider.eliminacion_logica,
+          proyectos     : lider.proyectos,
+          id_estado     : lider.estado.estadoId,
           fecha_creacion: moment.utc(lider.fecha_creacion).format('YYYY-MM-DD'),
         })
+        this.liderForm.controls['proyectos'     ].disable();
+        this.liderForm.controls['fecha_creacion'].disable();
       })
     }
   }
@@ -106,22 +101,23 @@ export class ModalLiderComponent implements OnInit {
     const formValues = this.liderForm.getRawValue();
 
     const requestLider = {
-      idCertificacion : this.DATA_LIDER.idCertificacion,
-      idFactura       : this.DATA_LIDER.idFactura,
-      idEstado        : this.DATA_LIDER.eliminacion_logica,
-      descripcion     : formValues.descripcion,
-      usuario         : this.userID
+        nombre             : formValues.nombre,
+        apellidos          : formValues.apellidos,
+        correo             : formValues.correo,
+        descripcion        : formValues.descripcion,
+        idUsuarioActualiza : this.userID,
+        eliminacion_logica : formValues.id_estado
     }
 
-    this.liquidacionService.actualizarLider(this.DATA_LIDER.idCertificacion, requestLider).subscribe((resp: any) => {
+    this.liquidacionService.actualizarLider(this.DATA_LIDER.idLider, requestLider).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
-            title: 'Actualizar gestor!',
+            title: 'Actualizar líder!',
             text : `${resp.message}`,
             icon : 'success',
             confirmButtonText: 'Ok',
           });
-          this.close(true);
+        this.close(true);
       }
     })
   }
@@ -130,35 +126,25 @@ export class ModalLiderComponent implements OnInit {
     const formValues = this.liderForm.getRawValue();
 
     const request = {
-      nombre        : formValues.nombre,
-      apellidos     : formValues.apellidos,
-      correo        : formValues.correo,
-      fechaInicio   : formValues.fecha_ini,
-      fechaFin      : formValues.fecha_fin,
-      idUsuarioCrea : this.userID,
+      nombre           : formValues.nombre,
+      apellidos        : formValues.apellidos,
+      correo           : formValues.correo,
+      descripcion      : formValues.descripcion,
+      idUsuarioCreacion: this.userID,
     }
 
     this.liquidacionService.crearLider(request).subscribe((resp: any) => {
       if (resp.message) {
         Swal.fire({
-          title: 'Crear gestor!',
+          title: 'Crear líder!',
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'
         })
-
         this.close(true);
       }
     })
   }
-
-  // listLideres: any[] = [];
-  // getAllLider(){
-  //   this.liquidacionService.getAllLideres().subscribe((resp: any) => {
-  //     this.listLideres = resp
-  //     console.log('LIST-LIDER', this.listLideres);
-  //   })
-  // }
 
   listProyectos: any[] = [];
   getAllProyecto(){
@@ -176,13 +162,9 @@ export class ModalLiderComponent implements OnInit {
    })
   }
 
-  eliminarLiquidacion(id: number){}
-  // actualizarFactura(data: any){}
-
   close(succes?: boolean) {
     this.dialogRef.close(succes);
   }
-
 
   showAlertError(message: string) {
     Swal.fire({

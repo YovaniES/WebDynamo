@@ -26,10 +26,10 @@ import { ModalCertificacionesComponent } from './Mantenimiento-liquidacion/lista
 import { SubActasComponent } from './Actas/sub-actas/sub-actas.component';
 import { DetalleActasComponent } from './Actas/sub-actas/detalle-actas/detalle-actas.component';
 import { VentaDeclaradaComponent } from './Actas/sub-actas/venta-declarada/venta-declarada.component';
-import { CrearFacturasComponent } from './Mantenimiento-liquidacion/lista-ordencompra/crear-facturas/crear-facturas.component';
 import { ModalCertificacionComponent } from './Actas/sub-actas/detalle-actas/modal-certificacion/modal-certificacion.component';
 import { ModalGestorSubservicioComponent } from './Mantenimiento-liquidacion/lista-gestor/modal-gestor/modal-gestor-subservicio/modal-gestor-subservicio.component';
 import { OcCertificacionesComponent } from './Mantenimiento-liquidacion/lista-ordencompra/modal-ordencompra/modal-oc-certificaciones/oc-certificaciones.component';
+import { CrearFacturasComponent } from './Mantenimiento-liquidacion/lista-certificaciones/crear-facturas/crear-facturas.component';
 
 
 @NgModule({

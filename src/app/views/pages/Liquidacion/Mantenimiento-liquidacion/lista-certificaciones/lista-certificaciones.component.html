@@ -10,7 +10,7 @@
       <form [formGroup]="certificacionesForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Certificación</label>
               <input
                 class="cli-input"
@@ -18,7 +18,7 @@
                 type="text"/>
             </div>
 
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Orden de compra</label>
               <select formControlName="ordenCompra" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
@@ -26,15 +26,7 @@
               </select>
             </div>
 
-            <div class="cli-form-element col-f-3">
-              <label>Total</label>
-              <input
-                class="cli-input"
-                formControlName="monto"
-                type="text"/>
-            </div>
-
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Proyectos</label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
@@ -100,11 +92,11 @@
               <th>Consumido</th>
               <th>Disponible</th>
               <th>Moneda</th>
-              <th style="min-width: 100px">Fecha creación</th>
               <th style="min-width: 105px">Actualizado por:</th>
               <th style="min-width: 100px">Estado factura</th>
               <th style="min-width: 92px" >Estado</th>
-              <!-- <th style="min-width: 92px"></th> -->
+              <th style="min-width: 100px">Fecha creación</th>
+              <th></th>
             </tr>
           </thead>
 
@@ -138,11 +130,11 @@
               <td>{{ cert.valorUsado }}</td>
               <td>{{ cert.valorDisponible }}</td>
               <td>{{ cert.moneda }}</td>
-              <td>{{ cert.fecha_creacion | date:'dd/MM/yy HH:mm' }}</td>
               <td style="color: #007bff;">{{ cert.usuarioActualiza.usuario }}</td>
               <td>{{ cert.estadoFactura     }}</td>
               <td>{{ cert.estado.estado     }}</td>
-              <!-- <td>
+              <td>{{ cert.fecha_creacion | date:'dd/MM/yy HH:mm' }}</td>
+              <td>
                 <div class="moad-actions">
                   <button
                     matTooltip="Agregar factura"
@@ -151,7 +143,7 @@
                     ><mat-icon class="icon-15">add</mat-icon>
                   </button>
                 </div>
-              </td> -->
+              </td>
             </tr>
           </tbody>
         </table>

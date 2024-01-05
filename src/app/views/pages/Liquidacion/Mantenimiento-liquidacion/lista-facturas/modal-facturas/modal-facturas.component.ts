@@ -30,7 +30,7 @@ export class ModalFacturasComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getUserID();
-  this.getAllProyecto();
+  this.getAllCertificacionesCombo();
   this.getListOrdenCombo();
 
   if (this.DATA_FACTURA) {
@@ -45,8 +45,7 @@ export class ModalFacturasComponent implements OnInit {
     this.facturaForm = this.fb.group({
       nro_factura       : [''],
       idEstado          : [''],
-      // proyecto          : [''],
-      ordenCompra       : [''],
+      proyecto          : [''],
       idCertificacion   : [''],
       fecha_facturacion : [''],
       tgs               : [''],
@@ -56,6 +55,7 @@ export class ModalFacturasComponent implements OnInit {
       factura_adquira   : [''],
       idUsuarioCreacion : [''],
       fecha_creacion    : [''],
+      ordenCompra       : [''],
     })
   }
 
@@ -70,10 +70,10 @@ export class ModalFacturasComponent implements OnInit {
         this.facturaForm.reset({
           idFactura        : this.DATA_FACTURA.idFactura,
           nro_factura      : fact.nro_factura,
-          // proyecto         : fact.proyecto,
           idEstado         : fact.estado.idEstado,
-          ordenCompra      : fact.ordenCompra.idOrdenCompra,
-          fecha_facturacion: fact.fecha_facturacion,
+          idCertificacion  : fact.certificacion.idCertificacion,
+          proyecto         : fact.proyecto,
+          fecha_facturacion: moment.utc(fact.fecha_facturacion).format('YYYY-MM-DD'),
           tgs              : fact.tgs,
           adquira          : fact.adquira,
           total            : fact.total,
@@ -82,6 +82,7 @@ export class ModalFacturasComponent implements OnInit {
           fecha_creacion   : moment.utc(fact.fecha_creacion).format('YYYY-MM-DD'),
           usuarioActualiza : this.userID,
         })
+        this.facturaForm.controls['fecha_creacion'].disable();
       })
     }
   }
@@ -102,15 +103,17 @@ export class ModalFacturasComponent implements OnInit {
   actualizarFactura(){
     const formValues = this.facturaForm.getRawValue();
 
-    const requestLider = {
-      idCertificacion : this.DATA_FACTURA.idCertificacion,
-      idFactura       : this.DATA_FACTURA.idFactura,
-      idEstado        : this.DATA_FACTURA.eliminacion_logica,
-      descripcion     : formValues.descripcion,
-      usuario         : this.userID
+    const params = {
+      nro_factura       : this.DATA_FACTURA.nro_factura,
+      idEstado          : formValues.idEstado,
+      idCertificacion   : formValues.idCertificacion,
+      fecha_facturacion : formValues.fecha_facturacion,
+      factura_tgs       : formValues.factura_tgs,
+      factura_adquira   : formValues.factura_adquira,
+      idUsuarioActualiza: this.userID,
     }
 
-    this.liquidacionService.actualizarFactura(this.DATA_FACTURA.idCertificacion, requestLider).subscribe((resp: any) => {
+    this.liquidacionService.actualizarFactura(this.DATA_FACTURA.idFactura, params).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
             title: 'Actualizar factura!',
@@ -157,11 +160,11 @@ export class ModalFacturasComponent implements OnInit {
     });
   }
 
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY-S', this.listProyectos);
+  listCertificacionesCombo: any[] = [];
+  getAllCertificacionesCombo(){
+    this.liquidacionService.getAllCertificaciones().subscribe(resp => {
+      this.listCertificacionesCombo = resp;
+      console.log('CERTIF', this.listCertificacionesCombo);
     })
   }
 

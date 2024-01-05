@@ -44,7 +44,6 @@ export class ModalCertificacionesComponent implements OnInit {
         monto_total       : ['', Validators.required],
         idProyecto        : ['', Validators.required],
         idOrden           : ['', Validators.required],
-        moneda            : [''],
         estado            : [''],
         isActive          : [''],
         fecha_creacion    : ['']
@@ -70,7 +69,6 @@ export class ModalCertificacionesComponent implements OnInit {
     const request = {
       nro_certificacion : formValues.nro_certificacion,
       valor             : formValues.monto_total,
-      moneda            : formValues.moneda,
       idOrden           : formValues.idOrden,
       idProyecto        : formValues.idProyecto,
       idUsuarioCreacion : this.userID,
@@ -95,7 +93,6 @@ export class ModalCertificacionesComponent implements OnInit {
     const requestCertificacion = {
       nro_certificacion  : formValues.nro_certificacion,
       valor              : formValues.monto_total,
-      moneda             : formValues.moneda,
       idOrden            : formValues.idOrden,
       idProyecto         : formValues.idProyecto,
       isActive           : formValues.isActive,

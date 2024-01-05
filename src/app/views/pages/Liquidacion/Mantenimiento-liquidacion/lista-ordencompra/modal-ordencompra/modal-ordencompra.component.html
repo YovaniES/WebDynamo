@@ -45,6 +45,14 @@
                   <small class="form-text text-alert" *ngIf="campoNoValido('monto')">* Ingrese el Monto es obligatorio</small>
               </div>
 
+              <div class="cli-form-element col-f-3">
+                <label>Moneda</label>
+                <input
+                  class="cli-input"
+                  formControlName="moneda"
+                  type="text"/>
+              </div>
+
               <ng-container *ngIf="this.DATA_ORDENCOMPRA">
                 <div class="cli-form-element col-f-3">
                   <label>Estado</label>
@@ -97,9 +105,14 @@
                   <thead>
                     <tr class="bgc-green c-white">
                       <th style="min-width: 35px">Acción</th>
-                      <th>N° Certificación</th>
+                      <th style="min-width: 100px">N° Certificación</th>
                       <th>Proyecto(s)</th>
                       <th>Moneda</th>
+                      <th style="min-width: 116px;">Estado Factura</th>
+                      <th>Estado</th>
+                      <th style="min-width: 116px;">Monto total</th>
+                      <th style="min-width: 116px;">Monto Disponible</th>
+                      <th style="min-width: 116px;">Actualizado por:</th>
                       <th style="min-width: 116px;">Fecha creación</th>
                     </tr>
                   </thead>
@@ -112,8 +125,7 @@
                           matTooltip="Actualizar"
                           (click)="abrirModalCrearOactualizar(oc)"
                             class="icon-btn btn-trans"
-                            style="color: #69aafa"
-                            >
+                            style="color: #69aafa">
                             <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                           </button>
 
@@ -127,10 +139,15 @@
                         </div>
                       </td>
                       <!-- <td>{{ cert.idDetalleCertificacion }}</td> -->
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ oc.nro_certificacion }}</td>
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ oc.proyecto.codigo_proyecto }}</td>
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ oc.moneda }}</td>
-                      <td><small style="font-weight: 200; margin-right: 3px"></small>{{ oc.fecha_creacion | date:'dd/MM/yyyy' }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.nro_certificacion        }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.proyecto.codigo_proyecto }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.moneda                   }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.estadoFactura            }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.estado.estado            }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.valorTotal               }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.valorDisponible          }}</td>
+                      <td><small style="font-weight: 200; color: #007bff;"></small>{{ oc.usuarioActualiza.usuario }}</td>
+                      <td><small style="font-weight: 200;"></small>{{ oc.fecha_creacion | date:'dd/MM/yyyy' }}</td>
                     </tr>
                   </tbody>
                 </table>

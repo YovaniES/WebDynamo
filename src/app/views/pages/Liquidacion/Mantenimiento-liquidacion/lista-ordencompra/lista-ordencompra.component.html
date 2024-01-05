@@ -85,11 +85,12 @@
               <th style="min-width: 118px;">Monto Total</th>
               <th style="min-width: 118px;">Monto Usado</th>
               <th style="min-width: 118px;">Monto Disponible</th>
+              <th style="min-width: 90px"  >Modena</th>
               <th style="min-width: 106px" >Factura</th>
               <th style="min-width: 106px" >Estado Factura</th>
+              <th style="min-width: 90px"  >Estado</th>
               <th style="min-width: 92px"  >Responsable</th>
               <th style="min-width: 106px" >Fecha Creación</th>
-              <th></th>
             </tr>
           </thead>
 
@@ -122,11 +123,13 @@
               <td>{{ orden.monto           }}</td>
               <td>{{ orden.montoUsado      }}</td>
               <td>{{ orden.montoDisponible }}</td>
+              <td>{{ orden.moneda          }}</td>
               <td>{{ orden.factura         }}</td>
               <td>{{ orden.estadoFactura   }}</td>
-              <td>{{ 'JYSANTIAGO*'         }}</td>
+              <td>{{ orden.estado.estado   }}</td>
+              <td>{{ orden.usuarioActualiza.usuario }}</td>
               <td>{{ orden.fecha_creacion | date: 'dd/MM/YYYY' }}</td>
-              <td>
+              <!-- <td>
                 <div class="moad-actions">
                   <button
                   (click)="abrirModalCrearFactura(orden)"
@@ -135,7 +138,7 @@
                     ><mat-icon class="icon-15">add</mat-icon>
                   </button>
                 </div>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

@@ -7,7 +7,6 @@ import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalOrdencompraComponent } from './modal-ordencompra/modal-ordencompra.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
 
 @Component({
   selector: 'app-lista-ordencompra',
@@ -110,16 +109,16 @@ export class ListaOrdencompraComponent implements OnInit {
       });
   };
 
-  abrirModalCrearFactura(DATA?: any) {
-    console.log('DATA_OC', DATA);
-    this.dialog
-      .open(CrearFacturasComponent, { width: '45%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        if (resp) {
-          this.getAllOrdenCompraFiltro();
-        }
-      });
-  }
+  // abrirModalCrearFactura(DATA?: any) {
+  //   console.log('DATA_OC', DATA);
+  //   this.dialog
+  //     .open(CrearFacturasComponent, { width: '45%', data: DATA })
+  //     .afterClosed().subscribe((resp) => {
+  //       if (resp) {
+  //         this.getAllOrdenCompraFiltro();
+  //       }
+  //     });
+  // }
 
 }
 

@@ -108,7 +108,7 @@ export class ListaJefaturaComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalJefaturas) {
-      this.liquidacionService.getAllFacturas().subscribe( (resp: any) => {
+      this.liquidacionService.getAllJefatura().subscribe( (resp: any) => {
             this.listJefaturas = resp.list;
             this.spinner.hide();
           });

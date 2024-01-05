@@ -60,10 +60,11 @@ export const API_ESTADOS_DET_ACTA    = BASE_LIQUIDACION + 'EstadoDetalleActa';
 export const API_VENTA_DECLARADA     = BASE_LIQUIDACION + 'Declarado';
 export const API_CERTIFICACION       = BASE_LIQUIDACION + 'Certificacion';
 export const API_DET_CERTIFICACION   = BASE_LIQUIDACION + 'DetalleActaCertificacion';
+export const API_FACTURAS_FILTRO     = BASE_LIQUIDACION + 'Factura/filtrar';
 export const API_FACTURAS            = BASE_LIQUIDACION + 'Factura';
 export const API_ESTADO_FACTURAS     = BASE_LIQUIDACION + 'Factura/EstadoFactura';
 export const API_IMPORT_ACTAS        = BASE_LIQUIDACION + 'Acta/ImportActaExcel';
-
+// https://facturaciondynamo2.azurewebsites.net/api/Factura/filtrar
 
 
 // MANTENIMIENTO LIQUIDACION

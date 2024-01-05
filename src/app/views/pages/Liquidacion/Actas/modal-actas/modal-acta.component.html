@@ -18,7 +18,7 @@
       <div class="card" style="padding: 10px; border: none" *ngIf="activeTab == 'manual'">
           <div class="cli-form newvac-wrapper">
             <div class="chart-draw">
-              <div class="pr-subtitle mt-2">Datos agrupación</div>
+              <div class="pr-subtitle mt-2">Datos Acta</div>
               <div class="pr-section mb-1">
                 <div class="pr-module-container row g-3">
                   <div class="cli-form-element col-f-4">
@@ -165,19 +165,35 @@
                   </div>
                 </div>
             </div>
+
+            <!-- BOTONES CREAR MANUAL -->
+            <div class="cli-form-buttons" style="margin-top: 4%">
+              <button
+                class="cli-btn btn-m btn-regresar"
+                type="submit"
+                (click)="close()">
+                <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
+              </button>
+              <button
+                class="cli-btn btn-m btn-turq"
+                [disabled]="actasForm.invalid"
+                (click)="crearAgrupacionConActa()">
+                <mat-icon class="icon-18">save</mat-icon>Crear
+              </button>
+            </div>
           </div>
       </div>
 
       <div class="card" style="padding: 10px; min-height: 460px; border: none;" *ngIf="activeTab == 'importar'">
-        <ng-container *ngIf="!loading">
-          <div style="display: flex" class="mt-4 mb-1">
-            <input type="file" class="cli-import"
-            accept=".xlsx, .xls, .csv"
-            formControlName="import"
-            (change)="readExcell($event)">
-          </div>
+        <div style="display: flex" class="mt-4 mb-1">
+          <input type="file" class="cli-import"
+          accept=".xlsx, .xls, .csv"
+          formControlName="import"
+          (change)="readExcell($event)">
+        </div>
 
-          <div class="chart-draw" *ngIf="listDetActas.length > 0">
+        <ng-container *ngIf="!loading && listDetActas.length > 0">
+          <div class="chart-draw">
             <div class="pr-subtitle mt-2">Datos Acta</div>
             <div class="pr-section mb-1">
               <div class="pr-module-container row g-3">
@@ -241,17 +257,17 @@
             </div>
           </div>
 
-          <div class="pr-subtitle mt-1" *ngIf="listDetActas.length > 0">Detalle Acta</div>
-          <div class="pr-section" *ngIf="listDetActas.length > 0">
+          <div class="pr-subtitle mt-1" >Detalle Acta</div>
+          <div class="pr-section" >
             <div class="pr-module-container mb-2">
               <div style="display: flex">
                 <div class="flex-1"></div>
-                <div class="mt-1" style="color: #345df3; font-weight: 400" *ngIf="listDetActas.length > 0">
+                <div class="mt-1" style="color: #345df3; font-weight: 400" >
                   Total : <span class="total">{{ listDetActas.length }} Actas detalle</span>
                 </div>
               </div>
 
-              <div style="overflow: auto; min-height: 167px; max-height: 167px; color:#6c757d;" *ngIf="listDetActas.length > 0">
+              <div style="overflow: auto; min-height: 167px; max-height: 167px; color:#6c757d;" >
                 <table class="cli-table_x stripedtable underlinedtable"  >
                   <thead>
                     <tr class="bgc-blue c-white">
@@ -285,42 +301,25 @@
               </div>
             </div>
           </div>
+
+          <!-- BOTONES CREAR IMPORT -->
+          <div class="cli-form-buttons" style="margin-top: 4%">
+            <button
+              class="cli-btn btn-m btn-regresar"
+              type="submit"
+              (click)="close()">
+              <mat-icon class="icon-18">keyboard_return</mat-icon> Cancelar
+            </button>
+            <button
+              class="cli-btn btn-m btn-turq"
+              (click)="guardarActaImportado()">
+              <mat-icon class="icon-18">save</mat-icon>Guardar
+            </button>
+          </div>
         </ng-container>
+
       </div>
     </form>
-
-      <!-- BOTONES CREAR MANUAL -->
-      <div class="cli-form-buttons" style="margin-top: 4%">
-        <button
-          class="cli-btn btn-m btn-regresar"
-          type="submit"
-          (click)="close()">
-          <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
-        </button>
-        <button
-          class="cli-btn btn-m btn-turq"
-          [disabled]="actasForm.invalid"
-          (click)="crearAgrupacionConActa()">
-          <mat-icon class="icon-18">save</mat-icon>Crear
-        </button>
-      </div>
-
-
-      <!-- BOTONES CREAR IMPORT -->
-      <div class="cli-form-buttons" style="margin-top: 4%">
-        <!-- <button
-          class="cli-btn btn-m btn-regresar"
-          type="submit"
-          (click)="close()">
-          <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
-        </button> -->
-        <button
-          class="cli-btn btn-m btn-turq"
-          (click)="guardarActaImportado()">
-          <mat-icon class="icon-18">save</mat-icon>Crear_
-        </button>
-      </div>
-
     </div>
   </div>
 </div>

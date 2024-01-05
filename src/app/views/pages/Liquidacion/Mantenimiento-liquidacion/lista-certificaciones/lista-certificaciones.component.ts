@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalCertificacionesComponent } from './modal-certificaciones/modal-certificaciones.component';
 import { ActasService } from 'src/app/core/services/actas.service';
+import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
 
 export interface changeResponse {
   message: string;
@@ -165,7 +166,16 @@ export class ListaCertificacionesComponent implements OnInit {
       });
   };
 
-
+  abrirModalCrearFactura(DATA?: any) {
+    console.log('DATA_OC', DATA);
+    this.dialog
+      .open(CrearFacturasComponent, { width: '45%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllCertificaciones();
+        }
+      });
+  }
 
 }
 

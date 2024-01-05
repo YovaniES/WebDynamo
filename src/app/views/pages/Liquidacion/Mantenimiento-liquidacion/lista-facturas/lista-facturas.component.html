@@ -10,25 +10,33 @@
       <form [formGroup]="facturaForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>N° Factura</label>
               <input
                 class="cli-input"
-                formControlName="num_factura"
+                formControlName="nro_factura"
                 type="text"/>
             </div>
 
-            <!-- <div class="cli-form-element col-f-3">
-              <label>Proyecto <small style="color: red">*</small></label>
-              <select formControlName="proyecto" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
-              </select>
-            </div> -->
+            <div class="cli-form-element col-f-4">
+              <label>Orden compra</label>
+              <input
+                class="cli-input"
+                formControlName="ordenCompra"
+                type="text"/>
+            </div>
 
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
+              <label>Certificación</label>
+              <input
+                class="cli-input"
+                formControlName="certificacion"
+                type="text"/>
+            </div>
+
+            <div class="cli-form-element col-f-4">
               <label>Estado</label>
-              <select formControlName="estado" class="cli-input">
+              <select formControlName="idEstado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="est.idEstado" *ngFor="let est of listEstadoFacturas">{{est.nombre}}</option>
               </select>
@@ -47,7 +55,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllFacturas()"
+                (click)="getAllFacturasFiltro()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -55,7 +63,7 @@
           </div>
         </div>
 
-        <!-- BOTON MODAL PARA CREAR JEFATURA ----------------------------------------------------->
+        <!-- BOTON MODAL PARA CREAR fACTURA ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
             class="cli-btn btn-m btn-turq"
@@ -71,22 +79,23 @@
         </div>
       </form>
 
-      <!-- TABLA DE JEFATURAS ------------------------------------------------------------------>
+      <!-- TABLA DE FACTURAS ------------------------------------------------------------------>
       <div style="overflow: auto; min-height: 188px; color: #6c757d">
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
-              <th class="w50">Acción</th>
+              <th>Acción</th>
               <th style="min-width: 100px; text-align: left;">N° Factura</th>
               <th style="min-width: 100px; text-align: left;">Proyecto</th>
+              <th style="min-width: 100px; text-align: left;">Certificación</th>
               <th style="min-width: 120px">Fecha facturación</th>
               <th>Total</th>
               <th>Tgs</th>
               <th>Adquira</th>
-              <th style="min-width: 150px">Factrura TGS</th>
-              <th style="min-width: 150px">Factura Adquira</th>
-              <th style="min-width: 108px">Actualizado por</th>
-              <th style="min-width: 95px;">Estado</th>
+              <th style="min-width: 150px" >Factrura TGS</th>
+              <th style="min-width: 150px" >Factura Adquira</th>
+              <th style="min-width: 95px;" >Estado</th>
+              <th style="min-width: 108px" >Actualizado por</th>
               <th style="min-width: 100px;">Fecha creación</th>
             </tr>
           </thead>
@@ -113,16 +122,17 @@
                   </button>
                 </div>
               </td>
-              <td style="text-align: left"> {{ factura.nro_factura}}</td>
-              <td style="text-align: left;">{{ factura.proyecto }}</td>
+              <td style="text-align: left"> {{ factura.nro_factura       }}</td>
+              <td style="text-align: left;">{{ factura.proyecto          }}</td>
+              <td style="text-align: left;">{{ factura.certificacion.certificacion }}</td>
               <td style="min-width: 150px;">{{ factura.fecha_facturacion }}</td>
-              <td>{{ factura.total }}</td>
-              <td>{{ factura.tgs }}</td>
+              <td>{{ factura.total   }}</td>
+              <td>{{ factura.tgs     }}</td>
               <td>{{ factura.adquira }}</td>
               <td>{{ factura.factura_tgs }}</td>
               <td>{{ factura.factura_adquira }}</td>
-              <td>{{ factura.usuarioActualiza.username }}</td>
               <td style="text-align: left;">{{ factura.estado.estado_facturacion }}</td>
+              <td>{{ factura.usuarioActualiza.username }}</td>
               <td>{{ factura.fecha_creacion | date:'dd/MM/yyyy'}}</td>
             </tr>
           </tbody>

@@ -19,7 +19,7 @@
             </div>
 
             <div class="cli-form-element col-f-3">
-              <label>subservicio <small style="color: red">*</small></label>
+              <label>subservicio</label>
               <input
                 class="cli-input"
                 formControlName="subservicio"
@@ -76,12 +76,12 @@
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
-              <th class="w50">Acción</th>
+              <th>Acción</th>
               <th style="min-width: 175px">Subservicio</th>
-              <th class="w100">Gestor</th>
+              <th>Gestor</th>
               <th style="min-width: 240px">Proyecto(s)</th>
               <th style="min-width: 145px">Fecha inicio - fecha fin</th>
-              <th style="min-width: 92px">Estado</th>
+              <th style="min-width: 92px" >Estado</th>
             </tr>
           </thead>
 
@@ -109,7 +109,7 @@
               </td>
               <td style="text-align: left;">{{ subserv.subservicio }}</td>
               <td style="text-align: left; min-width: 150px;">{{ subserv.representante.nombre | uppercase}} {{ subserv.representante.apellidos | uppercase}}</td>
-              <td style="">{{ subserv.proyecto }}</td>
+              <td>{{ subserv.proyecto }}</td>
               <td style="text-align: left;" *ngIf="subserv.fechaFin == 'Actual'">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - Actual</td>
               <td style="text-align: left;" *ngIf="subserv.fechaFin != 'Actual'">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - {{ subserv.fechaFin | date: 'dd/MM/yyyy' }}</td>
               <td class="moad-module">
@@ -123,11 +123,10 @@
           <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
         </div>
 
-        <div
-          *ngIf="!loadingItem && listSubservicios.length == 0"
-          class="cli-loader mt-5"
-          style="color: #f83434">
-          No hay subservicio para mostrar
+        <div *ngIf="!loadingItem && listSubservicios.length == 0"
+              class="cli-loader mt-5"
+              style="color: #f83434">
+              No hay subservicio para mostrar
         </div>
       </div>
     </div>

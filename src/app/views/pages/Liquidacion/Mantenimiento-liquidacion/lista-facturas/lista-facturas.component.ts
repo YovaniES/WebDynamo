@@ -7,12 +7,6 @@ import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalFacturasComponent } from './modal-facturas/modal-facturas.component';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-lista-facturas',
   templateUrl: './lista-facturas.component.html',
@@ -36,7 +30,7 @@ export class ListaFacturasComponent implements OnInit {
 
   ngOnInit(): void {
     this.newForm();
-    this.getAllFacturas();
+    this.getAllFacturasFiltro();
     this.getAllProyecto();
     this.getListaEstadosFactura()
   }
@@ -44,16 +38,28 @@ export class ListaFacturasComponent implements OnInit {
   facturaForm!: FormGroup;
   newForm(){
     this.facturaForm = this.fb.group({
-     num_factura   : [''],
-     estado        : [''],
-     proyecto      : [''],
+     nro_factura   : [''],
+     idEstado      : [''],
+     idProyecto    : [''],
      certificacion : [''],
+     ordenCompra   : [''],
     })
   }
 
   listFacturas: any[] = [];
-  getAllFacturas() {
-    this.liquidacionService.getAllFacturas().subscribe((resp: any) => {
+  getAllFacturasFiltro() {
+    this.blockUI.start("Cargando lista de Facturas...");
+    const formValues = this.facturaForm.getRawValue();
+
+    const params = {
+      nro_factura  : formValues.nro_factura,
+      idEstado     : formValues.idEstado,
+      idProyecto   : formValues.idProyecto,
+      certificacion: formValues.certificacion,
+      ordenCompra  : formValues.ordenCompra,
+    }
+    this.liquidacionService.getAllFacturasFiltro(params).subscribe(resp => {
+      this.blockUI.stop();
       this.listFacturas = resp;
 
       console.log('LIST-FACTURAS', this.listFacturas);
@@ -82,7 +88,7 @@ export class ListaFacturasComponent implements OnInit {
               text: `${factura.factura}: ${resp.message} exitosamente`,
               icon: 'success',
             });
-            this.getAllFacturas();
+            this.getAllFacturasFiltro();
           });
       }
     });
@@ -131,7 +137,7 @@ export class ListaFacturasComponent implements OnInit {
     this.facturaForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllFacturas();
+    this.getAllFacturasFiltro();
   }
 
   totalfiltro = 0;
@@ -141,7 +147,7 @@ export class ListaFacturasComponent implements OnInit {
 
     if (this.totalfiltro != this.totalFacturas) {
       this.liquidacionService
-        .getAllFacturas()
+        .getAllFacturasFiltro(offset)
         .subscribe((resp: any) => {
           this.listFacturas = resp.list;
           this.spinner.hide();
@@ -159,7 +165,7 @@ export class ListaFacturasComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.getAllFacturas();
+          this.getAllFacturasFiltro();
         }
       });
   }

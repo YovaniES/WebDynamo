@@ -45,14 +45,6 @@
             <small class="form-text text-alert" *ngIf="campoNoValido('monto_total')">* Ingrese el Monto es obligatorio</small>
         </div>
 
-        <div class="cli-form-element col-f-3">
-          <label>moneda</label>
-          <input
-            class="cli-input"
-            formControlName="moneda"
-            type="text"/>
-        </div>
-
         <ng-container *ngIf="DATA_CERTIF">
           <div class="cli-form-element col-f-3">
             <label>Estado certificación</label>

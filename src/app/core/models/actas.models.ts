@@ -14,6 +14,18 @@ export interface Menu {
   submenus: Menu[];
 }
 
+export interface Detalle {
+  nombre       : string;
+  unidades     : string;
+  precio_unidad: string;
+  precioTotal  : string;
+  perfil       : string;
+  observacion  : string;
+  unidad       : string;
+  comentario   : string;
+  categoria1   : string;
+  categoria2   : string;
+}
 
 
 

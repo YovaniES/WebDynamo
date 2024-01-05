@@ -7,6 +7,7 @@ import {
   API_ESTADO_ACTA,
   API_ESTADO_FACTURAS,
   API_FACTURAS,
+  API_FACTURAS_FILTRO,
   API_GESTOR,
   API_GESTOR_COMBO,
   API_GESTOR_FILTRO,
@@ -212,8 +213,8 @@ export class LiquidacionService {
     );
   };
 
-  getAllFacturas() {
-    return this.http.get(API_FACTURAS).pipe(
+  getAllFacturasFiltro(params: any) {
+    return this.http.post(API_FACTURAS_FILTRO, params).pipe(
       map((resp: any) => {
         return resp.result;
       })
