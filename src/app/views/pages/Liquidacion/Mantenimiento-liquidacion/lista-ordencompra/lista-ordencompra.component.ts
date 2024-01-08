@@ -101,7 +101,7 @@ export class ListaOrdencompraComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
     this.dialog
-      .open(ModalOrdencompraComponent, { width: '45%', data: DATA })
+      .open(ModalOrdencompraComponent, { width: '50%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllOrdenCompraFiltro();

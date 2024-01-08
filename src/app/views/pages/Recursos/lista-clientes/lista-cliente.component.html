@@ -10,12 +10,13 @@
       <form [formGroup]="clienteForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
+
             <div class="cli-form-element col-f-3">
               <label>Razón social</label>
-              <input
-                class="cli-input"
-                formControlName="razon_social"
-                type="text"/>
+              <select formControlName="razon_social" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="cliente.razon_social" *ngFor="let cliente of listClientesCombo">{{cliente.razon_social}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-3">
@@ -29,9 +30,9 @@
             <div class="cli-form-element col-f-3">
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option [value]="10" disabled>-Seleccione-</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
               </select>
             </div>
 
@@ -48,7 +49,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllClientes()"
+                (click)="getAllClientesFiltro()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -67,7 +68,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listClientes.length }} Clientes</span>
+            Total : <span class="total">{{ listClientesFiltro.length }} Clientes</span>
           </div>
         </div>
       </form>
@@ -89,7 +90,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let cliente of listClientes | paginate: {
+            <tr *ngFor="let cliente of listClientesFiltro | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalClientes }">
@@ -115,7 +116,7 @@
               <td style="text-align: left; min-width: 100px;">{{ cliente.ruc }}</td>
               <td>{{ cliente.proyectos }}</td>
               <td style="color: #0d6efd;;">{{ cliente.usuarioActualiza.username }}</td>
-              <td>{{ cliente.fecha_creacion }}</td>
+              <td>{{ cliente.fecha_creacion | date:'dd/MM/yyyy' }}</td>
               <td class="moad-module">
                 <mat-icon [ngClass]="{ 'c-green_x': cliente.estado.estadoId == 1, 'c-red': cliente.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>
@@ -128,7 +129,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listClientes.length == 0"
+          *ngIf="!loadingItem && listClientesFiltro.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
           No hay Clientes para mostrar

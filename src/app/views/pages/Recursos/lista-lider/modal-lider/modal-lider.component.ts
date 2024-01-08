@@ -106,7 +106,7 @@ export class ModalLiderComponent implements OnInit {
         correo             : formValues.correo,
         descripcion        : formValues.descripcion,
         idUsuarioActualiza : this.userID,
-        eliminacion_logica : formValues.id_estado
+        isActive           : formValues.id_estado
     }
 
     this.liquidacionService.actualizarLider(this.DATA_LIDER.idLider, requestLider).subscribe((resp: any) => {
@@ -148,7 +148,7 @@ export class ModalLiderComponent implements OnInit {
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY-S', this.listProyectos);
     })

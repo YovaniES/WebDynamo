@@ -10,20 +10,21 @@
       <form [formGroup]="jefaturaForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
-            <div class="cli-form-element col-f-3">
+
+            <div class="cli-form-element col-f-4">
               <label>Jefatura</label>
-              <input
-                class="cli-input"
-                formControlName="jefatura"
-                type="text"/>
+              <select formControlName="jefatura" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="jef.nombre" *ngFor="let jef of listJefaturasCombo">{{jef.nombre}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-3">
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
+                <option [value]="10" disabled>-Seleccione-</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
               </select>
             </div>
 
@@ -40,7 +41,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllJefatura()"
+                (click)="getAllJefaturaFiltro()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -59,7 +60,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listJefaturas.length }} Jefaturas</span>
+            Total : <span class="total">{{ listJefaturasFiltro.length }} Jefaturas</span>
           </div>
         </div>
       </form>
@@ -79,7 +80,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let jefatura of listJefaturas | paginate: {
+            <tr *ngFor="let jefatura of listJefaturasFiltro | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalJefaturas }">
@@ -114,7 +115,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listJefaturas.length == 0"
+          *ngIf="!loadingItem && listJefaturasFiltro.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
           No hay Jefatura para mostrar

@@ -11,9 +11,9 @@
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-4">
               <label>Proyectos</label>
-              <select formControlName="proyectos" class="cli-input">
+              <select formControlName="codigo_proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
+                <option [value]="proy.codigoProyecto" *ngFor="let proy of listProyectosCombo">{{proy.codigoProyecto}}</option>
               </select>
             </div>
 
@@ -30,7 +30,7 @@
               <label>Cliente</label>
               <select formControlName="cliente" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="cliente.idCliente" *ngFor="let cliente of listClientes">{{cliente.razon_social}}</option>
+                <option [value]="cliente.razon_social" *ngFor="let cliente of listClientesCombo">{{cliente.razon_social}}</option>
               </select>
               <small class="form-text text-alert" *ngIf="campoNoValido('cliente')">* Seleccione el Cliente es obligatorio</small>
             </div>
@@ -58,7 +58,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllProyectos()"
+                (click)="getAllProyectosFiltro()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>
@@ -76,7 +76,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listProyectos.length }} Proyectos</span>
+            Total : <span class="total">{{ listProyectosFiltro.length }} Proyectos</span>
           </div>
         </div>
       </form>
@@ -100,7 +100,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let proy of listProyectos | paginate: {
+            <tr *ngFor="let proy of listProyectosFiltro | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalProyecto }">
@@ -142,7 +142,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listProyectos.length == 0"
+          *ngIf="!loadingItem && listProyectosFiltro.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
           No hay proyectos para mostrar

@@ -36,7 +36,7 @@ export class ModalClienteComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getUserID();
-  this.getAllProyecto();
+  // this.getAllProyectoCombo();
 
   if (this.DATA_CLIENTE) {
     this.cargarClienteById();
@@ -66,8 +66,10 @@ export class ModalClienteComponent implements OnInit {
           razon_social  : cliente.razon_social,
           ruc           : cliente.ruc,
           estado        : cliente.estado.estadoId,
-          fecha_creacion: moment.utc(cliente.fecha_creacion).format('DD-MM-YYYY'),
+          fecha_creacion: cliente.fecha_creacion,
+          // fecha_creacion: moment.utc(cliente.fecha_creacion).format('DD-MM-YYYY'),
         })
+        this.clienteForm.controls['fecha_creacion'].disable();
       })
     }
   }
@@ -93,7 +95,7 @@ export class ModalClienteComponent implements OnInit {
       razon_social      : formValues.razon_social,
       ruc               : formValues.ruc,
       idUsuarioActualiza: this.userID,
-      eliminacion_logica: formValues.estado,
+      isActive          : formValues.estado,
     }
 
     this.liquidacionService.actualizarCliente(this.DATA_CLIENTE.idCliente, requestLider).subscribe((resp: any) => {
@@ -132,13 +134,13 @@ export class ModalClienteComponent implements OnInit {
     })
   }
 
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY-S', this.listProyectos);
-    })
-  }
+  // listProyectosCombo: any[] = [];
+  // getAllProyectoCombo(){
+  //   this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
+  //     this.listProyectosCombo = resp;
+  //     console.log('PROY-S', this.listProyectosCombo);
+  //   })
+  // }
 
   userID: number = 0;
   getUserID(){

@@ -94,7 +94,7 @@ export class ActaComponent implements OnInit {
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
     })

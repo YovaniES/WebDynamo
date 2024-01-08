@@ -141,7 +141,7 @@ export class VentaDeclaradaComponent implements OnInit {
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
       this.listProyectos = resp;
     })
   }

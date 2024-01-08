@@ -7,12 +7,6 @@ import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalJefaturaComponent } from './modal-jefatura/modal-jefatura.component';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-lista-jefatura',
   templateUrl: './lista-jefatura.component.html',
@@ -36,7 +30,8 @@ export class ListaJefaturaComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getAllJefatura();
+  this.getAllJefaturaCombo();
+  this.getAllJefaturaFiltro();
   }
 
   jefaturaForm!: FormGroup;
@@ -47,11 +42,25 @@ export class ListaJefaturaComponent implements OnInit {
     })
   }
 
-  listJefaturas: any[] = [];
-  getAllJefatura(){
-    this.liquidacionService.getAllJefatura().subscribe((resp: any) => {
-      this.listJefaturas = resp
-      console.log('LIST-JEFAT', this.listJefaturas);
+  listJefaturasCombo: any[] = [];
+  getAllJefaturaCombo(){
+    this.liquidacionService.getAllJefaturaCombo().subscribe((resp: any) => {
+      this.listJefaturasCombo = resp
+      console.log('LIST-JEFAT-COMBO', this.listJefaturasCombo);
+    })
+  };
+
+  listJefaturasFiltro: any[] = [];
+  getAllJefaturaFiltro(){
+    const formaValues = this.jefaturaForm.getRawValue();
+    const params = {
+      nombre  : formaValues.jefatura,
+      IsActive: formaValues.estado
+    }
+
+    this.liquidacionService.getAllJefaturaFiltro(params).subscribe((resp: any) => {
+      this.listJefaturasFiltro = resp
+      console.log('LIST-JEFAT-FILTRO', this.listJefaturasFiltro);
     })
   }
 
@@ -60,7 +69,7 @@ export class ListaJefaturaComponent implements OnInit {
 
     Swal.fire({
       title:'¿Eliminar jefatura?',
-      text: `¿Estas seguro que deseas eliminar la jefatura: ${jefatura.Jefatura}?`,
+      text: `¿Estas seguro que deseas eliminar la jefatura: ${jefatura.nombre}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -73,10 +82,10 @@ export class ListaJefaturaComponent implements OnInit {
 
           Swal.fire({
             title: 'Eliminar jefatura',
-            text: `${jefatura.Jefatura}: ${resp.message} exitosamente`,
+            text: `${jefatura.nombre}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllJefatura()
+          this.getAllJefaturaFiltro()
         });
       };
     });
@@ -108,8 +117,8 @@ export class ListaJefaturaComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalJefaturas) {
-      this.liquidacionService.getAllJefatura().subscribe( (resp: any) => {
-            this.listJefaturas = resp.list;
+      this.liquidacionService.getAllJefaturaFiltro(offset).subscribe( (resp: any) => {
+            this.listJefaturasFiltro = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -122,7 +131,7 @@ export class ListaJefaturaComponent implements OnInit {
     this.jefaturaForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllJefatura();
+    this.getAllJefaturaFiltro();
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
@@ -131,7 +140,7 @@ export class ListaJefaturaComponent implements OnInit {
       .open(ModalJefaturaComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllJefatura();
+          this.getAllJefaturaFiltro();
         }
       });
   }

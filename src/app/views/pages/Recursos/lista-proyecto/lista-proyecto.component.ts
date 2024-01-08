@@ -9,12 +9,6 @@ import { ModalProyectoComponent } from './modal-proyecto/modal-proyecto.componen
 import { Observable, map, startWith } from 'rxjs';
 import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-lista-proyecto',
   templateUrl: './lista-proyecto.component.html',
@@ -23,7 +17,6 @@ export interface changeResponse {
 export class ListaProyectoComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
-
 
   page = 1;
   totalProyecto: number = 0;
@@ -44,9 +37,10 @@ export class ListaProyectoComponent implements OnInit {
   searchCtrl: FormControl = new FormControl();
   ngOnInit(): void {
   this.newForm();
-  this.getAllProyectos();
+  this.getAllProyectosCombo();
   this.getAllJefaturas();
   this.getAllClientes();
+  this.getAllProyectosFiltro();
 
   this.searchCtrl.valueChanges
     // .pipe(map(value => typeof value === 'object' ? '' : ''), startWith(''))
@@ -63,26 +57,25 @@ export class ListaProyectoComponent implements OnInit {
     // this.selectedCustomers.push(customer);
   }
 
-  removeCustomer(id: any){
-
-  }
+  removeCustomer(id: any){ }
 
   proyectoForm!: FormGroup;
   newForm(){
     this.proyectoForm = this.fb.group({
-     id_estado: [''],
-     jefatura : [''],
-     proyectos: [''],
-     cliente  : [''],
+     id_estado      : [''],
+     jefatura       : [''],
+     codigo_proyecto: [''],
+     cliente        : [''],
+     codigoContrato : ['']
     })
   }
 
   eliminarProyecto(proy: any,){
-    console.log('XYZ', proy);
+    console.log('DATA_', proy);
 
     Swal.fire({
       title:'¿Eliminar proyecto?',
-      text: `¿Estas seguro que deseas eliminar el proyecto: ${proy.codigo_proyecto}?`,
+      text: `¿Estas seguro que deseas eliminar el proyecto: ${proy.codigoProyecto}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -95,37 +88,39 @@ export class ListaProyectoComponent implements OnInit {
 
           Swal.fire({
             title: 'Eliminar proyecto',
-            text: `${proy.codigo_proyecto}: ${resp.message} exitosamente`,
+            text: `${proy.codigoProyecto}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllProyectos()
+          this.getAllProyectosFiltro()
         });
       };
     });
   };
 
-  limpiarFiltro() {
-    this.proyectoForm.reset('', {emitEvent: false})
-    this.newForm()
 
-    this.getAllProyectos();
-  }
+  listProyectosCombo: any[] = [];
+  getAllProyectosCombo(){
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
+      this.listProyectosCombo = resp;
+      console.log('PROY', this.listProyectosCombo, );
 
-  listClientes: any[] = [];
-  getAllClientes() {
-    this.liquidacionService.getAllClientes().subscribe((resp: any) => {
-      this.listClientes = resp;
+    })
+  };
 
-      console.log('LIST-CLIENTE', this.listClientes);
-    });
-  }
+  listProyectosFiltro: any[] = [];
+  getAllProyectosFiltro(){
+    const formaValues = this.proyectoForm.getRawValue();
+    const params = {
+      codigoProyecto : formaValues.codigo_proyecto,
+      isActive       : formaValues.id_estado,
+      cliente        : formaValues.cliente,
+      jefatura       : formaValues.jefatura,
+      codigoContrato : formaValues.codigoContrato,
+    }
 
-  listProyectos: any[] = [];
-  getAllProyectos(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY', this.listProyectos, );
-
+    this.liquidacionService.getAllProyectosFiltro(params).subscribe(resp => {
+      this.listProyectosFiltro = resp;
+      console.log('PROY', this.listProyectosFiltro, );
     })
   }
 
@@ -135,6 +130,22 @@ export class ListaProyectoComponent implements OnInit {
       this.listJefaturas = resp;
       console.log('LIST-JEFATURAS', this.listJefaturas);
     })
+  };
+
+  limpiarFiltro() {
+    this.proyectoForm.reset('', {emitEvent: false})
+    this.newForm()
+
+    this.getAllProyectosFiltro();
+  }
+
+  listClientesCombo: any[] = [];
+  getAllClientes() {
+    this.liquidacionService.getAllClientesCombo().subscribe((resp: any) => {
+      this.listClientesCombo = resp;
+
+      console.log('LIST-CLIENTE-COMBO', this.listClientesCombo);
+    });
   }
 
   close(succes?: boolean) {
@@ -163,8 +174,8 @@ export class ListaProyectoComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalProyecto) {
-      this.liquidacionService.getAllProyectos().subscribe( (resp: any) => {
-            this.listProyectos = resp.list;
+      this.liquidacionService.getAllProyectosFiltro(offset).subscribe( (resp: any) => {
+            this.listProyectosCombo = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -179,7 +190,7 @@ export class ListaProyectoComponent implements OnInit {
       .open(ModalProyectoComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllProyectos();
+          this.getAllProyectosFiltro();
         }
       });
   }

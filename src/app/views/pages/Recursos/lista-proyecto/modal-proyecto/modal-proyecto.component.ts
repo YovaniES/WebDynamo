@@ -7,12 +7,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-modal-proyecto',
   templateUrl: './modal-proyecto.component.html',
@@ -190,26 +184,26 @@ export class ModalProyectoComponent implements OnInit {
 
   listLideres: any[] = [];
   getAllLideres(){
-    this.liquidacionService.getAllLideres().subscribe( (resp: any) => {
+    this.liquidacionService.getAllLiderCombo().subscribe( (resp: any) => {
       this.listLideres = resp
       console.log('LIST-LIDER', this.listLideres);
     })
   }
 
-  listClientes: any[] = [];
+  listClientesCombo: any[] = [];
   getAllClientes() {
-    this.liquidacionService.getAllClientes().subscribe((resp: any) => {
-      this.listClientes = resp;
+    this.liquidacionService.getAllClientesCombo().subscribe((resp: any) => {
+      this.listClientesCombo = resp;
 
-      console.log('LIST-CLIENTE', this.listClientes);
+      console.log('LIST-CLIENTE', this.listClientesCombo);
     });
   }
 
-  listProyectos: any[] = [];
+  listProyectosCombo: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY-S', this.listProyectos);
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
+      this.listProyectosCombo = resp;
+      console.log('PROY-COMBO', this.listProyectosCombo);
     })
   }
 

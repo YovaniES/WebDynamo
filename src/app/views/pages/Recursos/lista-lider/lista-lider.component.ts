@@ -8,12 +8,6 @@ import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalLiderComponent } from './modal-lider/modal-lider.component';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-lista-lider',
   templateUrl: './lista-lider.component.html',
@@ -22,7 +16,6 @@ export interface changeResponse {
 export class ListaLiderComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
-
 
   page = 1;
   totalLideres: number = 0;
@@ -38,7 +31,8 @@ export class ListaLiderComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getAllLider();
+  this.getAllLiderCombo();
+  this.getAllLiderFilter();
   this.getAllProyecto();
   }
 
@@ -51,17 +45,29 @@ export class ListaLiderComponent implements OnInit {
     })
   }
 
+  listLiderCombo: any[] = [];
+  getAllLiderCombo(){
+    this.liquidacionService.getAllLiderCombo().subscribe((resp: any) => {
+      this.listLiderCombo = resp
+      console.log('LIDER-COMBO', this.listLiderCombo);
+    })
+  }
+
   listLideres: any[] = [];
-  proyectos_x: any[] = [];
-  getAllLider(){
-    this.liquidacionService.getAllLideres().subscribe((resp: any) => {
+  getAllLiderFilter(){
+    const formValues = this.liderForm.getRawValue();
+
+    const params = {
+      nombre  : formValues.lider,
+      proyecto: formValues.proyecto,
+      isActive: formValues.estado
+    }
+
+    this.liquidacionService.getAllLiderFilter(params).subscribe((resp: any) => {
       this.listLideres = resp
-      this.proyectos_x = resp.map((x: any) => x.proyectos)
+      // this.proyectos_x = resp.map((x: any) => x.proyectos)
 
       console.log('LIST-LIDER', this.listLideres);
-      console.log('PROY_LIDER', this.proyectos_x);
-      console.log('COD_PROY', this.proyectos_x[4]);
-
     })
   }
 
@@ -86,7 +92,7 @@ export class ListaLiderComponent implements OnInit {
             text: `${lider.lider}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllLider()
+          this.getAllLiderFilter()
         });
       };
     });
@@ -94,7 +100,7 @@ export class ListaLiderComponent implements OnInit {
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
     })
@@ -141,7 +147,7 @@ export class ListaLiderComponent implements OnInit {
     this.liderForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllLider();
+    this.getAllLiderFilter();
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
@@ -150,7 +156,7 @@ export class ListaLiderComponent implements OnInit {
       .open(ModalLiderComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllLider();
+          this.getAllLiderFilter();
         }
       });
   }

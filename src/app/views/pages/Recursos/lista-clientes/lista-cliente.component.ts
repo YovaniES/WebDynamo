@@ -8,12 +8,6 @@ import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalClienteComponent } from './modal-clientes/modal-cliente.component';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-lista-cliente',
   templateUrl: './lista-cliente.component.html',
@@ -38,7 +32,8 @@ export class ListaClienteComponent implements OnInit {
 
   ngOnInit(): void {
     this.newForm();
-    this.getAllClientes();
+    this.getAllClientesCombo();
+    this.getAllClientesFiltro();
   }
 
   clienteForm!: FormGroup;
@@ -50,12 +45,27 @@ export class ListaClienteComponent implements OnInit {
     })
   }
 
-  listClientes: any[] = [];
-  getAllClientes() {
-    this.liquidacionService.getAllClientes().subscribe((resp: any) => {
-      this.listClientes = resp;
+  listClientesCombo: any[] = [];
+  getAllClientesCombo() {
+    this.liquidacionService.getAllClientesCombo().subscribe((resp: any) => {
+      this.listClientesCombo = resp;
 
-      console.log('LIST-CLIENTE', this.listClientes);
+      console.log('LIST-CLIENTE-COMBO', this.listClientesCombo);
+    });
+  }
+
+  listClientesFiltro: any[] = [];
+  getAllClientesFiltro() {
+    const formValues = this.clienteForm.getRawValue();
+    const params = {
+      razon_social : formValues.razon_social,
+      ruc          : formValues.ruc,
+      isActive     : formValues.estado
+    }
+
+    this.liquidacionService.getAllClientesFiltro(params).subscribe((resp: any) => {
+      this.listClientesFiltro = resp;
+      console.log('LIST-CLIENTE-COMBO', this.listClientesFiltro);
     });
   }
 
@@ -80,7 +90,7 @@ export class ListaClienteComponent implements OnInit {
               text: `${cliente.razon_social}: eliminado exitosamente`,
               icon: 'success',
             });
-            this.getAllClientes();
+            this.getAllClientesFiltro();
           });
       }
     });
@@ -102,7 +112,7 @@ export class ListaClienteComponent implements OnInit {
     this.clienteForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllClientes();
+    this.getAllClientesFiltro();
   }
 
   totalfiltro = 0;
@@ -114,7 +124,7 @@ export class ListaClienteComponent implements OnInit {
       this.facturacionService
         .cargarOBuscarLiquidacion(offset.toString())
         .subscribe((resp: any) => {
-          this.listClientes = resp.list;
+          this.listClientesFiltro = resp.list;
           this.spinner.hide();
         });
     } else {
@@ -130,7 +140,7 @@ export class ListaClienteComponent implements OnInit {
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {
-          this.getAllClientes();
+          this.getAllClientesFiltro();
         }
       });
   }

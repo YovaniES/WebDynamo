@@ -131,7 +131,7 @@ export class ModalEstadosComponent implements OnInit {
 
   listProyectos: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY-S', this.listProyectos);
     })

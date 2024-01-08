@@ -64,14 +64,18 @@ export const API_FACTURAS_FILTRO     = BASE_LIQUIDACION + 'Factura/filtrar';
 export const API_FACTURAS            = BASE_LIQUIDACION + 'Factura';
 export const API_ESTADO_FACTURAS     = BASE_LIQUIDACION + 'Factura/EstadoFactura';
 export const API_IMPORT_ACTAS        = BASE_LIQUIDACION + 'Acta/ImportActaExcel';
-// https://facturaciondynamo2.azurewebsites.net/api/Factura/filtrar
+
 
 
 // MANTENIMIENTO LIQUIDACION
-export const API_PROYECTO = MANTENIM_LIQUIDACION + 'Proyecto'
-export const API_LIDER    = MANTENIM_LIQUIDACION + 'Lider';
-export const API_JEFATURA = MANTENIM_LIQUIDACION + 'Jefatura';
-export const API_CLIENTE  = MANTENIM_LIQUIDACION + 'Cliente';
+export const API_PROYECTO        = MANTENIM_LIQUIDACION + 'Proyecto'
+export const API_PROYECTO_FILTRO = MANTENIM_LIQUIDACION + 'Proyecto/filtrar'
+export const API_LIDER           = MANTENIM_LIQUIDACION + 'Lider';
+export const API_LIDER_FILTRO    = MANTENIM_LIQUIDACION + 'Lider/filtrar';
+export const API_JEFATURA        = MANTENIM_LIQUIDACION + 'Jefatura';
+export const API_JEFATURA_FILTRO = MANTENIM_LIQUIDACION + 'Jefatura/filtrar';
+export const API_CLIENTE         = MANTENIM_LIQUIDACION + 'Cliente';
+export const API_CLIENTE_FILTRO  = MANTENIM_LIQUIDACION + 'Cliente/filtrar';
 // export const API_ESTADOS  = MANTENIM_LIQUIDACION + 'Estado';
 
 

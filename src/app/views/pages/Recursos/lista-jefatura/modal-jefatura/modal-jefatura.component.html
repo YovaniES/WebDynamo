@@ -21,7 +21,7 @@
           <div class="cli-form-element col-f-2">
             <label>Proyecto(s)</label>
             <input
-              class="cli-input"
+              class="cli-input_x"
               formControlName="proyecto"
               type="text"/>
           </div>
@@ -29,7 +29,7 @@
           <div class="cli-form-element col-f-2">
             <label>Estado</label>
             <select formControlName="estado" class="cli-input">
-              <option [value]="100" disabled>-Seleccione-</option>
+              <option [value]="10" disabled>-Seleccione-</option>
               <option value="1">Activo</option>
               <option value="0">Inactivo</option>
             </select>
@@ -43,18 +43,18 @@
               class="form-control"
               formControlName="fecha_creacion"/>
           </div>
-
-          <div class="cli-form-element form-group col-f-6">
-            <label>Descripción</label>
-            <textarea
-              class="form-control"
-              style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
-              rows="2"
-              placeholder="Escriba alguna Descripción de la Jefatura .."
-              formControlName="descripcion"
-            ></textarea>
-          </div>
         </ng-container>
+
+        <div class="cli-form-element form-group col-f-6">
+          <label>Descripción</label>
+          <textarea
+            class="form-control"
+            style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+            rows="2"
+            placeholder="Escriba alguna Descripción de la Jefatura .."
+            formControlName="descripcion"
+          ></textarea>
+        </div>
       </div>
 
       <div class="cli-form-buttons" style="margin-top: 8%">

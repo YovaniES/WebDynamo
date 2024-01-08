@@ -96,7 +96,6 @@
               <th style="min-width: 100px">Estado factura</th>
               <th style="min-width: 92px" >Estado</th>
               <th style="min-width: 100px">Fecha creación</th>
-              <th></th>
             </tr>
           </thead>
 
@@ -120,6 +119,13 @@
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>
+
+                  <button
+                  matTooltip="Agregar factura"
+                  (click)="abrirModalCrearFactura(cert)"
+                  class="icon-btn btn-trans c-green_x"
+                  ><mat-icon class="icon-15">add</mat-icon>
+                </button>
                 </div>
               </td>
               <td>{{ cert.idCertificacion }}</td>
@@ -134,16 +140,6 @@
               <td>{{ cert.estadoFactura     }}</td>
               <td>{{ cert.estado.estado     }}</td>
               <td>{{ cert.fecha_creacion | date:'dd/MM/yy HH:mm' }}</td>
-              <td>
-                <div class="moad-actions">
-                  <button
-                    matTooltip="Agregar factura"
-                    (click)="abrirModalCrearFactura(cert)"
-                    class="icon-btn btn-trans c-green_x"
-                    ><mat-icon class="icon-15">add</mat-icon>
-                  </button>
-                </div>
-              </td>
             </tr>
           </tbody>
         </table>

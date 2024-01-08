@@ -3,6 +3,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import {
   API_CERTIFICACION,
   API_CLIENTE,
+  API_CLIENTE_FILTRO,
   API_ESTADOS_DET_ACTA,
   API_ESTADO_ACTA,
   API_ESTADO_FACTURAS,
@@ -12,11 +13,14 @@ import {
   API_GESTOR_COMBO,
   API_GESTOR_FILTRO,
   API_JEFATURA,
+  API_JEFATURA_FILTRO,
   API_LIDER,
+  API_LIDER_FILTRO,
   API_ORDEN_COMPRA,
   API_ORDEN_COMPRA_COMBO,
   API_ORDEN_COMPRA_FILTRO,
   API_PROYECTO,
+  API_PROYECTO_FILTRO,
   API_SUBSERVICIO,
   API_SUBSERV_COMBO,
   API_SUBSERV_FILTRO,
@@ -91,7 +95,15 @@ export class LiquidacionService {
   }
 
   // SERVICES LIDER
-  getAllLideres() {
+  getAllLiderFilter(params: any) {
+    return this.http.post(API_LIDER_FILTRO, params).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
+  getAllLiderCombo() {
     return this.http.get(API_LIDER).pipe(
       map((resp: any) => {
         return resp.result;
@@ -121,7 +133,24 @@ export class LiquidacionService {
     return this.http.delete<any>(`${API_LIDER}/${idLider}`);
   }
 
+
   //  SERVICES - PROYECTO
+  getAllProyectosFiltro(request: any): Observable<any> {
+    return this.http.post<any>(API_PROYECTO_FILTRO, request).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
+  getAllProyectosCombo() {
+    return this.http.get(API_PROYECTO).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
   crearProyecto(requestProy: any): Observable<any> {
     return this.http.post(API_PROYECTO, requestProy);
   }
@@ -145,15 +174,24 @@ export class LiquidacionService {
   }
 
   //  SERVICES - JEFATURA
-  getAllJefatura() {
+  getAllJefaturaFiltro(request: any) {
+    return this.http.post(API_JEFATURA_FILTRO, request).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
+  getAllJefaturaCombo() {
     return this.http.get(API_JEFATURA).pipe(
       map((resp: any) => {
         return resp.result;
       })
     );
   }
-  crearJefatura(requestProy: any): Observable<any> {
-    return this.http.post(API_JEFATURA, requestProy);
+
+  crearJefatura(requestJefatura: any): Observable<any> {
+    return this.http.post(API_JEFATURA, requestJefatura);
   }
 
   actualizarJefatura(idJefatura: number, request: any) {
@@ -175,13 +213,22 @@ export class LiquidacionService {
   }
 
   //  SERVICES - CLIENTE
-  getAllClientes() {
+  getAllClientesFiltro(request: any){
+    return this.http.post<any>(API_CLIENTE_FILTRO, request).pipe(
+      map( resp => {
+        return resp.result;
+      })
+    )
+  };
+
+  getAllClientesCombo() {
     return this.http.get(API_CLIENTE).pipe(
       map((resp: any) => {
         return resp.result;
       })
     );
-  }
+  };
+
   crearCliente(requestProy: any): Observable<any> {
     return this.http.post(API_CLIENTE, requestProy);
   }
@@ -349,13 +396,7 @@ export class LiquidacionService {
   }
 
   // MANTENIMIENTO
-  getAllProyectos() {
-    return this.http.get(API_PROYECTO).pipe(
-      map((resp: any) => {
-        return resp.result;
-      })
-    );
-  }
+
 
   // SERVICES ORDEN COMPRA
   getAllOrdenCompraFiltro(listOrdenCompra: any) {

@@ -12,17 +12,17 @@
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
               <label>Líder</label>
-              <input
-                class="cli-input"
-                formControlName="lider"
-                type="text"/>
+              <select formControlName="lider" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="lider.lider" *ngFor="let lider of listLiderCombo">{{lider.lider}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-3">
               <label>Proyecto</label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
+                <option [value]="proy.codigoProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
               </select>
             </div>
 
@@ -48,7 +48,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllLider()"
+                (click)="getAllLiderFilter()"
                 ><mat-icon class="icon-18">search</mat-icon>
                 Buscar
               </button>

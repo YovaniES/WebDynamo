@@ -116,18 +116,9 @@ export class ModalJefaturaComponent implements OnInit {
     const formValues = this.jefaturaForm.getRawValue();
 
     const request = {
-      nombres    : formValues.nombre,
-      apellidos  : formValues.apell_pat,
-      correo     : formValues.correo,
-      fechaInicio: formValues.fecha_ini,
-      fechaFin   : formValues.fecha_fin,
-      gestorSubservicio:[
-        {
-          idSubservicio: formValues.subservicios,
-          idProyecto   : formValues.proyectos,
-        }
-      ],
-      idUsuarioCrea  : this.userID,
+      nombre       : formValues.jefatura,
+      descripcion  : formValues.descripcion,
+      idUsuarioCrea: this.userID,
     }
 
     this.liquidacionService.crearJefatura(request).subscribe((resp: any) => {
@@ -144,11 +135,11 @@ export class ModalJefaturaComponent implements OnInit {
     })
   }
 
-  listProyectos: any[] = [];
+  listProyectosCombo: any[] = [];
   getAllProyecto(){
-    this.liquidacionService.getAllProyectos().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY-S', this.listProyectos);
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
+      this.listProyectosCombo = resp;
+      console.log('PROY-COMBO', this.listProyectosCombo);
     })
   }
 
