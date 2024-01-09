@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
-import { DetalleActasComponent } from '../sub-actas/detalle-actas/detalle-actas.component';
 import { Detalle } from 'src/app/core/models/actas.models';
 
 @Component({
@@ -27,7 +26,6 @@ export class ModalActaComponent implements OnInit {
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private actasService: ActasService,
-               private dialog: MatDialog,
                private liquidacionService: LiquidacionService,
                public dialogRef: MatDialogRef<ModalActaComponent>,
   ) {}
@@ -48,16 +46,16 @@ export class ModalActaComponent implements OnInit {
       idProyecto       : ['', Validators.required],
       idSubservicio    : ['', Validators.required],
       periodo          : ['', Validators.required],
-      venta_total_acta : ['', Validators.required],
+      venta_total      : ['', Validators.required],
       comentario       : [''],
       enlaceActa       : [''],
       idUsuarioCreacion: [''],
       import           : [''],
       detalleActaParams: this.fb.group({
         analista       :['', Validators.required],
-        cantidad       :['', Validators.required],
-        precio_unidad  :['', Validators.required],
-        venta_total    :['', Validators.required],
+        cantidad       :[''],
+        precio_unidad  :[''],
+        precio_total   :['', Validators.required],
         perfil         :['', Validators.required],
         observacion    :[''],
         moneda         :[''],
@@ -90,20 +88,13 @@ export class ModalActaComponent implements OnInit {
       console.log('IMP_ACTAS', acta);
 
         this.actasForm.reset({
-          declarado         : acta.declaradoTotalActa,
-          enlaceActa        : acta.enlaceActa,
-          comentario        : acta.comentario,
-          facturadoTotalActa: acta.facturadoTotalActa,
-          gestor            : acta.gestor,
-          idActa            : acta.idActa,
-          idEstado          : acta.idEstado,
-          idGestor          : acta.idGestor,
-          idProyecto        : acta.idProyecto,
-          idSubservicio     : acta.idSubservicio,
-          venta_total_acta  : acta.ventaTotalActa,
-          pendiente         : acta.pendiente,
-          periodo           : acta.periodo,
-          importe           : acta.precioTotal,
+          idGestor     : acta.idGestor,
+          idProyecto   : acta.idProyecto,
+          idSubservicio: acta.idSubservicio,
+          periodo      : acta.periodo,
+          venta_total  : acta.ventaTotalActa,
+          comentario   : acta.comentario,
+          enlaceActa   : acta.enlaceAta,
         });
     })
   };
@@ -112,14 +103,14 @@ export class ModalActaComponent implements OnInit {
     let listadoDetalle: any[] = [];
     this.listDetActas.forEach(x => {
       const detalle: any = {
-        nombre         : x.nombre,
-        unidades       : x.unidades,
-        precio_unidad  : x.precio_unidad,
-        precioTotal    : x.precioTotal,
-        perfil         : x.perfil,
-        observacion    : x.observacion,
-        unidad         : x.unidad,
-        comentario     : x.comentario
+        nombre       : x.nombre,
+        unidades     : x.unidades,
+        precio_unidad: x.precio_unidad,
+        precioTotal  : x.precioTotal,
+        perfil       : x.perfil,
+        observacion  : x.observacion,
+        unidad       : x.unidad,
+        comentario   : x.comentario
         };
       listadoDetalle.push(detalle)
       })
@@ -152,10 +143,10 @@ export class ModalActaComponent implements OnInit {
         idSubservicio    : formValues.idSubservicio,
         periodo          : formValues.periodo + '-01',
         comentario       : formValues.comentario,
+        ventaTotal       : formValues.venta_total,
         idEstado         : formValues.idEstado,
         enlaceAta        : formValues.enlaceAta,
         idUsuarioCreacion: this.userID,
-
         detalleActaParams: this.generarDetalle()
       }
       console.log('GUARDAR', request);
@@ -169,6 +160,13 @@ export class ModalActaComponent implements OnInit {
             confirmButtonText: 'Ok'
           })
           this.close(true);
+        }else{
+          Swal.fire({
+            title: 'ERROR!',
+            text : `${resp.message}`,
+            icon : 'warning',
+            confirmButtonText: 'Ok'
+          })
         }
       })
 
@@ -182,6 +180,7 @@ export class ModalActaComponent implements OnInit {
       idSubservicio    : formValues.idSubservicio,
       periodo          : formValues.periodo + '-01',
       comentario       : formValues.comentario,
+      ventaTotalActa   : formValues.venta_total,
       idEstado         : formValues.idEstado,
       enlaceAta        : formValues.enlaceAta,
       idUsuarioCreacion: this.userID,
@@ -190,7 +189,7 @@ export class ModalActaComponent implements OnInit {
           nombre       : formValues.detalleActaParams.analista,
           unidades     : formValues.detalleActaParams.cantidad,
           precio_unidad: formValues.detalleActaParams.precio_unidad,
-          precio_total : formValues.detalleActaParams.venta_total,
+          precioTotal  : formValues.detalleActaParams.precio_total,
           perfil       : formValues.detalleActaParams.perfil,
           observacion  : formValues.detalleActaParams.observacion,
           unidad       : formValues.detalleActaParams.moneda,
@@ -207,6 +206,13 @@ export class ModalActaComponent implements OnInit {
           confirmButtonText: 'Ok'
         })
         this.close(true);
+      }else{
+        Swal.fire({
+          title: 'ERROR!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok'
+        })
       }
     })
   }

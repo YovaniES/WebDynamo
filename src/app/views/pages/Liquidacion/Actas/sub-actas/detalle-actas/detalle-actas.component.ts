@@ -5,14 +5,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
-import { VentaDeclaradaComponent } from '../venta-declarada/venta-declarada.component';
 import { ModalCertificacionComponent } from './modal-certificacion/modal-certificacion.component';
-
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
 
 @Component({
   selector: 'app-detalle-actas',
@@ -34,7 +27,7 @@ export class DetalleActasComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllEstadosDetActa();
+  this.getAllEstadosActa();
 
   if (this.DATA_DET_ACTAS.idDetalleActa) {
     this.cargarDetActaById();
@@ -176,8 +169,8 @@ export class DetalleActasComponent implements OnInit {
   }
 
   listEstadoDetActa: any[] = [];
-  getAllEstadosDetActa(){
-    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+  getAllEstadosActa(){
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
       this.listEstadoDetActa = resp;
       // console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
@@ -202,7 +195,6 @@ export class DetalleActasComponent implements OnInit {
       return false;
     }
   };
-
 
   abrirCertificacion(DET_ACTA?: any) {
     console.log('DATA_DET_ACTA', DET_ACTA);

@@ -114,7 +114,7 @@ export class LiquidacionComponent implements OnInit {
     this.spinner.show();
     const listaImportado: LiquidacionModel[] = mapearImportLiquidacion(this.DATAimport, this.listLiquidaciones, this.listGestores, this.listProyectos  )
 
-    this.liquidacionService.insertarListadoLiquidacion(listaImportado)
+    this.liquidacionService.importarActas(listaImportado)
         .pipe(concatMap((resp: any) => { console.log('DATA-IMP-LIQ', resp);// {message: "ok"}
 
         this.spinner.hide();

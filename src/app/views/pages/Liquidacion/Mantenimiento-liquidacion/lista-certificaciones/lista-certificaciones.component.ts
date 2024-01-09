@@ -9,12 +9,6 @@ import { ModalCertificacionesComponent } from './modal-certificaciones/modal-cer
 import { ActasService } from 'src/app/core/services/actas.service';
 import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-lista-certificaciones',
   templateUrl: './lista-certificaciones.component.html',
@@ -37,11 +31,12 @@ export class ListaCertificacionesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.newForm()
-  this.getAllProyecto();
-  this.getAllEstadosDetActa();
-  this.getAllOrdenCombo();
-  this.getAllCertificaciones();
+    this.newForm()
+    this.getAllProyecto();
+    this.getAllEstadosActa();
+    this.getAllOrdenCombo();
+    this.getAllCertificaciones();
+    this.getAllCertificacionesFiltro();
   }
 
   certificacionesForm!: FormGroup;
@@ -57,8 +52,8 @@ export class ListaCertificacionesComponent implements OnInit {
 
   eliminarCertificacion(cert: any){
     Swal.fire({
-      title:'¿Eliminar subservicio?',
-      text: `¿Estas seguro que deseas eliminar el certificación: ${cert.certificacion}?`,
+      title:'¿Eliminar certificación?',
+      text: `¿Estas seguro que deseas eliminar el certificación: ${cert.nro_certificacion}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -67,13 +62,13 @@ export class ListaCertificacionesComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarCertificacion(cert.idSubservicio).subscribe(resp => {
+        this.liquidacionService.eliminarCertificacion(cert.idCertificacion).subscribe(resp => {
           Swal.fire({
             title: 'Eliminar certificación',
             text: `${resp.message}`,
             icon: 'success',
           });
-          this.getAllCertificaciones()
+          this.getAllCertificacionesFiltro()
         });
       };
     });
@@ -84,6 +79,22 @@ export class ListaCertificacionesComponent implements OnInit {
     this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
       this.listCertificaciones = resp;
       console.log('DATA_CERTIF', this.listCertificaciones);
+    })
+  }
+
+  listCertificacionesFiltro: any[] = [];
+  getAllCertificacionesFiltro(){
+    const formaValues = this.certificacionesForm.getRawValue();
+    const params = {
+      nro_certificacion: formaValues.certificacion,
+      ordenCompra      : formaValues.ordenCompra,
+      proyecto         : formaValues.proyecto,
+      estado           : formaValues.estado,
+    }
+
+    this.liquidacionService.getAllCertificacionesFiltro(params).subscribe( (resp: any) => {
+      this.listCertificacionesFiltro = resp;
+      console.log('DATA_CERTIF_FILTRO', this.listCertificacionesFiltro);
     })
   }
 
@@ -112,8 +123,8 @@ export class ListaCertificacionesComponent implements OnInit {
   };
 
   listEstadoDetActa: any[] = [];
-  getAllEstadosDetActa(){
-    this.actasService.getAllEstadosDetActa().subscribe(resp => {
+  getAllEstadosActa(){
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
       this.listEstadoDetActa = resp;
       console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
@@ -146,7 +157,7 @@ export class ListaCertificacionesComponent implements OnInit {
 
     if (this.totalfiltro != this.totalCerticaciones) {
       this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
-            this.listCertificaciones = resp.list;
+            this.listCertificacionesFiltro = resp.list;
             this.spinner.hide();
           });
     } else {
@@ -161,7 +172,7 @@ export class ListaCertificacionesComponent implements OnInit {
       .open(ModalCertificacionesComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllCertificaciones();
+          this.getAllCertificacionesFiltro();
         }
       });
   };
@@ -172,7 +183,7 @@ export class ListaCertificacionesComponent implements OnInit {
       .open(CrearFacturasComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllCertificaciones();
+          this.getAllCertificacionesFiltro();
         }
       });
   }

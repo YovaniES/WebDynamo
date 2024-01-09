@@ -22,7 +22,7 @@
               <label>Orden de compra</label>
               <select formControlName="ordenCompra" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="oc.id" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
+                <option [value]="oc.nombre" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
               </select>
             </div>
 
@@ -30,7 +30,7 @@
               <label>Proyectos</label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
+                <option [value]="proy.codigoProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
               </select>
             </div>
 
@@ -55,7 +55,7 @@
                 type="button"
                 class="cli-btn btn-blue-light"
                 style="border-radius: 2px; padding: 0.225rem 0.75rem"
-                (click)="getAllCertificaciones()"
+                (click)="getAllCertificacionesFiltro()"
                 ><mat-icon class="icon-18">search</mat-icon>Buscar
               </button>
             </div>
@@ -73,7 +73,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listCertificaciones.length }} Certificaciones</span>
+            Total : <span class="total">{{ listCertificacionesFiltro.length }} Certificaciones</span>
           </div>
         </div>
       </form>
@@ -100,7 +100,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let cert of listCertificaciones | paginate: {
+            <tr *ngFor="let cert of listCertificacionesFiltro | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalCerticaciones }">
@@ -149,7 +149,7 @@
         </div>
 
         <div
-          *ngIf="!loadingItem && listCertificaciones.length == 0"
+          *ngIf="!loadingItem && listCertificacionesFiltro.length == 0"
           class="cli-loader mt-5"
           style="color: #f83434">
           No hay certificaciones para mostrar

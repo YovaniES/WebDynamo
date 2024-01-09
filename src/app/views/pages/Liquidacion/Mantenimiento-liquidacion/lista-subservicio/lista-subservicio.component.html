@@ -19,17 +19,17 @@
             </div>
 
             <div class="cli-form-element col-f-3">
-              <label>subservicio</label>
-              <input
-                class="cli-input"
-                formControlName="subservicio"
-                type="text"/>
+              <label>Subservicio</label>
+              <select formControlName="subservicio" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="subs.nombre" *ngFor="let subs of listSubservicioCombo">{{subs.nombre}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-3">
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
-                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="10" disabled>-Seleccione-</option>
                 <option value=1>Activo</option>
                 <option value=0>Inactivo</option>
               </select>
@@ -108,7 +108,7 @@
                 </div>
               </td>
               <td style="text-align: left;">{{ subserv.subservicio }}</td>
-              <td style="text-align: left; min-width: 150px;">{{ subserv.representante.nombre | uppercase}} {{ subserv.representante.apellidos | uppercase}}</td>
+              <td style="text-align: left; min-width: 150px;">{{ subserv.representante }}</td>
               <td>{{ subserv.proyecto }}</td>
               <td style="text-align: left;" *ngIf="subserv.fechaFin == 'Actual'">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - Actual</td>
               <td style="text-align: left;" *ngIf="subserv.fechaFin != 'Actual'">{{ subserv.fechaInicio | date: 'dd/MM/yyyy' }}  - {{ subserv.fechaFin | date: 'dd/MM/yyyy' }}</td>

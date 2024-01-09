@@ -12,10 +12,10 @@
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
               <label>Orden de compra</label>
-              <input
-                class="cli-input"
-                formControlName="ordenCompra"
-                type="text"/>
+              <select formControlName="ordenCompra" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="oc.id" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-3">
@@ -110,7 +110,7 @@
 
                   <button
                     matTooltip="Eliminar orden de compra"
-                    (click)="eliminarOrdenCompra(orden.idOrden)"
+                    (click)="eliminarOrdenCompra(orden)"
                     class="icon-btn btn-trans c-red">
                     <mat-icon class="icon-15">delete_forever</mat-icon>
                   </button>

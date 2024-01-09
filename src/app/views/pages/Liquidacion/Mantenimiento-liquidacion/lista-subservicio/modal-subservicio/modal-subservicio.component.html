@@ -22,7 +22,7 @@
           <label>Gestor <small style="color: red">*</small></label>
           <select formControlName="gestor" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="gestor.idGestor" *ngFor="let gestor of listGestores">{{gestor.nombres}} {{gestor.apellidos}}</option>
+            <option [value]="gestor.id" *ngFor="let gestor of listGestorCombo">{{gestor.nombre}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('gestor')">* Seleccione el Gestor es obligatorio</small>
         </div>

@@ -41,29 +41,30 @@ export const AUTH_SESSION = AUTH_API + 'login';
 
 // REGISTRO-DYNAMO
 export const API_DYNAMO = PATH_BACK_NET + 'ExecuteQuery';
-export const API_GESTOR              = BASE_LIQUIDACION + 'Gestor';
-export const API_GESTOR_FILTRO       = BASE_LIQUIDACION + 'Gestor/getAllGestores';
-export const API_GESTOR_COMBO        = BASE_LIQUIDACION + 'Gestor/GestorListado';
-export const API_GESTOR_SUBS         = BASE_LIQUIDACION + 'GestorSubservicio';
-export const API_SUBSERV_COMBO       = BASE_LIQUIDACION + 'Subservicio/SubservicioListado';
-export const API_SUBSERV_FILTRO      = BASE_LIQUIDACION + 'Subservicio/GetAllSubservicio';
-export const API_SUBSERVICIO         = BASE_LIQUIDACION + 'Subservicio';
-export const API_SUBSERVICIO_COMBO   = BASE_LIQUIDACION + 'Subservicio/SubservicioListado';
-export const API_ACTAS               = BASE_LIQUIDACION + 'acta/';
-export const API_ACTAS_FILTRO        = BASE_LIQUIDACION + 'acta/GetAllActas';
-export const API_ORDEN_COMPRA        = BASE_LIQUIDACION + 'OrdenCompra';
-export const API_ORDEN_COMPRA_COMBO  = BASE_LIQUIDACION + 'OrdenCompra/ordencompralistado';
-export const API_ORDEN_COMPRA_FILTRO = BASE_LIQUIDACION + 'OrdenCompra/GetAllOrdenCompra';
-export const API_ESTADO_ACTA         = BASE_LIQUIDACION + 'EstadoActa';
-export const API_DET_ACTA            = BASE_LIQUIDACION + 'detalleActa';
-export const API_ESTADOS_DET_ACTA    = BASE_LIQUIDACION + 'EstadoDetalleActa';
-export const API_VENTA_DECLARADA     = BASE_LIQUIDACION + 'Declarado';
-export const API_CERTIFICACION       = BASE_LIQUIDACION + 'Certificacion';
-export const API_DET_CERTIFICACION   = BASE_LIQUIDACION + 'DetalleActaCertificacion';
-export const API_FACTURAS_FILTRO     = BASE_LIQUIDACION + 'Factura/filtrar';
-export const API_FACTURAS            = BASE_LIQUIDACION + 'Factura';
-export const API_ESTADO_FACTURAS     = BASE_LIQUIDACION + 'Factura/EstadoFactura';
-export const API_IMPORT_ACTAS        = BASE_LIQUIDACION + 'Acta/ImportActaExcel';
+export const API_GESTOR               = BASE_LIQUIDACION + 'Gestor';
+export const API_GESTOR_FILTRO        = BASE_LIQUIDACION + 'Gestor/getAllGestores';
+export const API_GESTOR_COMBO         = BASE_LIQUIDACION + 'Gestor/GestorListado';
+export const API_GESTOR_SUBS          = BASE_LIQUIDACION + 'GestorSubservicio';
+export const API_SUBSERV_COMBO        = BASE_LIQUIDACION + 'Subservicio/SubservicioListado';
+export const API_SUBSERV_FILTRO       = BASE_LIQUIDACION + 'Subservicio/GetAllSubservicio';
+export const API_SUBSERVICIO          = BASE_LIQUIDACION + 'Subservicio';
+export const API_SUBSERVICIO_COMBO    = BASE_LIQUIDACION + 'Subservicio/SubservicioListado';
+export const API_ACTAS                = BASE_LIQUIDACION + 'acta/';
+export const API_ACTAS_FILTRO         = BASE_LIQUIDACION + 'acta/GetAllActas';
+export const API_ORDEN_COMPRA         = BASE_LIQUIDACION + 'OrdenCompra';
+export const API_ORDEN_COMPRA_COMBO   = BASE_LIQUIDACION + 'OrdenCompra/ordencompralistado';
+export const API_ORDEN_COMPRA_FILTRO  = BASE_LIQUIDACION + 'OrdenCompra/GetAllOrdenCompra';
+export const API_ESTADO_ACTA          = BASE_LIQUIDACION + 'EstadoActa';
+export const API_DET_ACTA             = BASE_LIQUIDACION + 'detalleActa';
+export const API_ESTADOS_DET_ACTA     = BASE_LIQUIDACION + 'EstadoDetalleActa';
+export const API_VENTA_DECLARADA      = BASE_LIQUIDACION + 'Declarado';
+export const API_CERTIFICACION        = BASE_LIQUIDACION + 'Certificacion';
+export const API_CERTIFICACION_FILTRO = BASE_LIQUIDACION + 'Certificacion/filtrar';
+export const API_DET_CERTIFICACION    = BASE_LIQUIDACION + 'DetalleActaCertificacion';
+export const API_FACTURAS_FILTRO      = BASE_LIQUIDACION + 'Factura/filtrar';
+export const API_FACTURAS             = BASE_LIQUIDACION + 'Factura';
+export const API_ESTADO_FACTURAS      = BASE_LIQUIDACION + 'Factura/EstadoFactura';
+export const API_IMPORT_ACTAS         = BASE_LIQUIDACION + 'Acta/ImportActaExcel';
 
 
 

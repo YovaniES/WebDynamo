@@ -132,12 +132,6 @@ export class ModalGestorComponent implements OnInit {
       fechaInicio  : formValues.fecha_ini,
       fechaFin     : formValues.fecha_fin,
       idUsuarioCrea: this.userID,
-      // gestorSubservicio:[
-      //   {
-      //     idSubservicio: formValues.subservicios,
-      //     idProyecto   : formValues.proyectos,
-      //   }
-      // ],
     }
 
     this.liquidacionService.crearGestor(request).subscribe((resp: any) => {
@@ -152,13 +146,39 @@ export class ModalGestorComponent implements OnInit {
         this.close(true);
       }
     })
+  };
+
+  eliminarGestorBySubservicio(gestor: any){
+    console.log('DATA_ASIGNACION', gestor);
+
+    Swal.fire({
+      title: '¿Desasignar subservicio?',
+      text: `¿Estas seguro que deseas desasignar el subservicio: ${gestor.subservicio}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Desasignar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.liquidacionService.desasignarSubservicio(gestor.idProyectoSubservicioGestor).subscribe((resp) => {
+            Swal.fire({
+              title: 'Desasignar subservicio',
+              text: `${gestor.subservicio}: ${resp.message} exitosamente`,
+              icon: 'success',
+            });
+            this.cargarGestorById();
+          });
+      }
+    });
   }
 
   userID: number = 0;
   getUserID(){
    this.authService.getCurrentUser().subscribe( resp => {
      this.userID   = resp.user.userId;
-     console.log('ID-USER', this.userID);
+    //  console.log('ID-USER', this.userID);
    })
   }
 
@@ -188,7 +208,7 @@ export class ModalGestorComponent implements OnInit {
       .open(ModalGestorSubservicioComponent, { width: '35%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          // this.getAllCertificaciones();
+          this.cargarGestorById();
         }
       });
   };

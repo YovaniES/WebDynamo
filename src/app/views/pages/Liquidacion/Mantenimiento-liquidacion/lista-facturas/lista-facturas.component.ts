@@ -32,7 +32,9 @@ export class ListaFacturasComponent implements OnInit {
     this.newForm();
     this.getAllFacturasFiltro();
     this.getAllProyecto();
-    this.getListaEstadosFactura()
+    this.getAllOrdenCombo()
+    this.getListaEstadosFactura();
+    this.getAllCertificaciones();
   }
 
   facturaForm!: FormGroup;
@@ -71,7 +73,7 @@ export class ListaFacturasComponent implements OnInit {
 
     Swal.fire({
       title: '¿Eliminar factura?',
-      text: `¿Estas seguro que deseas eliminar la factura: ${factura.factura}?`,
+      text: `¿Estas seguro que deseas eliminar la factura: ${factura.nro_factura}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -80,12 +82,10 @@ export class ListaFacturasComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.liquidacionService
-          .eliminarCliente(factura.idfactura)
-          .subscribe((resp) => {
+        this.liquidacionService.eliminarFacturas(factura.idFactura).subscribe((resp) => {
             Swal.fire({
               title: 'Eliminar factura',
-              text: `${factura.factura}: ${resp.message} exitosamente`,
+              text: `${factura.nro_factura}: ${resp.message} exitosamente`,
               icon: 'success',
             });
             this.getAllFacturasFiltro();
@@ -100,6 +100,22 @@ export class ListaFacturasComponent implements OnInit {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
     });
+  };
+
+  listOrdenCompraCombo: any[] = [];
+  getAllOrdenCombo(){
+    this.liquidacionService.getAllOrdenCombo().subscribe(resp => {
+      this.listOrdenCompraCombo = resp;
+      console.log('OC-COMBO', this.listOrdenCompraCombo);
+    })
+  };
+
+  listCertificaciones: any[] = [];
+  getAllCertificaciones(){
+    this.liquidacionService.getAllCertificaciones().subscribe(resp => {
+      this.listCertificaciones = resp;
+      // console.log('CERTIFICACIONES', this.listCertificaciones);
+    })
   };
 
   listEstadoFacturas: any[] = [];

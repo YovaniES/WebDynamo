@@ -38,7 +38,7 @@ export class ListaGestorComponent implements OnInit {
 
   ngOnInit(): void {
     this.newForm();
-    this.getAllGestor();
+    this.getAllGestorFiltro();
     this.getAllProyecto();
     this.getAllSubserviciosCombo();
     this.getAllGestorCombo()
@@ -55,10 +55,11 @@ export class ListaGestorComponent implements OnInit {
   }
 
   listGestores: any[] = [];
-  getAllGestor(){
+  getAllGestorFiltro(){
     this.blockUI.start('Cargando lista Gestores...');
     const request: FiltroGestorModel = this.gestorForm.value;
-    this.liquidacionService.getAllGestor(request).subscribe((resp: any) => {
+
+    this.liquidacionService.getAllGestorFiltro(request).subscribe((resp: any) => {
       this.blockUI.stop();
 
       this.listGestores = resp
@@ -83,7 +84,7 @@ export class ListaGestorComponent implements OnInit {
 
     Swal.fire({
       title:'¿Eliminar gestor?',
-      text: `¿Estas seguro que deseas eliminar el gestor: ${gestor.nombresApellidos}?`,
+      text: `¿Estas seguro que deseas eliminar el gestor: ${gestor.nombres}  ${gestor.apellidos}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -96,10 +97,10 @@ export class ListaGestorComponent implements OnInit {
 
           Swal.fire({
             title: 'Eliminar líder',
-            text: `${gestor.gestor}: ${resp.message} exitosamente`,
+            text: `${gestor.nombres}  ${gestor.apellidos}: ${resp.message} exitosamente`,
             icon: 'success',
           });
-          this.getAllGestor()
+          this.getAllGestorFiltro()
         });
       };
     });
@@ -147,7 +148,7 @@ export class ListaGestorComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalGestor) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
+      this.liquidacionService.getAllGestorFiltro(offset.toString()).subscribe( (resp: any) => {
             this.listGestores = resp.list;
             this.spinner.hide();
           });
@@ -161,7 +162,7 @@ export class ListaGestorComponent implements OnInit {
     this.gestorForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllGestor();
+    this.getAllGestorFiltro();
   }
 
   abrirModalCrearOactualizar(DATA?: any) {
@@ -170,7 +171,7 @@ export class ListaGestorComponent implements OnInit {
       .open(ModalGestorComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          this.getAllGestor();
+          this.getAllGestorFiltro();
         }
       });
   }

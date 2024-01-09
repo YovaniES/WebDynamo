@@ -55,11 +55,11 @@ export class ListaEstadosComponent implements OnInit {
   }
 
   eliminarEstado(estado: any,){
-    console.log('X_EST', estado);
+    console.log('DELETE_EST', estado);
 
     Swal.fire({
       title:'¿Eliminar estado?',
-      text: `¿Estas seguro que deseas eliminar la estado: ${estado.estado}?`,
+      text: `¿Estas seguro que deseas eliminar el estado: ${estado.nombre}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -68,11 +68,11 @@ export class ListaEstadosComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarEstado(estado.idJefatura).subscribe(resp => {
+        this.liquidacionService.eliminarEstadoActa(estado.idEstado).subscribe(resp => {
 
           Swal.fire({
             title: 'Eliminar estado',
-            text: `${estado.estado}: ${resp.message} exitosamente`,
+            text: `${estado.nombre}: ${resp.message} exitosamente`,
             icon: 'success',
           });
           this.getAllEstadosActa()

@@ -30,7 +30,7 @@ export class ListaSubservicioComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllGestorCombo();
+  this.getAllSubservicioCombo();
   this.getAllSubserviciosFiltro()
 
   }
@@ -70,14 +70,11 @@ export class ListaSubservicioComponent implements OnInit {
     });
   };
 
-  listGestorCombo: any[] = [];
-  getAllGestorCombo(){
-    this.blockUI.start('Cargando lista Gestores...');
-    this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
-      this.blockUI.stop();
-
-      this.listGestorCombo = resp
-      console.log('LIST-GESTOR-COMBO', this.listGestorCombo);
+  listSubservicioCombo: any[] = [];
+  getAllSubservicioCombo(){
+    this.liquidacionService.getAllSubserviciosCombo().subscribe((resp: any) => {
+      this.listSubservicioCombo = resp
+      console.log('LIST-SUBSER-COMBO', this.listSubservicioCombo);
     })
   }
 

@@ -12,7 +12,7 @@
               <div class="cli-form newvac-wrapper">
                 <div class="row g-3">
                   <div class="cli-form-element col-f-3">
-                    <label>Nombre <small style="color: red">*</small></label>
+                    <label>Nombres <small style="color: red">*</small></label>
                     <input
                       class="cli-input"
                       formControlName="nombres"
@@ -59,7 +59,7 @@
                     </div>
                   </div>
 
-                  <ng-container *ngIf="DATA_GESTOR">
+                  <!-- <ng-container *ngIf="DATA_GESTOR">
                     <div class="cli-form-element col-f-3">
                       <label>Estado</label>
                       <select formControlName="id_estado" class="cli-input">
@@ -68,7 +68,7 @@
                         <option value="0">Inactivo</option>
                       </select>
                     </div>
-                  </ng-container>
+                  </ng-container> -->
                 </div>
               </div>
             </form>
@@ -122,9 +122,9 @@
                         <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                       </button>
 
-                      <!-- (click)="eliminarCertificacion(cert.idcert)" -->
                       <button
-                        matTooltip="Eliminar"
+                        (click)="eliminarGestorBySubservicio(gestor)"
+                        matTooltip="Desasignar"
                         class="icon-btn btn-trans b-fucsia"
                         >
                         <mat-icon class="icon-15">delete_forever</mat-icon>
@@ -132,9 +132,9 @@
                     </div>
                   </td>
                   <!-- <td>{{ cert.idDetalleCertificacion }}</td> -->
-                  <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.proyecto }}</td>
+                  <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.proyecto    }}</td>
                   <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.subservicio }}</td>
-                  <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.fecha_creacion }}</td>
+                  <td><small style="font-weight: 200; margin-right: 3px"></small>{{ gestor.fecha_creacion | date:'dd/MM/yyyy'}}</td>
                 </tr>
               </tbody>
             </table>

@@ -158,11 +158,6 @@ export class ModalOrdencompraComponent implements OnInit {
    })
   }
 
-
-  limpiarFiltro(){}
-
-  eliminarLiquidacion(id: number){}
-
   showAlertError(message: string) {
     Swal.fire({
       title: 'Error',
@@ -178,7 +173,6 @@ export class ModalOrdencompraComponent implements OnInit {
       return false;
     }
   };
-
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);
@@ -206,7 +200,7 @@ export class ModalOrdencompraComponent implements OnInit {
       .open(OcCertificacionesComponent, { width: '35%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
-          // this.getAllCertificaciones();
+          this.cargarOrdenCompraById();
         }
       });
   };

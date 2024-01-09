@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import {
   API_CERTIFICACION,
+  API_CERTIFICACION_FILTRO,
   API_CLIENTE,
   API_CLIENTE_FILTRO,
   API_ESTADOS_DET_ACTA,
@@ -12,6 +13,7 @@ import {
   API_GESTOR,
   API_GESTOR_COMBO,
   API_GESTOR_FILTRO,
+  API_GESTOR_SUBS,
   API_JEFATURA,
   API_JEFATURA_FILTRO,
   API_LIDER,
@@ -35,21 +37,17 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class LiquidacionService {
-  toggleUserPanel = new EventEmitter<boolean>();
-  // currentUser: any;
 
   constructor(private http: HttpClient) {}
 
-  insertarListadoLiquidacion(listImport: LiquidacionModel[]) {
+  importarActas(listImport: LiquidacionModel[]) {
     return this.http.post(PATH_IMPORT_LIQ + '/guardar', listImport);
   }
 
   // SERVICES GESTOR
-  getAllGestor(listGestor: any) {
+  getAllGestorFiltro(listGestor: any) {
     return this.http.post(API_GESTOR_FILTRO, listGestor).pipe(
       map((resp: any) => {
-        console.log('SERV-GESTOR', resp);
-
         return resp.result;
       })
     );
@@ -57,14 +55,6 @@ export class LiquidacionService {
 
   getAllGestorCombo() {
     return this.http.get(API_GESTOR_COMBO).pipe(
-      map((g: any) => {
-        return g.result;
-      })
-    );
-  }
-
-  getAllGestores() {
-    return this.http.get(API_GESTOR).pipe(
       map((g: any) => {
         return g.result;
       })
@@ -83,7 +73,7 @@ export class LiquidacionService {
   getGestorById(idGestor: number): Observable<any> {
     return this.http.get(`${API_GESTOR}/${idGestor}`).pipe(
       map((resp: any) => {
-        console.log('DATAGESTOR_BY_ID', resp.result);
+        // console.log('DATAGESTOR_BY_ID', resp.result);
 
         return resp.result;
       })
@@ -92,6 +82,10 @@ export class LiquidacionService {
 
   eliminarGestor(idGestor: number): Observable<any> {
     return this.http.delete<any>(`${API_GESTOR}/${idGestor}`);
+  }
+
+  desasignarSubservicio(id: number): Observable<any> {
+    return this.http.delete<any>(`${API_GESTOR_SUBS}/${id}`);
   }
 
   // SERVICES LIDER
@@ -299,16 +293,24 @@ export class LiquidacionService {
     );
   }
 
+  eliminarEstadoActa(idEstado: number): Observable<any> {
+    return this.http.delete<any>(`${API_ESTADO_ACTA}/${idEstado}`);
+  }
+
   crearEstado(requestCert: any): Observable<any> {
     return this.http.post(API_ESTADOS_DET_ACTA, requestCert);
+  }
+
+  actualizarEstadoActa(idEstado: number, request: any) {
+    return this.http.put<any>(`${API_ESTADO_ACTA}/${idEstado}`, request);
   }
 
   actualizarEstado(idEstado: number, request: any) {
     return this.http.put<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`, request);
   }
 
-  getEstadoById(idEstado: number): Observable<any> {
-    return this.http.get(`${API_ESTADOS_DET_ACTA}/${idEstado}`).pipe(
+  getEstadoActaById(idEstado: number): Observable<any> {
+    return this.http.get(`${API_ESTADO_ACTA}/${idEstado}`).pipe(
       map((resp: any) => {
         return resp.result;
       })
@@ -319,7 +321,16 @@ export class LiquidacionService {
     return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
   }
 
+
   //  SERVICES - CERTIFICACIONES
+  getAllCertificacionesFiltro(request: any): Observable<any> {
+    return this.http.post<any>(API_CERTIFICACION_FILTRO, request).pipe(
+      map((resp: any) => {
+        return resp.result;
+      })
+    );
+  }
+
   getAllCertificaciones() {
     return this.http.get(API_CERTIFICACION).pipe(
       map((resp: any) => {
@@ -327,6 +338,7 @@ export class LiquidacionService {
       })
     );
   }
+
   crearCertificacion(requestCert: any): Observable<any> {
     return this.http.post(API_CERTIFICACION, requestCert);
   }
@@ -353,7 +365,11 @@ export class LiquidacionService {
   }
 
   getAllSubserviciosCombo() {
-    return this.http.get(API_SUBSERV_COMBO);
+    return this.http.get(API_SUBSERV_COMBO).pipe(
+      map((resp: any) => {
+        return resp.result
+      })
+    );
   }
 
   getAllSubserviciosFiltro(requestSub: any) {

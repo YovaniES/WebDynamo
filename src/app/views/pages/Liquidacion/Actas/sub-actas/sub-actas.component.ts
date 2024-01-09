@@ -51,7 +51,7 @@ export class SubActasComponent implements OnInit {
       idProyecto   : [''],
       gestor       : [''],
       idGestor     : [''],
-      importe      : [''],
+      venta_total  : [''],
       declarado    : [''],
       f_periodo    : [''],
       periodoActual: [true],
@@ -86,7 +86,7 @@ export class SubActasComponent implements OnInit {
       idProyecto   : formValues.idProyecto,
       idSubservicio: formValues.subservicio,
       periodo      : this.utilService.generarPeriodo(formValues.periodo),
-      venta_total  : formValues.importe,
+      venta_total  : formValues.venta_total,
       comentario   : formValues.comentario,
       idEstado     : formValues.idEstado,
       enlace_acta  : formValues.enlace,
@@ -141,13 +141,13 @@ export class SubActasComponent implements OnInit {
           subservicio       : acta.idSubservicio,
           pendiente         : acta.pendiente,
           periodo           : acta.periodo,
-          importe           : acta.ventaTotalActa,
+          venta_total       : acta.ventaTotalActa,
         })
 
         // this.subActasForm.controls['idGestor'  ].disable();
-        this.subActasForm.controls['idProyecto'].disable();
-        this.subActasForm.controls['declarado' ].disable();
-        this.subActasForm.controls['importe'   ].disable();
+        this.subActasForm.controls['idProyecto' ].disable();
+        this.subActasForm.controls['declarado'  ].disable();
+        this.subActasForm.controls['venta_total'].disable();
         // this.subActasForm.controls['periodo'   ].disable();
       })
     }
@@ -185,7 +185,9 @@ export class SubActasComponent implements OnInit {
   listSubserviciosCombo:any[] = [];
   getAllSubserviciosCombo(){
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
-      this.listSubserviciosCombo = resp.result;
+      this.listSubserviciosCombo = resp;
+      // console.log('SUBSER-COMBDO', this.listSubserviciosCombo);
+
     });
   }
 

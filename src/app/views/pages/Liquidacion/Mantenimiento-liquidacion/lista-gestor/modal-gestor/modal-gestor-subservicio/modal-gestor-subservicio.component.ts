@@ -136,9 +136,7 @@ export class ModalGestorSubservicioComponent implements OnInit {
   };
 
 
-
   cargarDataGestor(){
-
     this.gestorSubservicioForm.reset({
       idGestor      : this.DATA_GESTOR_SUB.idGestor,
       // idSubservicio : gestor.idSubservicio,

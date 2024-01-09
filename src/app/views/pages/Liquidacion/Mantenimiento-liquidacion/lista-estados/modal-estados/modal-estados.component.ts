@@ -7,12 +7,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-modal-estados',
   templateUrl: './modal-estados.component.html',
@@ -34,7 +28,7 @@ export class ModalEstadosComponent implements OnInit {
   this.getUserID();
 
   if (this.DATA_ESTADO) {
-    this.cargarEstadoById();
+    this.cargarEstadoActaById();
     console.log('DATA_EST_MODAL', this.DATA_ESTADO);
   }
   }
@@ -50,11 +44,11 @@ export class ModalEstadosComponent implements OnInit {
   }
 
   actionBtn: string = 'Crear';
-  cargarEstadoById(): void{
+  cargarEstadoActaById(): void{
     this.blockUI.start("Cargando estado...");
     if (this.DATA_ESTADO) {
       this.actionBtn = 'Actualizar'
-      this.liquidacionService.getEstadoById(this.DATA_ESTADO.idEstado).subscribe((estado: any) => {
+      this.liquidacionService.getEstadoActaById(this.DATA_ESTADO.idEstado).subscribe((estado: any) => {
         console.log('DATA_BY_ID_ESTADO', estado);
 
         this.blockUI.stop();
@@ -64,6 +58,7 @@ export class ModalEstadosComponent implements OnInit {
           fecha_creacion: moment.utc(estado.fecha_creacion).format('YYYY-MM-DD') ,
           eliminacion_logica: estado.eliminacion_logica
         })
+        this.estadosForm.controls['fecha_creacion'].disable();
       })
     }
   }
@@ -87,13 +82,12 @@ export class ModalEstadosComponent implements OnInit {
     const formValues = this.estadosForm.getRawValue();
 
     const requestEstado = {
-      idEstado : this.DATA_ESTADO.idEstado,
-      estado       : this.DATA_ESTADO.estado,
-      descripcion     : formValues.descripcion,
-      usuario         : this.userID
+      nombre            : formValues.estado,
+      descripcion       : formValues.descripcion,
+      idUsuarioActualiza: this.userID
     }
 
-    this.liquidacionService.actualizarEstado(this.DATA_ESTADO.idCertificacion, requestEstado).subscribe((resp: any) => {
+    this.liquidacionService.actualizarEstadoActa(this.DATA_ESTADO.idEstado, requestEstado).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
             title: 'Actualizar estado!',
@@ -126,14 +120,6 @@ export class ModalEstadosComponent implements OnInit {
 
         this.close(true);
       }
-    })
-  }
-
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
-      this.listProyectos = resp;
-      console.log('PROY-S', this.listProyectos);
     })
   }
 

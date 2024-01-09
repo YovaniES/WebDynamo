@@ -38,7 +38,7 @@ export class ActaComponent implements OnInit {
     this.getAllActas();
     this.getAllSubserviciosCombo();
     this.getListGestorCombo();
-    this.getAllEstadosDetActa();
+    this.getAllEstadosActa();
     this.getAllProyecto();
   }
 
@@ -63,7 +63,7 @@ export class ActaComponent implements OnInit {
   getAllActas(){
     this.blockUI.start("Cargando lista de Actas...");
     const request = {... this.actasForm.value}
-    request.periodo = request.periodo? '' : request.periodo + '-' + '01';
+    // request.periodo = request.periodo? '' : request.periodo + '-' + '01';
 
     const formaValues = this.actasForm.getRawValue();
 
@@ -72,8 +72,8 @@ export class ActaComponent implements OnInit {
         idProyecto      : formaValues.proyecto,
         idSubservicio   : formaValues.idSubservicio,
         idEstado        : formaValues.idEstado,
-        periodo         : this.actasForm.controls['periodo'].value? '': formaValues.periodo,
-        // periodo         : formaValues.periodo? '' : formaValues.periodo + '-' + '01',
+        // periodo         : this.actasForm.controls['periodo'].value? '': formaValues.periodo,
+        periodo         : formaValues.periodo,
         montoMinimo     : formaValues.montoMinimo,
         montoMaximo     : formaValues.montoMaximo,
         idGestor        : formaValues.idGestor,
@@ -115,11 +115,11 @@ export class ActaComponent implements OnInit {
     })
   };
 
-  listEstadoDetActa: any[] = [];
-  getAllEstadosDetActa(){
-    this.actasService.getAllEstadosDetActa().subscribe(resp => {
-      this.listEstadoDetActa = resp.filter((x:any) => x.eliminacion_logica == 1 );
-      // console.log('EST_DET_ACTA', this.listEstadoDetActa);
+  listEstadoActa: any[] = [];
+  getAllEstadosActa(){
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
+      this.listEstadoActa = resp;
+      console.log('EST_ACTA', this.listEstadoActa);
     })
   }
 
@@ -150,7 +150,6 @@ export class ActaComponent implements OnInit {
     console.log('DATA_ACTAS', DATA);
     this.dialog
       .open(ModalActaComponent, { width: '70%', data: {DATA,} })
-      // .open(ModalActaComponent, { width: '70%', data: {DATA, proyectos_x: this.listProyectos} })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllActas();

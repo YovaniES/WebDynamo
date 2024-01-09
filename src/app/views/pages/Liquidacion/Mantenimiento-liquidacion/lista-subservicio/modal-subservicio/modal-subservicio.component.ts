@@ -7,12 +7,6 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
-export interface changeResponse {
-  message: string;
-  status: boolean;
-  previous?: string;
-}
-
 @Component({
   selector: 'app-modal-subservicio',
   templateUrl: './modal-subservicio.component.html',
@@ -21,7 +15,6 @@ export interface changeResponse {
 export class ModalSubservicioComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
-
 
   page = 1;
   totalFacturas: number = 0;
@@ -37,11 +30,11 @@ export class ModalSubservicioComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllGestor();
   this.getUserID();
+  this.getAllGestoresCombo();
 
   if (this.DATA_SUBSERV) {
-    this.cargarSubservicioById(this.DATA_SUBSERV);
+    this.cargarSubservicioById();
     // console.log('MODAL-SUBSERV', this.DATA_SUBSERV);
     }
   }
@@ -124,7 +117,7 @@ export class ModalSubservicioComponent implements OnInit {
   }
 
   actionBtn: string = 'Crear';
-  cargarSubservicioById(idGestor: number): void{
+  cargarSubservicioById(): void{
     this.blockUI.start("Cargando Subservicio...");
     if (this.DATA_SUBSERV) {
       this.actionBtn = 'Actualizar'
@@ -134,7 +127,7 @@ export class ModalSubservicioComponent implements OnInit {
 
         this.subservicioForm.reset({
           subservicio   : subserv.subservicio,
-          gestor        : subserv.representante.idGestor,
+          gestor        : subserv.representante,
           fecha_ini     : subserv.fechaInicio,
           fecha_creacion: moment.utc(subserv.fechaCreacion).format('YYYY-MM-DD'),
           fecha_fin     : subserv.fechaFin,
@@ -155,20 +148,11 @@ export class ModalSubservicioComponent implements OnInit {
    })
   }
 
-  listGestores: any[] = [];
-  getAllGestor(){
-    // const idGestor = this.subservicioForm.controls['gestor'].value;
-    console.log('id_Gestor', this.subservicioForm.controls['gestor'].value );
-
-    const request = {
-      idGestor   : this.subservicioForm.controls['gestor'].value,
-      proyecto   : '',
-      subservicio: '',
-      estado     : ''
-    }
-    this.liquidacionService.getAllGestor(request).subscribe( (resp: any) => {
-      this.listGestores = resp
-      // console.log('LIST-GESTOR', this.listGestores);
+  listGestorCombo: any[] = [];
+  getAllGestoresCombo(){
+    this.liquidacionService.getAllGestorCombo().subscribe(resp => {
+      this.listGestorCombo = resp;
+      console.log('GESTOR_COMBO', this.listGestorCombo);
     })
   }
 

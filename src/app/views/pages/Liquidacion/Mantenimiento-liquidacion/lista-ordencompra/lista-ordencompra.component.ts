@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalOrdencompraComponent } from './modal-ordencompra/modal-ordencompra.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
@@ -29,9 +28,9 @@ export class ListaOrdencompraComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  this.newForm()
-  // this.getAllOrdenCompra();
-  this.getAllOrdenCompraFiltro()
+    this.newForm();
+    this.getAllOrdenCombo();
+    this.getAllOrdenCompraFiltro()
   }
 
   ordencompraForm!: FormGroup;
@@ -45,8 +44,30 @@ export class ListaOrdencompraComponent implements OnInit {
     })
   }
 
-  eliminarOrdenCompra(id: number){
+  eliminarOrdenCompra(oc: any){
+    console.log('DELETE_OC', oc);
 
+    Swal.fire({
+      title:'¿Eliminar Orden de compra?',
+      text: `¿Estas seguro que deseas eliminar la Orden de compra: ${oc.nro_orden}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.liquidacionService.eliminarOrdenCompra(oc.idOrden).subscribe(resp => {
+          Swal.fire({
+            title: 'Eliminar orden de compra',
+            text: `${resp.message}`,
+            icon: 'success',
+          });
+          this.getAllOrdenCompraFiltro()
+        });
+      };
+    });
   }
 
   // API_ORDEN_COMPRA_FILTRO
@@ -58,6 +79,14 @@ export class ListaOrdencompraComponent implements OnInit {
         this.listOrdenFiltro = resp;
         console.log('LIST-OC_FILTRO', this.listOrdenFiltro);
     });
+  };
+
+  listOrdenCompraCombo: any[] = [];
+  getAllOrdenCombo(){
+    this.liquidacionService.getAllOrdenCombo().subscribe(resp => {
+      this.listOrdenCompraCombo = resp;
+      console.log('OC-COMBO', this.listOrdenCompraCombo);
+    })
   };
 
   close(succes?: boolean) {

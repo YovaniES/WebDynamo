@@ -6,7 +6,6 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { UtilService } from 'src/app/core/services/util.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -141,7 +140,7 @@ export class ModalCertificacionComponent implements OnInit {
   getAllEstadosDetActa(){
     this.actasService.getAllEstadosDetActa().subscribe(resp => {
       this.listEstadoDetActa = resp;
-      console.log('EST_DET_ACTA', this.listEstadoDetActa);
+      console.log('EST_ACTA', this.listEstadoDetActa);
     })
   };
 

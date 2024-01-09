@@ -29,7 +29,7 @@ export class VentaDeclaradaComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getAllProyecto();
-  this.getAllEstadosDetActa();
+  this.getAllEstadosActa();
   this.getUserID();
   console.log('DATA_ACTA***', this.DATA_VD);
 
@@ -147,9 +147,9 @@ export class VentaDeclaradaComponent implements OnInit {
   }
 
   listEstadoDetActa: any[] = [];
-  getAllEstadosDetActa(){
-    this.actasService.getAllEstadosDetActa().subscribe(resp => {
-      this.listEstadoDetActa = resp.filter((x:any) => x.eliminacion_logica == 1 );
+  getAllEstadosActa(){
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
+      this.listEstadoDetActa = resp;;
       // console.log('EST_DET_ACTA', this.listEstadoDetActa);
     })
   }

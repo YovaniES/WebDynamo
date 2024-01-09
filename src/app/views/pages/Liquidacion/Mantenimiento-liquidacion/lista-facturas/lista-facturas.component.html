@@ -19,19 +19,19 @@
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Orden compra</label>
-              <input
-                class="cli-input"
-                formControlName="ordenCompra"
-                type="text"/>
+              <label>Orden de compra</label>
+              <select formControlName="ordenCompra" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="oc.id" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Certificación</label>
-              <input
-                class="cli-input"
-                formControlName="certificacion"
-                type="text"/>
+              <label>Certificación <small style="color: red">*</small></label>
+              <select formControlName="certificacion" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="proy.nro_certificacion" *ngFor="let proy of listCertificaciones">{{proy.nro_certificacion}}</option>
+              </select>
             </div>
 
             <div class="cli-form-element col-f-4">
