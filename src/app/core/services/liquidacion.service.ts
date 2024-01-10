@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   API_CERTIFICACION,
   API_CERTIFICACION_FILTRO,
@@ -28,9 +28,8 @@ import {
   API_SUBSERV_FILTRO,
   PATH_IMPORT_LIQ,
 } from '../constants/url.constants';
-import {
-  LiquidacionModel,
-} from '../models/liquidacion.models';
+
+import { LiquidacionModel } from '../models/liquidacion.models';
 import { Observable, map } from 'rxjs';
 
 @Injectable({
@@ -297,17 +296,25 @@ export class LiquidacionService {
     return this.http.delete<any>(`${API_ESTADO_ACTA}/${idEstado}`);
   }
 
+  getAllEstadoDetalleActa(): Observable<any> {
+    return this.http.get<any>(API_ESTADOS_DET_ACTA).pipe(
+      map( resp => {
+        return resp.result;
+      })
+    );
+  }
+
   crearEstado(requestCert: any): Observable<any> {
-    return this.http.post(API_ESTADOS_DET_ACTA, requestCert);
+    return this.http.post(API_ESTADO_ACTA, requestCert);
   }
 
   actualizarEstadoActa(idEstado: number, request: any) {
     return this.http.put<any>(`${API_ESTADO_ACTA}/${idEstado}`, request);
   }
 
-  actualizarEstado(idEstado: number, request: any) {
-    return this.http.put<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`, request);
-  }
+  // actualizarEstado(idEstado: number, request: any) {
+  //   return this.http.put<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`, request);
+  // }
 
   getEstadoActaById(idEstado: number): Observable<any> {
     return this.http.get(`${API_ESTADO_ACTA}/${idEstado}`).pipe(
@@ -317,9 +324,9 @@ export class LiquidacionService {
     );
   }
 
-  eliminarEstado(idEstado: number): Observable<any> {
-    return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
-  }
+  // eliminarEstado(idEstado: number): Observable<any> {
+  //   return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
+  // }
 
 
   //  SERVICES - CERTIFICACIONES
@@ -411,9 +418,6 @@ export class LiquidacionService {
     );
   }
 
-  // MANTENIMIENTO
-
-
   // SERVICES ORDEN COMPRA
   getAllOrdenCompraFiltro(listOrdenCompra: any) {
     return this.http.post(API_ORDEN_COMPRA_FILTRO, listOrdenCompra).pipe(
@@ -462,5 +466,6 @@ export class LiquidacionService {
 
   eliminarOrdenCompra(idOrden: number): Observable<any> {
     return this.http.delete<any>(`${API_ORDEN_COMPRA}/${idOrden}`);
-  }
+  };
+
 }

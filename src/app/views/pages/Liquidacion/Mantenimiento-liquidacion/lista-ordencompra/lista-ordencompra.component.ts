@@ -70,12 +70,19 @@ export class ListaOrdencompraComponent implements OnInit {
     });
   }
 
-  // API_ORDEN_COMPRA_FILTRO
   listOrdenFiltro: any[] = [];
   getAllOrdenCompraFiltro(){
-    const request = this.ordencompraForm.value;
+    const formValues = this.ordencompraForm.getRawValue();
 
-    this.liquidacionService.getAllOrdenCompraFiltro(request).subscribe((resp: any) => {
+    const params = {
+      ordenCompra  : formValues.ordenCompra,
+      certificacion: formValues.certificacion,
+      estado       : formValues.estado,
+      monto        : formValues.monto,
+      proyecto     : formValues.proyecto
+    }
+
+    this.liquidacionService.getAllOrdenCompraFiltro(params).subscribe((resp: any) => {
         this.listOrdenFiltro = resp;
         console.log('LIST-OC_FILTRO', this.listOrdenFiltro);
     });
@@ -115,7 +122,7 @@ export class ListaOrdencompraComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalOrdencompra) {
-      this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
+      this.liquidacionService.getAllOrdenCompraFiltro(offset).subscribe( (resp: any) => {
             this.listOrdenFiltro = resp.list;
             this.spinner.hide();
           });
@@ -125,7 +132,12 @@ export class ListaOrdencompraComponent implements OnInit {
       this.page = event;
   };
 
-  limpiarFiltro(){}
+  limpiarFiltro() {
+    this.ordencompraForm.reset('', {emitEvent: false})
+    this.newForm()
+
+    this.getAllOrdenCompraFiltro();
+  }
 
   abrirModalCrearOactualizar(DATA?: any) {
     // console.log('DATA_G', DATA);
@@ -137,17 +149,6 @@ export class ListaOrdencompraComponent implements OnInit {
         }
       });
   };
-
-  // abrirModalCrearFactura(DATA?: any) {
-  //   console.log('DATA_OC', DATA);
-  //   this.dialog
-  //     .open(CrearFacturasComponent, { width: '45%', data: DATA })
-  //     .afterClosed().subscribe((resp) => {
-  //       if (resp) {
-  //         this.getAllOrdenCompraFiltro();
-  //       }
-  //     });
-  // }
 
 }
 

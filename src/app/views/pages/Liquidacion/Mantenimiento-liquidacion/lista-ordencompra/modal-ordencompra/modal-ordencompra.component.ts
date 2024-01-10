@@ -7,8 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
-import { OcCertificacionesComponent } from './modal-oc-certificaciones/oc-certificaciones.component';
-
+import { AsignarCertificacionComponent } from './asignar-certificacion/asignar-certificacion.component';
 
 @Component({
   selector: 'app-modal-ordencompra',
@@ -109,17 +108,28 @@ export class ModalOrdencompraComponent implements OnInit {
   //     }
   //   ]
   // }
+
   crearOrdenCompra(){
     const formValues = this.ordencompraForm.getRawValue();
 
     const request = {
       nroOrden         : formValues.nro_orden,
       monto            : formValues.monto,
+      moneda           : formValues.moneda,
       idUsuarioCreacion: this.userID,
       certificacions   : formValues.certificaciones, //OJO FALTA
     }
-    this.liquidacionService.crearOrdenCompra(request).subscribe((oc: any) => {
 
+    this.liquidacionService.crearOrdenCompra(request).subscribe((resp: any) => {
+      if (resp.message) {
+        Swal.fire({
+          title: 'Crear orden de compra!',
+          text: `${resp.message}`,
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        });
+        this.close(true);
+      }
     })
   }
 
@@ -197,7 +207,7 @@ export class ModalOrdencompraComponent implements OnInit {
   abrirModalCrearOactualizar(DATA?: any) {
     console.log('DATA_OC', DATA);
     this.dialog
-      .open(OcCertificacionesComponent, { width: '35%', data: DATA })
+      .open(AsignarCertificacionComponent, { width: '35%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.cargarOrdenCompraById();

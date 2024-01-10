@@ -28,7 +28,7 @@ import { DetalleActasComponent } from './Actas/sub-actas/detalle-actas/detalle-a
 import { VentaDeclaradaComponent } from './Actas/sub-actas/venta-declarada/venta-declarada.component';
 import { ModalCertificacionComponent } from './Actas/sub-actas/detalle-actas/modal-certificacion/modal-certificacion.component';
 import { ModalGestorSubservicioComponent } from './Mantenimiento-liquidacion/lista-gestor/modal-gestor/modal-gestor-subservicio/modal-gestor-subservicio.component';
-import { OcCertificacionesComponent } from './Mantenimiento-liquidacion/lista-ordencompra/modal-ordencompra/modal-oc-certificaciones/oc-certificaciones.component';
+import { AsignarCertificacionComponent } from './Mantenimiento-liquidacion/lista-ordencompra/modal-ordencompra/asignar-certificacion/asignar-certificacion.component';
 import { CrearFacturasComponent } from './Mantenimiento-liquidacion/lista-certificaciones/crear-facturas/crear-facturas.component';
 
 
@@ -56,7 +56,7 @@ import { CrearFacturasComponent } from './Mantenimiento-liquidacion/lista-certif
     VentaDeclaradaComponent,
     ModalCertificacionComponent,
     ModalGestorSubservicioComponent,
-    OcCertificacionesComponent
+    AsignarCertificacionComponent
   ],
   imports: [
     CommonModule,

@@ -26,8 +26,7 @@ export class DetalleActasComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getAllProyecto();
-  this.getAllEstadosActa();
+  this.getAllEstadosDetActa();
 
   if (this.DATA_DET_ACTAS.idDetalleActa) {
     this.cargarDetActaById();
@@ -41,6 +40,7 @@ export class DetalleActasComponent implements OnInit {
      analista    : ['', Validators.required],
      perfil      : [''],
      precio      : [''],
+     certificado : [''],
      cantidad    : [''],
      venta_total : [''],
      importe     : [''],
@@ -147,12 +147,14 @@ export class DetalleActasComponent implements OnInit {
           observacion: detalle.observacion,
           importe    : detalle.importe,
           venta_total: detalle.precioTotal,
+          certificado: detalle.certificado,
           cantidad   : detalle.unidades,
           precio     : detalle.precioUnidad,
           comentario : detalle.comentario,
           unidad     : detalle.unidad,
           idEstado   : detalle.idEstado,
         })
+        this.detalleactasForm.controls['idEstado'].disable();
       })
     }
   };
@@ -161,20 +163,13 @@ export class DetalleActasComponent implements OnInit {
 
   }
 
-  listProyectos: any[] = [];
-  getAllProyecto(){
-    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
-      this.listProyectos = resp;
-    })
-  }
-
   listEstadoDetActa: any[] = [];
-  getAllEstadosActa(){
-    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
+  getAllEstadosDetActa(){
+    this.actasService.getAllEstadosDetActa().subscribe(resp => {
       this.listEstadoDetActa = resp;
-      // console.log('EST_DET_ACTA', this.listEstadoDetActa);
+      console.log('EST_ACTA', this.listEstadoDetActa);
     })
-  }
+  };
 
   close(succes?: boolean) {
     this.dialogRef.close(succes);

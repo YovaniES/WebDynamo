@@ -142,7 +142,7 @@
                               <button
                                 matTooltip="Eliminar"
                                 class="icon-btn btn-trans c-fucsia"
-                                (click)="eliminarVentaDeclarada(declarado.idDeclarado)">
+                                (click)="eliminarVentaDeclarada(declarado)">
                                 <mat-icon class="icon-15">delete_forever</mat-icon>
                               </button>
                             </div>
@@ -150,7 +150,7 @@
                           <td>{{ declarado.idDeclarado }}</td>
                           <!-- <td>{{ declarado.idActa }}</td> -->
                           <td style="font-weight: 600"><small style="font-weight: 200; margin-right: 3px">S/</small>{{ declarado.montoDeclarado | number : "1.0-2" }}</td>
-                          <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.periodo}}</td>
+                          <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.periodo | date:'yyyy/MM'}}</td>
                           <td><small style="font-weight: 200; margin-right: 3px"></small>jysantiago</td>
                           <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.comentario}}</td>
                         </tr>
@@ -199,7 +199,7 @@
                       <thead>
                         <tr class="bgc-blue c-white">
                           <th style="min-width: 60px"></th>
-                          <th style="min-width: 80px;">ID DET.</th>
+                          <th style="min-width: 80px;">N°</th>
                           <th>Analista</th>
                           <th>Perfil</th>
                           <th style="min-width: 80px;">Precio unid.</th>
@@ -226,13 +226,13 @@
                                 <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                               </button>
                               <button
-                                (click)="eliminarDetalleActa(detalle.idDeclarado)"
+                                (click)="eliminarDetalleActa(detalle)"
                                 class="icon-btn btn-trans c-fucsia"
                                 ><mat-icon class="icon-15">delete_forever</mat-icon>
                               </button>
                             </div>
                           </td>
-                          <td>{{detalle.idDetalleActaConcat}}</td>
+                          <td>{{i+1}}</td>
                           <td style="min-width: 155px; text-align: left;">{{detalle.nombre}}</td>
                           <td style="min-width: 100px;">{{detalle.perfil}}</td>
                           <td>{{ detalle.precioUnidad}}</td>
@@ -244,7 +244,7 @@
                           <td>{{ detalle.unidad      }}</td>
                           <td>{{ detalle.certificado }}</td>
                           <td>{{ detalle.facturado   }}</td>
-                          <td>{{ detalle.certificacionConcat }}</td>
+                          <td>{{ detalle.certificacions }}</td>
                         </tr>
                       </tbody>
                     </table>

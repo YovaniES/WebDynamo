@@ -135,7 +135,6 @@ export class ModalGestorSubservicioComponent implements OnInit {
     }
   };
 
-
   cargarDataGestor(){
     this.gestorSubservicioForm.reset({
       idGestor      : this.DATA_GESTOR_SUB.idGestor,
@@ -147,8 +146,8 @@ export class ModalGestorSubservicioComponent implements OnInit {
   listSubserviciosCombo:any[] = [];
   getAllSubserviciosCombo(){
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
-      this.listSubserviciosCombo = resp.result;
-      // console.log('SUBSERV', this.listSubservicios);
+      this.listSubserviciosCombo = resp;
+      console.log('SUBSERV', this.listSubserviciosCombo);
     })
   };
 

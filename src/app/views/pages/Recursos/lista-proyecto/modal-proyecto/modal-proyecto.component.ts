@@ -85,16 +85,16 @@ export class ModalProyectoComponent implements OnInit {
       codigo_proyecto   : formValues.proyecto,
       codigo_jira       : formValues.cod_jira,
       descripcion       : formValues.descripcion,
-      reemplaza_a       : '',
-      detalle_adicional : '',
-      nombre_descriptivo: '',
-      tipo              : '',
+      reemplaza_a       : formValues.reemplaza_a,
+      detalle_adicional : formValues.detalle_adicional,
+      nombre_descriptivo: formValues.nombre_descriptivo,
+      tipo              : formValues.tipo,
       fecha_inicio      : formValues.fecha_ini,
       fecha_fin         : formValues.fecha_fin,
       idCliente         : formValues.cliente,
       idJefatura        : formValues.jefatura,
-      idUsuarioCreacion : this.userID,
-      reemplazaA        :formValues.reemplaza_a
+      idUsuarioCrea     : this.userID,
+      codigo_contrato   : formValues.codigo_contrato
     }
 
     this.liquidacionService.crearProyecto(request).subscribe((resp: any) => {
@@ -161,12 +161,13 @@ export class ModalProyectoComponent implements OnInit {
           fecha_creacion    : moment.utc(proy.fechaCreacion).format('YYYY-MM-DD'),
           fecha_ini         : moment.utc(proy.fecha_inicio).format('YYYY-MM-DD'),
           fecha_fin         : moment.utc(proy.fecha_fin).format('YYYY-MM-DD'),
-          cod_jira          : proy.codigo_jira,
+          cod_jira          : proy.codigoJira,
           id_estado         : proy.estado.estadoId,
           descripcion       : proy.descripcion,
           codigo_contrato   : proy.codigoContrato,
           nombre_descriptivo: proy.nombreDescriptivo,
           tipo              : proy.tipo,
+          reemplaza_a       : proy.reemplazaA
         })
 
         this.proyectoForm.controls['fecha_creacion'].disable();

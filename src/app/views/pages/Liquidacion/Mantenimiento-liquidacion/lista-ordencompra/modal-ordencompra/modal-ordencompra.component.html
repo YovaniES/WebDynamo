@@ -5,7 +5,7 @@
 <div class="cli-form mt-3">
   <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_ORDENCOMPRA ? "Actualizar" : "Crear" }} orden de compra</div>
 
-  <div class="pr-subtitle">Data gestor</div>
+  <div class="pr-subtitle">Data Orden compra</div>
     <div class="pr-section">
       <div class="pr-module-container mb-2">
         <form class="row g-3" [formGroup]="ordencompraForm">
@@ -57,7 +57,7 @@
                 <div class="cli-form-element col-f-3">
                   <label>Estado</label>
                   <select formControlName="id_estado" class="cli-input_x">
-                    <option [value]="0" disabled>-Seleccione-</option>
+                    <option [value]="10" disabled>-Seleccione-</option>
                     <option value="1">Activo</option>
                     <option value="0">Inactivo</option>
                   </select>
@@ -79,7 +79,7 @@
     </div>
 
     <ng-container *ngIf="DATA_ORDENCOMPRA">
-      <div class="pr-subtitle">Orden compra - Certificaciones</div>
+      <div class="pr-subtitle">Certificaciones</div>
         <div class="pr-section">
           <div class="pr-module-container mb-2">
             <div style="display: flex">
@@ -132,22 +132,21 @@
                           <!-- (click)="eliminarCertificacion(cert.idcert)" -->
                           <button
                             matTooltip="Eliminar"
-                            class="icon-btn btn-trans b-fucsia"
-                            >
+                            class="icon-btn btn-trans b-fucsia">
                             <mat-icon class="icon-15">delete_forever</mat-icon>
                           </button>
                         </div>
                       </td>
                       <!-- <td>{{ cert.idDetalleCertificacion }}</td> -->
-                      <td><small style="font-weight: 200;"></small>{{ oc.nro_certificacion        }}</td>
-                      <td><small style="font-weight: 200;"></small>{{ oc.proyecto.codigo_proyecto }}</td>
-                      <td><small style="font-weight: 200;"></small>{{ oc.moneda                   }}</td>
-                      <td><small style="font-weight: 200;"></small>{{ oc.estadoFactura            }}</td>
-                      <td><small style="font-weight: 200;"></small>{{ oc.estado.estado            }}</td>
-                      <td><small style="font-weight: 200;"></small>{{ oc.valorTotal               }}</td>
-                      <td><small style="font-weight: 200;"></small>{{ oc.valorDisponible          }}</td>
-                      <td><small style="font-weight: 200; color: #007bff;"></small>{{ oc.usuarioActualiza.usuario }}</td>
-                      <td><small style="font-weight: 200;"></small>{{ oc.fecha_creacion | date:'dd/MM/yyyy' }}</td>
+                      <td>{{ oc.nro_certificacion        }}</td>
+                      <td>{{ oc.proyecto.codigo_proyecto }}</td>
+                      <td>{{ oc.moneda                   }}</td>
+                      <td>{{ oc.estadoFactura            }}</td>
+                      <td>{{ oc.estado.estado            }}</td>
+                      <td>{{ oc.valorTotal               }}</td>
+                      <td>{{ oc.valorDisponible          }}</td>
+                      <td style="color:#007bff">{{ oc.usuarioActualiza.usuario }}</td>
+                      <td>{{ oc.fecha_creacion | date:'dd/MM/yyyy' }}</td>
                     </tr>
                   </tbody>
                 </table>

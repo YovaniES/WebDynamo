@@ -58,12 +58,38 @@
             </div>
 
             <div class="cli-form-element col-f-4">
+              <label>Certificado</label>
+              <input class="cli-input"
+                formControlName="certificado"
+                type="number"/>
+            </div>
+
+            <div class="cli-form-element col-f-4">
               <label>Unid. Moneda</label>
               <select formControlName="unidad" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option value="PEN">PEN</option>
                 <option value="Otros">Otros</option>
               </select>
+            </div>
+
+            <div class="cli-form-element col-f-4" *ngIf="DATA_DET_ACTAS.idDetalleActa">
+              <label>Estado</label>
+              <select formControlName="idEstado" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-2">
+              <label>Observación</label>
+              <textarea
+                class="cli-input"
+                style="background-image: none;border-color: #bdbdbd;font-size: 14px;font-size: 12px;"
+                rows="1"
+                placeholder="Escriba algún observación del detalle..."
+                formControlName="observacion"
+              ></textarea>
             </div>
 
             <div class="cli-form-element col-f-2">
@@ -77,16 +103,6 @@
               ></textarea>
             </div>
 
-            <div class="cli-form-element col-f-2">
-              <label>Observación</label>
-              <textarea
-                class="cli-input"
-                style="background-image: none;border-color: #bdbdbd;font-size: 14px;font-size: 12px;"
-                rows="1"
-                placeholder="Escriba algún observación del detalle..."
-                formControlName="observacion"
-              ></textarea>
-            </div>
           </div>
         </div>
 

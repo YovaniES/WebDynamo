@@ -117,8 +117,8 @@ export class ListaGestorComponent implements OnInit {
   listSubservicios:any[] = [];
   getAllSubserviciosCombo(){
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
-      this.listSubservicios = resp.result;
-      console.log('SUBS_COMBO', this.listSubservicios);
+      this.listSubservicios = resp;
+      // console.log('SUBS_COMBO', this.listSubservicios);
     })
   }
 

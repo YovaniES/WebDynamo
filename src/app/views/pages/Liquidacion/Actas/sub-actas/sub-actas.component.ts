@@ -97,7 +97,7 @@ export class SubActasComponent implements OnInit {
 
       if (resp.success) {
         Swal.fire({
-          title: 'Actualizar Acta.*!',
+          title: 'Actualizar Acta.!',
           text : `${resp.message}`,
           icon : 'success',
           confirmButtonText: 'Ok',
@@ -107,13 +107,58 @@ export class SubActasComponent implements OnInit {
     })
   };
 
-  eliminarDetalleActa(idDetActa: number){
+  eliminarDetalleActa(detalle: any){
+    console.log('DEL_DET_ACTA', detalle);
 
+    Swal.fire({
+      title: '¿Eliminar detalle acta?',
+      text: `¿Estas seguro que deseas eliminar el detalle acta: ${detalle.idDetalleActaConcat}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.actasService.eliminarDetActa(detalle.idDetalleActa).subscribe((resp) => {
+            Swal.fire({
+              title: 'Eliminar detalle acta',
+              text: `${detalle.idDetalleActaConcat}: ${resp.message} exitosamente`,
+              icon: 'success',
+            });
+            this.cargarActaById();
+          });
+      }
+    });
   }
 
-  eliminarVentaDeclarada(idDeclarado: number){}
+  eliminarVentaDeclarada(declarado: any) {
+    console.log('DEL_VD', declarado);
 
-  // listProyectos: any[] = []
+    Swal.fire({
+      title: '¿Eliminar venta declarada?',
+      text: `¿Estas seguro que deseas eliminar la venta declarada: ${declarado.montoDeclarado}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.actasService.eliminarVentaDeclarado(declarado.idDeclarado).subscribe((resp) => {
+            Swal.fire({
+              title: 'Eliminar venta declarada',
+              text: `${declarado.montoDeclarado}: ${resp.message} exitosamente`,
+              icon: 'success',
+            });
+            this.cargarActaById();
+          });
+      }
+    });
+  };
+
   listDetActas  : any[] = [];
   listDeclarados: any[] = [];
   actionBtn: string = 'Crear';
@@ -147,7 +192,7 @@ export class SubActasComponent implements OnInit {
         // this.subActasForm.controls['idGestor'  ].disable();
         this.subActasForm.controls['idProyecto' ].disable();
         this.subActasForm.controls['declarado'  ].disable();
-        this.subActasForm.controls['venta_total'].disable();
+        // this.subActasForm.controls['venta_total'].disable();
         // this.subActasForm.controls['periodo'   ].disable();
       })
     }
@@ -231,6 +276,7 @@ export class SubActasComponent implements OnInit {
         console.log('RESP_ACT_DECL', resp);
         if (resp) {
           this.cargarActaById();
+          this.actualizarSubActa();
         }
       });
   }

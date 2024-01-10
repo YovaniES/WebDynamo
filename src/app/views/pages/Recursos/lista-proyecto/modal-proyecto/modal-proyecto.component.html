@@ -94,6 +94,14 @@
 
         <ng-container *ngIf="DATA_PROY">
           <div class="cli-form-element col-f-3">
+            <label>Reemplaza a</label>
+            <input
+              class="cli-input"
+              formControlName="reemplaza_a"
+              type="text"/>
+          </div>
+
+          <div class="cli-form-element col-f-3">
             <label>Estado</label>
             <select formControlName="id_estado" class="cli-input">
               <option [value]="10" disabled>-Seleccione-</option>

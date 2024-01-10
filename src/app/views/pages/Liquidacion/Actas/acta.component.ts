@@ -8,6 +8,7 @@ import { ModalActaComponent } from './modal-actas/modal-acta.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { SubActasComponent } from './sub-actas/sub-actas.component';
 import { ActasService } from 'src/app/core/services/actas.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-acta',
@@ -72,8 +73,8 @@ export class ActaComponent implements OnInit {
         idProyecto      : formaValues.proyecto,
         idSubservicio   : formaValues.idSubservicio,
         idEstado        : formaValues.idEstado,
-        // periodo         : this.actasForm.controls['periodo'].value? '': formaValues.periodo,
-        periodo         : formaValues.periodo,
+        periodo         : this.actasForm.controls['periodo'].value? formaValues.periodo+'-01': '',
+        // periodo         : formaValues.periodo+'-01',
         montoMinimo     : formaValues.montoMinimo,
         montoMaximo     : formaValues.montoMaximo,
         idGestor        : formaValues.idGestor,
@@ -90,7 +91,31 @@ export class ActaComponent implements OnInit {
     })
   }
 
-  eliminarActa(idActa: number){}
+  eliminarActa(acta: any) {
+    console.log('DEL_ACTA', acta);
+
+    Swal.fire({
+      title: '¿Eliminar acta?',
+      text: `¿Estas seguro que deseas eliminar el acta: ${acta.idActaConcat}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.actasService.eliminarActa(acta.idActa).subscribe((resp) => {
+            Swal.fire({
+              title: 'Eliminar acta',
+              text: `${acta.idActaConcat}: ${resp.message} exitosamente`,
+              icon: 'success',
+            });
+            this.getAllActas();
+          });
+      }
+    });
+  };
 
   listProyectos: any[] = [];
   getAllProyecto(){
@@ -110,7 +135,7 @@ export class ActaComponent implements OnInit {
   listSubserviciosCombo:any[] = [];
   getAllSubserviciosCombo(){
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
-      this.listSubserviciosCombo = resp.result;
+      this.listSubserviciosCombo = resp;
       // console.log('SUBSERV', this.listSubservicios);
     })
   };

@@ -7,11 +7,11 @@ import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-oc-certificaciones',
-  templateUrl: './oc-certificaciones.component.html',
-  styleUrls: ['./oc-certificaciones.component.scss'],
+  selector: 'app-asignar-certificacion',
+  templateUrl: './asignar-certificacion.component.html',
+  styleUrls: ['./asignar-certificacion.component.scss'],
 })
-export class OcCertificacionesComponent implements OnInit {
+export class AsignarCertificacionComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
@@ -22,7 +22,7 @@ export class OcCertificacionesComponent implements OnInit {
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private liquidacionService: LiquidacionService,
-               public dialogRef: MatDialogRef<OcCertificacionesComponent>,
+               public dialogRef: MatDialogRef<AsignarCertificacionComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_FACTURA: any
   ) {}
 

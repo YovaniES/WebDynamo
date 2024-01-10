@@ -10,15 +10,15 @@
       <form [formGroup]="ordencompraForm">
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Orden de compra</label>
               <select formControlName="ordenCompra" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="oc.id" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
+                <option [value]="oc.nombre" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
               </select>
             </div>
 
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Certificación</label>
               <input
                 class="cli-input"
@@ -26,12 +26,21 @@
                 type="text"/>
             </div>
 
-            <div class="cli-form-element col-f-3">
+            <div class="cli-form-element col-f-4">
               <label>Monto</label>
               <input
                 class="cli-input"
                 formControlName="monto"
                 type="text"/>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Estado</label>
+              <select formControlName="estado" class="cli-input">
+                <option [value]="10" disabled>-Seleccione-</option>
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
             </div>
 
             <div class="cli-form-buttons" style="margin-top: 8px">
@@ -59,7 +68,7 @@
         <!-- BOTON MODAL PARA CREAR ORDEN DE COMPRA ----------------------------------------------------->
         <div style="display: flex" class="mt-4 mb-1">
           <button
-            class="cli-btn btn-m btn-turq"
+            class="cli-btn btn-turq"
             [disabled]="ordencompraForm.invalid"
             (click)="abrirModalCrearOactualizar()">
             <mat-icon class="icon-18">add</mat-icon> Crear orden de compra
@@ -83,6 +92,7 @@
               <th style="min-width: 250px" >Certificaciones</th>
               <th style="min-width: 250px" >Proyecto(s)</th>
               <th style="min-width: 118px;">Monto Total</th>
+              <th style="min-width: 118px;">Monto Certificado</th>
               <th style="min-width: 118px;">Monto Usado</th>
               <th style="min-width: 118px;">Monto Disponible</th>
               <th style="min-width: 90px"  >Modena</th>
@@ -120,14 +130,17 @@
               <td style="text-align: left">{{ orden.nro_orden }}</td>
               <td>{{ orden.certificacions  }}</td>
               <td>{{ orden.proyectos       }}</td>
-              <td>{{ orden.monto           }}</td>
-              <td>{{ orden.montoUsado      }}</td>
-              <td>{{ orden.montoDisponible }}</td>
+              <td>{{ orden.monto            | number : "1.0-2"}}</td>
+              <td>{{ orden.montoCertificado | number : "1.0-2"}}</td>
+              <td>{{ orden.montoUsado       | number : "1.0-2"}}</td>
+              <td>{{ orden.montoDisponible  | number : "1.0-2"}}</td>
               <td>{{ orden.moneda          }}</td>
               <td>{{ orden.factura         }}</td>
               <td>{{ orden.estadoFactura   }}</td>
-              <td>{{ orden.estado.estado   }}</td>
-              <td>{{ orden.usuarioActualiza.usuario }}</td>
+              <td class="moad-module">
+                <mat-icon [ngClass]="{ 'c-green_x': orden.estado.estadoId == 1, 'c-red': orden.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
+              </td>
+              <td style="color:#007bff">{{ orden.usuarioActualiza.usuario }}</td>
               <td>{{ orden.fecha_creacion | date: 'dd/MM/YYYY' }}</td>
               <!-- <td>
                 <div class="moad-actions">

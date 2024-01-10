@@ -104,9 +104,9 @@ export class ModalEstadosComponent implements OnInit {
     const formValues = this.estadosForm.getRawValue();
 
     const request = {
-      estado       : formValues.estado,
-      descripcion  : formValues.descripcion,
-      idUsuarioCrea: this.userID,
+      nombre           : formValues.estado,
+      descripcion      : formValues.descripcion,
+      idUsuarioCreacion: this.userID,
     }
 
     this.liquidacionService.crearEstado(request).subscribe((resp: any) => {

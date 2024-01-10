@@ -83,24 +83,28 @@ export class ActasService {
     return this.http.post(API_DET_ACTA, requestDet);
   }
 
-  actualizarEstadosDetActa(idEstado: number, requestActa: any) {
-    return this.http.put<any>(
-      `${API_ESTADOS_DET_ACTA}/${idEstado}`,
-      requestActa
-    );
+  eliminarDetActa(idDetActa: number): Observable<any> {
+    return this.http.delete<any>(`${API_DET_ACTA}/${idDetActa}`);
   }
 
-  getEstadosDetActaById(idEstado: any): Observable<any> {
-    return this.http.get(`${API_ESTADOS_DET_ACTA}${idEstado}`).pipe(
-      map((resp: any) => {
-        return resp.result;
-      })
-    );
-  }
+  // actualizarEstadosDetActa(idEstado: number, requestActa: any) {
+  //   return this.http.put<any>(
+  //     `${API_ESTADOS_DET_ACTA}/${idEstado}`,
+  //     requestActa
+  //   );
+  // }
 
-  eliminarEstadosDetActa(idEstado: number): Observable<any> {
-    return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
-  }
+  // getEstadosDetActaById(idEstado: any): Observable<any> {
+  //   return this.http.get(`${API_ESTADOS_DET_ACTA}${idEstado}`).pipe(
+  //     map((resp: any) => {
+  //       return resp.result;
+  //     })
+  //   );
+  // }
+
+  // eliminarEstadosDetActa(idEstado: number): Observable<any> {
+  //   return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
+  // }
 
   // DETALLE ACTA - OJO CAMBIAR POR SUBACTAS, FALTA API
   crearVentaDeclarada(requestVD: any): Observable<any> {
@@ -117,6 +121,10 @@ export class ActasService {
 
   actualizarVentaDeclarada(idVD: number, reqDetActa: any) {
     return this.http.put(`${API_VENTA_DECLARADA}/${idVD}`, reqDetActa);
+  }
+
+  eliminarVentaDeclarado(idVD: number): Observable<any> {
+    return this.http.delete<any>(`${API_VENTA_DECLARADA}/${idVD}`);
   }
 
   // CRUD CERTIFICACION

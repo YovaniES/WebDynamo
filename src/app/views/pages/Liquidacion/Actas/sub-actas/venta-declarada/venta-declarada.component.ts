@@ -130,7 +130,6 @@ export class VentaDeclaradaComponent implements OnInit {
     }
   }
 
-
   userID: number = 0;
   getUserID(){
    this.authService.getCurrentUser().subscribe( resp => {
