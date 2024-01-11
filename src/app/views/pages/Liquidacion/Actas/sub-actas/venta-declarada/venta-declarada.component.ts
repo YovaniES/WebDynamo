@@ -33,7 +33,7 @@ export class VentaDeclaradaComponent implements OnInit {
   this.getUserID();
   console.log('DATA_ACTA***', this.DATA_VD);
 
-  if (this.DATA_VD.idActa) {
+  if (this.DATA_VD.ACTA.idDeclarado) {
     this.cargarVentaDeclaradaById();
     // console.log('VD_ACTA', this.DATA_VD);
     }
@@ -45,6 +45,8 @@ export class VentaDeclaradaComponent implements OnInit {
      periodo        : ['', Validators.required],
      montoDeclarado : ['', Validators.required],
      comentario     : [''],
+     idProyecto     : [''],
+     isVisado       : ['']
     })
   }
 
@@ -55,7 +57,7 @@ export class VentaDeclaradaComponent implements OnInit {
       })
     }
 
-    if (this.DATA_VD.idDeclarado > 0) {
+    if (this.DATA_VD.ACTA.idDeclarado > 0) {
       console.log('UPD_VD');
       this.actualizarVD();
     } else {
@@ -68,13 +70,16 @@ export class VentaDeclaradaComponent implements OnInit {
     const formValues = this.ventadeclaradaForm.getRawValue();
 
     const requestVD = {
-      idActa            : this.DATA_VD.idActa,
+      idDeclarado       : this.DATA_VD.ACTA.idDeclarado,
+      idActa            : this.DATA_VD.ACTA.idActa,
       periodo           : this.utilService.generarPeriodo(formValues.periodo),
       montoDeclarado    : formValues.montoDeclarado,
+      isVisado          : formValues.isVisado,
+      idProyecto        : formValues.idProyecto,
       comentario        : formValues.comentario,
       idUsuarioActualiza: this.userID
     }
-    this.actasService.actualizarVentaDeclarada(this.DATA_VD.idDeclarado, requestVD ).subscribe((resp: any) => {
+    this.actasService.actualizarVentaDeclarada(this.DATA_VD.ACTA.idDeclarado, requestVD ).subscribe((resp: any) => {
       if (resp.success) {
         Swal.fire({
           title: 'Actualizar venta declarada!',
@@ -83,6 +88,13 @@ export class VentaDeclaradaComponent implements OnInit {
           confirmButtonText: 'Ok',
         });
         this.close(true);
+      }else{
+        Swal.fire({
+          title: 'ERROR!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok'
+        })
       }
     })
   };
@@ -90,9 +102,11 @@ export class VentaDeclaradaComponent implements OnInit {
   crearVD(){
     const formValues = this.ventadeclaradaForm.getRawValue();
     const request = {
-      idActa           : this.DATA_VD,
+      idActa           : this.DATA_VD.ACTA,
       periodo          : this.utilService.generarPeriodo(formValues.periodo),
       montoDeclarado   : formValues.montoDeclarado,
+      isVisado         : formValues.isVisado,
+      idProyecto       : formValues.idProyecto,
       comentario       : formValues.comentario,
       idUsuarioCreacion: this.userID
     };
@@ -105,17 +119,26 @@ export class VentaDeclaradaComponent implements OnInit {
           confirmButtonText: 'Ok'
         });
         this.close(true);
+      }else{
+        Swal.fire({
+          title: 'ERROR!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok'
+        })
       }
     })
   }
 
   actionBtn: string = 'Crear'
   cargarVentaDeclaradaById(): void {
+    console.log('ID_VD', this.DATA_VD.ACTA.idDeclarado);
+
     this.blockUI.start('Cargando venta declarada ...');
 
-    if (this.DATA_VD) {
+    if (this.DATA_VD.ACTA.idDeclarado) {
       this.actionBtn = 'Actualizar'
-      this.actasService.cargarVentaDeclaradaById(this.DATA_VD.idDeclarado).subscribe((vd:any) => {
+      this.actasService.cargarVentaDeclaradaById(this.DATA_VD.ACTA.idDeclarado).subscribe((vd:any) => {
         this.blockUI.stop();
         console.log('VD_BY_ID', vd);
 
@@ -123,6 +146,8 @@ export class VentaDeclaradaComponent implements OnInit {
           idDeclarado   : vd.idDeclarado,
           idActa        : vd.idActa,
           periodo       : vd.periodo,
+          idProyecto    : vd.idProyecto,
+          isVisado      : vd.estado.estadoId,
           montoDeclarado: vd.montoDeclarado,
           comentario    : vd.comentario
         })

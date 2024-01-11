@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDTO } from 'src/app/core/models/liquidacion.models';
-import { PermissionsService } from 'src/app/core/services/permissions.service';
 
 @Component({
   selector: 'app-users',
@@ -15,7 +14,7 @@ export class UsersComponent implements OnInit {
 
   data: UserDTO[] = [];
 
-  constructor(private permissionsService: PermissionsService) {}
+  // constructor(private permissionsService: PermissionsService) {}
 
   ngOnInit(): void {
     this.updateUsers();

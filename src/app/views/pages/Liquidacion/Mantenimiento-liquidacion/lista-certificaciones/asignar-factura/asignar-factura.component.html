@@ -3,7 +3,7 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male">{{ "Crear" }} factura</div>
+  <div class="cli-form-title c-male">{{ "Asignar" }} factura</div>
 
   <form class="row g-3 mt-3" [formGroup]="facturaForm">
     <div class="cli-form newvac-wrapper">
@@ -54,12 +54,11 @@
         </div>
 
           <div class="cli-form-element col-f-3">
-            <label>Estado certificación<small style="color: red">*</small></label>
+            <label>Estado factura</label>
             <select formControlName="idEstado" class="cli-input">
               <option [value]="0" disabled>-Seleccione-</option>
-              <option [value]="est.idEstado" *ngFor="let est of listEstadoDetalleActa">{{est.nombre}}</option>
+              <option [value]="est.idEstado" *ngFor="let est of listEstadoFacturas">{{est.nombre}}</option>
             </select>
-            <small class="form-text text-alert" *ngIf="campoNoValido('idEstado')">* Ingrese el Estado es obligatorio</small>
           </div>
       </div>
 

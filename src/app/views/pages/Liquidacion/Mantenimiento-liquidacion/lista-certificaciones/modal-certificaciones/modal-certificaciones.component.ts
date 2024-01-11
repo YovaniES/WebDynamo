@@ -32,7 +32,7 @@ export class ModalCertificacionesComponent implements OnInit {
   this.getUserID();
 
   if (this.DATA_CERTIF) {
-    this.cargarCertificacionById(this.DATA_CERTIF);
+    this.cargarCertificacionById();
     console.log('MODAL-CERT', this.DATA_CERTIF);
     }
   }
@@ -50,7 +50,7 @@ export class ModalCertificacionesComponent implements OnInit {
     })
   }
 
-  crearOactualizarSubservicio(){
+  crearOactualizarCertificacion(){
     if (this.certificacionForm.invalid) {
       return Object.values(this.certificacionForm.controls).forEach((controls) => {
         controls.markAllAsTouched();
@@ -112,7 +112,7 @@ export class ModalCertificacionesComponent implements OnInit {
   }
 
   actionBtn: string = 'Crear';
-  cargarCertificacionById(idCerti: number): void{
+  cargarCertificacionById(): void{
     this.blockUI.start("Cargando Certificación...");
     if (this.DATA_CERTIF) {
       this.actionBtn = 'Actualizar'

@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActasService } from 'src/app/core/services/actas.service';
-import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 import { ModalCertificacionComponent } from './modal-certificacion/modal-certificacion.component';
+import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 
 @Component({
   selector: 'app-detalle-actas',
@@ -159,8 +159,30 @@ export class DetalleActasComponent implements OnInit {
     }
   };
 
-  eliminarCertificacion(idCert: number){
+  eliminarCertificacion(cert: any){
+    console.log('DELETE_CERT', cert);
 
+    Swal.fire({
+      title:'¿Eliminar certificación?',
+      text: `¿Estas seguro que deseas eliminar el certificación: ${cert.certificacion}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.liquidacionService.eliminarCertificacion(cert.idCertificacion).subscribe(resp => {
+          Swal.fire({
+            title: 'Eliminar certificación',
+            text: `${resp.message}`,
+            icon: 'success',
+          });
+          this.cargarDetActaById()
+        });
+      };
+    });
   }
 
   listEstadoDetActa: any[] = [];

@@ -7,8 +7,6 @@ import {
 } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
 import {
   useritem,
   moduleDetails,
@@ -16,7 +14,6 @@ import {
   prFunc,
   permissionRequest,
 } from '../module-config.models';
-import { PermissionsService } from 'src/app/core/services/permissions.service';
 import { picklist } from 'src/app/core/models/liquidacion.models';
 
 @Component({
@@ -36,7 +33,7 @@ import { picklist } from 'src/app/core/models/liquidacion.models';
 export class RolePermissionComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
 
-  constructor(private permissionsService: PermissionsService) {}
+  // constructor(private permissionsService: PermissionsService) {}
 
   ngOnInit(): void {
     this.doGetModules();

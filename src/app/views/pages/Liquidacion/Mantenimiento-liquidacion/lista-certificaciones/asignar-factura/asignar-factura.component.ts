@@ -7,11 +7,11 @@ import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-crear-facturas',
-  templateUrl: './crear-facturas.component.html',
-  styleUrls: ['./crear-facturas.component.scss'],
+  selector: 'app-asignar-factura',
+  templateUrl: './asignar-factura.component.html',
+  styleUrls: ['./asignar-factura.component.scss'],
 })
-export class CrearFacturasComponent implements OnInit {
+export class AsignarFacturaComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
@@ -22,7 +22,7 @@ export class CrearFacturasComponent implements OnInit {
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private liquidacionService: LiquidacionService,
-               public dialogRef: MatDialogRef<CrearFacturasComponent>,
+               public dialogRef: MatDialogRef<AsignarFacturaComponent>,
                @Inject(MAT_DIALOG_DATA) public DATA_FACTURA: any
   ) {}
 
@@ -30,7 +30,7 @@ export class CrearFacturasComponent implements OnInit {
   this.newForm()
   this.getUserID();
   this.getAllCertificaciones();
-  this.getListEstadoCertificacion();
+  this.getListaEstadosFactura();
   if (this.DATA_FACTURA) {
     this.cargarFacturaByOrden();
     // console.log('FACTURA_MODAL', this.DATA_FACTURA);
@@ -41,7 +41,7 @@ export class CrearFacturasComponent implements OnInit {
   newForm(){
     this.facturaForm = this.fb.group({
       nro_factura       : ['', Validators.required],
-      idEstado          : ['', Validators.required],
+      idEstado          : [''],
       idCertificacion   : ['', Validators.required],
       fecha_facturacion : [''],
       factura_tgs       : [''],
@@ -71,7 +71,7 @@ export class CrearFacturasComponent implements OnInit {
     }
     if (this.DATA_FACTURA.idCertificacion > 0 ) {
       console.log('CREATE');
-      this.crearFactura()
+      this.asignarFactura()
     } else {
       console.log('UPDATE');
       this.actualizarFactura();
@@ -82,11 +82,11 @@ export class CrearFacturasComponent implements OnInit {
     const formValues = this.facturaForm.getRawValue();
 
     const requestLider = {
-      idCertificacion : this.DATA_FACTURA.idCertificacion,
-      idFactura       : this.DATA_FACTURA.idFactura,
-      idEstado        : this.DATA_FACTURA.eliminacion_logica,
-      descripcion     : formValues.descripcion,
-      usuario         : this.userID
+      idCertificacion: this.DATA_FACTURA.idCertificacion,
+      idFactura      : this.DATA_FACTURA.idFactura,
+      idEstado       : this.DATA_FACTURA.eliminacion_logica,
+      descripcion    : formValues.descripcion,
+      usuario        : this.userID
     }
 
     this.liquidacionService.actualizarFactura(this.DATA_FACTURA.idCertificacion, requestLider).subscribe((resp: any) => {
@@ -102,7 +102,7 @@ export class CrearFacturasComponent implements OnInit {
     })
   };
 
-  crearFactura(): void{
+  asignarFactura(): void{
     const formValues = this.facturaForm.getRawValue();
 
     const request = {
@@ -118,7 +118,7 @@ export class CrearFacturasComponent implements OnInit {
     this.liquidacionService.crearFactura(request).subscribe((resp: any) => {
       if (resp.message) {
         Swal.fire({
-          title: 'Crear factura!',
+          title: 'Asignar factura!',
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'
@@ -128,13 +128,13 @@ export class CrearFacturasComponent implements OnInit {
     })
   };
 
-  listEstadoDetalleActa:any[] = [];
-  getListEstadoCertificacion(){
-    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
-      this.listEstadoDetalleActa = resp.filter((x:any) => x.idEstado != 2);
-      console.log('EST-CERT', this.listEstadoDetalleActa);
-    })
-  };
+  listEstadoFacturas: any[] = [];
+  getListaEstadosFactura() {
+    this.liquidacionService.getListaEstadosFactura().subscribe((resp) => {
+      this.listEstadoFacturas = resp;
+      console.log('EST_FACTURA', this.listEstadoFacturas);
+    });
+  }
 
   listCertificaciones: any[] = [];
   getAllCertificaciones(){

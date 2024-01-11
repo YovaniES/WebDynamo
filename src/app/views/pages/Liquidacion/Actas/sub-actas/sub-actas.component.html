@@ -122,9 +122,12 @@
                           <th style="min-width: 80px">ID Decl.</th>
                           <!-- <th>ID Acta</th> -->
                           <th>Declarado</th>
+                          <th>Proyecto</th>
                           <th>Periodo</th>
+                          <th>Estado</th>
+                          <th style="min-width: 400px;">Comentario</th>
                           <th>Responsable</th>
-                          <th style="min-width: 500px;">Comentario</th>
+                          <th style="min-width: 120px;">Fecha creación</th>
                         </tr>
                       </thead>
 
@@ -149,10 +152,13 @@
                           </td>
                           <td>{{ declarado.idDeclarado }}</td>
                           <!-- <td>{{ declarado.idActa }}</td> -->
-                          <td style="font-weight: 600"><small style="font-weight: 200; margin-right: 3px">S/</small>{{ declarado.montoDeclarado | number : "1.0-2" }}</td>
-                          <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.periodo | date:'yyyy/MM'}}</td>
-                          <td><small style="font-weight: 200; margin-right: 3px"></small>jysantiago</td>
-                          <td><small style="font-weight: 200; margin-right: 3px"></small>{{ declarado.comentario}}</td>
+                          <td style="font-weight: 600; text-align: right;"><small style="font-weight: 200; margin-right: 3px;">S/</small>{{ declarado.montoDeclarado | number : "1.0-2" }}</td>
+                          <td>{{ declarado.proyecto     }}</td>
+                          <td>{{ declarado.estado.estado}}</td>
+                          <td>{{ declarado.periodo | date:'yyyy-MM'}}</td>
+                          <td>{{ declarado.comentario   }}</td>
+                          <td>{{ declarado.usuarioCrea.usuario}}</td>
+                          <td>{{ declarado.fechaCreacion | date:'dd/MM/yyyy' }}</td>
                         </tr>
                       </tbody>
                     </table>

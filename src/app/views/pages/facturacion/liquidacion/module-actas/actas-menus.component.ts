@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
-import { Menu } from 'src/app/core/models/menu.models';
-import { PermissionsService } from 'src/app/core/services/permissions.service';
-import { PERMISSION } from 'src/app/core/routes/internal.routes';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -23,7 +19,6 @@ export class ModuleActasComponent implements OnInit {
   showingidx = 0;
 
   constructor(
-    private permissionService: PermissionsService,
     private facturacionService: FacturacionService,
     public datepipe: DatePipe,
     private fb: FormBuilder,

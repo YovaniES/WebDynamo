@@ -52,14 +52,14 @@ export class ModalActaComponent implements OnInit {
       idUsuarioCreacion: [''],
       import           : [''],
       detalleActaParams: this.fb.group({
-        analista       :['', Validators.required],
-        cantidad       :[''],
-        precio_unidad  :[''],
-        precio_total   :['', Validators.required],
-        perfil         :['', Validators.required],
-        observacion    :[''],
-        moneda         :[''],
-        comentarioDet  :[''],
+        analista       : ['', Validators.required],
+        cantidad       : [''],
+        precio_unidad  : [''],
+        precio_total   : ['', Validators.required],
+        perfil         : ['', Validators.required],
+        observacion    : [''],
+        moneda         : [''],
+        comentarioDet  : [''],
       })
     })
   };
@@ -78,24 +78,32 @@ export class ModalActaComponent implements OnInit {
   importarActas(formData: FormData){
     this.actasService.importarActas(formData).subscribe((resp: any) => {
       this.blockUI.stop();
+      if (resp.success) {
+        console.log('IMPORT_DATA', resp);
 
-      console.log('IMPORT_DATA', resp);
+        let acta = resp.result;
 
-      let acta = resp.result;
+        this.listDetActas = acta.detalleActas;
+        console.log('IMP_DET', this.listDetActas);
+        console.log('IMP_ACTAS', acta);
 
-      this.listDetActas = acta.detalleActas;
-      console.log('IMP_DET', this.listDetActas);
-      console.log('IMP_ACTAS', acta);
-
-        this.actasForm.reset({
-          idGestor     : acta.idGestor,
-          idProyecto   : acta.idProyecto,
-          idSubservicio: acta.idSubservicio,
-          periodo      : acta.periodo,
-          venta_total  : acta.ventaTotalActa,
-          comentario   : acta.comentario,
-          enlaceActa   : acta.enlaceAta,
-        });
+          this.actasForm.reset({
+            idGestor     : acta.idGestor,
+            idProyecto   : acta.idProyecto,
+            idSubservicio: acta.idSubservicio,
+            periodo      : acta.periodo,
+            venta_total  : acta.ventaTotalActa,
+            comentario   : acta.comentario,
+            enlaceActa   : acta.enlaceAta,
+          });
+      }else{
+        Swal.fire({
+          title: 'ERROR!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok'
+        })
+      }
     })
   };
 
@@ -116,7 +124,6 @@ export class ModalActaComponent implements OnInit {
       })
       return listadoDetalle;
   }
-
 
   generarDetalle(){
     return this.listDetActas.map(x => {

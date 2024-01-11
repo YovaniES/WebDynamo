@@ -271,7 +271,7 @@ export class SubActasComponent implements OnInit {
   abrirVentaDeclarada(ACTA?: any) {
     console.log('DATA_ACTA', ACTA);
     this.dialog
-      .open(VentaDeclaradaComponent, { width: '55%', data: ACTA })
+      .open(VentaDeclaradaComponent, { width: '55%', data: {ACTA, sub: this.subActasForm.getRawValue() } })
       .afterClosed().subscribe((resp) => {
         console.log('RESP_ACT_DECL', resp);
         if (resp) {

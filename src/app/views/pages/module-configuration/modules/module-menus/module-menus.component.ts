@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Menu } from 'src/app/core/models/menu.models';
 import { ModalEditModuleComponent } from '../modal-edit-module/modal-edit-module.component';
-import { PermissionsService } from 'src/app/core/services/permissions.service';
 import { PERMISSION } from 'src/app/core/routes/internal.routes';
 
 @Component({
@@ -18,7 +17,6 @@ export class ModuleMenusComponent implements OnInit {
   showingidx = 0;
 
   constructor(
-    private permissionService: PermissionsService,
     private dialog: MatDialog
   ) {}
 

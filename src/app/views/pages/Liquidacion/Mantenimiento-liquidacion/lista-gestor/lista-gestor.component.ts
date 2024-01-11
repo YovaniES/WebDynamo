@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import Swal from 'sweetalert2';
 import { ModalGestorComponent } from './modal-gestor/modal-gestor.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
@@ -29,7 +28,6 @@ export class ListaGestorComponent implements OnInit {
   pageSize = 10;
 
   constructor( private fb: FormBuilder,
-               private facturacionService: FacturacionService,
                private liquidacionService: LiquidacionService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,

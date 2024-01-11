@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import { ModalCertificacionesComponent } from './modal-certificaciones/modal-certificaciones.component';
 import { ActasService } from 'src/app/core/services/actas.service';
-import { CrearFacturasComponent } from './crear-facturas/crear-facturas.component';
+import { AsignarFacturaComponent } from './asignar-factura/asignar-factura.component';
 
 @Component({
   selector: 'app-lista-certificaciones',
@@ -102,7 +102,7 @@ export class ListaCertificacionesComponent implements OnInit {
     this.certificacionesForm.reset('', {emitEvent: false})
     this.newForm()
 
-    this.getAllCertificaciones();
+    this.getAllCertificacionesFiltro();
   };
 
 
@@ -180,7 +180,7 @@ export class ListaCertificacionesComponent implements OnInit {
   abrirModalCrearFactura(DATA?: any) {
     console.log('DATA_OC', DATA);
     this.dialog
-      .open(CrearFacturasComponent, { width: '45%', data: DATA })
+      .open(AsignarFacturaComponent, { width: '45%', data: DATA })
       .afterClosed().subscribe((resp) => {
         if (resp) {
           this.getAllCertificacionesFiltro();

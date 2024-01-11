@@ -138,7 +138,9 @@
               <td>{{ cert.moneda }}</td>
               <td style="color: #007bff;">{{ cert.usuarioActualiza.usuario }}</td>
               <td>{{ cert.estadoFactura     }}</td>
-              <td>{{ cert.estado.estado     }}</td>
+              <td class="moad-module">
+                <mat-icon matTooltip="Activo" [ngClass]="{ 'c-green_x': cert.estado.estadoId == 1, 'c-red': cert.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
+              </td>
               <td>{{ cert.fecha_creacion | date:'dd/MM/yy HH:mm' }}</td>
             </tr>
           </tbody>

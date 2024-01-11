@@ -74,7 +74,6 @@ export class ActaComponent implements OnInit {
         idSubservicio   : formaValues.idSubservicio,
         idEstado        : formaValues.idEstado,
         periodo         : this.actasForm.controls['periodo'].value? formaValues.periodo+'-01': '',
-        // periodo         : formaValues.periodo+'-01',
         montoMinimo     : formaValues.montoMinimo,
         montoMaximo     : formaValues.montoMaximo,
         idGestor        : formaValues.idGestor,

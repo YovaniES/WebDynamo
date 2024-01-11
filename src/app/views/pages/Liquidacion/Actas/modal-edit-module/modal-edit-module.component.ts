@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { Subscription } from 'rxjs';
 import { Menu } from 'src/app/core/models/menu.models';
-import { PermissionsService } from 'src/app/core/services/permissions.service';
 import Swal from 'sweetalert2';
 
 export interface changeResponse {
@@ -33,8 +31,7 @@ export class ModalEditModuleComponent implements OnInit {
     submenus: [],
   };
 
-  constructor( private permissionService: PermissionsService,
-               public dialogRef: MatDialogRef<ModalEditModuleComponent>,
+  constructor( public dialogRef: MatDialogRef<ModalEditModuleComponent>,
                @Inject(MAT_DIALOG_DATA)
     public data: {
       module    : Menu;
