@@ -151,19 +151,19 @@
                             <button
                               matTooltip="Eliminar"
                               class="icon-btn btn-trans b-fucsia"
-                              (click)="eliminarCertificacion(cert)">
+                              (click)="eliminarDetalleCertificacion(cert)">
                               <mat-icon class="icon-15">delete_forever</mat-icon>
                             </button>
                           </div>
                         </td>
                         <td>{{ cert.idDetalleCertificacion }}</td>
                         <td style="font-weight: 600"><small style="font-weight: 200; margin-right: 3px">S/</small>{{ cert.monto | number : "1.0-2" }}</td>
-                        <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.ordenCompra }}</td>
-                        <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.certificacion }}</td>
+                        <td>{{ cert.ordenCompra   }}</td>
+                        <td>{{ cert.certificacion }}</td>
                         <td>{{ cert.factura }}</td>
                         <td>{{ cert.fechaCertificacion | date:'dd/MM/yyyy'}}</td>
-                        <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.estado }}</td>
-                        <td><small style="font-weight: 200; margin-right: 3px"></small>{{ cert.usuarioCrea.usuario }}</td>
+                        <td>{{ cert.estado  }}</td>
+                        <td>{{ cert.usuarioCrea.usuario }}</td>
                       </tr>
                     </tbody>
                   </table>

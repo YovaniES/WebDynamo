@@ -9,7 +9,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { LiquidacionRoutingModule } from './Liquidacion-routing.module';
 import { ActaComponent } from './Actas/acta.component';
 import { MantenimientoComponent } from './Mantenimiento-liquidacion/mantenimiento.component';
-import { ModalEditModuleComponent } from './Actas/modal-edit-module/modal-edit-module.component';
 import { ListaGestorComponent } from './Mantenimiento-liquidacion/lista-gestor/lista-gestor.component';
 import { ModalGestorComponent } from './Mantenimiento-liquidacion/lista-gestor/modal-gestor/modal-gestor.component';
 import { ListaSubservicioComponent } from './Mantenimiento-liquidacion/lista-subservicio/lista-subservicio.component';
@@ -36,7 +35,6 @@ import { AsignarFacturaComponent } from './Mantenimiento-liquidacion/lista-certi
   declarations: [
     ActaComponent,
     MantenimientoComponent,
-    ModalEditModuleComponent,
     ModalGestorComponent,
     ListaGestorComponent,
     ListaSubservicioComponent,

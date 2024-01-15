@@ -5,6 +5,7 @@ import {
   API_CERTIFICACION_FILTRO,
   API_CLIENTE,
   API_CLIENTE_FILTRO,
+  API_DET_CERTIFICACION,
   API_ESTADOS_DET_ACTA,
   API_ESTADO_ACTA,
   API_ESTADO_FACTURAS,
@@ -24,6 +25,7 @@ import {
   API_PROYECTO,
   API_PROYECTO_FILTRO,
   API_SUBSERVICIO,
+  API_SUBSERVICIO_PROY,
   API_SUBSERV_COMBO,
   API_SUBSERV_FILTRO,
   PATH_IMPORT_LIQ,
@@ -366,6 +368,10 @@ export class LiquidacionService {
     return this.http.delete<any>(`${API_CERTIFICACION}/${idCert}`);
   }
 
+  eliminarDetalleCertificacion(idCert: number): Observable<any> {
+    return this.http.delete<any>(`${API_DET_CERTIFICACION}/${idCert}`);
+  }
+
   // SERVICES - SUBSERVICIOS
   getAllSubservicios() {
     return this.http.get(API_SUBSERVICIO);
@@ -374,6 +380,15 @@ export class LiquidacionService {
   getAllSubserviciosCombo() {
     return this.http.get(API_SUBSERV_COMBO).pipe(
       map((resp: any) => {
+        return resp.result
+      })
+    );
+  }
+
+  getAllSubserviciosFiltroByProy(params: any) {
+    return this.http.post(API_SUBSERVICIO_PROY, params).pipe(
+      map((resp: any) => {
+        // console.log('*>>', resp.result);
         return resp.result
       })
     );

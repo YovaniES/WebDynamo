@@ -84,7 +84,6 @@ export class ActaComponent implements OnInit {
     this.blockUI.stop();
 
       this.listActas = resp;
-      // this.ID_ACTA = resp.actaResponses.idActa;
       console.log('ACTAS-LIST-FILTRO', resp);
       console.log('ID_ACTA', this.ID_ACTA);
     })

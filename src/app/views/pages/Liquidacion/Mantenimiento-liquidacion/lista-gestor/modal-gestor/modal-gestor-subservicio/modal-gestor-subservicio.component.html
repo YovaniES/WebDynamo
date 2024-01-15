@@ -29,7 +29,7 @@
           <label>Subservicio <small style="color: red">*</small></label>
           <select formControlName="idSubservicio" class="cli-input_x">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="subs.id" *ngFor="let subs of listSubserviciosCombo">{{ subs.nombre }}</option>
+            <option [value]="subs.id" *ngFor="let subs of listSubserviciosFiltroByProy">{{ subs.nombre }}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio')">* Ingrese el Subservicio es obligatorio</small>
         </div>

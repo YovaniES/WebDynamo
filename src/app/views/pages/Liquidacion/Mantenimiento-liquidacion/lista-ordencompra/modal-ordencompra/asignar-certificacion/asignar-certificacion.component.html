@@ -3,9 +3,9 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male">{{ "Crear" }} Certificación</div>
+  <div class="cli-form-title c-male">{{ "Asignar" }} Certificación</div>
 
-  <form class="row g-3 mt-3" [formGroup]="facturaForm">
+  <form class="row g-3 mt-3" [formGroup]="certificacionForm">
     <div class="cli-form newvac-wrapper">
       <div class="row g-3">
         <div class="cli-form-element col-f-3">
@@ -70,8 +70,8 @@
         </button>
 
         <button class="cli-btn btn-m btn-turq"
-                [disabled]="facturaForm.invalid"
-                (click)="crearOactualizarFactura()"
+                [disabled]="certificacionForm.invalid"
+                (click)="crearOactualizarCertificacion()"
                 ><mat-icon class="icon-18">save</mat-icon> Crear
         </button>
       </div>

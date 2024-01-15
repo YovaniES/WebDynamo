@@ -73,7 +73,7 @@ export class ListaGestorComponent implements OnInit {
       this.blockUI.stop();
 
       this.listGestorCombo = resp
-      console.log('LIST-GESTOR-COMBO', this.listGestorCombo);
+      // console.log('LIST-GESTOR-COMBO', this.listGestorCombo);
     })
   }
 

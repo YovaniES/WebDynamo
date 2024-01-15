@@ -159,12 +159,12 @@ export class DetalleActasComponent implements OnInit {
     }
   };
 
-  eliminarCertificacion(cert: any){
-    console.log('DELETE_CERT', cert);
+  eliminarDetalleCertificacion(cert: any){
+    console.log('DELETE_DET_CERT', cert);
 
     Swal.fire({
-      title:'¿Eliminar certificación?',
-      text: `¿Estas seguro que deseas eliminar el certificación: ${cert.certificacion}?`,
+      title:'¿Eliminar detalle certificación?',
+      text: `¿Estas seguro que deseas eliminar el detalle certificación: ${cert.certificacion}?`,
       icon: 'question',
       confirmButtonColor: '#ec4756',
       cancelButtonColor: '#5ac9b3',
@@ -173,9 +173,9 @@ export class DetalleActasComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed){
-        this.liquidacionService.eliminarCertificacion(cert.idCertificacion).subscribe(resp => {
+        this.liquidacionService.eliminarDetalleCertificacion(cert.idDetalleCertificacion).subscribe(resp => {
           Swal.fire({
-            title: 'Eliminar certificación',
+            title: 'Eliminar detalle certificación',
             text: `${resp.message}`,
             icon: 'success',
           });

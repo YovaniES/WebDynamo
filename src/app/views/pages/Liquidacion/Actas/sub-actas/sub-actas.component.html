@@ -3,7 +3,7 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male mt-3">{{ DATA_ACTA ? "Actualizar" : "Crear" }} acta_</div>
+  <div class="cli-form-title c-male mt-3">{{ DATA_ACTA ? "Actualizar" : "Crear" }} acta</div>
 
   <form class="row g-3" [formGroup]="subActasForm">
     <div class="cli-form newvac-wrapper">
@@ -118,9 +118,8 @@
                     <table class="cli-table_x stripedtable underlinedtable">
                       <thead>
                         <tr class="bgc-blue-light c-white">
-                          <th style="min-width: 60px"></th>
-                          <th style="min-width: 80px">ID Decl.</th>
-                          <!-- <th>ID Acta</th> -->
+                          <th></th>
+                          <th style="min-width: 60px;">ID DECL.</th>
                           <th>Declarado</th>
                           <th>Proyecto</th>
                           <th>Periodo</th>
@@ -150,8 +149,7 @@
                               </button>
                             </div>
                           </td>
-                          <td>{{ declarado.idDeclarado }}</td>
-                          <!-- <td>{{ declarado.idActa }}</td> -->
+                          <td>{{ declarado.idDeclarado  }}</td>
                           <td style="font-weight: 600; text-align: right;"><small style="font-weight: 200; margin-right: 3px;">S/</small>{{ declarado.montoDeclarado | number : "1.0-2" }}</td>
                           <td>{{ declarado.proyecto     }}</td>
                           <td>{{ declarado.estado.estado}}</td>
@@ -203,7 +201,7 @@
 
                     <table class="cli-table_x stripedtable underlinedtable" *ngIf="listDetActas.length > 0" >
                       <thead>
-                        <tr class="bgc-blue c-white">
+                        <tr class="bgc-blue c-white" >
                           <th style="min-width: 60px"></th>
                           <th style="min-width: 80px;">N°</th>
                           <th>Analista</th>
@@ -211,7 +209,7 @@
                           <th style="min-width: 80px;">Precio unid.</th>
                           <th>Cantidad</th>
                           <th>Total</th>
-                          <th style="min-width: 140px">Estado</th>
+                          <th style="min-width: 140px" >Estado</th>
                           <th style="min-width: 120px;">Observaciones</th>
                           <th style="min-width: 100px;">Comentario</th>
                           <th>Unidad</th>

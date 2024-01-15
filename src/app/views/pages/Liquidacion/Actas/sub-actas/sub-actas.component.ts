@@ -54,7 +54,6 @@ export class SubActasComponent implements OnInit {
       venta_total  : [''],
       declarado    : [''],
       f_periodo    : [''],
-      periodoActual: [true],
       periodo      : [''],
       enlace       : [''],
       idEstado     : [''],
@@ -276,7 +275,7 @@ export class SubActasComponent implements OnInit {
         console.log('RESP_ACT_DECL', resp);
         if (resp) {
           this.cargarActaById();
-          this.actualizarSubActa();
+          // this.actualizarSubActa();
         }
       });
   }

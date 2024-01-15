@@ -28,6 +28,7 @@ export class VentaDeclaradaComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
+  this.cargarActaByVentaDeclarado();
   this.getAllProyecto();
   this.getAllEstadosActa();
   this.getUserID();
@@ -48,7 +49,40 @@ export class VentaDeclaradaComponent implements OnInit {
      idProyecto     : [''],
      isVisado       : ['']
     })
+  };
+
+  cargarActaByVentaDeclarado(){
+    if (this.DATA_VD.ACTA) {
+      this.ventadeclaradaForm.reset({
+        idProyecto    : this.DATA_VD.sub.idProyecto,
+        periodo       : this.DATA_VD.sub.periodo,
+        isVisado      : 0,
+        montoDeclarado: this.DATA_VD.sub.venta_total - this.DATA_VD.sub.declarado
+      })
+    }
   }
+  //
+
+  // dpf91_180(proy:string){
+  //   let sumaDpf = 0;
+  //     for (let i = 5; i < 8; i++) {
+  //       if (this.dataDPF(proy, -i)>0) {
+  //         sumaDpf = sumaDpf +  this.dataDPF(proy, -i)
+  //       }
+  //     }
+  //   return sumaDpf? sumaDpf: 0 ;
+  // }
+
+  // sumaDeclarados(){
+  //   let declarado = 0;
+
+  //   for (let i = 0; i < 4; i++) {
+
+  //     declarado = declarado + 4
+  //   }
+
+  //   return declarado;
+  // }
 
   crearOactualizarVD(){
     if (this.ventadeclaradaForm.invalid) {

@@ -37,9 +37,9 @@ export class AsignarCertificacionComponent implements OnInit {
     }
   }
 
-  facturaForm!: FormGroup;
+  certificacionForm!: FormGroup;
   newForm(){
-    this.facturaForm = this.fb.group({
+    this.certificacionForm = this.fb.group({
       nro_factura       : ['', Validators.required],
       idEstado          : ['', Validators.required],
       idCertificacion   : ['', Validators.required],
@@ -56,40 +56,40 @@ export class AsignarCertificacionComponent implements OnInit {
     this.blockUI.start("Cargando data_...");
     if (this.DATA_FACTURA) {
       this.blockUI.stop();
-      this.facturaForm.reset({
+      this.certificacionForm.reset({
         idCertificacion: this.DATA_FACTURA.idCertificacion,
         idEstado       : this.DATA_FACTURA.estado.idEstado
       })
     }
   }
 
-  crearOactualizarFactura(){
-    if (this.facturaForm.invalid) {
-      return Object.values(this.facturaForm.controls).forEach((controls) => {
+  crearOactualizarCertificacion(){
+    if (this.certificacionForm.invalid) {
+      return Object.values(this.certificacionForm.controls).forEach((controls) => {
         controls.markAllAsTouched();
       })
     }
     if (this.DATA_FACTURA.idCertificacion > 0 ) {
       console.log('CREATE');
-      this.crearFactura()
+      this.asignarCertificacion()
     } else {
       console.log('UPDATE');
-      this.actualizarFactura();
+      this.actualizarCertificacion();
     }
   }
 
-  actualizarFactura(){
-    const formValues = this.facturaForm.getRawValue();
+  actualizarCertificacion(){
+    const formValues = this.certificacionForm.getRawValue();
 
-    const requestLider = {
-      idCertificacion : this.DATA_FACTURA.idCertificacion,
-      idFactura       : this.DATA_FACTURA.idFactura,
-      idEstado        : this.DATA_FACTURA.eliminacion_logica,
-      descripcion     : formValues.descripcion,
-      usuario         : this.userID
+    const request = {
+      // idCertificacion : this.DATA_FACTURA.idCertificacion,
+      // idFactura       : this.DATA_FACTURA.idFactura,
+      // idEstado        : this.DATA_FACTURA.eliminacion_logica,
+      // descripcion     : formValues.descripcion,
+      // usuario         : this.userID
     }
 
-    this.liquidacionService.actualizarFactura(this.DATA_FACTURA.idCertificacion, requestLider).subscribe((resp: any) => {
+    this.liquidacionService.actualizarFactura(this.DATA_FACTURA.idCertificacion, request).subscribe((resp: any) => {
       if (resp.success) {
           Swal.fire({
             title: 'Actualizar factura!',
@@ -102,17 +102,17 @@ export class AsignarCertificacionComponent implements OnInit {
     })
   };
 
-  crearFactura(): void{
-    const formValues = this.facturaForm.getRawValue();
+  asignarCertificacion(): void{
+    const formValues = this.certificacionForm.getRawValue();
 
     const request = {
-      nro_factura       : formValues.nro_factura,
-      idEstado          : formValues.idEstado,
-      idCertificacion   : this.DATA_FACTURA.idCertificacion,
-      fecha_facturacion : formValues.fecha_facturacion,
-      factura_tgs       : formValues.factura_tgs,
-      factura_adquira   : formValues.factura_adquira,
-      idUsuarioCreacion : this.userID,
+      // nro_factura       : formValues.nro_factura,
+      // idEstado          : formValues.idEstado,
+      // idCertificacion   : this.DATA_FACTURA.idCertificacion,
+      // fecha_facturacion : formValues.fecha_facturacion,
+      // factura_tgs       : formValues.factura_tgs,
+      // factura_adquira   : formValues.factura_adquira,
+      // idUsuarioCreacion : this.userID,
     }
 
     this.liquidacionService.crearFactura(request).subscribe((resp: any) => {
@@ -165,7 +165,7 @@ export class AsignarCertificacionComponent implements OnInit {
   };
 
   campoNoValido(campo: string): boolean {
-    if (this.facturaForm.get(campo)?.invalid && this.facturaForm.get(campo)?.touched ) {
+    if (this.certificacionForm.get(campo)?.invalid && this.certificacionForm.get(campo)?.touched ) {
       return true;
     } else {
       return false;

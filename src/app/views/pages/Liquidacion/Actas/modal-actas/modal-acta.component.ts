@@ -251,7 +251,7 @@ export class ModalActaComponent implements OnInit {
   listSubserviciosCombo:any[] = [];
   getAllSubserviciosCombo(){
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
-      this.listSubserviciosCombo = resp.result;
+      this.listSubserviciosCombo = resp;
       // console.log('SUBSERV', this.listSubservicios);
     })
   };

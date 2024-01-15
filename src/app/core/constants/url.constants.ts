@@ -34,7 +34,7 @@ switch (ENVIROMENT) {
   default:
     break;
 }
-
+// https://facturaciondynamo2.azurewebsites.net/api/Subservicio/SubservicioProyecto
 
 // LOGIN
 export const AUTH_SESSION = AUTH_API + 'login';
@@ -49,6 +49,7 @@ export const API_SUBSERV_COMBO        = BASE_LIQUIDACION + 'Subservicio/Subservi
 export const API_SUBSERV_FILTRO       = BASE_LIQUIDACION + 'Subservicio/GetAllSubservicio';
 export const API_SUBSERVICIO          = BASE_LIQUIDACION + 'Subservicio';
 export const API_SUBSERVICIO_COMBO    = BASE_LIQUIDACION + 'Subservicio/SubservicioListado';
+export const API_SUBSERVICIO_PROY     = BASE_LIQUIDACION + 'Subservicio/SubservicioProyecto';
 export const API_ACTAS                = BASE_LIQUIDACION + 'acta/';
 export const API_ACTAS_FILTRO         = BASE_LIQUIDACION + 'acta/GetAllActas';
 export const API_ORDEN_COMPRA         = BASE_LIQUIDACION + 'OrdenCompra';

@@ -68,12 +68,12 @@
                   </div>
 
                   <div class="cli-form-element col-f-2">
-                    <label>Comentario</label>
+                    <label>Comentario acta</label>
                     <textarea
                       class="cli-input_x"
                       style="background-image: none;border-color: #bdbdbd;font-size: 12px;"
                       rows="1"
-                      placeholder="Escriba algún comentario del Sub Acta..."
+                      placeholder="Escriba algún comentario del Acta..."
                       formControlName="comentario"
                     ></textarea>
                   </div>
@@ -134,7 +134,7 @@
                               <label>Unid. Moneda</label>
                               <select formControlName="moneda" class="cli-input">
                                 <option [value]="0" disabled>-Seleccione-</option>
-                                <option value='PEN'>PEN</option>
+                                <option value='PEN'  >PEN</option>
                                 <option value='Otros'>Otros</option>
                               </select>
                             </div>
@@ -150,7 +150,7 @@
                               ></textarea>
                             </div>
 
-                            <div class="cli-form-element col-f-2"           >
+                            <!-- <div class="cli-form-element col-f-2"           >
                               <label>Comentario</label>
                               <textarea
                                 class="cli-input"
@@ -159,7 +159,7 @@
                                 placeholder="Escriba algún comentario del detalle acta..."
                                 formControlName="comentarioDet"
                               ></textarea>
-                            </div>
+                            </div> -->
                         </ng-container>
                       </div>
                   </div>
@@ -184,7 +184,7 @@
           </div>
       </div>
 
-      <div class="card" style="padding: 10px; min-height: 548px; border: none;" *ngIf="activeTab == 'importar'">
+      <div class="card" style="padding: 10px; min-height: 490px; border: none;" *ngIf="activeTab == 'importar'">
         <div style="display: flex" class="mt-4 mb-1">
           <input type="file" class="cli-import"
           accept=".xlsx, .xls, .csv"

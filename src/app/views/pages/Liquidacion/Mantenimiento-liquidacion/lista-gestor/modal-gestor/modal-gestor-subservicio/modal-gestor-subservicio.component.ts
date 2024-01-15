@@ -27,27 +27,27 @@ export class ModalGestorSubservicioComponent implements OnInit {
             {};
 
   ngOnInit(): void {
-  this.newForm()
-  this.getUserID();
-  this.getAllProyecto();
-  this.getListGestorCombo();
-  this.getAllSubserviciosCombo();
-  this.cargarDataGestor();
-  console.log('DATA_GESTOR_SUB', this.DATA_GESTOR_SUB);
-  this.gestorSubservicioForm.controls['idGestor'].disable();
+    this.newForm()
+    this.getUserID();
+    this.getAllProyecto();
+    this.getListGestorCombo();
+    this.cargarDataGestor();
+    console.log('DATA_GESTOR_SUB', this.DATA_GESTOR_SUB);
+    this.gestorSubservicioForm.controls['idGestor'].disable();
+    this.getAllSubserviciosFiltroByProy();
 
-  if (this.DATA_GESTOR_SUB.idProyectoSubservicioGestor > 0) {
-    this.cargarGestorSubservicioById();
-    }
-  };
+    if (this.DATA_GESTOR_SUB.idProyectoSubservicioGestor > 0) {
+      this.cargarGestorSubservicioById();
+      }
+    };
 
   gestorSubservicioForm!: FormGroup;
   newForm(){
     this.gestorSubservicioForm = this.fb.group({
-     idSubservicio     : ['', Validators.required],
-     idGestor          : ['', Validators.required],
-     idProyecto        : ['', Validators.required],
-     fecha_creacion    : [''],
+     idSubservicio : ['', Validators.required],
+     idGestor      : ['', Validators.required],
+     idProyecto    : ['', Validators.required],
+     fecha_creacion: [''],
     })
   };
 
@@ -135,6 +135,20 @@ export class ModalGestorSubservicioComponent implements OnInit {
     }
   };
 
+  existeGestorSeleccionado(e: Event){
+    let selectGestor = false;
+
+    console.log('EVENT', e.target);
+
+
+    // const gestor =
+    // if (gestor) {
+
+    // }
+
+    // return
+  }
+
   cargarDataGestor(){
     this.gestorSubservicioForm.reset({
       idGestor      : this.DATA_GESTOR_SUB.idGestor,
@@ -143,19 +157,37 @@ export class ModalGestorSubservicioComponent implements OnInit {
     })
   }
 
-  listSubserviciosCombo:any[] = [];
-  getAllSubserviciosCombo(){
-    this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
-      this.listSubserviciosCombo = resp;
-      console.log('SUBSERV', this.listSubserviciosCombo);
+  // listSubserviciosCombo:any[] = [];
+  // getAllSubserviciosCombo(){
+  //   this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
+  //     this.listSubserviciosCombo = resp;
+  //     console.log('SUBSERV', this.listSubserviciosCombo);
+  //   })
+  // };
+
+  listSubserviciosFiltroByProy:any[] = [];
+  getAllSubserviciosFiltroByProy(){
+    const idProy = this.gestorSubservicioForm.controls['idProyecto'].value;
+    console.log('ID_PROY', idProy, this.gestorSubservicioForm.controls['idProyecto'].value);
+    const request = {
+      idProyecto: 96
+    }
+    this.liquidacionService.getAllSubserviciosFiltroByProy(request).subscribe((resp: any) => {
+      this.listSubserviciosFiltroByProy = resp;
+      console.log('SUBSERV_BY_PROY==>', this.listSubserviciosFiltroByProy);
     })
   };
+
 
   listProyectos: any[] = [];
   getAllProyecto(){
     this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
       this.listProyectos = resp;
       console.log('PROY', this.listProyectos);
+    console.log('ID_PROY',  this.gestorSubservicioForm.controls['idProyecto'].value);
+
+
+      this.getAllSubserviciosFiltroByProy();
     })
   }
 
