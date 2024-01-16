@@ -100,13 +100,13 @@ export class ModalGestorComponent implements OnInit {
     const formValues = this.gestorForm.getRawValue();
 
     const requestGestor = {
-      idGestor           : this.DATA_GESTOR.idGestor,
-      nombres            : formValues.nombres,
-      apellidos          : formValues.apellidos,
-      correo             : formValues.correo,
-      fechaInicio        : formValues.fecha_ini,
-      fechaFin           : formValues.fecha_fin,
-      idUsuarioActualiza : this.userID,
+      idGestor          : this.DATA_GESTOR.idGestor,
+      nombres           : formValues.nombres,
+      apellidos         : formValues.apellidos,
+      correo            : formValues.correo,
+      fechaInicio       : formValues.fecha_ini,
+      fechaFin          : formValues.fecha_fin,
+      idUsuarioActualiza: this.userID,
     }
 
     this.liquidacionService.actualizarGestor(this.DATA_GESTOR.idGestor, requestGestor).subscribe((resp: any) => {
@@ -149,8 +149,14 @@ export class ModalGestorComponent implements OnInit {
           icon: 'success',
           confirmButtonText: 'Ok'
         })
-
         this.close(true);
+      }else{
+        Swal.fire({
+          title: 'ERROR!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok'
+        })
       }
     })
   };

@@ -39,12 +39,13 @@
 
                   <div class="cli-form-element col-f-3">
                     <div class="form-group">
-                      <label>Fecha inicio</label>
+                      <label>Fecha inicio <small style="color: red">*</small></label>
                        <input
                         style="padding: 0.175rem .75rem;"
                         type="date"
                         class="form-control"
                         formControlName="fecha_ini"/>
+                      <small class="form-text text-alert" *ngIf="campoNoValido('fecha_ini')">* Ingrese los Apellidos es obligatorio</small>
                     </div>
                   </div>
 

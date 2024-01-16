@@ -58,8 +58,9 @@
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Certificado</label>
+              <label>Monto certificado(s)</label>
               <input class="cli-input_x"
+                style="text-align: center;"
                 formControlName="certificado"
                 type="number"/>
             </div>
@@ -114,7 +115,7 @@
               <div style="background-color: #f6f3f3">
                 <button
                   class="btn-asignar btn-grey mb-1"
-                  matTooltip="Agregar certificación"
+                  matTooltip="Certificar detalle"
                   type="submit"
                   (click)="abrirCertificacion(DATA_DET_ACTAS)">
                   <mat-icon class="icon-18">add</mat-icon>

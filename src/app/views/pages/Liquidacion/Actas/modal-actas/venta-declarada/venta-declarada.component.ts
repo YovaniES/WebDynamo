@@ -164,7 +164,7 @@ export class VentaDeclaradaComponent implements OnInit {
     })
   }
 
-  actionBtn: string = 'Crear'
+  actionBtn: string = 'Declarar'
   cargarVentaDeclaradaById(): void {
     console.log('ID_VD', this.DATA_VD.ACTA.idDeclarado);
 

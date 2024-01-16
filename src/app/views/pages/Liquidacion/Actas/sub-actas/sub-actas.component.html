@@ -56,6 +56,7 @@
                  <input
                   type="month"
                   class="cli-input_x"
+                  style="text-align: center;"
                   formControlName="periodo"/>
             </div>
 
@@ -74,13 +75,13 @@
 
             <div class="cli-form-element col-f-4">
               <label>Venta total</label>
-              <input class="cli-input_x" formControlName="venta_total" type="text" />
+              <input class="cli-input_x" style="text-align: center;" formControlName="venta_total" type="text" />
               <small class="form-text text-alert" *ngIf="campoNoValido('venta_total')">* Ingrese la Venta total es obligatorio</small>
             </div>
 
             <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
               <label>Declarado</label>
-              <input class="cli-input_x" formControlName="declarado" type="text" />
+              <input class="cli-input_x" style="text-align: center;" formControlName="declarado" type="text" />
             </div>
 
             <div class="cli-form-element col-f-2"               >
@@ -106,7 +107,7 @@
                 <div style="background-color: #f6f3f3">
                   <button
                     class="btn-asignar btn-grey mb-1"
-                    matTooltip="Agregar venta declarada"
+                    matTooltip="Declarar venta"
                     type="submit"
                     (click)="abrirVentaDeclarada(DATA_ACTA.idActa)">
                     <mat-icon class="icon-18">add</mat-icon>

@@ -127,6 +127,8 @@ export class ActaComponent implements OnInit {
   getListGestorCombo(){
     this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
       this.listGestoresCombo = resp;
+      console.log('GESTOR_COMBO', this.listGestoresCombo);
+
     })
   }
 
@@ -134,7 +136,7 @@ export class ActaComponent implements OnInit {
   getAllSubserviciosCombo(){
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
       this.listSubserviciosCombo = resp;
-      // console.log('SUBSERV', this.listSubservicios);
+      console.log('SUBSERV', this.listSubserviciosCombo);
     })
   };
 

@@ -33,11 +33,9 @@ export class ModalGestorSubservicioComponent implements OnInit {
     this.getListGestorCombo();
     this.cargarDataGestor();
     console.log('DATA_GESTOR_SUB', this.DATA_GESTOR_SUB);
-    this.gestorSubservicioForm.controls['idGestor'].disable();
-    // this.getAllSubserviciosFiltroByProy();
 
     if (this.DATA_GESTOR_SUB.idProyectoSubservicioGestor > 0) {
-      // this.cargarGestorSubservicioById();
+      this.cargarGestorSubservicioById();
       }
     };
 
@@ -112,7 +110,7 @@ export class ModalGestorSubservicioComponent implements OnInit {
     })
   };
 
-  actionBtn: string = 'Crear'
+  actionBtn: string = 'Asociar'
   cargarGestorSubservicioById(): void {
     this.blockUI.start('Cargando data ...');
 
@@ -127,7 +125,7 @@ export class ModalGestorSubservicioComponent implements OnInit {
           idGestor      : gestor.idGestor,
           idSubservicio : gestor.idSubservicio,
           idProyecto    : gestor.idProyecto,
-          fecha_creacion: moment.utc(gestor.fecha_creacion).format('YYYY-MM-DD'),
+          // fecha_creacion: moment.utc(gestor.fecha_creacion).format('YYYY-MM-DD'),
         })
         this.gestorSubservicioForm.controls['fecha_creacion'].disable();
         this.gestorSubservicioForm.controls['idGestor'      ].disable();

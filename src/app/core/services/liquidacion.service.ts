@@ -141,7 +141,7 @@ export class LiquidacionService {
   getAllProyectosCombo() {
     return this.http.get(API_PROYECTO).pipe(
       map((resp: any) => {
-        return resp.result;
+        return resp.result.filter((x:any) => x.estado.estadoId == 1);
       })
     );
   }
@@ -380,7 +380,7 @@ export class LiquidacionService {
   getAllSubserviciosCombo() {
     return this.http.get(API_SUBSERV_COMBO).pipe(
       map((resp: any) => {
-        return resp.result
+        return resp.result.filter((x:any) => x.isActive == 1)
       })
     );
   }

@@ -52,31 +52,6 @@ export class ListaGestorComponent implements OnInit {
     })
   }
 
-  listGestores: any[] = [];
-  getAllGestorFiltro(){
-    this.blockUI.start('Cargando lista Gestores...');
-    const request: FiltroGestorModel = this.gestorForm.value;
-
-    this.liquidacionService.getAllGestorFiltro(request).subscribe((resp: any) => {
-      this.blockUI.stop();
-
-      this.listGestores = resp
-      console.log('LIST-GESTOR', this.listGestores);
-    })
-  }
-
-
-  listGestorCombo: any[] = [];
-  getAllGestorCombo(){
-    this.blockUI.start('Cargando lista Gestores...');
-    this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
-      this.blockUI.stop();
-
-      this.listGestorCombo = resp
-      // console.log('LIST-GESTOR-COMBO', this.listGestorCombo);
-    })
-  }
-
   eliminarGestor(gestor: any,){
     console.log('DEL_GESTOR', gestor);
 
@@ -103,6 +78,30 @@ export class ListaGestorComponent implements OnInit {
       };
     });
   };
+
+  listGestores: any[] = [];
+  getAllGestorFiltro(){
+    this.blockUI.start('Cargando lista Gestores...');
+    const request: FiltroGestorModel = this.gestorForm.value;
+
+    this.liquidacionService.getAllGestorFiltro(request).subscribe((resp: any) => {
+      this.blockUI.stop();
+
+      this.listGestores = resp
+      console.log('LIST-GESTOR', this.listGestores);
+    })
+  };
+
+  listGestorCombo: any[] = [];
+  getAllGestorCombo(){
+    this.blockUI.start('Cargando lista Gestores...');
+    this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
+      this.blockUI.stop();
+
+      this.listGestorCombo = resp
+      // console.log('LIST-GESTOR-COMBO', this.listGestorCombo);
+    })
+  }
 
   listProyectos: any[] = [];
   getAllProyecto(){

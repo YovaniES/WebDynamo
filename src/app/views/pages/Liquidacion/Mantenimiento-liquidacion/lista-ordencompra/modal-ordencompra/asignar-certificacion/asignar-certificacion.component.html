@@ -3,7 +3,7 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male">{{ "Asignar" }} Certificación</div>
+  <div class="cli-form-title c-male" style="margin-bottom: 20px; color: #adadad; font-size: 18px;">{{ "Asignar" }} Certificación</div>
 
   <form class="row g-3 mt-3" [formGroup]="certificacionForm">
     <div class="cli-form newvac-wrapper">
@@ -63,7 +63,7 @@
           </div>
       </div>
 
-      <div class="cli-form-buttons" style="margin-top: 8%">
+      <div class="cli-form-buttons">
         <button class="cli-btn btn-m btn-regresar"
                 type="submit" (click)="close()">
                 <mat-icon class="icon-18">cancel</mat-icon> Cancelar
@@ -72,7 +72,7 @@
         <button class="cli-btn btn-m btn-turq"
                 [disabled]="certificacionForm.invalid"
                 (click)="crearOactualizarCertificacion()"
-                ><mat-icon class="icon-18">save</mat-icon> Crear
+                ><mat-icon class="icon-18">save</mat-icon> Asignar
         </button>
       </div>
     </div>

@@ -43,7 +43,7 @@ export class ModalSubservicioComponent implements OnInit {
   newForm(){
     this.subservicioForm = this.fb.group({
      subservicio   : ['', Validators.required],
-     gestor        : ['', Validators.required],
+     representante : [''],
      proyecto      : ['', Validators.required],
      fecha_creacion: [''],
      fecha_ini     : [''],
@@ -73,7 +73,7 @@ export class ModalSubservicioComponent implements OnInit {
     const request = {
       idProyecto      : formValues.proyecto,
       nombre          : formValues.subservicio,
-      idRepresentante : formValues.gestor,
+      idRepresentante : formValues.representante,
       idUsuarioCrea   : this.userID,
       fechaInicio     : formValues.fecha_ini,
       fechaFin        : formValues.fecha_fin,
@@ -98,7 +98,7 @@ export class ModalSubservicioComponent implements OnInit {
     const requestSubservicio = {
       idProyecto        : formValues.proyecto,
       nombre            : formValues.subservicio,
-      representante     : formValues.gestor,
+      representante     : formValues.representante,
       idUsuarioActualiza: this.userID,
       fechaInicio       : formValues.fecha_ini,
       fechaFin          : formValues.fecha_fin,
@@ -135,7 +135,7 @@ export class ModalSubservicioComponent implements OnInit {
 
         this.subservicioForm.reset({
           subservicio   : subserv.subservicio,
-          gestor        : subserv.representante,
+          representante : subserv.representante,
           fecha_ini     : subserv.fechaInicio,
           fecha_creacion: moment.utc(subserv.fechaCreacion).format('YYYY-MM-DD'),
           fecha_fin     : subserv.fechaFin,
