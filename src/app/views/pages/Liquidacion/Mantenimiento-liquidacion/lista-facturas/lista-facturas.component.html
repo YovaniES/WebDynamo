@@ -27,7 +27,7 @@
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Certificación <small style="color: red">*</small></label>
+              <label>Certificación</label>
               <select formControlName="certificacion" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.nro_certificacion" *ngFor="let proy of listCertificaciones">{{proy.nro_certificacion}}</option>
@@ -132,7 +132,7 @@
               <td>{{ factura.factura_tgs }}</td>
               <td>{{ factura.factura_adquira }}</td>
               <td style="text-align: left;">{{ factura.estado.estado_facturacion }}</td>
-              <td>{{ factura.usuarioActualiza.username }}</td>
+              <td style="color: #007bff;">{{ factura.usuarioActualiza.username }}</td>
               <td>{{ factura.fecha_creacion | date:'dd/MM/yyyy'}}</td>
             </tr>
           </tbody>

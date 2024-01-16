@@ -4,11 +4,11 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
-import { DetalleActasComponent } from './detalle-actas/detalle-actas.component';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UtilService } from 'src/app/core/services/util.service';
-import { VentaDeclaradaComponent } from './venta-declarada/venta-declarada.component';
+import { VentaDeclaradaComponent } from '../modal-actas/venta-declarada/venta-declarada.component';
+import { DetalleActasComponent } from '../modal-actas/detalle-actas/detalle-actas.component';
 
 @Component({
   selector: 'app-sub-actas',

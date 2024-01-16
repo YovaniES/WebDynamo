@@ -23,12 +23,12 @@ import { ModalEstadosComponent } from './Mantenimiento-liquidacion/lista-estados
 import { ListaCertificacionesComponent } from './Mantenimiento-liquidacion/lista-certificaciones/lista-certificaciones.component';
 import { ModalCertificacionesComponent } from './Mantenimiento-liquidacion/lista-certificaciones/modal-certificaciones/modal-certificaciones.component';
 import { SubActasComponent } from './Actas/sub-actas/sub-actas.component';
-import { DetalleActasComponent } from './Actas/sub-actas/detalle-actas/detalle-actas.component';
-import { VentaDeclaradaComponent } from './Actas/sub-actas/venta-declarada/venta-declarada.component';
-import { ModalCertificacionComponent } from './Actas/sub-actas/detalle-actas/modal-certificacion/modal-certificacion.component';
 import { ModalGestorSubservicioComponent } from './Mantenimiento-liquidacion/lista-gestor/modal-gestor/modal-gestor-subservicio/modal-gestor-subservicio.component';
 import { AsignarCertificacionComponent } from './Mantenimiento-liquidacion/lista-ordencompra/modal-ordencompra/asignar-certificacion/asignar-certificacion.component';
 import { AsignarFacturaComponent } from './Mantenimiento-liquidacion/lista-certificaciones/asignar-factura/asignar-factura.component';
+import { DetalleActasComponent } from './Actas/modal-actas/detalle-actas/detalle-actas.component';
+import { VentaDeclaradaComponent } from './Actas/modal-actas/venta-declarada/venta-declarada.component';
+import { ModalCertificacionComponent } from './Actas/modal-actas/detalle-actas/modal-certificacion/modal-certificacion.component';
 
 
 @NgModule({

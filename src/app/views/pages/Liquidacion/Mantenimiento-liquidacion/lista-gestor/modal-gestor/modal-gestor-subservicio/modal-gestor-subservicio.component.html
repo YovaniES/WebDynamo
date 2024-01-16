@@ -3,7 +3,7 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male" style="margin-bottom: 20px; color: #adadad; font-size: 18px;">{{ DATA_GESTOR_SUB.idProyectoSubservicioGestor ? "Actualizar" : "Crear" }} gestor subservicio</div>
+  <div class="cli-form-title c-male" style="margin-bottom: 20px; color: #adadad; font-size: 18px;">{{ DATA_GESTOR_SUB.idProyectoSubservicioGestor ? "Actualizar" : "Asociar" }} gestor con subservicio</div>
 
   <form class="row g-3" [formGroup]="gestorSubservicioForm">
     <div class="cli-form newvac-wrapper">
@@ -18,20 +18,21 @@
 
         <div class="cli-form-element col-f-3">
           <label>Proyecto <small style="color: red">*</small></label>
-          <select formControlName="idProyecto" class="cli-input">
+          <select formControlName="idProyecto" class="cli-input" (change)="getAllSubserviciosFiltroByProy()">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('idProyecto')">* Ingrese el Proyecto es obligatorio</small>
         </div>
 
-        <div class="cli-form-element col-f-3">
+        <div class="cli-form-element col-f-3" >
           <label>Subservicio <small style="color: red">*</small></label>
           <select formControlName="idSubservicio" class="cli-input_x">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="subs.id" *ngFor="let subs of listSubserviciosFiltroByProy">{{ subs.nombre }}</option>
           </select>
-          <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio')">* Ingrese el Subservicio es obligatorio</small>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio') && listSubserviciosFiltroByProy.length > 0">* Seleccione el Subservicio es obligatorio</small>
+          <small class="form-text text-alert" *ngIf="listSubserviciosFiltroByProy.length == 0 && gestorSubservicioForm.controls['idProyecto'].value">* El proyecto no tiene Subservicio...</small>
         </div>
 
         <ng-container *ngIf="!DATA_GESTOR_SUB">

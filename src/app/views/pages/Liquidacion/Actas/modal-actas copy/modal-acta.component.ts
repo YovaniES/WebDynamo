@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ActasService } from 'src/app/core/services/actas.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 import { Detalle } from 'src/app/core/models/actas.models';
+import { UtilService } from 'src/app/core/services/util.service';
+import { VentaDeclaradaComponent } from './venta-declarada/venta-declarada.component';
+import { DetalleActasComponent } from './detalle-actas/detalle-actas.component';
 
 @Component({
   selector: 'app-modal-acta',
@@ -26,8 +29,11 @@ export class ModalActaComponent implements OnInit {
   constructor( private fb: FormBuilder,
                private authService: AuthService,
                private actasService: ActasService,
+               private utilService: UtilService,
                private liquidacionService: LiquidacionService,
                public dialogRef: MatDialogRef<ModalActaComponent>,
+               private dialog: MatDialog,
+               @Inject(MAT_DIALOG_DATA) public DATA_ACTA: any
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +43,12 @@ export class ModalActaComponent implements OnInit {
     this.getAllProyecto();
     this.getAllSubserviciosCombo();
 
+    if (this.DATA_ACTA) {
+      console.log('DATA_ACTA_', this.DATA_ACTA);
+
+      this.cargarActaById();
+      this.getAllEstadosDetActa();
+      }
   }
 
   actasForm!: FormGroup;
@@ -48,15 +60,17 @@ export class ModalActaComponent implements OnInit {
       periodo          : ['', Validators.required],
       venta_total      : ['', Validators.required],
       comentario       : [''],
+      // idEstado         : [''],
       enlaceActa       : [''],
+      declarado        : [''],
       idUsuarioCreacion: [''],
       import           : [''],
       detalleActaParams: this.fb.group({
-        analista       : ['', Validators.required],
+        analista       : ['',     ],
         cantidad       : [''],
         precio_unidad  : [''],
-        precio_total   : ['', Validators.required],
-        perfil         : ['', Validators.required],
+        precio_total   : ['',     ],
+        perfil         : ['',     ],
         observacion    : [''],
         moneda         : [''],
         comentarioDet  : [''],
@@ -74,7 +88,7 @@ export class ModalActaComponent implements OnInit {
     this.importarActas(formData);
   }
 
-  listDetActas: Detalle[] = [];
+  listDetActasImportado: Detalle[] = [];
   importarActas(formData: FormData){
     this.actasService.importarActas(formData).subscribe((resp: any) => {
       this.blockUI.stop();
@@ -83,8 +97,8 @@ export class ModalActaComponent implements OnInit {
 
         let acta = resp.result;
 
-        this.listDetActas = acta.detalleActas;
-        console.log('IMP_DET', this.listDetActas);
+        this.listDetActasImportado = acta.detalleActas;
+        console.log('IMP_DET', this.listDetActasImportado);
         console.log('IMP_ACTAS', acta);
 
           this.actasForm.reset({
@@ -103,6 +117,52 @@ export class ModalActaComponent implements OnInit {
           icon : 'warning',
           confirmButtonText: 'Ok'
         })
+      }
+    })
+  };
+
+
+  crearOactualizarActa(){
+    if (this.actasForm.invalid) {
+      return Object.values(this.actasForm.controls).forEach((controls) => {
+        controls.markAllAsTouched();
+      })
+    }
+    if (this.DATA_ACTA.idActa ) {
+        console.log('UPD_ACTA');
+        this.actualizarActa();
+    } else {
+      console.log('CREAR_ACTA');
+      this.crearAgrupacionConActa();
+    }
+  }
+
+  actualizarActa(){
+    const formValues = this.actasForm.getRawValue();
+
+    const requestSubActa = {
+      idActa       : this.DATA_ACTA.idActa,
+      idGestor     : formValues.idGestor,
+      idProyecto   : formValues.idProyecto,
+      idSubservicio: formValues.subservicio,
+      periodo      : this.utilService.generarPeriodo(formValues.periodo),
+      venta_total  : formValues.venta_total,
+      comentario   : formValues.comentario,
+      idEstado     : formValues.idEstado,
+      enlace_acta  : formValues.enlace,
+      idUsuario    : this.userID,
+    }
+
+    this.actasService.actualizarActa(this.DATA_ACTA.idActa, requestSubActa).subscribe((resp: any) => {
+
+      if (resp.success) {
+        Swal.fire({
+          title: 'Actualizar Acta.!',
+          text : `${resp.message}`,
+          icon : 'success',
+          confirmButtonText: 'Ok',
+        });
+        this.close(true);
       }
     })
   };
@@ -176,8 +236,46 @@ export class ModalActaComponent implements OnInit {
           })
         }
       })
-
   }
+
+  listDetActas: any[] = [];
+  listDeclarados: any[] = [];
+  actionBtn: string = 'Crear';
+  cargarActaById(): void{
+    this.blockUI.start("Cargando acta y su detalle...");
+    if (this.DATA_ACTA) {
+      this.actionBtn = 'Actualizar'
+      this.actasService.getActaById(this.DATA_ACTA.idActa).subscribe((acta: any) => {
+        this.blockUI.stop();
+        console.log('DATA_BY_ID_ACTA', acta);
+
+        this.listDetActas   = acta.detalleActas;
+        this.listDeclarados = acta.actaDeclarados;
+
+        this.actasForm.reset({
+          comentario        : acta.comentario,
+          declarado         : acta.declaradoTotalActa,
+          enlace            : acta.enlaceActa,
+          facturadoTotalActa: acta.facturadoTotalActa,
+          gestor            : acta.gestor,
+          idActa            : acta.idActa,
+          idEstado          : acta.idEstado,
+          idGestor          : acta.idGestor,
+          idProyecto        : acta.idProyecto,
+          subservicio       : acta.idSubservicio,
+          pendiente         : acta.pendiente,
+          periodo           : acta.periodo,
+          venta_total       : acta.ventaTotalActa,
+        })
+
+        // this.subActasForm.controls['idGestor'  ].disable();
+        this.actasForm.controls['idProyecto' ].disable();
+        this.actasForm.controls['declarado'  ].disable();
+        // this.actasForm.controls['venta_total'].disable();
+        // this.actasForm.controls['periodo'   ].disable();
+      })
+    }
+  };
 
   crearAgrupacionConActa(){
     const formValues = this.actasForm.getRawValue();
@@ -222,7 +320,59 @@ export class ModalActaComponent implements OnInit {
         })
       }
     })
+  };
+
+  eliminarDetalleActa(detalle: any){
+    console.log('DEL_DET_ACTA', detalle);
+
+    Swal.fire({
+      title: '¿Eliminar detalle acta?',
+      text: `¿Estas seguro que deseas eliminar el detalle acta: ${detalle.idDetalleActaConcat}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.actasService.eliminarDetActa(detalle.idDetalleActa).subscribe((resp) => {
+            Swal.fire({
+              title: 'Eliminar detalle acta',
+              text: `${detalle.idDetalleActaConcat}: ${resp.message} exitosamente`,
+              icon: 'success',
+            });
+            this.cargarActaById();
+          });
+      }
+    });
   }
+
+  eliminarVentaDeclarada(declarado: any) {
+    console.log('DEL_VD', declarado);
+
+    Swal.fire({
+      title: '¿Eliminar venta declarada?',
+      text: `¿Estas seguro que deseas eliminar la venta declarada: ${declarado.montoDeclarado}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.actasService.eliminarVentaDeclarado(declarado.idDeclarado).subscribe((resp) => {
+            Swal.fire({
+              title: 'Eliminar venta declarada',
+              text: `${declarado.montoDeclarado}: ${resp.message} exitosamente`,
+              icon: 'success',
+            });
+            this.cargarActaById();
+          });
+      }
+    });
+  };
 
   userID: number = 0;
   getUserID(){
@@ -231,8 +381,6 @@ export class ModalActaComponent implements OnInit {
     //  console.log('ID-USER', this.userID);
    })
   }
-
-  eliminarDetalleActa(){}
 
   listGestoresCombo: any[] = [];
   getListGestorCombo(){
@@ -253,6 +401,14 @@ export class ModalActaComponent implements OnInit {
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
       this.listSubserviciosCombo = resp;
       // console.log('SUBSERV', this.listSubservicios);
+    })
+  };
+
+  listEstadoDetActa: any[] = [];
+  getAllEstadosDetActa(){
+    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
+      this.listEstadoDetActa = resp;
+      console.log('EST_ACTA', this.listEstadoDetActa);
     })
   };
 
@@ -284,6 +440,30 @@ export class ModalActaComponent implements OnInit {
       return false;
     }
   };
+
+  crearOactualizarDetActa(DATA?: any) {
+    console.log('DATA_DET_ACTA', DATA);
+    this.dialog
+      .open(DetalleActasComponent, { width: '55%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        console.log('RESP_DET_ACT', resp);
+        if (resp) {
+          this.cargarActaById();
+        }
+      });
+  }
+
+  abrirVentaDeclarada(ACTA?: any) {
+    console.log('DATA_ACTA', ACTA);
+    this.dialog
+      .open(VentaDeclaradaComponent, { width: '55%', data: {ACTA, sub: this.actasForm.getRawValue() } })
+      .afterClosed().subscribe((resp) => {
+        console.log('RESP_ACT_DECL', resp);
+        if (resp) {
+          this.cargarActaById();
+        }
+      });
+  }
 }
 
 

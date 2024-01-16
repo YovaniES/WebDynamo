@@ -117,7 +117,7 @@ export class ModalOrdencompraComponent implements OnInit {
       monto            : formValues.monto,
       moneda           : formValues.moneda,
       idUsuarioCreacion: this.userID,
-      certificacions   : formValues.certificaciones, //OJO FALTA
+      certificacions   : [], //OJO FALTA
     }
 
     this.liquidacionService.crearOrdenCompra(request).subscribe((resp: any) => {
@@ -155,7 +155,9 @@ export class ModalOrdencompraComponent implements OnInit {
           id_estado      : oc.estado.estadoId
         });
 
-        this.ordencompraForm.controls['fecha_creacion'].disable();
+        this.ordencompraForm.controls['fecha_creacion' ].disable();
+        this.ordencompraForm.controls['certificaciones'].disable();
+        this.ordencompraForm.controls['proyecto'       ].disable();
       })
     }
   }

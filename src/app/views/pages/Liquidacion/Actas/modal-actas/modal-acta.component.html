@@ -6,7 +6,7 @@
   <div class="cli-form-title c-male mt-3">{{ "Crear" }} acta</div>
 
   <div class="cli-content">
-    <div class="cli-card-body">
+    <div class="cli-card-body; padding: none">
       <div>
         <ul class="tabs-container">
           <li (click)="onTabClick('manual')"   [class.active]="activeTab == 'manual'" class="tab-link form-buttons"  ><mat-icon class="icon-13" style="margin-right: 4px;">flip_camera_android</mat-icon>Manual</li>
@@ -15,7 +15,7 @@
       </div>
 
       <form class="row g-3" [formGroup]="actasForm">
-      <div class="card" style="padding: 10px; border: none" *ngIf="activeTab == 'manual'">
+      <div class="card" style="border: none" *ngIf="activeTab == 'manual'">
           <div class="cli-form newvac-wrapper">
             <div class="chart-draw">
               <div class="pr-subtitle mt-2">Datos Acta</div>
@@ -184,7 +184,7 @@
           </div>
       </div>
 
-      <div class="card" style="padding: 10px; min-height: 490px; border: none;" *ngIf="activeTab == 'importar'">
+      <div class="card" style="min-height: 490px; border: none;" *ngIf="activeTab == 'importar'">
         <div style="display: flex" class="mt-4 mb-1">
           <input type="file" class="cli-import"
           accept=".xlsx, .xls, .csv"

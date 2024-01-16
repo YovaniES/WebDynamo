@@ -20,18 +20,18 @@
                   <small class="form-text text-alert" *ngIf="campoNoValido('nro_orden')">* Ingrese la Orden de compra es obligatorio</small>
               </div>
 
-              <div class="cli-form-element col-f-3">
+              <div class="cli-form-element col-f-3" *ngIf="DATA_ORDENCOMPRA">
                 <label>N° Certificación</label>
                 <input
-                  class="cli-input"
+                  class="cli-input_x"
                   formControlName="certificaciones"
                   type="text"/>
               </div>
 
-              <div class="cli-form-element col-f-3">
+              <div class="cli-form-element col-f-3" *ngIf="DATA_ORDENCOMPRA">
                 <label>Proyecto(s)</label>
                 <input
-                  class="cli-input"
+                  class="cli-input_x"
                   formControlName="proyecto"
                   type="text"/>
               </div>

@@ -1,0 +1,79 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_VD.ACTA.idDeclarado ? "Actualizar" : "Crear" }} venta declarada</div>
+
+  <form class="row g-3" [formGroup]="ventadeclaradaForm">
+    <div class="cli-form newvac-wrapper">
+      <div style="display: flex">
+        <div class="s-dni">Gestor : <span class="total">{{DATA_VD.sub.gestor}}</span></div>
+        <div class="flex-1" style="background: #f8f9fa"></div>
+          <div class="venta">Venta total: <span class="total">{{DATA_VD.sub.venta_total}}</span></div>
+        <div class="flex-1" style="background: #f8f9fa"></div>
+        <div class="id-score">Periodo :<span class="total">{{DATA_VD.sub.periodo}}</span></div>
+      </div>
+
+      <div class="row">
+        <div class="cli-form-element col-f-3">
+          <label>Monto Declarado <small style="color: red">*</small></label>
+          <input class="cli-input"
+            formControlName="montoDeclarado"
+            type="number"/>
+          <small class="form-text text-alert" *ngIf="campoNoValido('montoDeclarado')">* Ingrese el Monto es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Periodo <small style="color: red">*</small></label>
+          <input type="month" class="cli-input" formControlName="periodo" />
+          <small class="form-text text-alert" *ngIf="campoNoValido('periodo')">* Ingrese el Periodo es obligatorio</small>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Proyectos</label>
+          <select formControlName="idProyecto" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
+          </select>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Estado</label>
+          <select formControlName="isVisado" class="cli-input">
+            <option [value]="10" disabled>-Seleccione-</option>
+            <option [value]=1>Visado</option>
+            <option [value]=0>Enviado</option>
+          </select>
+        </div>
+
+        <div class="cli-form-element col-f-2">
+          <label>Comentario</label>
+          <textarea
+            class="cli-input"
+            style="background-image: none;border-color: #bdbdbd;font-size: 14px;font-size: 12px;"
+            rows="1"
+            placeholder="Escriba algún comentario de la venta declarada..."
+            formControlName="comentario"
+          ></textarea>
+        </div>
+
+        <div class="cli-form-buttons" style="margin-top: 8%">
+          <button
+            class="cli-btn btn-m btn-regresar"
+            type="submit"
+            (click)="close()">
+            <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+          </button>
+
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="ventadeclaradaForm.invalid"
+            (click)="crearOactualizarVD()">
+            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

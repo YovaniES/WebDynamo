@@ -1,0 +1,208 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_DET_ACTAS.idDetalleActa ? "Actualizar" : "Crear" }} detalle acta</div>
+
+  <form class="row g-3" [formGroup]="detalleactasForm">
+    <div class="cli-form newvac-wrapper">
+      <div class="chart-draw">
+        <div style="display: flex" *ngIf="DATA_DET_ACTAS">
+          <div class="pr-subtitle mt-2">Detalle acta</div>
+
+          <div class="flex-1"></div>
+          <ng-container class="input-group">
+            <div class="cli-user">{{ detalleactasForm.controls["analista"].value | uppercase }}</div>
+          </ng-container>
+          <div class="flex-1"></div>
+          <div class="id-acta">
+            <span class="total">{{ DATA_DET_ACTAS.idDetalleActaConcat }}</span>
+          </div>
+        </div>
+
+        <div class="pr-section mb-1">
+          <div class="pr-module-container row g-3">
+            <div class="cli-form-element col-f-4">
+              <label>Nombre <small style="color: red">*</small></label>
+              <input class="cli-input" formControlName="analista" type="text" />
+              <small class="form-text text-alert" *ngIf="campoNoValido('analista')">* Ingrese el Analista es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Perfil <small style="color: red">*</small></label>
+              <input class="cli-input" formControlName="perfil" type="text" />
+              <small class="form-text text-alert" *ngIf="campoNoValido('perfil')">* Ingrese el Perfil es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Precio x Unid.</label>
+              <input class="cli-input" formControlName="precio" type="text" />
+              <small class="form-text text-alert" *ngIf="campoNoValido('precio')">* Ingrese el Precio es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Cantidad</label>
+              <input class="cli-input"
+                formControlName="cantidad"
+                type="number"/>
+              <small class="form-text text-alert" *ngIf="campoNoValido('cantidad')">* Ingrese la cantidad es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Venta total <small style="color: red">*</small></label>
+              <input class="cli-input"
+                formControlName="venta_total"
+                type="number"/>
+              <small class="form-text text-alert" *ngIf="campoNoValido('venta_total')">* Ingrese la Venta total es obligatorio</small>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Certificado</label>
+              <input class="cli-input_x"
+                formControlName="certificado"
+                type="number"/>
+            </div>
+
+            <div class="cli-form-element col-f-4">
+              <label>Unid. Moneda</label>
+              <select formControlName="unidad" class="cli-input">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option value="PEN">PEN</option>
+                <option value="Otros">Otros</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-4" *ngIf="DATA_DET_ACTAS.idDetalleActa">
+              <label>Estado</label>
+              <select formControlName="idEstado" class="cli-input_x">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
+              </select>
+            </div>
+
+            <div class="cli-form-element col-f-2">
+              <label>Observación</label>
+              <textarea
+                class="cli-input"
+                style="background-image: none;border-color: #bdbdbd;font-size: 14px;font-size: 12px;"
+                rows="1"
+                placeholder="Escriba algún observación del detalle..."
+                formControlName="observacion"
+              ></textarea>
+            </div>
+
+            <div class="cli-form-element col-f-2">
+              <label>Comentario</label>
+              <textarea
+                class="cli-input"
+                style="background-image: none;border-color: #bdbdbd;font-size: 14px;font-size: 12px;"
+                rows="1"
+                placeholder="Escriba algún comentario del detalle acta..."
+                formControlName="comentario"
+              ></textarea>
+            </div>
+
+          </div>
+        </div>
+
+        <ng-container *ngIf="DATA_DET_ACTAS.idDetalleActa">
+          <div class="pr-subtitle">Certificación</div>
+          <div class="pr-section">
+            <div class="pr-module-container mb-2">
+
+              <div style="background-color: #f6f3f3">
+                <button
+                  class="btn-asignar btn-grey mb-1"
+                  matTooltip="Agregar certificación"
+                  type="submit"
+                  (click)="abrirCertificacion(DATA_DET_ACTAS)">
+                  <mat-icon class="icon-18">add</mat-icon>
+                </button>
+              </div>
+              <div style="overflow: auto; min-height: 50px; color: #6c757d">
+                <div *ngIf="listCertificaciones.length > 0">
+                  <table class="cli-table_x stripedtable underlinedtable">
+                    <thead>
+                      <tr class="bgc-green c-white">
+                        <th style="min-width: 35px">Acción</th>
+                        <th style="min-width: 55px">ID Cert.</th>
+                        <th>Monto</th>
+                        <th style="min-width: 110px;">Orden de compra</th>
+                        <th>Certificación</th>
+                        <th style="min-width: 70px;">Factura</th>
+                        <th style="min-width: 120px;">Fecha certificación</th>
+                        <th>Estado</th>
+                        <th>Responsable</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let cert of listCertificaciones;let i = index">
+                        <td>
+                          <div class="moad-actions" style="justify-content: left;">
+                            <button
+                              matTooltip="Actualizar"
+                              class="icon-btn btn-trans"
+                              style="color: #69aafa"
+                              (click)="abrirCertificacion(cert)">
+                              <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                            </button>
+                            <button
+                              matTooltip="Eliminar"
+                              class="icon-btn btn-trans b-fucsia"
+                              (click)="eliminarDetalleCertificacion(cert)">
+                              <mat-icon class="icon-15">delete_forever</mat-icon>
+                            </button>
+                          </div>
+                        </td>
+                        <td>{{ cert.idDetalleCertificacion }}</td>
+                        <td style="font-weight: 600"><small style="font-weight: 200; margin-right: 3px">S/</small>{{ cert.monto | number : "1.0-2" }}</td>
+                        <td>{{ cert.ordenCompra   }}</td>
+                        <td>{{ cert.certificacion }}</td>
+                        <td>{{ cert.factura }}</td>
+                        <td>{{ cert.fechaCertificacion | date:'dd/MM/yyyy'}}</td>
+                        <td>{{ cert.estado  }}</td>
+                        <td>{{ cert.usuarioCrea.usuario }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="cli-loader" *ngIf="loadingItem">
+                    <mat-spinner
+                      style="margin-right: 20px"
+                      diameter="20"
+                    ></mat-spinner
+                    >cargando...
+                  </div>
+                </div>
+                <div
+                  *ngIf="!loadingItem && listCertificaciones.length == 0"
+                  class="cli-loader mt-2"
+                  style="color: #c9c9c9; font-size: 12px">
+                  Aún no existen C E R T I F I C A C I O N E S
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- BOTONES -->
+        <div class="cli-form-buttons" style="margin-top: 8%">
+          <button
+            class="cli-btn btn-m btn-regresar"
+            type="submit"
+            (click)="close()">
+            <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+          </button>
+
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="detalleactasForm.invalid"
+            (click)="crearOactualizarDetActa()">
+            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

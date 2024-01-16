@@ -1,0 +1,517 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <!-- <div class="cli-form-title c-male mt-3">{{ "Crear" }} acta</div> -->
+  <div class="cli-form-title c-male mt-3">{{ DATA_ACTA ? "Actualizar" : "Crear" }} acta</div>
+
+  <div class="cli-content">
+    <div class="cli-card-body; padding: none" >
+      <div *ngIf="!DATA_ACTA">
+        <ul class="tabs-container">
+          <li (click)="onTabClick('manual')"  [class.active]="activeTab == 'manual'"   class="tab-link form-buttons"><mat-icon class="icon-13" style="margin-right: 4px;">flip_camera_android</mat-icon>Manual</li>
+          <li (click)="onTabClick('importar')"[class.active]="activeTab == 'importar'" class="tab-link form-buttons"><mat-icon class="icon-13" style="margin-right: 4px;">update_disabled</mat-icon>Importar</li>
+        </ul>
+      </div>
+
+      <form class="row" [formGroup]="actasForm">
+      <div class="card" style="border: none" *ngIf="activeTab == 'manual'">
+          <div class="cli-form newvac-wrapper">
+            <div class="chart-draw">
+              <!-- <div style="display: flex" *ngIf="DATA_ACTA">
+                <div class="pr-subtitle mt-2">Datos del Acta</div>
+
+                <div class="flex-1" ></div>
+                <ng-container
+                  class="input-group">
+                  <div class="cli-user">
+                    {{ actasForm.controls["gestor"].value | uppercase }}
+                  </div>
+                </ng-container>
+                <div class="flex-1" ></div>
+                <div class="id-acta"><span class="total">{{ DATA_ACTA.idActaConcat }}</span></div>
+              </div> -->
+
+
+              <div class="pr-subtitle mt-1">Acta</div>
+              <div class="pr-section mb-1">
+                <div class="pr-module-container row g-3">
+                  <div class="cli-form-element col-f-4">
+                    <label>Gestor <small style="color: red">*</small></label>
+                    <select formControlName="idGestor" class="cli-input_x">
+                      <option [value]="0" disabled>-Seleccione-</option>
+                      <option [value]="gestor.id" *ngFor="let gestor of listGestoresCombo">{{ gestor.nombre }}</option>
+                    </select>
+                    <small class="form-text text-alert" *ngIf="campoNoValido('idGestor')">* Ingrese el Gestor es obligatorio</small>
+                  </div>
+
+                  <div class="cli-form-element col-f-4">
+                    <label>Proyecto <small style="color: red">*</small></label>
+                    <select formControlName="idProyecto" class="cli-input_x">
+                      <option [value]="0" disabled>-Seleccione-</option>
+                      <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{ proy.codigoProyecto }}</option>
+                    </select>
+                    <small class="form-text text-alert" *ngIf="campoNoValido('idProyecto')">* Ingrese el Proyecto es obligatorio</small>
+                  </div>
+
+                  <div class="cli-form-element col-f-4">
+                    <label>Subservicio <small style="color: red">*</small></label>
+                    <select formControlName="idSubservicio" class="cli-input_x">
+                      <option [value]="0" disabled>-Seleccione-</option>
+                      <option [value]="subs.id" *ngFor="let subs of listSubserviciosCombo">{{ subs.nombre }}</option>
+                    </select>
+                    <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio')">* Ingrese el Subservicio es obligatorio</small>
+                  </div>
+
+                  <div class="cli-form-element col-f-4">
+                      <label>Periodo <small style="color: red">*</small></label>
+                       <input
+                        type="month"
+                        class="cli-input_x"
+                        formControlName="periodo"/>
+                    <small class="form-text text-alert" *ngIf="campoNoValido('periodo')">* Ingrese el Periodo es obligatorio</small>
+                  </div>
+
+                  <div class="cli-form-element col-f-4">
+                    <label>Enlace</label>
+                    <input class="cli-input_x" formControlName="enlaceActa" type="text" />
+                  </div>
+
+                  <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
+                    <label>Estado acta</label>
+                    <select formControlName="idEstado" class="cli-input">
+                      <option [value]="0" disabled>-Seleccione-</option>
+                      <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.nombre}}</option>
+                    </select>
+                  </div>
+
+                  <div class="cli-form-element col-f-4">
+                    <label>Venta total <small style="color: red">*</small></label>
+                    <input class="cli-input_x" formControlName="venta_total" type="text" />
+                    <small class="form-text text-alert" *ngIf="campoNoValido('venta_total')">* Ingrese la Venta es obligatorio</small>
+                  </div>
+
+                  <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
+                    <label>Declarado</label>
+                    <input class="cli-input_x" formControlName="declarado" type="text" />
+                  </div>
+
+                  <div class="cli-form-element col-f-2">
+                    <label>Comentario acta</label>
+                    <textarea
+                      class="cli-input_x"
+                      style="background-image: none;border-color: #bdbdbd;font-size: 12px;"
+                      rows="1"
+                      placeholder="Escriba algún comentario del Acta..."
+                      formControlName="comentario"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <ng-container *ngIf="!DATA_ACTA">
+                <div class="pr-subtitle mt-1">Detalle Acta</div>
+                <div class="pr-section">
+                  <div class="pr-module-container mb-2 row">
+                    <ng-container formGroupName="detalleActaParams">
+                      <div class="cli-form-element col-f-4">
+                        <label>Analista_x <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="analista"
+                          type="text"/>
+                          <small class="form-text text-alert" *ngIf="campoDetalleNoValido('analista')">* Ingrese el Analista es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Perfil <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="perfil"
+                          type="text"/>
+                          <small class="form-text text-alert" *ngIf="campoDetalleNoValido('perfil')">* Ingrese el Perfil es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Precio x Unid. <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="precio_unidad"
+                          type="number"/>
+                          <small class="form-text text-alert" *ngIf="campoDetalleNoValido('precio_unidad')">* Ingrese el Precio es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Cantidad <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="cantidad"
+                          type="number"/>
+                          <small class="form-text text-alert" *ngIf="campoDetalleNoValido('cantidad')">* Ingrese la cantidad es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Venta total <small style="color: red">*</small></label>
+                        <input
+                          class="cli-input"
+                          formControlName="precio_total"
+                          type="number"/>
+                          <small class="form-text text-alert" *ngIf="campoDetalleNoValido('precio_total')">* Ingrese la Venta total es obligatorio</small>
+                      </div>
+
+                      <div class="cli-form-element col-f-4">
+                        <label>Unid. Moneda</label>
+                        <select formControlName="moneda" class="cli-input">
+                          <option [value]="0" disabled>-Seleccione-</option>
+                          <option value='PEN'  >PEN</option>
+                          <option value='Otros'>Otros</option>
+                        </select>
+                      </div>
+
+                      <div class="cli-form-element col-f-2"           >
+                        <label>Observación</label>
+                        <textarea
+                          class="cli-input"
+                          style="background-image: none; border-color: #bdbdbd; font-size: 14px; font-size: 12px;"
+                          rows="1"
+                          placeholder="Escriba alguna observación del detalle acta..."
+                          formControlName="observacion"
+                        ></textarea>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- LISTA VENTA_DECLARADA Y DETALLES ACTA -->
+              <ng-container *ngIf="DATA_ACTA">
+              <div class="pr-subtitle">Ventas declaradas</div>
+              <div class="pr-section">
+                <div class="pr-module-container mb-2">
+                  <div style="background-color: #f6f3f3">
+                    <button
+                      class="btn-asignar btn-grey mb-1"
+                      matTooltip="Agregar venta declarada"
+                      type="submit"
+                      (click)="abrirVentaDeclarada(DATA_ACTA)">
+                      <mat-icon class="icon-18">add</mat-icon>
+                    </button>
+                  </div>
+
+                  <div style="overflow: auto; min-height: 50px; color: #6c757d">
+                    <div *ngIf="listDeclarados.length > 0">
+                      <table class="cli-table_x stripedtable underlinedtable">
+                        <thead>
+                          <tr class="bgc-blue-light c-white">
+                            <th></th>
+                            <th style="min-width: 60px;">ID DECL.</th>
+                            <th>Declarado</th>
+                            <th>Proyecto</th>
+                            <th>Periodo</th>
+                            <th>Estado</th>
+                            <th style="min-width: 400px;">Comentario</th>
+                            <th>Responsable</th>
+                            <th style="min-width: 120px;">Fecha creación</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr *ngFor="let declarado of listDeclarados; let i = index">
+                            <td>
+                              <div class="moad-actions" style="justify-content: left;">
+                                <button
+                                  matTooltip="Actualizar"
+                                  class="icon-btn btn-trans"
+                                  style="color: #69aafa"
+                                  (click)="abrirVentaDeclarada(declarado)">
+                                  <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                                </button>
+                                <button
+                                  matTooltip="Eliminar"
+                                  class="icon-btn btn-trans c-fucsia"
+                                  (click)="eliminarVentaDeclarada(declarado)">
+                                  <mat-icon class="icon-15">delete_forever</mat-icon>
+                                </button>
+                              </div>
+                            </td>
+                            <td>{{ declarado.idDeclarado  }}</td>
+                            <td style="font-weight: 600; text-align: right;"><small style="font-weight: 200; margin-right: 3px;">S/</small>{{ declarado.montoDeclarado | number : "1.0-2" }}</td>
+                            <td>{{ declarado.proyecto     }}</td>
+                            <td>{{ declarado.estado.estado}}</td>
+                            <td>{{ declarado.periodo | date:'yyyy-MM'}}</td>
+                            <td>{{ declarado.comentario   }}</td>
+                            <td>{{ declarado.usuarioCrea.usuario}}</td>
+                            <td>{{ declarado.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="cli-loader" *ngIf="loadingItem">
+                        <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="!loadingItem && listDeclarados.length == 0"
+                      class="cli-loader mt-2"
+                      style="color: #c9c9c9; font-size: 12px"
+                      >Aún no existe actas declaradas
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pr-subtitle mt-1">Detalle Acta</div>
+              <div class="pr-section">
+              <div class="pr-module-container mb-2">
+                  <div style="display: flex">
+                    <div class="d-flex">
+                      <button
+                        class="cli-btn btn-turq mb-1"
+                        (click)="crearOactualizarDetActa(DATA_ACTA)"
+                        ><mat-icon class="icon-18">add</mat-icon>Crear detalle
+                      </button>
+                    </div>
+
+                    <div class="flex-1"></div>
+                    <div class="mt-1" style="color: #345df3; font-weight: 400" *ngIf="listDetActas.length > 0">
+                      Total : <span class="total">{{ listDetActas.length }} Actas detalle</span>
+                    </div>
+                  </div>
+
+                  <!-- TABLA DETALLE_ACTA ACTUALIZAR -->
+                  <ng-container *ngIf="!loading">
+                    <div style="overflow: auto; min-height: 167px; max-height: 167px; color:#6c757d;">
+
+                    <table class="cli-table_x stripedtable underlinedtable" *ngIf="listDetActas.length > 0" >
+                      <thead>
+                        <tr class="bgc-blue c-white" >
+                          <th style="min-width: 60px"></th>
+                          <th style="min-width: 80px;">N°</th>
+                          <th>Analista imp</th>
+                          <th>Perfil</th>
+                          <th style="min-width: 80px;">Precio unid.</th>
+                          <th>Cantidad</th>
+                          <th>Total</th>
+                          <th style="min-width: 140px" >Estado</th>
+                          <th style="min-width: 120px;">Observaciones</th>
+                          <th style="min-width: 100px;">Comentario</th>
+                          <th>Unidad</th>
+                          <th>Certificado(s)</th>
+                          <th>Facturado(s)</th>
+                          <th style="min-width: 175px;">Cod. Certificación</th>
+                        </tr>
+                      </thead>
+
+                      <tbody style="background: #e9eae8">
+                        <tr *ngFor="let detalle of listDetActas; let i = index">
+                          <td style="display: flex;">
+                            <div class="moad-actions"  >
+                              <button
+                                (click)="crearOactualizarDetActa(detalle)"
+                                class="icon-btn btn-trans"
+                                style="color: #69aafa">
+                                <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
+                              </button>
+                              <button
+                                (click)="eliminarDetalleActa(detalle)"
+                                class="icon-btn btn-trans c-fucsia"
+                                ><mat-icon class="icon-15">delete_forever</mat-icon>
+                              </button>
+                            </div>
+                          </td>
+                          <td>{{i+1}}</td>
+                          <td style="min-width: 155px; text-align: left;">{{detalle.nombre}}</td>
+                          <td style="min-width: 100px;">{{detalle.perfil}}</td>
+                          <td>{{ detalle.precioUnidad}}</td>
+                          <td>{{ detalle.unidades    }}</td>
+                          <td>{{ detalle.precioTotal }}</td>
+                          <td>{{ detalle.estado      }}</td>
+                          <td>{{ detalle.observacion }}</td>
+                          <td>{{ detalle.comentario  }}</td>
+                          <td>{{ detalle.unidad      }}</td>
+                          <td>{{ detalle.certificado }}</td>
+                          <td>{{ detalle.facturado   }}</td>
+                          <td>{{ detalle.certificacions }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                    <div class="cli-loader" *ngIf="loadingItem">
+                      <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
+                      cargando...
+                    </div>
+
+                    <div *ngIf="!loadingItem && listDetActas.length == 0"
+                      class="cli-loader mt-5"
+                      style="color: #f83434"
+                      >No hay detalle acta para mostrar
+                    </div>
+
+                  </ng-container>
+                  <div class="cli-loader" *ngIf="loading">
+                    <mat-spinner diameter="40"></mat-spinner>
+                  </div>
+              </div>
+              </div>
+              </ng-container>
+
+              <!-- BOTONES  -->
+              <div class="cli-form-buttons" style="margin-top: 4%">
+                <button
+                  class="cli-btn btn-m btn-regresar"
+                  type="submit"
+                  (click)="close()">
+                  <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar
+                </button>
+                <button
+                  class="cli-btn btn-m btn-turq"
+                  [disabled]="actasForm.invalid"
+                  (click)="crearOactualizarActa()">
+                  <mat-icon class="icon-18">clear</mat-icon>{{actionBtn}}
+                </button>
+              </div>
+
+            </div>
+          </div>
+      </div>
+
+      <div class="card" style="padding: 10px; min-height: 490px; border: none;" *ngIf="activeTab == 'importar'">
+        <div style="display: flex" class="mb-1">
+          <input type="file" class="cli-import"
+          accept=".xlsx, .xls, .csv"
+          formControlName="import"
+          (change)="readExcell($event)">
+        </div>
+
+        <ng-container *ngIf="!loading && listDetActasImportado.length > 0">
+          <div class="chart-draw">
+
+            <div class="pr-subtitle mt-2">Datos Acta ñ</div>
+            <div class="pr-section mb-1">
+              <div class="pr-module-container row g-3">
+                <div class="cli-form-element col-f-4">
+                  <label>Gestor <small style="color: red">*</small></label>
+                  <select formControlName="idGestor" class="cli-input_x">
+                    <option [value]="0" disabled>-Seleccione-</option>
+                    <option [value]="gestor.id" *ngFor="let gestor of listGestoresCombo">{{ gestor.nombre }}</option>
+                  </select>
+                  <small class="form-text text-alert" *ngIf="campoNoValido('idGestor')">* Ingrese el Gestor es obligatorio</small>
+                </div>
+
+                <div class="cli-form-element col-f-4">
+                  <label>Proyecto <small style="color: red">*</small></label>
+                  <select formControlName="idProyecto" class="cli-input_x">
+                    <option [value]="0" disabled>-Seleccione-</option>
+                    <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{ proy.codigoProyecto }}</option>
+                  </select>
+                  <small class="form-text text-alert" *ngIf="campoNoValido('idProyecto')">* Ingrese el Proyecto es obligatorio</small>
+                </div>
+
+                <div class="cli-form-element col-f-4">
+                  <label>Subservicio <small style="color: red">*</small></label>
+                  <select formControlName="idSubservicio" class="cli-input_x">
+                    <option [value]="0" disabled>-Seleccione-</option>
+                    <option [value]="subs.id" *ngFor="let subs of listSubserviciosCombo">{{ subs.nombre }}</option>
+                  </select>
+                  <small class="form-text text-alert" *ngIf="campoNoValido('idSubservicio')">* Ingrese el Subservicio es obligatorio</small>
+                </div>
+
+                <div class="cli-form-element col-f-4">
+                    <label>Periodo <small style="color: red">*</small></label>
+                     <input
+                      type="month"
+                      class="cli-input_x"
+                      formControlName="periodo"/>
+                  <small class="form-text text-alert" *ngIf="campoNoValido('periodo')">* Ingrese el Periodo es obligatorio</small>
+                </div>
+
+                <div class="cli-form-element col-f-4">
+                  <label>Venta total</label>
+                  <input class="cli-input_x" formControlName="venta_total" type="text" />
+                </div>
+
+                <div class="cli-form-element col-f-4">
+                  <label>Enlace</label>
+                  <input class="cli-input_x" formControlName="enlaceActa" type="text" />
+                </div>
+
+                <div class="cli-form-element col-f-2">
+                  <label>Comentario</label>
+                  <textarea
+                    class="cli-input_x"
+                    style="background-image: none;border-color: #bdbdbd;font-size: 12px;"
+                    rows="1"
+                    placeholder="Escriba algún comentario del Sub Acta..."
+                    formControlName="comentario"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pr-subtitle mt-1" >Detalle Acta ñ</div>
+          <div class="pr-section" >
+            <div class="pr-module-container mb-2">
+              <div style="display: flex">
+                <div class="flex-1"></div>
+                <div class="mt-1" style="color: #345df3; font-weight: 400" >
+                  Total : <span class="total">{{ listDetActasImportado.length }} Actas detalle</span>
+                </div>
+              </div>
+
+              <div style="overflow: auto; min-height: 167px; max-height: 167px; color:#6c757d;" >
+                <table class="cli-table_x stripedtable underlinedtable"  >
+                  <thead>
+                    <tr class="bgc-blue c-white">
+                      <th style="min-width: 155px;">Nombre</th>
+                      <th style="min-width: 100px;">Perfil</th>
+                      <th style="min-width: 80px;" >Precio unid.</th>
+                      <th>Cantidad</th>
+                      <th>Total   </th>
+                      <th style="min-width: 100px;">Categoría 1</th>
+                      <th style="min-width: 270px;">Categoría 2</th>
+                      <th style="min-width: 120px;">Observaciones</th>
+                      <th style="min-width: 175px;">Comentario</th>
+                      <th>Unidad</th>
+                    </tr>
+                  </thead>
+                  <tbody style="background: #e9eae8">
+                    <tr *ngFor="let detalle of listDetActasImportado; let i = index">
+                      <td style="text-align: left; padding-left: 4px;">{{detalle.nombre}}</td>
+                      <td>{{detalle.perfil        }}</td>
+                      <td style="text-align: end;">{{ detalle.precio_unidad| number : '1.0-2'}}</td>
+                      <td style="text-align: end;">{{ detalle.unidades     | number : '1.0-2'}}</td>
+                      <td style="text-align: end;">{{ detalle.precioTotal  | number : '1.0-2'}}</td>
+                      <td>{{ detalle.categoria1   }}</td>
+                      <td>{{ detalle.categoria2   }}</td>
+                      <td>{{ detalle.observacion  }}</td>
+                      <td>{{ detalle.comentario   }}</td>
+                      <td>{{ detalle.unidad       }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- BOTONES CREAR IMPORT -->
+          <div class="cli-form-buttons">
+            <button
+              class="cli-btn btn-m btn-regresar"
+              type="submit"
+              (click)="close()">
+              <mat-icon class="icon-18">keyboard_return</mat-icon> Cancelar
+            </button>
+            <button
+              class="cli-btn btn-m btn-turq"
+              (click)="guardarActaImportado()">
+              <mat-icon class="icon-18">save</mat-icon>Guardar_Imp
+            </button>
+          </div>
+        </ng-container>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>

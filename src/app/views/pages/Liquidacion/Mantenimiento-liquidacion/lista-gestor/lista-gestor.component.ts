@@ -94,7 +94,7 @@ export class ListaGestorComponent implements OnInit {
         this.liquidacionService.eliminarGestor(gestor.idGestor).subscribe(resp => {
 
           Swal.fire({
-            title: 'Eliminar líder',
+            title: 'Eliminar gestor',
             text: `${gestor.nombres}  ${gestor.apellidos}: ${resp.message} exitosamente`,
             icon: 'success',
           });

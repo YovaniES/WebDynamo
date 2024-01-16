@@ -34,10 +34,10 @@ export class ModalGestorSubservicioComponent implements OnInit {
     this.cargarDataGestor();
     console.log('DATA_GESTOR_SUB', this.DATA_GESTOR_SUB);
     this.gestorSubservicioForm.controls['idGestor'].disable();
-    this.getAllSubserviciosFiltroByProy();
+    // this.getAllSubserviciosFiltroByProy();
 
     if (this.DATA_GESTOR_SUB.idProyectoSubservicioGestor > 0) {
-      this.cargarGestorSubservicioById();
+      // this.cargarGestorSubservicioById();
       }
     };
 
@@ -135,19 +135,6 @@ export class ModalGestorSubservicioComponent implements OnInit {
     }
   };
 
-  existeGestorSeleccionado(e: Event){
-    let selectGestor = false;
-
-    console.log('EVENT', e.target);
-
-
-    // const gestor =
-    // if (gestor) {
-
-    // }
-
-    // return
-  }
 
   cargarDataGestor(){
     this.gestorSubservicioForm.reset({
@@ -167,10 +154,12 @@ export class ModalGestorSubservicioComponent implements OnInit {
 
   listSubserviciosFiltroByProy:any[] = [];
   getAllSubserviciosFiltroByProy(){
+    this.listSubserviciosFiltroByProy = [];
+
     const idProy = this.gestorSubservicioForm.controls['idProyecto'].value;
-    console.log('ID_PROY', idProy, this.gestorSubservicioForm.controls['idProyecto'].value);
+    // console.log('ID_PROY', idProy, this.gestorSubservicioForm.controls['idProyecto'].value);
     const request = {
-      idProyecto: 96
+      idProyecto: this.gestorSubservicioForm.controls['idProyecto'].value
     }
     this.liquidacionService.getAllSubserviciosFiltroByProy(request).subscribe((resp: any) => {
       this.listSubserviciosFiltroByProy = resp;
@@ -186,8 +175,7 @@ export class ModalGestorSubservicioComponent implements OnInit {
       console.log('PROY', this.listProyectos);
     console.log('ID_PROY',  this.gestorSubservicioForm.controls['idProyecto'].value);
 
-
-      this.getAllSubserviciosFiltroByProy();
+      // this.getAllSubserviciosFiltroByProy();
     })
   }
 

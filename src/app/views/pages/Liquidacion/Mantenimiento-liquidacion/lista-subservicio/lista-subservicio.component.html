@@ -11,7 +11,7 @@
         <div class="card" style="border-radius: 2px">
           <div class="row g-3 card-body" style="padding: 10px">
             <div class="cli-form-element col-f-3">
-              <label>Proyectos</label>
+              <label>Proyecto</label>
               <select formControlName="idProyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.idProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>

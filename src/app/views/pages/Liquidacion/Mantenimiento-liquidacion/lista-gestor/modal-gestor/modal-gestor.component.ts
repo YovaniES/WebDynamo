@@ -118,6 +118,13 @@ export class ModalGestorComponent implements OnInit {
             confirmButtonText: 'Ok',
           });
           this.close(true);
+      }else{
+        Swal.fire({
+          title: 'ERROR!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok'
+        })
       }
     })
   };

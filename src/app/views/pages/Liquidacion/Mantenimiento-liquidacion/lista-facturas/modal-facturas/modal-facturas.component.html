@@ -18,14 +18,6 @@
         </div>
 
         <div class="cli-form-element col-f-3">
-          <label>Proyecto</label>
-          <input
-            class="cli-input"
-            formControlName="proyecto"
-            type="text"/>
-        </div>
-
-        <div class="cli-form-element col-f-3">
           <label>Certificación <small style="color: red">*</small></label>
           <select formControlName="idCertificacion" class="cli-input">
             <option [value]="0" disabled>-Seleccione-</option>
@@ -59,59 +51,60 @@
             type="date"
             class="form-control"
             formControlName="fecha_facturacion"/>
-          <small class="form-text text-alert" *ngIf="campoNoValido('fecha_facturacion')">* Seleccione el proyecto es obligatorio</small>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Total</label>
-          <input
-            class="cli-input"
-            formControlName="total"
-            type="number"/>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>TGS</label>
-          <input
-            class="cli-input"
-            formControlName="tgs"
-            type="text"/>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Adquira</label>
-          <input
-            class="cli-input"
-            formControlName="adquira"
-            type="text"/>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Factura TGS <small style="color: red">*</small></label>
-          <input
-            class="cli-input"
-            formControlName="factura_tgs"
-            type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('factura_tgs')">* Ingrese los apellidos son obligatorios</small>
-        </div>
-
-        <div class="cli-form-element col-f-3">
-          <label>Factura Adquira <small style="color: red">*</small></label>
-          <input
-            class="cli-input"
-            formControlName="factura_adquira"
-            type="text"/>
-            <small class="form-text text-alert" *ngIf="campoNoValido('factura_adquira')">* Ingrese los apellidos son obligatorios</small>
         </div>
 
         <ng-container *ngIf="DATA_FACTURA">
           <div class="cli-form-element col-f-3">
-            <label>Estado</label>
-            <select formControlName="idEstado" class="cli-input">
-              <option [value]="0" disabled>-Seleccione-</option>
-              <option [value]="est.idEstado" *ngFor="let est of listEstadoFacturas">{{est.nombre}}</option>
-            </select>
+            <label>Total</label>
+            <input
+              class="cli-input"
+              formControlName="total"
+              type="number"/>
           </div>
+
+          <div class="cli-form-element col-f-3">
+            <label>TGS</label>
+            <input
+              class="cli-input"
+              formControlName="tgs"
+              type="text"/>
+          </div>
+
+          <div class="cli-form-element col-f-3">
+            <label>Adquira</label>
+            <input
+              class="cli-input"
+              formControlName="adquira"
+              type="text"/>
+          </div>
+        </ng-container>
+
+        <div class="cli-form-element col-f-3">
+          <label>Factura TGS</label>
+          <input
+            class="cli-input"
+            formControlName="factura_tgs"
+            type="text"/>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Factura Adquira</label>
+          <input
+            class="cli-input"
+            formControlName="factura_adquira"
+            type="text"/>
+        </div>
+
+        <div class="cli-form-element col-f-3">
+          <label>Estado factura <small style="color: red">*</small></label>
+          <select formControlName="idEstado" class="cli-input">
+            <option [value]="0" disabled>-Seleccione-</option>
+            <option [value]="est.idEstado" *ngFor="let est of listEstadoFacturas">{{est.nombre}}</option>
+          </select>
+          <small class="form-text text-alert" *ngIf="campoNoValido('idEstado')">* Seleccione el estado es obligatorio</small>
+        </div>
+
+        <ng-container *ngIf="DATA_FACTURA">
 
           <div class="cli-form-element form-group col-f-3">
             <label>Fecha creación</label>

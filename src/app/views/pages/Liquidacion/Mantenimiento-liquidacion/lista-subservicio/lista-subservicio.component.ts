@@ -32,7 +32,6 @@ export class ListaSubservicioComponent implements OnInit {
   this.getAllProyecto();
   this.getAllSubservicioCombo();
   this.getAllSubserviciosFiltro()
-
   }
 
   subservicioForm!: FormGroup;
@@ -80,7 +79,13 @@ export class ListaSubservicioComponent implements OnInit {
 
   listSubservicios: any[] = [];
   getAllSubserviciosFiltro(){
-    const request = this.subservicioForm.value;
+    const formValues = this.subservicioForm.getRawValue();
+
+    const request = {
+      idProyecto : formValues.idProyecto,
+      subservicio: formValues.subservicio,
+      estado     : formValues.estado,
+    };
 
     this.liquidacionService.getAllSubserviciosFiltro(request).subscribe(resp => {
       this.listSubservicios = resp;

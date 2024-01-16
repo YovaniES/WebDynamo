@@ -32,21 +32,20 @@ export class ModalFacturasComponent implements OnInit {
   this.getUserID();
   this.getAllCertificacionesCombo();
   this.getListOrdenCombo();
+  this.getListaEstadosFactura();
 
   if (this.DATA_FACTURA) {
     this.cargarFacturaById();
     console.log('FACTURA_MODAL', this.DATA_FACTURA);
-    this.getListaEstadosFactura();
     }
   }
 
   facturaForm!: FormGroup;
   newForm(){
     this.facturaForm = this.fb.group({
-      nro_factura       : [''],
-      idEstado          : [''],
-      proyecto          : [''],
-      idCertificacion   : [''],
+      nro_factura       : ['', Validators.required],
+      idCertificacion   : ['', Validators.required],
+      idEstado          : ['', Validators.required],
       fecha_facturacion : [''],
       tgs               : [''],
       adquira           : [''],
@@ -55,7 +54,6 @@ export class ModalFacturasComponent implements OnInit {
       factura_adquira   : [''],
       idUsuarioCreacion : [''],
       fecha_creacion    : [''],
-      ordenCompra       : [''],
     })
   }
 
@@ -100,6 +98,7 @@ export class ModalFacturasComponent implements OnInit {
     }
   }
 
+  // NOTA: ERROR EN ENVIAR FECHA_FACTURACION
   actualizarFactura(){
     const formValues = this.facturaForm.getRawValue();
 
@@ -163,7 +162,7 @@ export class ModalFacturasComponent implements OnInit {
   listCertificacionesCombo: any[] = [];
   getAllCertificacionesCombo(){
     this.liquidacionService.getAllCertificaciones().subscribe(resp => {
-      this.listCertificacionesCombo = resp;
+      this.listCertificacionesCombo = resp.filter((x:any) => x.estado.estadoId == 1);
       console.log('CERTIF', this.listCertificacionesCombo);
     })
   }

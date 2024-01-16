@@ -96,12 +96,13 @@ export class ModalSubservicioComponent implements OnInit {
     const formValues = this.subservicioForm.getRawValue();
 
     const requestSubservicio = {
-      idProyecto   : formValues.proyecto,
-      nombre       : formValues.subservicio,
-      representante: formValues.gestor,
-      idUsuarioCrea: this.userID,
-      fechaInicio  : formValues.fecha_ini,
-      fechaFin     : formValues.fecha_fin,
+      idProyecto        : formValues.proyecto,
+      nombre            : formValues.subservicio,
+      representante     : formValues.gestor,
+      idUsuarioActualiza: this.userID,
+      fechaInicio       : formValues.fecha_ini,
+      fechaFin          : formValues.fecha_fin,
+      isActive          : formValues.id_estado
     }
     this.liquidacionService.actualizarSubservicio(this.DATA_SUBSERV.idSubservicio, requestSubservicio).subscribe((resp: any) => {
       if (resp.success) {
@@ -112,6 +113,13 @@ export class ModalSubservicioComponent implements OnInit {
             confirmButtonText: 'Ok',
           });
           this.close(true);
+      }else{
+        Swal.fire({
+          title: 'Error!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok',
+        });
       }
     })
   }
@@ -134,7 +142,6 @@ export class ModalSubservicioComponent implements OnInit {
           proyecto      : subserv.idProyecto,
           id_estado     : subserv.estado.estadoId,
         })
-
         this.subservicioForm.controls['fecha_creacion'].disable();
       })
     }
