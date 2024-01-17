@@ -4,25 +4,23 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { DatePipe } from '@angular/common';
 import { ExportExcellService } from 'src/app/core/services/export-excell.service';
-import { CrearLiquidacionComponent } from '../liquidacion/crear-liquidacion/crear-liquidacion.component';
-import { ActualizarLiquidacionComponent } from '../liquidacion/actualizar-liquidacion/actualizar-liquidacion.component';
 import { ActualizacionMasivaComponent } from './actualizacion-masiva/actualizacion-masiva.component';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { ModalComentarioComponent } from './modal-comentario/modal-comentario.component';
 import * as XLSX from 'xlsx';
-import { LiquidacionModel } from 'src/app/core/models/liquidacion.models';
-import { mapearImportLiquidacion } from 'src/app/core/mapper/liquidacion-list.mapper';
-import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { concatMap, of } from 'rxjs';
+import { FiltroLiqModel, LiquidacionModel } from 'src/app/core/models/liquidacion.models';
+import { ModalLiquidacionComponent } from './modal-liquidacion/modal-liquidacion.component';
+import { FacturaService } from 'src/app/core/services/factura.service';
+import { MantenimientoService } from 'src/app/core/services/mantenimiento.service';
+import { DatePipe } from '@angular/common';
+import { SaveLiquidacionModel } from 'src/app/core/models/save-liquidacion.models';
 
 @Component({
   selector: 'app-liquidacion',
   templateUrl: './liquidacion.component.html',
-  styleUrls: ['./liquidacion.component.scss']
+  styleUrls: ['./liquidacion.component.scss'],
 })
-
 export class LiquidacionComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
@@ -35,8 +33,9 @@ export class LiquidacionComponent implements OnInit {
 
   constructor(
     private facturacionService: FacturacionService,
-    private liquidacionService: LiquidacionService,
     private exportExcellService: ExportExcellService,
+    private facturaService: FacturaService,
+    private mantenimientoService: MantenimientoService,
     private fb: FormBuilder,
     private spinner: NgxSpinnerService,
     public datepipe: DatePipe,
@@ -45,37 +44,51 @@ export class LiquidacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.newFilfroForm();
-    this.cargarOBuscarLiquidacion();
-    this.getListEstados();
-    this.getListProyectos();
+    this.getAllLiquidaciones()
     this.getListGestores();
-    this.getListLiquidaciones();
-    this.exportListVD_Fact();
-
+    this.getistProyectos();
+    this.getListEstados();
+    this.getAllListaExportVD();
+    // this.exportListVD_Fact();
     // console.log('PERIODO_ACTUAL-LIQ',this.modificarMes(0)); //2023-09
   }
 
   newFilfroForm(){
     this.liquidacionForm = this.fb.group({
-      codFact            : [''],
-      id_proy            : [''],
-      id_liquidacion     : [''],
-      id_estado          : [''],
-      fechaRegistroInicio: [''],
-      fechaRegistroFin   : [''],
-      id_gestor          : [''],
-      importe            : [''],
-      subservicio        : [''],
-      f_periodo          : [''],
-      periodoActual      : [true],
-      import             : ['']
+      idFactura        : [''],
+      gestorNombre     : [''],
+      proyecto         : [''],
+      tipoLiquidacion  : [''],
+      estadoLiquidacion: [''],
+      importe          : [''],
+      periodo          : [''],
+      import           : [''],
+      // periodoActual    : [true],
     })
   };
+
+
+  listaLiquidacion: LiquidacionModel[] = []
+  getAllLiquidaciones(){
+    this.blockUI.start('Cargando lista Liquidaciones...');
+
+    const request: FiltroLiqModel = {...this.liquidacionForm.value}
+    request.periodo = request.periodo? request.periodo+ '-01' : '';
+    // request.periodoActual = request.periodoActual? this.modificarMes(-1): '', //periodo:"2023-10"
+
+    this.facturaService.getAllLiquidaciones(request).subscribe((resp: any) => {
+      // console.log('LIST_LIQ =>', resp);
+      this.blockUI.stop();
+
+      this.listaLiquidacion = [];
+      this.listaLiquidacion = resp.result;
+    })
+  }
 
   importacion = 0;
   DATAimport: any[] = [];
   readExcell(e: any){
-    console.log('|==>',e, this.liquidacionForm);
+    console.log('e|==>',e, this.liquidacionForm);
     this.importacion ++
     this.blockUI.start("Espere por favor, estamos Importando la Data... " + this.importacion) ;
 
@@ -90,51 +103,41 @@ export class LiquidacionComponent implements OnInit {
       var sheetNames = wb.SheetNames;
 
       this.DATAimport = XLSX.utils.sheet_to_json(wb.Sheets[sheetNames[0]])
-      // console.log('DATA_EXCELL', this.DATAimport);
+      console.log('DATA_EXCELL', this.DATAimport); // { Gestor:"Cesar Leyva", Importe: 12345, Periodo:Wed Nov 01 2023, Proyecto:"PETO21", Subservicio:"PRUEBA 08-11-2023-IMPORT-EXCELL", Tipo: "ACTA"}
 
-      // this.validarImportacionExcell();
       if (this.validarImportacionExcell()) {
-      this.guardarListaimportado();
-      }
       // this.guardarListaimportado();
-
+      }
       this.blockUI.stop();
     }
   }
 
-  listLiquidaciones: any[] = [];
-  getListLiquidaciones(){
-    let parametro: any[] = [{queryId: 82}];
-    this.facturacionService.getListLiquidaciones(parametro[0]).subscribe((resp: any) => {
-          this.listLiquidaciones = resp.list;
-    });
-  }
 
-  guardarListaimportado(){
-    this.spinner.show();
-    const listaImportado: LiquidacionModel[] = mapearImportLiquidacion(this.DATAimport, this.listLiquidaciones, this.listGestores, this.listProyectos  )
+  // guardarListaimportado(){
+  //   this.spinner.show();
+  //   const listaImportado: SaveLiquidacionModel[] = mapearImportLiquidacion(this.DATAimport, this.listaLiquidacion, this.listGestores, this.listProyectos  )
 
-    this.liquidacionService.importarActas(listaImportado)
-        .pipe(concatMap((resp: any) => { console.log('DATA-IMP-LIQ', resp);// {message: "ok"}
+  //   this.facturaService.insertarListadoLiquidacion(listaImportado)
+  //       .pipe(concatMap((resp: any) => { console.log('DATA-IMP-LIQ', resp);// {message: "ok"}
 
-        this.spinner.hide();
-        if (resp && resp.message == 'ok') {
-          this.cargarOBuscarLiquidacion();
+  //       this.spinner.hide();
+  //       if (resp && resp.message == 'ok') {
+  //         this.getAllLiquidaciones()
 
-          Swal.fire({
-            title: 'Importar Liquidación!',
-            text : `Se importó con éxito la data`,
-            icon : 'success',
-            confirmButtonText: 'Ok'
-          });
-          this.limpiarFiltro();
-        }
+  //         Swal.fire({
+  //           title: 'Importar Liquidación!',
+  //           text : `Se importó con éxito la data`,
+  //           icon : 'success',
+  //           confirmButtonText: 'Ok'
+  //         });
+  //         this.limpiarFiltro();
+  //       }
 
-        return resp && resp.message == 'ok';
-      })).subscribe((resp: any) => {
-        console.log('DATA_LIQ-SAVE', resp);
-     }
-   )}
+  //       return resp && resp.message == 'ok';
+  //     })).subscribe((resp: any) => {
+  //       console.log('DATA_LIQ-SAVE', resp);
+  //    }
+  //  )}
 
    validarImportacionExcell(): boolean{
     let importacionCorrecta: boolean = true;
@@ -153,24 +156,6 @@ export class LiquidacionComponent implements OnInit {
         });
       }
 
-      //     // if (columna.FECHAPROCESO.length == 8) {
-      //   importacionCorrecta = false;
-
-      //   Swal.fire({
-      //     icon:'error',
-      //     title:'ERROR, La fecha de proceso solo acepta un total de 8 dígitos y en formato YYYYMMDD',
-      //     text:`La columna: 'FECHAPROCESO' vs fila: ${(indice + 2)}`
-      //     });
-      // }
-
-      // if ((columna.NUMDOCUMENTO.length >= 8 ||  columna.NUMDOCUMENTO.length < 9) && columna.TIPODOCUMENTO == 'DNI') {
-
-      //   Swal.fire({
-      //     icon:'error',
-      //     title:'Algo salio mal, Corregir en',
-      //     text:`La columna: 'NUMDOCUMENTO' y fila: ${(indice+2)}`
-      //   });
-      // }
     })
     return importacionCorrecta;
   }
@@ -186,40 +171,33 @@ export class LiquidacionComponent implements OnInit {
     return date.toISOString().substring(0, 7); /* Obtenemos la fecha en formato YYYY-mm */
   }
 
-  listaLiquidacion: any[] = [];
-  cargarOBuscarLiquidacion(){
-    this.blockUI.start("Cargando liquidaciones...");
-    const formValues = this.liquidacionForm.getRawValue();
 
-    let parametro: any[] = [{
-      "queryId": 118,
-      "mapValue": {
-          cod_fact       : formValues.codFact,
-          id_proy        : formValues.id_proy,
-          id_liquidacion : formValues.id_liquidacion,
-          id_estado      : formValues.id_estado,
-          id_gestor      : formValues.id_gestor,
-          importe        : formValues.importe,
-          per_actual     : formValues.periodoActual? this.modificarMes(-1): '',
-          subservicio    : formValues.subservicio,
-          f_periodo      : formValues.f_periodo,
-          inicio         : this.datepipe.transform(formValues.fechaRegistroInicio,"yyyy/MM/dd"),
-          fin            : this.datepipe.transform(formValues.fechaRegistroFin,"yyyy/MM/dd"),
-      }
-    }];
-    this.facturacionService.cargarOBuscarLiquidacion(parametro[0]).subscribe((resp: any) => {
-    this.blockUI.stop();
+  eliminarLiquidacion(idLiq: number){
+    Swal.fire({
+      title:'¿Eliminar Liquidación?',
+      text: `¿Estas seguro que deseas eliminar la Liquidación: ${idLiq}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#0d6efd',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.facturaService.deleteLiquidacion(idLiq).subscribe(resp => {
 
-    //  console.log('Lista-Liquidaciones', resp.list, resp.list.length);
-      this.listaLiquidacion = [];
-      this.listaLiquidacion = resp.list;
-
-      this.spinner.hide();
+          Swal.fire({
+            title: 'Eliminar Liquidación',
+            text: `${resp.message}, con el ${idLiq}`,
+            icon: 'success',
+          });
+          this.getAllLiquidaciones()
+        });
+      };
     });
   }
 
-
-  eliminarLiquidacion(id: number){
+  eliminarLiquidacion_xyzzzzzz(id: number){
     this.spinner.show();
 
     let parametro:any[] = [{
@@ -241,7 +219,7 @@ export class LiquidacionComponent implements OnInit {
       if (resp.value) {
         this.facturacionService.eliminarLiquidacion(parametro[0]).subscribe(resp => {
 
-          this.cargarOBuscarLiquidacion();
+          this.getAllLiquidaciones()
             Swal.fire({
               title: 'Eliminar Liquidación',
               text: `La Liquidación: ${id}, fue eliminado con éxito`,
@@ -253,51 +231,56 @@ export class LiquidacionComponent implements OnInit {
     this.spinner.hide();
   }
 
-  listEstados: any[] = [];
-  getListEstados(){
-    let parametro: any[] = [{queryId: 101}];
+  // listVD_Fact: any[] = [];
+  // exportListVD_Fact(){
+  //   let parametro: any[] = [{queryId: 136}];
 
-    this.facturacionService.getListEstados(parametro[0]).subscribe((resp: any) => {
-            this.listEstados = resp.list;
-            // console.log('EST-FACT', resp);
-    });
-  }
+  //   this.facturacionService.exportListVD_Fact(parametro[0]).subscribe((resp: any) => {
+  //           this.listVD_Fact = resp.list;
+  //           // console.log('EXPORT-VD_FACT', resp);
+  //   });
+  // }
 
-  listVD_Fact: any[] = [];
-  exportListVD_Fact(){
-    let parametro: any[] = [{queryId: 136}];
+  listExportVentaDeclarada: any[] = []
+  getAllListaExportVD(){
+    this.facturaService.getAllListaExportVD().subscribe((resp: any) => {
+      console.log('LIST_EXPORT_VD =>', resp);
 
-    this.facturacionService.exportListVD_Fact(parametro[0]).subscribe((resp: any) => {
-            this.listVD_Fact = resp.list;
-            // console.log('EXPORT-VD_FACT', resp);
-    });
+      this.listExportVentaDeclarada = [];
+      this.listExportVentaDeclarada = resp.result;
+    })
   }
 
   listGestores: any[] = [];
   getListGestores(){
-    let parametro: any[] = [{queryId: 102}];
+    this.mantenimientoService.getAllGestores().subscribe((resp: any) => {
+      this.listGestores = resp.result;
+      console.log('LIQ_GESTORES', this.listGestores);
+    })
+  }
 
-    this.facturacionService.getListGestores(parametro[0]).subscribe((resp: any) => {
-            this.listGestores = resp.list;
-            // console.log('GESTORES', resp);
-    });
-  };
+  listEstados: any[] = [];
+  getListEstados(){
+    this.mantenimientoService.getAllEstados().subscribe((resp: any) => {
+      this.listEstados = resp.result;
+      console.log('LIQ_ESTADOS', this.listEstados);
+    })
+  }
 
   listProyectos: any[] = [];
-  getListProyectos(){
-    let parametro: any[] = [{queryId: 1}];
+  getistProyectos(){
+    this.mantenimientoService.getAllProyectos().subscribe((resp: any) => {
+      this.listProyectos = resp.result;
+      console.log('LIQ_PROY', this.listProyectos);
+    })
+  }
 
-    this.facturacionService.getListProyectos(parametro[0]).subscribe((resp: any) => {
-            this.listProyectos = resp.list;
-            // console.log('COD_PROY', resp.list);
-    });
-  };
 
   limpiarFiltro() {
     this.liquidacionForm.reset('', {emitEvent: false})
     this.newFilfroForm()
 
-    this.cargarOBuscarLiquidacion();
+    this.getAllLiquidaciones();
   }
 
   totalfiltro = 0;
@@ -306,7 +289,7 @@ export class LiquidacionComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalFacturas) {
-      this.facturacionService.cargarOBuscarLiquidacion(offset.toString()).subscribe( (resp: any) => {
+      this.facturaService.getAllLiquidaciones(offset.toString()).subscribe( (resp: any) => {
             this.listaLiquidacion = resp.list;
             this.spinner.hide();
           });
@@ -316,66 +299,64 @@ export class LiquidacionComponent implements OnInit {
       this.page = event;
   }
 
-  crearLiquidacion(){
-    const dialogRef = this.dialog.open(CrearLiquidacionComponent, {width:'55%'});
+  actualizarLiquidacion(DATA: any) {
+    console.log('DATA_LIQUID', DATA);
+    this.dialog.open(ModalLiquidacionComponent, { width: '70%', height: '80%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getAllLiquidaciones()
+        }
+      });
+  }
 
-    dialogRef.afterClosed().subscribe(resp => {
+  crearLiquidacion(){
+    this.dialog.open(ModalLiquidacionComponent, {width:'55%'})
+      .afterClosed().subscribe(resp => {
       if (resp) {
-        this.cargarOBuscarLiquidacion()
+        this.getAllLiquidaciones()
       }
     })
   }
+
 
   duplicarLiquidacion(DATA: any){
     console.log('ENV_DATA', DATA);
 
-    const dialogRef = this.dialog.open(CrearLiquidacionComponent, {width:'55%', data: DATA});
+    const dialogRef = this.dialog.open(ModalLiquidacionComponent, {width:'55%', data: DATA});
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
-        this.cargarOBuscarLiquidacion()
+        this.getAllLiquidaciones()
       }
     })
   }
 
-
-  abrirComentarioRegularizacion(dataComentario: string) {
+  abrirComentarioRegularizacion(dataComentario: any) {
     console.log('DATA_DETALLE', dataComentario);
 
-    const dialogRef = this.dialog.open(ModalComentarioComponent, { width: '60%',data: dataComentario});
+    const dialogRef = this.dialog.open(ModalComentarioComponent, { width: '55%',data: dataComentario});
     dialogRef.afterClosed().subscribe((resp) => {
       if (resp) {
-        this.cargarOBuscarLiquidacion();
+        this.getAllLiquidaciones()
       }
     });
   }
 
   actualizacionMasiva(){
-    const dialogRef = this.dialog.open(ActualizacionMasivaComponent, {width:'20%', });
+    const dialogRef = this.dialog.open(ActualizacionMasivaComponent, {width:'25%', });
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
-        this.cargarOBuscarLiquidacion()
+        this.getAllLiquidaciones()
       }
     })
   }
 
-  actualizarFactura(DATA: any) {
-    // console.log('DATA_LIQUID', DATA);
-    this.dialog
-      .open(ActualizarLiquidacionComponent, { width: '70%', height: '80%', data: DATA })
-      .afterClosed().subscribe((resp) => {
-        if (resp) {
-          this.cargarOBuscarLiquidacion();
-        }
-      });
-  }
-
   exportarRegistro(){
-    this.exportExcellService.exportarExcel(this.listaLiquidacion, 'Factura_Filtro')
+    this.exportExcellService.exportarExcel(this.listaLiquidacion, 'LIQUIDACION_Filtro')
   }
 
   exportarVD_FACT(){
-    this.exportExcellService.exportarExcel(this.listVD_Fact, 'FACTURACION-VENT_DECLARADA')
+    this.exportExcellService.exportarExcel(this.listExportVentaDeclarada, 'FACTURACION-VENTA_DECLARADA')
   }
 }
 

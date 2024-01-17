@@ -42,7 +42,7 @@ export function mapearImportLiquidacion(data: any[], listLiquidaciones: any, lis
     const proyectoEncontrado    = buscarProyectoPorNombre(listProy, columna.Proyecto);
 
     if (liquidacionEncontrada && gestorEncontrado) {
-      const liquidacionModel: LiquidacionModel = {
+      const liquidacionModel: any = {
         IdFactura      : columna.id,
         IdProyecto     : proyectoEncontrado,
         IdLiquidacion  : liquidacionEncontrada,

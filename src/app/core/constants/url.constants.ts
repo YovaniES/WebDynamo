@@ -8,6 +8,11 @@ let BASE_LIQUIDACION  = ''
 let MANTENIM_LIQUIDACION = '';
 let API_SAVE_DATA_IMPORT = '';
 
+
+let PATH_MANTENIMIENTO = '';
+let PATH_FACTURACION   = '';
+
+
 switch (ENVIROMENT) {
   case 'DEV':
     break;
@@ -30,6 +35,10 @@ switch (ENVIROMENT) {
     MANTENIM_LIQUIDACION = 'http://mantenimientoactas.indratools.com/api/'
 
     PATH_BACK_NET        = 'http://backdynamosupport.indratools.com/api/configurador/' //SUBSITE 21
+
+    PATH_FACTURACION   = 'http://facturacionwebapi.indratools.com/api'//SUBSITE34 (CON BD_DynamoSupport_PROD)
+    PATH_MANTENIMIENTO = 'https://dynamomantenimiento.azurewebsites.net/api'
+
     break;
   default:
     break;
@@ -79,6 +88,16 @@ export const API_JEFATURA_FILTRO = MANTENIM_LIQUIDACION + 'Jefatura/filtrar';
 export const API_CLIENTE         = MANTENIM_LIQUIDACION + 'Cliente';
 export const API_CLIENTE_FILTRO  = MANTENIM_LIQUIDACION + 'Cliente/filtrar';
 // export const API_ESTADOS  = MANTENIM_LIQUIDACION + 'Estado';
+
+
+
+
+// OJO RUTAS DE FACTURACION - DYNAMO 17/01
+export const BASE_FACTURACION    = PATH_FACTURACION + '/Facturacion';
+export const BASE_VENTADECLARADA = PATH_FACTURACION + '/VentaDeclarada';
+export const BASE_CERTIFICACION  = PATH_FACTURACION + '/Certificacion';
+export const BASE_HIST_LIQ       = PATH_FACTURACION + '/HistoricoFacturacion';
+export const BASE_MANTENIMIENTO  = PATH_MANTENIMIENTO;
 
 
 // DATA VISOR DASHBOARD

@@ -1,4 +1,4 @@
-<!-- <div class="modal-title-inic mt-5">Venta declarada</div>
+<div class="modal-title-inic mt-5">Venta declarada</div>
 <div class="cli-content">
   <div class="cli-card-body">
     <input
@@ -79,6 +79,7 @@
                   <td>
                     <span
                     [ngStyle]="{color:vd.estado == 'En Elaboración'? 'red': vd.estado == 'Enviado'? 'blue': 'green'}">{{ vd.estado }}</span>
+                    <!-- [ngStyle]="{color:vd.estado == 'MO_Visado'? 'red': vd.estado == 'Facturado'? 'blue': 'green'}">{{ vd.estado }}</span> -->
                   </td>
                   <td style="text-align: left;">{{ vd.gestor }}</td>
                   <td>{{ vd.venta_Declarada | number: "3.2-2" }}</td>
@@ -98,7 +99,4 @@
       </div>
     </div>
   </div>
-</div> -->
-
-
-<!-- [ngStyle]="{color:vd.estado == 'MO_Visado'? 'red': vd.estado == 'Facturado'? 'blue': 'green'}">{{ vd.estado }}</span> -->
+</div>

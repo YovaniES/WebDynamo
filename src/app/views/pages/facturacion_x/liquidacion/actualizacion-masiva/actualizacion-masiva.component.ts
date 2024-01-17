@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from 'src/app/core/services/auth.service';
 import Swal from 'sweetalert2';
@@ -10,9 +10,9 @@ import { FacturacionService } from 'src/app/core/services/facturacion.service';
 
 
 @Component({
-    selector: 'app-actualizacion-masiva',
-    templateUrl: './actualizacion-masiva.component.html',
-    styleUrls: ['./actualizacion-masiva.component.scss'],
+  selector: 'app-actualizacion-masiva',
+  templateUrl: './actualizacion-masiva.component.html',
+  styleUrls: ['./actualizacion-masiva.component.scss']
 })
 export class ActualizacionMasivaComponent implements OnInit {
   userID: number = 0;

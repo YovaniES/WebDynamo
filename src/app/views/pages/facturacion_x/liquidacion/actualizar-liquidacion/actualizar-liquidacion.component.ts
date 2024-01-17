@@ -1,6 +1,6 @@
-import { DatePipe} from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,21 +8,13 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { FacturacionService } from 'src/app/core/services/facturacion.service';
 import { UtilService } from 'src/app/core/services/util.service';
 import Swal from 'sweetalert2';
-// import { AgregarCertificacionComponent } from './modal-certificacion/modal-certificacion.component';
-// import { AgregarVentadeclaradaComponent } from './modal-ventadeclarada/modal-ventadeclarada.component';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
-import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
-import { ModalVentadeclaradaComponent } from './modal-ventadeclarada/modal-ventadeclarada.component';
-import { ModalCertificacionComponent } from './modal-certificacion/modal-certificacion.component';
+import { AgregarCertificacionComponent } from './agregar-certificacion/agregar-certificacion.component';
+import { AgregarVentadeclaradaComponent } from './agregar-ventadeclarada/agregar-ventadeclarada.component';
 
 @Component({
-    selector: 'app-actualizar-liquidacion',
-    templateUrl: './actualizar-liquidacion.component.html',
-    styleUrls: ['./actualizar-liquidacion.component.scss'],
-    // standalone: true,
-    // imports: [MatIconModule, FormsModule, ReactiveFormsModule, NgFor, NgIf, MatTooltipModule, MatProgressSpinnerModule, DecimalPipe]
+  selector: 'app-actualizar-liquidacion',
+  templateUrl: './actualizar-liquidacion.component.html',
+  styleUrls: ['./actualizar-liquidacion.component.scss']
 })
 export class ActualizarLiquidacionComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
@@ -34,7 +26,6 @@ export class ActualizarLiquidacionComponent implements OnInit {
 
   constructor(
     private facturacionService: FacturacionService,
-    private liquidacionService: LiquidacionService,
     private authService: AuthService,
     private fb: FormBuilder,
     private utilService: UtilService,
@@ -188,7 +179,6 @@ export class ActualizarLiquidacionComponent implements OnInit {
       this.spinner.hide();
     })
   }
-
 
 
   eliminarVentaDeclarada(id: any){
@@ -365,7 +355,9 @@ export class ActualizarLiquidacionComponent implements OnInit {
   obtenerImporteTotal(): number{
     this.importTotal = 0;
 
-    this.listFactura.map(factura => {this.importTotal = this.importTotal + factura.importe})
+    this.listFactura.map(factura => {
+      this.importTotal = this.importTotal + factura.importe
+      })
 
     return this.importTotal;
   }
@@ -376,7 +368,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
 
   agregarVentaDeclarada(){
     // console.log('DA-LIQ', DATA);
-    const dialogRef = this.dialog.open(ModalVentadeclaradaComponent, { width:'25%', data: {vdForm: this.facturaForm.value, isCreation: true}});
+    const dialogRef = this.dialog.open(AgregarVentadeclaradaComponent, { width:'25%', data: {vdForm: this.facturaForm.value, isCreation: true}});
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
@@ -387,7 +379,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
 
   actualizarVentaDeclarada(DATA: any){
     // console.log('DATA_VD', DATA);
-    const dialogRef = this.dialog.open(ModalVentadeclaradaComponent, { width:'25%', data: DATA });
+    const dialogRef = this.dialog.open(AgregarVentadeclaradaComponent, { width:'25%', data: DATA });
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
@@ -397,7 +389,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
   }
 
   agregarFactura(){
-    const dialogRef = this.dialog.open(ModalCertificacionComponent, { width:'35%', data: {fForm: this.facturaForm.value, isCreation: true}});
+    const dialogRef = this.dialog.open(AgregarCertificacionComponent, { width:'35%', data: {fForm: this.facturaForm.value, isCreation: true}});
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
@@ -409,7 +401,7 @@ export class ActualizarLiquidacionComponent implements OnInit {
   actualizarFactura(DATA: any){
     // console.log('DATA_F', DATA);
     // const DATA = this.facturaForm.value
-    const dialogRef = this.dialog.open(ModalCertificacionComponent, { width:'35%', data: DATA});
+    const dialogRef = this.dialog.open(AgregarCertificacionComponent, { width:'35%', data: DATA});
 
     dialogRef.afterClosed().subscribe(resp => {
       if (resp) {
