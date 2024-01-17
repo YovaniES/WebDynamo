@@ -15,53 +15,41 @@ export class AsignarCertificacionComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
 
-  page = 1;
-  totalFacturas: number = 0;
-  pageSize = 10;
-
   constructor( private fb: FormBuilder,
-               private authService: AuthService,
                private liquidacionService: LiquidacionService,
+               private authService: AuthService,
                public dialogRef: MatDialogRef<AsignarCertificacionComponent>,
-               @Inject(MAT_DIALOG_DATA) public DATA_FACTURA: any
+               @Inject(MAT_DIALOG_DATA) public DATA_CERTIF: any
   ) {}
 
   ngOnInit(): void {
   this.newForm()
+  this.getAllProyecto();
+  this.getAllOrdenCombo();
   this.getUserID();
-  this.getAllCertificaciones();
-  this.getListEstadoCertificacion();
-  if (this.DATA_FACTURA) {
-    this.cargarFacturaByOrden();
-    // console.log('FACTURA_MODAL', this.DATA_FACTURA);
+  console.log('MODAL-CERT', this.DATA_CERTIF);
+  this.cargarOrdenById();
+
+  if (this.DATA_CERTIF.idCertificacion > 0) {
+    this.cargarCertificacionById();
     }
   }
 
   certificacionForm!: FormGroup;
   newForm(){
     this.certificacionForm = this.fb.group({
-      nro_factura       : ['', Validators.required],
-      idEstado          : ['', Validators.required],
-      idCertificacion   : ['', Validators.required],
-      fecha_facturacion : [''],
-      factura_tgs       : [''],
-      factura_adquira   : [''],
-      fecha_creacion    : [''],
-      idUsuarioCreacion : [''],
+        nro_certificacion : ['', Validators.required],
+        monto_total       : ['', Validators.required],
+        idProyecto        : ['', Validators.required],
+        idOrden           : ['', Validators.required],
+        isActive          : [''],
     })
   }
 
-  actionBtn: string = 'Crear';
-  cargarFacturaByOrden(): void{
-    this.blockUI.start("Cargando data_...");
-    if (this.DATA_FACTURA) {
-      this.blockUI.stop();
-      this.certificacionForm.reset({
-        idCertificacion: this.DATA_FACTURA.idCertificacion,
-        idEstado       : this.DATA_FACTURA.estado.idEstado
-      })
-    }
-  }
+  cargarOrdenById(){
+    this.certificacionForm.reset({idOrden: this.DATA_CERTIF.idOrden});
+    this.certificacionForm.controls['idOrden'].disable();
+  };
 
   crearOactualizarCertificacion(){
     if (this.certificacionForm.invalid) {
@@ -69,7 +57,7 @@ export class AsignarCertificacionComponent implements OnInit {
         controls.markAllAsTouched();
       })
     }
-    if (this.DATA_FACTURA.idCertificacion > 0 ) {
+    if (this.DATA_CERTIF.idOrden > 0 ) {
       console.log('CREATE');
       this.asignarCertificacion()
     } else {
@@ -78,47 +66,21 @@ export class AsignarCertificacionComponent implements OnInit {
     }
   }
 
-  actualizarCertificacion(){
-    const formValues = this.certificacionForm.getRawValue();
-
-    const request = {
-      // idCertificacion : this.DATA_FACTURA.idCertificacion,
-      // idFactura       : this.DATA_FACTURA.idFactura,
-      // idEstado        : this.DATA_FACTURA.eliminacion_logica,
-      // descripcion     : formValues.descripcion,
-      // usuario         : this.userID
-    }
-
-    this.liquidacionService.actualizarFactura(this.DATA_FACTURA.idCertificacion, request).subscribe((resp: any) => {
-      if (resp.success) {
-          Swal.fire({
-            title: 'Actualizar factura!',
-            text : `${resp.message}`,
-            icon : 'success',
-            confirmButtonText: 'Ok',
-          });
-          this.close(true);
-      }
-    })
-  };
-
   asignarCertificacion(): void{
     const formValues = this.certificacionForm.getRawValue();
 
     const request = {
-      // nro_factura       : formValues.nro_factura,
-      // idEstado          : formValues.idEstado,
-      // idCertificacion   : this.DATA_FACTURA.idCertificacion,
-      // fecha_facturacion : formValues.fecha_facturacion,
-      // factura_tgs       : formValues.factura_tgs,
-      // factura_adquira   : formValues.factura_adquira,
-      // idUsuarioCreacion : this.userID,
+      nro_certificacion : formValues.nro_certificacion,
+      valor             : formValues.monto_total,
+      idOrden           : formValues.idOrden,
+      idProyecto        : formValues.idProyecto,
+      idUsuarioCreacion : this.userID,
     }
 
-    this.liquidacionService.crearFactura(request).subscribe((resp: any) => {
+    this.liquidacionService.crearCertificacion(request).subscribe((resp: any) => {
       if (resp.message) {
         Swal.fire({
-          title: 'Crear factura!',
+          title: 'Asignar certificación!',
           text: `${resp.message}`,
           icon: 'success',
           confirmButtonText: 'Ok'
@@ -128,33 +90,76 @@ export class AsignarCertificacionComponent implements OnInit {
     })
   }
 
-  listEstadoDetalleActa:any[] = [];
-  getListEstadoCertificacion(){
-    this.liquidacionService.getAllEstadosActa().subscribe(resp => {
-      this.listEstadoDetalleActa = resp.filter((x:any) => x.idEstado != 2);
-      console.log('EST-CERT', this.listEstadoDetalleActa);
+  actualizarCertificacion(){
+    const formValues = this.certificacionForm.getRawValue();
+
+    const requestCertificacion = {
+      nro_certificacion  : formValues.nro_certificacion,
+      valor              : formValues.monto_total,
+      idOrden            : formValues.idOrden,
+      idProyecto         : formValues.idProyecto,
+      isActive           : formValues.isActive,
+      idUsuarioActualiza : this.userID,
+    }
+    this.liquidacionService.actualizarCertificacion(this.DATA_CERTIF.idCertificacion, requestCertificacion).subscribe((resp: any) => {
+      if (resp.success) {
+          Swal.fire({
+            title: 'Actualizar certificación!',
+            text : `${resp.message}`,
+            icon : 'success',
+            confirmButtonText: 'Ok',
+          });
+          this.close(true);
+      }
     })
   }
 
-  listCertificaciones: any[] = [];
-  getAllCertificaciones(){
-    this.liquidacionService.getAllCertificaciones().subscribe(resp => {
-      this.listCertificaciones = resp //.filter((x: any) => x.idCertificacion == this.DATA_FACTURA.idCertificacion);
-      // console.log('CERTIFICACIONES', this.listCertificaciones);
-    })
+  actionBtn: string = 'Asignar';
+  cargarCertificacionById(): void{
+    // this.blockUI.start("Cargando Certificación...");
+    if (this.DATA_CERTIF.idCertificacion > 0) {
+      this.actionBtn = 'Actualizar'
+      this.liquidacionService.getCertificacionById(this.DATA_CERTIF.idCertificacion).subscribe((cert: any) => {
+        console.log('DATA_BY_ID_CERTIF', cert);
+        this.blockUI.stop();
+
+        this.certificacionForm.reset({
+          idCertificacion  : this.DATA_CERTIF.idCertificacion,
+          nro_certificacion: cert.nro_certificacion,
+          monto_total      : cert.valorTotal,
+          moneda           : cert.moneda,
+          idOrden          : cert.ordenCompra.idOrden,
+          idProyecto       : cert.proyecto.idProyecto,
+          isActive         : cert.estado.estadoId
+        });
+        // this.certificacionForm.controls['idOrden'].disable();
+      })
+    }
   };
 
   userID: number = 0;
   getUserID(){
    this.authService.getCurrentUser().subscribe( resp => {
      this.userID   = resp.user.userId;
-     console.log('ID-USER', this.userID);
+    //  console.log('ID-USER', this.userID);
    })
-  };
-
-  close(succes?: boolean) {
-    this.dialogRef.close(succes);
   }
+
+  listProyectos: any[] = [];
+  getAllProyecto(){
+    this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
+      this.listProyectos = resp;
+      console.log('PROY-S', this.listProyectos);
+    })
+  }
+
+  listOrdenCombo: any[] = [];
+  getAllOrdenCombo(){
+    this.liquidacionService.getAllOrdenCombo().subscribe(resp => {
+      this.listOrdenCombo = resp;
+      console.log('OC-COMBO', this.listOrdenCombo);
+    })
+  };
 
   showAlertError(message: string) {
     Swal.fire({
@@ -170,7 +175,12 @@ export class AsignarCertificacionComponent implements OnInit {
     } else {
       return false;
     }
-  };
+  }
+
+  close(succes?: boolean) {
+    this.dialogRef.close(succes);
+  }
+
 
 }
 

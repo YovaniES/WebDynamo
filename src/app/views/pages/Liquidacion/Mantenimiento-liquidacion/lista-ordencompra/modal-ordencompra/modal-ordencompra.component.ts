@@ -90,24 +90,7 @@ export class ModalOrdencompraComponent implements OnInit {
           this.close(true);
       }
     })
-  }
-
-  // {
-  //   "nroOrden": "string",
-  //   "monto": 0,
-  //     "moneda": "PEN",
-  //   "idUsuarioCreacion": 0,
-  //   "certificacions": [
-  //     {
-  //       "nro_certificacion": "string",
-  //       "valor": 0,
-  //       "moneda": "string",
-  //       "idOrden": 0,
-  //       "idProyecto": 0,
-  //       "idUsuarioCreacion": 0
-  //     }
-  //   ]
-  // }
+  };
 
   crearOrdenCompra(){
     const formValues = this.ordencompraForm.getRawValue();
@@ -117,7 +100,7 @@ export class ModalOrdencompraComponent implements OnInit {
       monto            : formValues.monto,
       moneda           : formValues.moneda,
       idUsuarioCreacion: this.userID,
-      certificacions   : [], //OJO FALTA
+      certificacions   : [],
     }
 
     this.liquidacionService.crearOrdenCompra(request).subscribe((resp: any) => {
@@ -160,13 +143,38 @@ export class ModalOrdencompraComponent implements OnInit {
         this.ordencompraForm.controls['proyecto'       ].disable();
       })
     }
+  };
+
+  eliminarCertificacion(cert: any){
+    Swal.fire({
+      title:'¿Eliminar certificación?',
+      text: `¿Estas seguro que deseas eliminar el certificación: ${cert.nro_certificacion}?`,
+      icon: 'question',
+      confirmButtonColor: '#ec4756',
+      cancelButtonColor: '#5ac9b3',
+      confirmButtonText: 'Si, Eliminar!',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed){
+        this.liquidacionService.eliminarCertificacion(cert.idCertificacion).subscribe(resp => {
+          Swal.fire({
+            title: 'Eliminar certificación',
+            text: `${resp.message}`,
+            icon: 'success',
+          });
+          this.cargarOrdenCompraById()
+        });
+      };
+    });
   }
+
 
   userID: number = 0;
   getUserID(){
    this.authService.getCurrentUser().subscribe( resp => {
      this.userID   = resp.user.userId;
-     console.log('ID-USER', this.userID);
+    //  console.log('ID-USER', this.userID);
    })
   }
 

@@ -79,7 +79,7 @@
                   class="btn-asignar btn-grey mb-1"
                   matTooltip="Asignar certificación"
                   type="submit"
-                  (click)="abrirModalCrearOactualizar()">
+                  (click)="abrirModalCrearOactualizar(DATA_ORDENCOMPRA)">
                   <mat-icon class="icon-18">add</mat-icon>
                 </button>
               </div>
@@ -120,8 +120,8 @@
                             <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                           </button>
 
-                          <!-- (click)="eliminarCertificacion(cert.idcert)" -->
                           <button
+                            (click)="eliminarCertificacion(oc)"
                             matTooltip="Eliminar"
                             class="icon-btn btn-trans b-fucsia">
                             <mat-icon class="icon-15">delete_forever</mat-icon>
