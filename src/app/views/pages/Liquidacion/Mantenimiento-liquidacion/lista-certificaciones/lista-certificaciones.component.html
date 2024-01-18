@@ -88,12 +88,12 @@
               <th style="min-width: 120px">Orden compra</th>
               <th style="min-width: 150px">Certificación</th>
               <th style="min-width: 150px">Proyecto(s)</th>
+              <th style="min-width: 100px">Estado factura</th>
               <th>Total</th>
               <th>Consumido</th>
               <th>Disponible</th>
               <th>Moneda</th>
               <th style="min-width: 105px">Actualizado por:</th>
-              <th style="min-width: 100px">Estado factura</th>
               <th style="min-width: 92px" >Estado</th>
               <th style="min-width: 100px">Fecha creación</th>
             </tr>
@@ -132,12 +132,12 @@
               <td>{{ cert.ordenCompra.nro_orden }}</td>
               <td style="text-align: left;">{{ cert.nro_certificacion }}</td>
               <td style="text-align: left; min-width: 150px;">{{ cert.proyecto.codigo_proyecto }}</td>
+              <td>{{ cert.estadoFactura     }}</td>
               <td>{{ cert.valorTotal }}</td>
               <td>{{ cert.valorUsado }}</td>
               <td>{{ cert.valorDisponible }}</td>
               <td>{{ cert.moneda }}</td>
               <td style="color: #007bff;">{{ cert.usuarioActualiza.usuario }}</td>
-              <td>{{ cert.estadoFactura     }}</td>
               <td class="moad-module">
                 <mat-icon matTooltip="Activo" [ngClass]="{ 'c-green_x': cert.estado.estadoId == 1, 'c-red': cert.estado.estadoId != 1 }" class="icon-18">report</mat-icon>
               </td>

@@ -189,7 +189,7 @@ export class SubActasComponent implements OnInit {
         })
 
         // this.subActasForm.controls['idGestor'  ].disable();
-        this.subActasForm.controls['idProyecto' ].disable();
+        // this.subActasForm.controls['idProyecto' ].disable();
         this.subActasForm.controls['declarado'  ].disable();
         // this.subActasForm.controls['venta_total'].disable();
         // this.subActasForm.controls['periodo'   ].disable();

@@ -207,16 +207,16 @@
                           <th style="min-width: 80px;">N°</th>
                           <th>Analista</th>
                           <th>Perfil</th>
+                          <th style="min-width: 140px">Estado</th>
                           <th style="min-width: 80px;">Precio unid.</th>
                           <th>Cantidad</th>
                           <th>Total</th>
-                          <th style="min-width: 140px" >Estado</th>
-                          <th style="min-width: 120px;">Observaciones</th>
-                          <th style="min-width: 100px;">Comentario</th>
                           <th>Unidad</th>
                           <th>Certificado(s)</th>
                           <th>Facturado(s)</th>
                           <th style="min-width: 175px;">Cod. Certificación</th>
+                          <th style="min-width: 120px;">Observaciones</th>
+                          <th style="min-width: 100px;">Comentario</th>
                         </tr>
                       </thead>
 
@@ -227,11 +227,13 @@
                               <button
                                 (click)="crearOactualizarDetActa(detalle)"
                                 class="icon-btn btn-trans"
+                                matTooltip="Actualizar"
                                 style="color: #69aafa">
                                 <mat-icon class="icon-15">drive_file_rename_outline</mat-icon>
                               </button>
                               <button
                                 (click)="eliminarDetalleActa(detalle)"
+                                matTooltip="Eliminar"
                                 class="icon-btn btn-trans c-fucsia"
                                 ><mat-icon class="icon-15">delete_forever</mat-icon>
                               </button>
@@ -240,16 +242,16 @@
                           <td>{{i+1}}</td>
                           <td style="min-width: 155px; text-align: left;">{{detalle.nombre}}</td>
                           <td style="min-width: 100px;">{{detalle.perfil}}</td>
+                          <td>{{ detalle.estado      }}</td>
                           <td>{{ detalle.precioUnidad}}</td>
                           <td>{{ detalle.unidades    }}</td>
                           <td>{{ detalle.precioTotal }}</td>
-                          <td>{{ detalle.estado      }}</td>
-                          <td>{{ detalle.observacion }}</td>
-                          <td>{{ detalle.comentario  }}</td>
                           <td>{{ detalle.unidad      }}</td>
                           <td>{{ detalle.certificado }}</td>
                           <td>{{ detalle.facturado   }}</td>
                           <td>{{ detalle.certificacions }}</td>
+                          <td>{{ detalle.observacion }}</td>
+                          <td>{{ detalle.comentario  }}</td>
                         </tr>
                       </tbody>
                     </table>

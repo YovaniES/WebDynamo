@@ -20,7 +20,7 @@
 
         <div class="cli-form-element col-f-3">
           <label>Certificación <small style="color: red">*</small></label>
-          <select formControlName="idCertificacion" class="cli-input">
+          <select formControlName="idCertificacion" class="cli-input_x">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="cert.idCertificacion" *ngFor="let cert of listCertificaciones">{{cert.nro_certificacion}}</option>
           </select>
@@ -28,7 +28,7 @@
         </div>
 
         <div class="cli-form-element form-group col-f-3">
-          <label>Fecha facturación</label>
+          <label>Fecha facturación <small style="color: red">*</small></label>
            <input
             style="padding: 0.175rem .75rem;"
             type="date"

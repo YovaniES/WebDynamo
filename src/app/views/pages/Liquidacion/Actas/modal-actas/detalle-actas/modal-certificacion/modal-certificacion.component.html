@@ -35,7 +35,7 @@
 
         <div class="cli-form-element col-f-3" *ngIf="DATA_DET_ACTA.detalle.idDetalleCertificacion">
           <label>Estado</label>
-          <select formControlName="idEstado" class="cli-input">
+          <select formControlName="idEstado" class="cli-input_x">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="estado.estado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
           </select>

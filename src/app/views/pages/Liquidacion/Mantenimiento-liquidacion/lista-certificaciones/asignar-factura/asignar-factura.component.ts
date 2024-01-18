@@ -31,6 +31,7 @@ export class AsignarFacturaComponent implements OnInit {
   this.getUserID();
   this.getAllCertificaciones();
   this.getListaEstadosFactura();
+
   if (this.DATA_FACTURA) {
     this.cargarFacturaByOrden();
     // console.log('FACTURA_MODAL', this.DATA_FACTURA);
@@ -43,7 +44,7 @@ export class AsignarFacturaComponent implements OnInit {
       nro_factura       : ['', Validators.required],
       idEstado          : [''],
       idCertificacion   : ['', Validators.required],
-      fecha_facturacion : [''],
+      fecha_facturacion : ['', Validators.required],
       factura_tgs       : [''],
       factura_adquira   : [''],
       fecha_creacion    : [''],
@@ -58,8 +59,9 @@ export class AsignarFacturaComponent implements OnInit {
       this.blockUI.stop();
       this.facturaForm.reset({
         idCertificacion: this.DATA_FACTURA.idCertificacion,
-        idEstado       : this.DATA_FACTURA.estado.idEstado
-      })
+        idEstado       : 4 //estado 4: Facturado
+      });
+      this.facturaForm.controls['idCertificacion'].disable();
     }
   }
 

@@ -60,6 +60,7 @@ export const API_SUBSERVICIO          = BASE_LIQUIDACION + 'Subservicio';
 export const API_SUBSERVICIO_COMBO    = BASE_LIQUIDACION + 'Subservicio/SubservicioListado';
 export const API_SUBSERVICIO_PROY     = BASE_LIQUIDACION + 'Subservicio/SubservicioProyecto';
 export const API_ACTAS                = BASE_LIQUIDACION + 'acta/';
+export const API_CONTAR_ACTAS         = BASE_LIQUIDACION + 'acta/ContarActas';
 export const API_ACTAS_FILTRO         = BASE_LIQUIDACION + 'acta/GetAllActas';
 export const API_ORDEN_COMPRA         = BASE_LIQUIDACION + 'OrdenCompra';
 export const API_ORDEN_COMPRA_COMBO   = BASE_LIQUIDACION + 'OrdenCompra/ordencompralistado';

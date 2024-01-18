@@ -48,17 +48,26 @@ export class ActaComponent implements OnInit {
     this.actasForm = this.fb.group({
       idActa          : [''],
       idProyecto      : [''],
-      importe         : [''],
       idSubservicio   : [''],
       idGestor        : [''],
       periodo         : [''],
-      import          : [''],
+      // import          : [''],
       idEstado        : [''],
       montoMinimo     : [''],
       montoMaximo     : [''],
       estadoAgrupacion: ['']
     })
   };
+
+  total_actas: number = 0;
+  contarActas(){
+    const params = this.actasForm.getRawValue();
+
+    this.actasService.totalActas(params).subscribe(resp => {
+      this.total_actas = resp;
+      console.log('CONTAR_aCTAS', this.total_actas);
+    })
+  }
 
   listActas: any[] = [];
   getAllActas(){
@@ -70,7 +79,7 @@ export class ActaComponent implements OnInit {
 
     const req = {
         idActa          : formaValues.idActa,
-        idProyecto      : formaValues.proyecto,
+        idProyecto      : formaValues.idProyecto,
         idSubservicio   : formaValues.idSubservicio,
         idEstado        : formaValues.idEstado,
         periodo         : this.actasForm.controls['periodo'].value? formaValues.periodo+'-01': '',
@@ -81,12 +90,11 @@ export class ActaComponent implements OnInit {
       }
 
     this.actasService.getAllActas(req).subscribe(resp => {
-    this.blockUI.stop();
-
+      this.blockUI.stop();
       this.listActas = resp;
       console.log('ACTAS-LIST-FILTRO', resp);
-      console.log('ID_ACTA', this.ID_ACTA);
     })
+    this.contarActas();
   }
 
   eliminarActa(acta: any) {

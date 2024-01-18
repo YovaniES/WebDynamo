@@ -25,7 +25,7 @@
 
             <div class="cli-form-element col-f-4">
               <label>Gestor</label>
-              <select formControlName="idGestor" class="cli-input">
+              <select formControlName="idGestor" class="cli-input" style="text-align: left">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="gestor.id" *ngFor="let gestor of listGestoresCombo">{{gestor.nombre}}</option>
               </select>
@@ -33,7 +33,7 @@
 
             <div class="cli-form-element col-f-4">
               <label>Subservicios</label>
-              <select formControlName="idSubservicio" class="cli-input">
+              <select formControlName="idSubservicio" class="cli-input" style="text-align: left">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="subs.id" *ngFor="let subs of listSubserviciosCombo">{{subs.nombre}}</option>
               </select>
@@ -43,9 +43,17 @@
               <label>Total</label>
               <input
                 class="cli-input"
-                type="number"
-                formControlName="importe"/>
+                type="text"
+                formControlName="montoMinimo"/>
             </div>
+
+            <!-- <div class="cli-form-element col-f-4">
+              <label>Total</label>
+              <input
+                class="cli-input"
+                type="text"
+                formControlName="montoMinimo"/>
+            </div> -->
 
             <div class="cli-form-element col-f-4" >
               <label>Periodo</label>
@@ -104,8 +112,9 @@
           </div>
 
           <div class="flex-1"></div>
-          <div class="mt-2" style="color: #345df3; font-weight: 600;">
-            Total : <span class="total">{{ listActas.length }} Registros</span>
+          <div class="mt-2 total-actas">
+            Registros: <span style="color: #00000061">{{ listActas.length }}</span><span style="color: #dee2e6;"> | </span>
+            Actas: <span style="color: #00000061">{{ total_actas }} </span>
           </div>
         </div>
       </form>

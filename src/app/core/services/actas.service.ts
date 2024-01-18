@@ -4,6 +4,7 @@ import {
   API_ACTAS,
   API_ACTAS_FILTRO,
   API_CERTIFICACION,
+  API_CONTAR_ACTAS,
   API_DET_ACTA,
   API_DET_CERTIFICACION,
   API_ESTADOS_DET_ACTA,
@@ -25,6 +26,14 @@ export class ActasService {
       map((resp: any) => {
         console.log('SERV-ACTAS', resp);
 
+        return resp.result;
+      })
+    );
+  }
+
+  totalActas(filtro: any): Observable<any> {
+    return this.http.post(API_CONTAR_ACTAS, filtro).pipe(
+      map((resp: any) => {
         return resp.result;
       })
     );
