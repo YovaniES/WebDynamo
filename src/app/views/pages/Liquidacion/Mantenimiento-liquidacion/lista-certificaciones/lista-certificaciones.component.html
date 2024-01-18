@@ -38,7 +38,7 @@
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
+                <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.nombre}}</option>
               </select>
             </div>
 

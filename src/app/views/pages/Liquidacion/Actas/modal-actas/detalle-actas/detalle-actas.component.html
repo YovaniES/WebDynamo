@@ -57,7 +57,7 @@
               <small class="form-text text-alert" *ngIf="campoNoValido('venta_total')">* Ingrese la Venta total es obligatorio</small>
             </div>
 
-            <div class="cli-form-element col-f-4">
+            <div class="cli-form-element col-f-4" *ngIf="DATA_DET_ACTAS.idDetalleActaConcat">
               <label>Monto certificado(s)</label>
               <input class="cli-input_x"
                 style="text-align: center;"

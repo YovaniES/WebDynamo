@@ -107,7 +107,7 @@ export class DetalleActasComponent implements OnInit {
       nombre       : formValues.analista,
       unidades     : formValues.cantidad,
       precio_unidad: formValues.precio,
-      precio_total : formValues.precio_total,
+      PrecioTotal  : formValues.venta_total,
       perfil       : formValues.perfil,
       observacion  : formValues.observacion,
       unidad       : formValues.unidad,

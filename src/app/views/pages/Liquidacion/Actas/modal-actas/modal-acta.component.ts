@@ -187,9 +187,9 @@ export class ModalActaComponent implements OnInit {
       idSubservicio    : formValues.idSubservicio,
       periodo          : formValues.periodo + '-01',
       comentario       : formValues.comentario,
-      ventaTotalActa   : formValues.venta_total,
+      ventaTotal       : formValues.venta_total,
       idEstado         : formValues.idEstado,
-      enlaceAta        : formValues.enlaceAta,
+      enlaceAta        : formValues.enlaceActa,
       idUsuarioCreacion: this.userID,
       detalleActaParams: [
         {

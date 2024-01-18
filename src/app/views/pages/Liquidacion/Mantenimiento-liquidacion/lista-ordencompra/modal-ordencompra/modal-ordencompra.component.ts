@@ -167,8 +167,7 @@ export class ModalOrdencompraComponent implements OnInit {
         });
       };
     });
-  }
-
+  };
 
   userID: number = 0;
   getUserID(){
