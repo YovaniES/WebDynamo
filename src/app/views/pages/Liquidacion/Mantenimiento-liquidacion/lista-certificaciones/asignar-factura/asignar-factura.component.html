@@ -3,7 +3,7 @@
 </div>
 
 <div class="cli-form mt-3">
-  <div class="cli-form-title c-male">{{ "Asignar" }} factura</div>
+  <div class="cli-form-title c-male" style="margin-bottom: 20px; color: #adadad; font-size: 18px;">{{ 'Asignar' }} factura</div>
 
   <form class="row g-3 mt-3" [formGroup]="facturaForm">
     <div class="cli-form newvac-wrapper">
@@ -20,7 +20,7 @@
 
         <div class="cli-form-element col-f-3">
           <label>Certificación <small style="color: red">*</small></label>
-          <select formControlName="idCertificacion" class="cli-input_x">
+          <select formControlName="idCertificacion" class="cli-input_x" style="text-align: center;">
             <option [value]="0" disabled>-Seleccione-</option>
             <option [value]="cert.idCertificacion" *ngFor="let cert of listCertificaciones">{{cert.nro_certificacion}}</option>
           </select>
@@ -30,7 +30,7 @@
         <div class="cli-form-element form-group col-f-3">
           <label>Fecha facturación <small style="color: red">*</small></label>
            <input
-            style="padding: 0.175rem .75rem;"
+            style="padding: 0.175rem .75rem; text-align: center;"
             type="date"
             class="form-control"
             formControlName="fecha_facturacion"/>
@@ -62,7 +62,7 @@
           </div>
       </div>
 
-      <div class="cli-form-buttons" style="margin-top: 8%">
+      <div class="cli-form-buttons">
         <button class="cli-btn btn-m btn-regresar"
                 type="submit" (click)="close()">
                 <mat-icon class="icon-18">cancel</mat-icon> Cancelar
@@ -71,7 +71,7 @@
         <button class="cli-btn btn-m btn-turq"
                 [disabled]="facturaForm.invalid"
                 (click)="crearOactualizarFactura()"
-                ><mat-icon class="icon-18">save</mat-icon> Crear
+                ><mat-icon class="icon-18">save</mat-icon> Asignar
         </button>
       </div>
     </div>

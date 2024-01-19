@@ -26,24 +26,6 @@
           <small class="form-text text-alert" *ngIf="campoNoValido('idCertificacion')">* Seleccione el proyecto es obligatorio</small>
         </div>
 
-        <!-- <div class="cli-form-element col-f-3">
-          <label>Proyecto <small style="color: red">*</small></label>
-          <select formControlName="proyecto" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="proy.id" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
-          </select>
-          <small class="form-text text-alert" *ngIf="campoNoValido('idCertificacion')">* Seleccione el proyecto es obligatorio</small>
-        </div> -->
-
-        <!-- <div class="cli-form-element col-f-3">
-          <label>Orden Compra <small style="color: red">*</small></label>
-          <select formControlName="ordenCompra" class="cli-input">
-            <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="oc.id" *ngFor="let oc of listOrdenCompraCombo">{{oc.nombre}}</option>
-          </select>
-          <small class="form-text text-alert" *ngIf="campoNoValido('ordenCompra')">* Seleccione la Orden de compra es obligatorio</small>
-        </div> -->
-
         <div class="cli-form-element form-group col-f-3">
           <label>Fecha facturación</label>
            <input

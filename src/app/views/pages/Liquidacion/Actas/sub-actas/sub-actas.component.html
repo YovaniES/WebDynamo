@@ -104,7 +104,7 @@
         <div class="pr-subtitle">Ventas declaradas</div>
         <div class="pr-section">
           <div class="pr-module-container mb-2">
-                <div style="background-color: #f6f3f3">
+                <div style="background-color: #f6f3f3; display: flex">
                   <button
                     class="btn-asignar btn-grey mb-1"
                     matTooltip="Declarar venta"
@@ -112,9 +112,13 @@
                     (click)="abrirVentaDeclarada(DATA_ACTA.idActa)">
                     <mat-icon class="icon-18">add</mat-icon>
                   </button>
+                  <span class="flex-1"></span>
+                  <div class="mt-1" style="color: #345df3; font-weight: 400" *ngIf="listDeclarados.length > 0">
+                    Total : <span class="total">{{ listDeclarados.length }} Declarados</span>
+                  </div>
                 </div>
 
-                <div style="overflow: auto; min-height: 50px; color: #6c757d">
+                <div style="overflow: auto; min-height: 50px; max-height: 118px; color: #6c757d">
                   <div *ngIf="listDeclarados.length > 0">
                     <table class="cli-table_x stripedtable underlinedtable">
                       <thead>
@@ -153,8 +157,8 @@
                           <td>{{ declarado.idDeclarado  }}</td>
                           <td style="font-weight: 600; text-align: right;"><small style="font-weight: 200; margin-right: 3px;">S/</small>{{ declarado.montoDeclarado | number : "1.0-2" }}</td>
                           <td>{{ declarado.proyecto     }}</td>
-                          <td>{{ declarado.estado.estado}}</td>
                           <td>{{ declarado.periodo | date:'yyyy-MM'}}</td>
+                          <td>{{ declarado.estado.estado}}</td>
                           <td>{{ declarado.comentario   }}</td>
                           <td>{{ declarado.usuarioCrea.usuario}}</td>
                           <td>{{ declarado.fechaCreacion | date:'dd/MM/yyyy' }}</td>
@@ -214,7 +218,7 @@
                           <th>Unidad</th>
                           <th>Certificado(s)</th>
                           <th>Facturado(s)</th>
-                          <th style="min-width: 175px;">Cod. Certificación</th>
+                          <th style="min-width: 210px;">Cód. Certificación</th>
                           <th style="min-width: 120px;">Observaciones</th>
                           <th style="min-width: 100px;">Comentario</th>
                         </tr>
@@ -245,10 +249,14 @@
                           <td>{{ detalle.estado      }}</td>
                           <td>{{ detalle.precioUnidad}}</td>
                           <td>{{ detalle.unidades    }}</td>
-                          <td>{{ detalle.precioTotal }}</td>
+                          <td style="font-weight: 600;">{{ detalle.precioTotal }}</td>
                           <td>{{ detalle.unidad      }}</td>
                           <td>{{ detalle.certificado }}</td>
-                          <td>{{ detalle.facturado   }}</td>
+                          <td>
+                            <div *ngIf="detalle.facturado > 0" style="color: #37c885">
+                              {{ detalle.facturado }}
+                            </div>
+                          </td>
                           <td>{{ detalle.certificacions }}</td>
                           <td>{{ detalle.observacion }}</td>
                           <td>{{ detalle.comentario  }}</td>
@@ -278,7 +286,7 @@
         </ng-container>
 
         <!-- BOTONES -->
-        <div class="cli-form-buttons" style="margin-top: 4%">
+        <div class="cli-form-buttons">
           <button
             class="cli-btn btn-m btn-regresar"
             type="submit"

@@ -6,6 +6,7 @@ import { ActasService } from 'src/app/core/services/actas.service';
 import Swal from 'sweetalert2';
 import { ModalCertificacionComponent } from './modal-certificacion/modal-certificacion.component';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
+import { AsignarFacturaComponent } from '../../../Mantenimiento-liquidacion/lista-certificaciones/asignar-factura/asignar-factura.component';
 
 @Component({
   selector: 'app-detalle-actas',
@@ -140,6 +141,8 @@ export class DetalleActasComponent implements OnInit {
         // console.log('DET_ACTA_BY_ID', detalle);
 
         this.listCertificaciones = detalle.detalleActaCertificacions;
+        console.log('LISTA_CERT_DET_ACTA', this.listCertificaciones);
+
 
         this.detalleactasForm.reset({
           analista   : detalle.nombre,
@@ -229,6 +232,17 @@ export class DetalleActasComponent implements OnInit {
         }
       });
   };
+
+  modalAsignarFactura(DATA?: any) {
+    console.log('DATA_OC', DATA);
+    this.dialog
+      .open(AsignarFacturaComponent, { width: '45%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.cargarDetActaById();
+        }
+      });
+  }
 
 }
 

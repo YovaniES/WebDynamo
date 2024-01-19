@@ -76,7 +76,7 @@
 
             <div class="cli-form-element col-f-4" *ngIf="DATA_DET_ACTAS.idDetalleActa">
               <label>Estado</label>
-              <select formControlName="idEstado" class="cli-input_x">
+              <select formControlName="idEstado" class="cli-input_x" style="text-align: center;">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="estado.idEstado" *ngFor="let estado of listEstadoDetActa">{{estado.estado}}</option>
               </select>
@@ -161,9 +161,20 @@
                         <td style="font-weight: 600"><small style="font-weight: 200; margin-right: 3px">S/</small>{{ cert.monto | number : "1.0-2" }}</td>
                         <td>{{ cert.ordenCompra   }}</td>
                         <td>{{ cert.certificacion }}</td>
-                        <td>{{ cert.factura }}</td>
+                        <td style="color:#31d07c;">{{ cert.factura }}</td>
                         <td>{{ cert.fechaCertificacion | date:'dd/MM/yyyy'}}</td>
-                        <td>{{ cert.estado  }}</td>
+                        <td class="obs-score">
+                             <div style="display: flex; justify-content: center;">
+                                <button *ngIf="cert.estado == 'Certificado'"
+                                  class="btn-obs"
+                                  style="margin: 0"
+                                  type="button"
+                                  (click)="modalAsignarFactura(cert)"
+                                  matTooltip="Facturar"
+                                  ><mat-icon class="icon-13">loupe</mat-icon>
+                                </button><small [ngClass]="{'c-facturado': cert.estado == 'Facturado', 'c-certificado':cert.estado == 'Certificado'}">{{ cert.estado }}</small>
+                            </div>
+                        </td>
                         <td>{{ cert.usuarioCrea.usuario }}</td>
                       </tr>
                     </tbody>
@@ -188,7 +199,7 @@
         </ng-container>
 
         <!-- BOTONES -->
-        <div class="cli-form-buttons" style="margin-top: 8%">
+        <div class="cli-form-buttons">
           <button
             class="cli-btn btn-m btn-regresar"
             type="submit"

@@ -30,8 +30,8 @@
               <label>Estado</label>
               <select formControlName="estado" class="cli-input">
                 <option [value]="10" disabled>-Seleccione-</option>
-                <option value=1>Activo</option>
-                <option value=0>Inactivo</option>
+                <option value='Activo'  >Activo</option>
+                <option value='Inactivo'>Inactivo</option>
               </select>
             </div>
 
@@ -66,7 +66,7 @@
 
           <div class="flex-1"></div>
           <div class="mt-2" style="color: #345df3; font-weight: 600">
-            Total : <span class="total">{{ listSubservicios.length }} Subservicios</span>
+            Total : <span class="total">{{ listSubserviciosFiltro.length }} Subservicios</span>
           </div>
         </div>
       </form>
@@ -86,7 +86,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let subserv of listSubservicios | paginate: {
+            <tr *ngFor="let subserv of listSubserviciosFiltro | paginate: {
                         itemsPerPage: pageSize,
                         currentPage: page,
                         totalItems: totalSubservicio }">
@@ -123,7 +123,7 @@
           <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
         </div>
 
-        <div *ngIf="!loadingItem && listSubservicios.length == 0"
+        <div *ngIf="!loadingItem && listSubserviciosFiltro.length == 0"
               class="cli-loader mt-5"
               style="color: #f83434">
               No hay subservicio para mostrar

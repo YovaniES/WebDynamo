@@ -52,7 +52,6 @@ export class AsignarFacturaComponent implements OnInit {
     })
   }
 
-  actionBtn: string = 'Crear';
   cargarFacturaByOrden(): void{
     this.blockUI.start("Cargando data_...");
     if (this.DATA_FACTURA) {

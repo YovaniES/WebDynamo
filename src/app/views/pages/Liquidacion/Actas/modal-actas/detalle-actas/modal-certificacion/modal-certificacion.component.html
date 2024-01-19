@@ -10,9 +10,9 @@
       <div style="display: flex">
         <div class="id-score">Analista :<span class="total">{{DATA_DET_ACTA.detalle.nombre}}</span></div>
         <div class="flex-1" style="background: #f8f9fa"></div>
-        <div class="s-dni">Precio total : <span class="total">{{DATA_DET_ACTA.detalle.precioTotal}}</span></div>
+        <div class="venta">Precio total : <span class="total">{{DATA_DET_ACTA.detalle.precioTotal}}</span></div>
         <div class="flex-1" style="background: #f8f9fa"></div>
-        <div class="s-dni">Certificado : <span class="total">{{DATA_DET_ACTA.detalle.certificado}}</span></div>
+        <div class="cert">total certificado : <span class="total">{{DATA_DET_ACTA.detalle.certificado}}</span></div>
       </div>
 
       <div class="row">
@@ -47,7 +47,7 @@
           <small class="form-text text-alert" *ngIf="campoNoValido('fechaCertificacion')">* Ingrese la Fecha de certificación es obligatorio</small>
         </div>
 
-        <div class="cli-form-buttons" style="margin-top: 8%">
+        <div class="cli-form-buttons">
           <button
             class="cli-btn btn-m btn-regresar"
             type="submit"

@@ -17,6 +17,46 @@
   }
 };
 
+.c-facturado{
+  color: #31d07c;
+}
+
+.c-certificado{
+  color: #ecbe36
+}
+
+.obs-score {
+  // min-width: 90px;
+  color: #878f96;
+  text-align: left;
+}
+
+.btn-obs {
+  border: none;
+  border-radius: 3px;
+  margin: 0 2px;
+  color: #438fffd4;
+  font-family: "Webapp-Bold" !important;
+  display: flex;
+  align-items: center;
+
+  &:hover:enabled {
+    background-color: #8cbaffd4;
+    color: #fff;
+  }
+  &:hover:enabled:active {
+    background-color: #066affd4;
+  }
+
+  & mat-icon {
+    margin: 0 2px;
+  }
+  &:disabled {
+    background-color: #bcd7ff;
+    color: #fff;
+  }
+}
+
 .inputiconcont{
   display: flex;
   align-items: center;

@@ -77,9 +77,10 @@ export class ListaSubservicioComponent implements OnInit {
     })
   }
 
-  listSubservicios: any[] = [];
+  listSubserviciosFiltro: any[] = [];
   getAllSubserviciosFiltro(){
     const formValues = this.subservicioForm.getRawValue();
+    console.log('PARAMS', formValues);
 
     const request = {
       idProyecto : formValues.idProyecto,
@@ -88,8 +89,8 @@ export class ListaSubservicioComponent implements OnInit {
     };
 
     this.liquidacionService.getAllSubserviciosFiltro(request).subscribe(resp => {
-      this.listSubservicios = resp;
-      console.log('DATA_SUBSERV-FILTRO', this.listSubservicios);
+      this.listSubserviciosFiltro = resp;
+      console.log('DATA_SUBSERV-FILTRO', this.listSubserviciosFiltro);
     })
   }
 
@@ -134,7 +135,7 @@ export class ListaSubservicioComponent implements OnInit {
 
     if (this.totalfiltro != this.totalSubservicio) {
       this.liquidacionService.getAllSubserviciosFiltro(offset.toString()).subscribe( (resp: any) => {
-            this.listSubservicios = resp.list;
+            this.listSubserviciosFiltro = resp.list;
             this.spinner.hide();
           });
     } else {

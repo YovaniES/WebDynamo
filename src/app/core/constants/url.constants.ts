@@ -21,29 +21,25 @@ switch (ENVIROMENT) {
     break;
   case 'PROD':
     AUTH_API      = 'http://seguridadweb.indratools.com/aut/seguridad/';
-    // AUTH_API = 'https://seguridadweb.azurewebsites.net/api/auth/'
 
     PATH_VISOR_DYNAMO    = 'http://visordynamosupportapi.indratools.com/';
-
 
     API_SAVE_DATA_IMPORT = 'http://saveimporteddata.indratools.com/api/importar' // CONECTADO con: db_support
     // API_SAVE_DATA_IMPORT = 'http://backendpruebasdev.indratools.com/api/importar'
 
     BASE_LIQUIDACION     = 'http://facturacionactas.indratools.com/api/'
-    // BASE_LIQUIDACION = 'http://facturaciondynamoprueba.indratools.com/api/'
 
     MANTENIM_LIQUIDACION = 'http://mantenimientoactas.indratools.com/api/'
 
     PATH_BACK_NET        = 'http://backdynamosupport.indratools.com/api/configurador/' //SUBSITE 21
 
-    PATH_FACTURACION   = 'http://facturacionwebapi.indratools.com/api'//SUBSITE34 (CON BD_DynamoSupport_PROD)
-    PATH_MANTENIMIENTO = 'https://dynamomantenimiento.azurewebsites.net/api'
+    PATH_FACTURACION     = 'http://facturacionwebapi.indratools.com/api'//SUBSITE34 (CON BD_DynamoSupport_PROD)
+    PATH_MANTENIMIENTO   = 'https://dynamomantenimiento.azurewebsites.net/api'
 
     break;
   default:
     break;
 }
-// https://facturaciondynamo2.azurewebsites.net/api/Subservicio/SubservicioProyecto
 
 // LOGIN
 export const AUTH_SESSION = AUTH_API + 'login';
@@ -76,7 +72,6 @@ export const API_FACTURAS_FILTRO      = BASE_LIQUIDACION + 'Factura/filtrar';
 export const API_FACTURAS             = BASE_LIQUIDACION + 'Factura';
 export const API_ESTADO_FACTURAS      = BASE_LIQUIDACION + 'Factura/EstadoFactura';
 export const API_IMPORT_ACTAS         = BASE_LIQUIDACION + 'Acta/ImportActaExcel';
-// https://facturaciondynamo2.azurewebsites.net/api/Certificacion
 
 
 // MANTENIMIENTO LIQUIDACION
