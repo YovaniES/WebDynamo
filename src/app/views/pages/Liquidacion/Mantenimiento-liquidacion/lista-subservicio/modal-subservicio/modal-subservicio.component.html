@@ -44,6 +44,7 @@
               type="date"
               class="form-control"
               formControlName="fecha_ini"/>
+            <small class="form-text text-alert" *ngIf="campoNoValido('fecha_ini')">* Ingrese la fecha inicio es obligatorio</small>
           </div>
         </div>
 

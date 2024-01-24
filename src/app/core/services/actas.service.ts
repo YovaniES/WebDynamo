@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   API_ACTAS,
+  API_ACTAS_EXPORT_DECLARADOS,
+  API_ACTAS_EXPORT_FILTRO,
   API_ACTAS_FILTRO,
   API_CERTIFICACION,
   API_CONTAR_ACTAS,
@@ -14,6 +16,9 @@ import {
 } from '../constants/url.constants';
 import { Observable, map } from 'rxjs';
 
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -24,12 +29,28 @@ export class ActasService {
   getAllActas(listActas: any) {
     return this.http.post(API_ACTAS_FILTRO, listActas).pipe(
       map((resp: any) => {
-        console.log('SERV-ACTAS', resp);
+        // console.log('SERV-ACTAS', resp);
 
         return resp.result;
       })
     );
   }
+
+  getActaExportableResume(filtro: any){
+    return this.http.post<any>(API_ACTAS_EXPORT_FILTRO, filtro).pipe(
+      map( resp => {
+        return resp.result
+      })
+    )
+  };
+
+  exportarVentasDeclaradas(){
+    return this.http.get<any>(API_ACTAS_EXPORT_DECLARADOS).pipe(
+      map( resp => {
+        return resp.result
+      })
+    )
+  };
 
   totalActas(filtro: any): Observable<any> {
     return this.http.post(API_CONTAR_ACTAS, filtro).pipe(
@@ -96,25 +117,6 @@ export class ActasService {
     return this.http.delete<any>(`${API_DET_ACTA}/${idDetActa}`);
   }
 
-  // actualizarEstadosDetActa(idEstado: number, requestActa: any) {
-  //   return this.http.put<any>(
-  //     `${API_ESTADOS_DET_ACTA}/${idEstado}`,
-  //     requestActa
-  //   );
-  // }
-
-  // getEstadosDetActaById(idEstado: any): Observable<any> {
-  //   return this.http.get(`${API_ESTADOS_DET_ACTA}${idEstado}`).pipe(
-  //     map((resp: any) => {
-  //       return resp.result;
-  //     })
-  //   );
-  // }
-
-  // eliminarEstadosDetActa(idEstado: number): Observable<any> {
-  //   return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
-  // }
-
   // DETALLE ACTA - OJO CAMBIAR POR SUBACTAS, FALTA API
   crearVentaDeclarada(requestVD: any): Observable<any> {
     return this.http.post(API_VENTA_DECLARADA, requestVD);
@@ -179,7 +181,7 @@ export class ActasService {
     return this.http.post(`${API_IMPORT_ACTAS}`, formData, {
       headers: headers,
     });
-  }
+  };
 
   // CRUD GESTOR SUBSERIVICIO
   crearGestorSubservicio(requestGestor: any) {
@@ -196,5 +198,28 @@ export class ActasService {
 
   actualizarGestorSubservicio(idGestor: number, reqGestor: any) {
     return this.http.put(`${API_GESTOR_SUBS}/${idGestor}`, reqGestor);
+  };
+
+  // EXPORTAR DATA ACTA Y VD
+  exportarExcel(json: any[], excelFileName: string){
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const wb: XLSX.WorkBook = {
+          Sheets    : {'Actas': ws},
+          SheetNames: ['Actas']
+    };
+
+    const excelBuffer: any = XLSX.write(wb, {bookType: 'xlsx', type: 'array'});
+    // Llammamos al metodo - buffer anf filename
+    this.guardarArchExcel(excelBuffer, excelFileName)
   }
+
+  guardarArchExcel(buffer: any, fileName: string){
+    const EXCEL_TYPE      = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx'
+
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE});
+    FileSaver.saveAs(data, fileName + '_export_'+ new Date().getTime() + EXCEL_EXTENSION);
+    }
+
+
 }

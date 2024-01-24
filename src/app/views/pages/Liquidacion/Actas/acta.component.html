@@ -124,7 +124,21 @@
         <table class="cli-table stripedtable underlinedtable">
           <thead>
             <tr class="bgc-blue-light c-white">
-              <th style="min-width: 135px;"></th>
+              <th style="min-width: 135px;">
+                <div class="cli-table-user">
+                  <button matTooltip="Exportar filtro"
+                    class="icon-btn btn-trans c-white"
+                    (click)="exportarActa()"
+                    ><mat-icon class="icon-16">downloading</mat-icon>
+                  </button>
+
+                  <button matTooltip="Exportar vd"
+                    class="icon-btn btn-trans c-white"
+                    (click)="exportarVentaDeclarada()"
+                    ><mat-icon class="icon-16">file_download</mat-icon>
+                  </button>
+                </div>
+              </th>
               <th style="min-width: 95px;">ID Acta </th>
               <th>Proyecto</th>
               <th style="min-width: 140px;">Subservicio</th>

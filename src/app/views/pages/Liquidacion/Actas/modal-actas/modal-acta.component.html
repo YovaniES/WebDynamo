@@ -9,7 +9,7 @@
     <div class="cli-card-body; padding: none">
       <div>
         <ul class="tabs-container">
-          <li (click)="onTabClick('manual')"   [class.active]="activeTab == 'manual'" class="tab-link form-buttons"  ><mat-icon class="icon-13" style="margin-right: 4px;">flip_camera_android</mat-icon>Manual</li>
+          <li (click)="onTabClick('manual')"   [class.active]="activeTab == 'manual'"   class="tab-link form-buttons"><mat-icon class="icon-13" style="margin-right: 4px;">flip_camera_android</mat-icon>Manual</li>
           <li (click)="onTabClick('importar')" [class.active]="activeTab == 'importar'" class="tab-link form-buttons"><mat-icon class="icon-13" style="margin-right: 4px;">update_disabled</mat-icon>Importar</li>
         </ul>
       </div>
@@ -109,7 +109,6 @@
                                 class="cli-input"
                                 formControlName="precio_unidad"
                                 type="number"/>
-                                <!-- <small class="form-text text-alert" *ngIf="campoDetalleNoValido('precio_unidad')">* Ingrese el Precio es obligatorio</small> -->
                             </div>
 
                             <div class="cli-form-element col-f-4">
@@ -118,7 +117,6 @@
                                 class="cli-input"
                                 formControlName="cantidad"
                                 type="number"/>
-                                <!-- <small class="form-text text-alert" *ngIf="campoDetalleNoValido('cantidad')">* Ingrese la cantidad es obligatorio</small> -->
                             </div>
 
                             <div class="cli-form-element col-f-4">
@@ -167,7 +165,7 @@
             </div>
 
             <!-- BOTONES CREAR MANUAL -->
-            <div class="cli-form-buttons" style="margin-top: 4%">
+            <div class="cli-form-buttons">
               <button
                 class="cli-btn btn-m btn-regresar"
                 type="submit"

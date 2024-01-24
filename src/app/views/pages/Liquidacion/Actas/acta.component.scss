@@ -17,6 +17,17 @@
   }
 }
 
+.cli-table {
+  width: 100%;
+  background-color: #fff;
+  &-user {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    // color: #6c757d;
+  }
+};
+
 .total-actas {
   color: #0dcaf0;
   font-weight: 600;

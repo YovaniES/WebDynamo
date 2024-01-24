@@ -29,8 +29,8 @@ export class HeaderComponent implements OnInit {
     this.authService.getCurrentUser().subscribe((resp) => {
           this.currentUser = resp.user.nombres + ' '+ resp.user.apellidoPaterno ;
           this.userRolName = resp.user.rolName;
-          console.log('USER-NEW =>', resp, this.currentUser, resp.user.rolName);
-          console.log('ROL_USUARIO', this.userRolName);
+          // console.log('USER-NEW =>', resp, this.currentUser, resp.user.rolName);
+          // console.log('ROL_USUARIO', this.userRolName);
 
         })
       }

@@ -413,7 +413,7 @@ export class AsideComponent implements OnInit {
   getRolID(){
     this.authService.getCurrentUser().subscribe( resp => {
       this.rolID   = resp.user.rolId;
-      console.log('ROL_ID_USER', this.rolID);
+      // console.log('ROL_ID_USER', this.rolID);
     })
    }
 

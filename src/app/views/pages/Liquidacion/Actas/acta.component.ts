@@ -51,7 +51,6 @@ export class ActaComponent implements OnInit {
       idSubservicio   : [''],
       idGestor        : [''],
       periodo         : [''],
-      // import          : [''],
       idEstado        : [''],
       montoMinimo     : [''],
       montoMaximo     : [''],
@@ -65,7 +64,27 @@ export class ActaComponent implements OnInit {
 
     this.actasService.totalActas(params).subscribe(resp => {
       this.total_actas = resp;
-      console.log('CONTAR_aCTAS', this.total_actas);
+      // console.log('CONTAR_aCTAS', this.total_actas);
+    })
+  };
+
+  listActasFilterExportar: any[] = [];
+  exportarFiltroActas(){
+    const params = this.actasForm.getRawValue();
+
+    this.actasService.getActaExportableResume(params).subscribe( (resp: any) => {
+      this.listActasFilterExportar = resp
+      // console.log('EXPORT_ACTA', this.listActasFilterExportar);
+
+    })
+  }
+
+  listVentasDeclaradasExport: any[] = [];
+  exportarVentasDeclaradas(){
+    this.actasService.exportarVentasDeclaradas().subscribe( resp => {
+      this.listVentasDeclaradasExport = resp;
+      // console.log('EXPORT_VD', this.listVentasDeclaradasExport);
+
     })
   }
 
@@ -92,13 +111,16 @@ export class ActaComponent implements OnInit {
     this.actasService.getAllActas(req).subscribe(resp => {
       this.blockUI.stop();
       this.listActas = resp;
-      console.log('ACTAS-LIST-FILTRO', resp);
+      // console.log('ACTAS-LIST-FILTRO', resp);
     })
     this.contarActas();
+    this.exportarVentasDeclaradas();
+    this.exportarFiltroActas();
+
   }
 
   eliminarActa(acta: any) {
-    console.log('DEL_ACTA', acta);
+    // console.log('DEL_ACTA', acta);
 
     Swal.fire({
       title: '¿Eliminar acta?',
@@ -123,11 +145,20 @@ export class ActaComponent implements OnInit {
     });
   };
 
+  exportarActa(){
+    this.actasService.exportarExcel(this.listActasFilterExportar, 'actas')
+  };
+
+
+  exportarVentaDeclarada(){
+    this.actasService.exportarExcel(this.listVentasDeclaradasExport, 'ventas_declaradas')
+  }
+
   listProyectos: any[] = [];
   getAllProyecto(){
     this.liquidacionService.getAllProyectosCombo().subscribe(resp => {
       this.listProyectos = resp;
-      console.log('PROY', this.listProyectos);
+      // console.log('PROY', this.listProyectos);
     })
   }
 
@@ -135,7 +166,7 @@ export class ActaComponent implements OnInit {
   getListGestorCombo(){
     this.liquidacionService.getAllGestorCombo().subscribe((resp: any) => {
       this.listGestoresCombo = resp;
-      console.log('GESTOR_COMBO', this.listGestoresCombo);
+      // console.log('GESTOR_COMBO', this.listGestoresCombo);
 
     })
   }
@@ -144,7 +175,7 @@ export class ActaComponent implements OnInit {
   getAllSubserviciosCombo(){
     this.liquidacionService.getAllSubserviciosCombo().subscribe( (resp: any) => {
       this.listSubserviciosCombo = resp;
-      console.log('SUBSERV', this.listSubserviciosCombo);
+      // console.log('SUBSERV', this.listSubserviciosCombo);
     })
   };
 
@@ -152,7 +183,7 @@ export class ActaComponent implements OnInit {
   getAllEstadosActa(){
     this.liquidacionService.getAllEstadosActa().subscribe(resp => {
       this.listEstadoActa = resp;
-      console.log('EST_ACTA', this.listEstadoActa);
+      // console.log('EST_ACTA', this.listEstadoActa);
     })
   }
 

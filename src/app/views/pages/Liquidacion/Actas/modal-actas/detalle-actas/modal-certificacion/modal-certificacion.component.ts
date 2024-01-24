@@ -155,7 +155,8 @@ export class ModalCertificacionComponent implements OnInit {
   listCertificaciones: any[] = [];
   getAllCertificaciones(){
     this.liquidacionService.getAllCertificaciones().subscribe(resp => {
-      this.listCertificaciones = resp.filter((x: any) => x.estado.estadoId == 1);
+      // this.listCertificaciones = resp.filter((x: any) => x.estado.estadoId == 1);
+      this.listCertificaciones = resp;
       console.log('CERTIFICACIONES', this.listCertificaciones, this.listCertificaciones.length, resp);
     })
   };
