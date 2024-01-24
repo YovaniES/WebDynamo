@@ -307,7 +307,7 @@ export class LiquidacionComponent implements OnInit {
           this.getAllLiquidaciones()
         }
       });
-  }
+  };
 
   crearLiquidacion(){
     this.dialog.open(ModalLiquidacionComponent, {width:'55%'})
@@ -316,7 +316,7 @@ export class LiquidacionComponent implements OnInit {
         this.getAllLiquidaciones()
       }
     })
-  }
+  };
 
 
   duplicarLiquidacion(DATA: any){
@@ -328,7 +328,7 @@ export class LiquidacionComponent implements OnInit {
         this.getAllLiquidaciones()
       }
     })
-  }
+  };
 
   abrirComentarioRegularizacion(dataComentario: any) {
     console.log('DATA_DETALLE', dataComentario);
@@ -339,7 +339,7 @@ export class LiquidacionComponent implements OnInit {
         this.getAllLiquidaciones()
       }
     });
-  }
+  };
 
   actualizacionMasiva(){
     const dialogRef = this.dialog.open(ActualizacionMasivaComponent, {width:'25%', });

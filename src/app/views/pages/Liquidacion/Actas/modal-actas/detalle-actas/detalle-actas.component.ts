@@ -207,7 +207,7 @@ export class DetalleActasComponent implements OnInit {
       icon : 'error',
       text : message,
     });
-  }
+  };
 
   campoNoValido(campo: string): boolean {
     if (this.detalleactasForm.get(campo)?.invalid && this.detalleactasForm.get(campo)?.touched ) {

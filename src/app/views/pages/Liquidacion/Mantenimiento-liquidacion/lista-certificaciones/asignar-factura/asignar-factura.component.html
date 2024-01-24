@@ -22,7 +22,7 @@
           <label>Certificación <small style="color: red">*</small></label>
           <select formControlName="idCertificacion" class="cli-input_x" style="text-align: center;">
             <option [value]="0" disabled>-Seleccione-</option>
-            <option [value]="cert.idCertificacion" *ngFor="let cert of listCertificaciones">{{cert.nro_certificacion}}</option>
+            <option [value]="cert.id" *ngFor="let cert of listCertificaciones">{{cert.nombre}}</option>
           </select>
           <small class="form-text text-alert" *ngIf="campoNoValido('idCertificacion')">* Seleccione el proyecto es obligatorio</small>
         </div>

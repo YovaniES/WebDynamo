@@ -209,13 +209,13 @@
                         <tr class="bgc-blue c-white" >
                           <th style="min-width: 60px"></th>
                           <th style="min-width: 80px;">N°</th>
-                          <th>Analista</th>
+                          <th style="min-width: 212px;">Nombre</th>
                           <th>Perfil</th>
                           <th style="min-width: 140px">Estado</th>
                           <th style="min-width: 80px;">Precio unid.</th>
                           <th>Cantidad</th>
                           <th>Total</th>
-                          <th>Unidad</th>
+                          <th style="min-width: 85px">Unidad</th>
                           <th>Certificado(s)</th>
                           <th>Facturado(s)</th>
                           <th style="min-width: 210px;">Cód. Certificación</th>
@@ -244,9 +244,9 @@
                             </div>
                           </td>
                           <td>{{i+1}}</td>
-                          <td style="min-width: 155px; text-align: left;">{{detalle.nombre}}</td>
+                          <td style="text-align: left;">{{detalle.nombre}}</td>
                           <td style="min-width: 100px;">{{detalle.perfil}}</td>
-                          <td>{{ detalle.estado      }}</td>
+                          <td style="font-family: Webapp-Bold;">{{ detalle.estado      }}</td>
                           <td>{{ detalle.precioUnidad}}</td>
                           <td>{{ detalle.unidades    }}</td>
                           <td style="font-weight: 600;">{{ detalle.precioTotal }}</td>

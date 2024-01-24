@@ -30,9 +30,9 @@ export class ModalCertificacionComponent implements OnInit {
   this.newForm()
   this.getAllCertificaciones();
   this.getUserID();
-  console.log('DATA_DET_ACTA_CERT', this.DATA_DET_ACTA.detalle);
-  console.log('X-Z', this.DATA_DET_ACTA.detalle.idDetalleCertificacion);
-  console.log('XL', this.DATA_DET_ACTA.detalle.idDetalleActa);
+  // console.log('DATA_DET_ACTA_CERT', this.DATA_DET_ACTA.detalle);
+  // console.log('X-Z', this.DATA_DET_ACTA.detalle.idDetalleCertificacion);
+  // console.log('XL', this.DATA_DET_ACTA.detalle.idDetalleActa);
   this.cargarMontoCertificarRestante();
 
   if (this.DATA_DET_ACTA.detalle.idDetalle > 0) {
