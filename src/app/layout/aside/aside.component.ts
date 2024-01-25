@@ -181,6 +181,18 @@ export class AsideComponent implements OnInit {
           roles: PERMISSION.SUBMENU_LIQUIDACION,
         },
         {
+          code: 'FAC-001',
+          text: 'Lista productos',
+          order: 3,
+          icon: 'paid',
+          type: 'PAREN',
+          link: 'factura/products',
+          enable: false,
+          module: 'PAS',
+          displayed: false,
+          roles: PERMISSION.SUBMENU_LIQUIDACION,
+        },
+        {
           code: 'FAC-004',
           text: 'DPF/ALO',
           order: 3,

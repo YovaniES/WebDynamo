@@ -30,7 +30,7 @@ export class ModalFacturasComponent implements OnInit {
   ngOnInit(): void {
   this.newForm()
   this.getUserID();
-  this.getAllCertificacionesCombo();
+  this.getAllCertificaciones();
   this.getListOrdenCombo();
   this.getListaEstadosFactura();
 
@@ -159,11 +159,11 @@ export class ModalFacturasComponent implements OnInit {
     });
   }
 
-  listCertificacionesCombo: any[] = [];
-  getAllCertificacionesCombo(){
+  listCertificaciones: any[] = [];
+  getAllCertificaciones(){
     this.liquidacionService.getAllCertificaciones().subscribe(resp => {
-      this.listCertificacionesCombo = resp.filter((x:any) => x.estado.estadoId == 1);
-      console.log('CERTIF', this.listCertificacionesCombo);
+      this.listCertificaciones = resp //.filter((x: any) => x.idCertificacion == this.DATA_FACTURA.idCertificacion);
+      console.log('CERTIFICACIONES', this.listCertificaciones);
     })
   }
 

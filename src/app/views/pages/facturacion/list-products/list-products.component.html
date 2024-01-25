@@ -1,0 +1,196 @@
+<div class="cli-card fit-card">
+  <div class="cli-card-body">
+    <div class="modal-title c-male">Listado de Productos</div>
+    <div>
+      <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
+      <form [formGroup]="liquidacionForm">
+        <div class="card" style="border-radius: 2px; font-weight: 600">
+          <div class="row g-3 card-body" style="padding: 10px">
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">ID Producto</label>
+              <input
+                type="texto"
+                class="form-control"
+                formControlName="idProduct"/>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Producto</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"/>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Precio</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="price"/>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Categoría</label>
+              <select class="form-select" formControlName="category">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="g.nombre_apellido" *ngFor="let g of listGestores">{{g.nombre_apellido}}</option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <label class="form-label">Estado</label>
+              <select class="form-select" formControlName="state">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="est.nombre" *ngFor="let est of listEstados">{{est.nombre}}</option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 cli-form-element">
+              <div class="form-group">
+                <label>Fecha creación</label>
+                 <input
+                  type="date"
+                  class="form-control cli-input-white"
+                  formControlName="create_date"/>
+              </div>
+            </div>
+
+            <div class="cli-form-buttons" style="margin-top: 8px">
+              <button
+                type="submit"
+                class="cli-btn btn-m btn-cancel"
+                style="border-radius: 2px; padding: 0.225rem 0.75rem"
+                (click)="limpiarFiltro()"
+                ><mat-icon class="icon-18">rotate_left</mat-icon>
+                Limpiar
+              </button>
+
+              <button
+                type="button"
+                class="cli-btn btn-blue-light"
+                style="border-radius: 2px; padding: 0.225rem 0.75rem"
+                (click)="getAllProducts()"
+                ><mat-icon class="icon-18">search</mat-icon>
+                Buscar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTON MODAL PARA CREAR LIQUIDACION ----------------------------------------------------->
+        <div style="display: flex" class="mt-4 mb-1">
+          <button
+            class="btn-crear btn-blue"
+            style="margin: 0"
+            type="button"
+            (click)="openModalProduct()"
+            ><mat-icon class="icon-18">add</mat-icon>Crear producto
+          </button>
+          <div class="flex-1"></div>
+          <div class="mt-2" style="color: #345df3; font-weight: 600;">
+            Total : <span class="total">{{ productos.length }} Productos</span>
+          </div>
+        </div>
+      </form>
+
+
+      <!-- TABLA DEL FACTURAS ------------------------------------------------------------------>
+      <div style="overflow: auto; min-height: 125px; color:#6c757d;">
+        <table class="cli-table stripedtable underlinedtable">
+          <thead>
+            <tr class="bgc-blue-light c-white">
+              <th class="w50">Acción</th>
+              <th style="min-width: 72px;">ID Producto</th>
+              <th style="min-width: 100px;">Producto</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>
+                <div class="cli-table-user">
+                  <!-- (click)="exportarVD_FACT()" -->
+                  <button matTooltip="Exportar venta declarada"
+                    class="icon-btn btn-trans c-indigo"
+                    ><mat-icon class="icon-16">file_download</mat-icon>
+                  </button>Stock
+                </div>
+              </th>
+              <th style="min-width: 92px;" >Estado</th>
+              <th style="min-width: 60px;" >Antiguedad</th>
+              <th>Fecha creación</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let product of productos | paginate:
+                      { itemsPerPage: pageSize,
+                        currentPage : page,
+                        totalItems  : totalFacturas
+                      } ">
+              <td>
+                <div class="cli-table-actions">
+                  <button
+                    matTooltip="Actualizar"
+                    class="icon-btn btn-trans c-blue"
+                    (click)="openModalProduct(product)"
+                    ><mat-icon class="icon-13">edit</mat-icon>
+                  </button>
+                  <button
+                    matTooltip="Eliminar"
+                    class="icon-btn btn-trans c-fucsia"
+                    (click)="deleteProduct(product.id)"
+                    ><mat-icon class="icon-13">delete_forever</mat-icon>
+                  </button>
+                </div>
+              </td>
+              <td style="font-weight: 600;">{{ product.id }}</td>
+              <td style="text-align: left">{{ product.producto }}</td>
+              <td style="text-align: left; font-weight: 600;">{{ product.categoria | uppercase }}</td>
+              <td style="text-align: end;"><small *ngIf="product.precio >0" class="icon-soles">S/</small>{{ product.precio | number : '1.0-2' }}</td>
+              <td style="text-align: end">{{ product.stock }}</td>
+              <td>
+                <span *ngIf="product.estado == 1" class="label ">{{ product.estado }}</span>
+                <span *ngIf="product.estado == 0" class="label ">{{ product.estado }}</span>
+              </td>
+              <td style="text-align: left">{{ product.antiguedad }}</td>
+              <td>{{ product.fechaCreacion | date:"dd/MM/yyyy" }}</td>
+
+              <!-- <td style="text-align:left ">
+                <div class="cli-table-user">
+                  <button
+                    matTooltip={{liq.lider}}
+                    class="icon-btn btn-trans"
+                    style="color: #ffaaa4;"
+                    ><mat-icon class="icon-13">person_outline</mat-icon>
+                  </button>{{liq.proyecto | uppercase}}
+                </div>
+              </td> -->
+
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="cli-loader" *ngIf="loadingItem">
+          <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>
+          cargando...
+        </div>
+
+        <div
+          *ngIf="!loadingItem && productos.length == 0"
+          class="cli-loader mt-5"
+          style="color: #f83434"
+          >No hay P R O D U C T O S para mostrar
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer pb-0 pt-3">
+      <pagination-controls
+        previousLabel="Anterior"
+        nextLabel="Siguiente"
+        [responsive]="false"
+        (pageChange)="cambiarPagina($event)">
+      </pagination-controls>
+    </div>
+  </div>
+</div>

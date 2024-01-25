@@ -16,6 +16,8 @@ import { ModalDpfPendienteComponent } from './dpf-facturacion/visor-dpf-alo/moda
 import { ModalLiquidacionComponent } from './liquidacion/modal-liquidacion/modal-liquidacion.component';
 import { ModalVentadeclaradaComponent } from './liquidacion/actualizar-liquidacion/modal-ventadeclarada/modal-ventadeclarada.component';
 import { ModalCertificacionComponent } from './liquidacion/actualizar-liquidacion/modal-certificacion/modal-certificacion.component';
+import { ModalProductComponent } from './list-products/modal-product/modal-product.component';
+import { ListProductsComponent } from './list-products/list-products.component';
 
 
 @NgModule({
@@ -29,6 +31,9 @@ import { ModalCertificacionComponent } from './liquidacion/actualizar-liquidacio
     ModalLiquidacionComponent,
     ModalCertificacionComponent,
     ModalVentadeclaradaComponent,
+
+    ListProductsComponent,
+    ModalProductComponent,
   ],
   imports: [
     CommonModule,

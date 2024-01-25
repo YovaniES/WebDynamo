@@ -30,7 +30,7 @@
               <label>Certificación</label>
               <select formControlName="certificacion" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
-                <option [value]="proy.nro_certificacion" *ngFor="let proy of listCertificaciones">{{proy.nro_certificacion}}</option>
+                <option [value]="proy.id" *ngFor="let proy of listCertificaciones">{{proy.nombre}}</option>
               </select>
             </div>
 

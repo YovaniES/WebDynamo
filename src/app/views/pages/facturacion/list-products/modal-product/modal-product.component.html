@@ -1,0 +1,85 @@
+<div style="display: flex">
+  <div class="flex-1"></div>
+  <div class="modal-title c-male">{{ DATA_PRODUCT ? "Actualizar" : "Crear" }} producto</div>
+  <div class="flex-1"></div>
+  <button (click)="close()" class="icon-btn btn-trans c-orange moda-close-btn"><mat-icon>close</mat-icon></button>
+</div>
+
+<form class="row g-3" [formGroup]="productForm">
+  <div class="cli-form newvac-wrapper">
+    <div class="chart-draw">
+      <!-- -------------------------------------------REGISTROS PRODUCTOS------------------------------->
+      <div style="display: flex" *ngIf="DATA_PRODUCT">
+        <div class="flex-1"></div>
+        <div class="mt-2 id-factura">ID : <span class="total">{{ product_Id }}</span></div>
+      </div>
+
+        <div class="pr-module-container mb-3">
+          <div class="row g-3">
+            <div class="col-sm-4 cli-form-element">
+              <label>Producto <small style="color: #ff4081;">*</small></label>
+              <input type="text"
+                class="form-control cli-input-white"
+                formControlName="product"/>
+              <small class="form-text text-alert" *ngIf="campoNoValido('product')">* Ingrese el Producto es obligatorio</small>
+            </div>
+
+            <div class="col-sm-4 cli-form-element">
+              <label>Categoría <small style="color: #ff4081;">*</small></label>
+              <select class="cli-input-white" formControlName="category">
+                <option [value]="0" disabled>- Seleccione -</option>
+                <option [value]="proy.id" *ngFor="let proy of listProyectos">{{ proy.nombre }}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('category')" >* Seleccione la Categoría es obligatorio</small>
+            </div>
+
+            <div class="col-sm-4 cli-form-element">
+              <label>Precio <small style="color: #ff4081;">*</small></label>
+              <input type="text"
+                class="form-control cli-input-white"
+                formControlName="price"/>
+              <small class="form-text text-alert" *ngIf="campoNoValido('price')">* Ingrese el Precio es obligatorio</small>
+            </div>
+
+            <div class="col-sm-4 cli-form-element">
+              <label>Total <small style="color: #ff4081;">*</small></label>
+              <input type="number"
+                class="form-control cli-input-white"
+                formControlName="stock"/>
+              <small class="form-text text-alert" *ngIf="campoNoValido('stock')">* Ingrese el Stock es obligatorio</small>
+            </div>
+
+            <div class="col-sm-4 cli-form-element" *ngIf="DATA_PRODUCT">
+              <label class="form-label">Estado</label>
+              <select class="form-select" formControlName="state">
+                <option [value]="0" disabled>-Seleccione-</option>
+                <option [value]="est.id" *ngFor="let est of listState">{{ est.nombre }}</option>
+              </select>
+              <small class="form-text text-alert" *ngIf="campoNoValido('idEstado')">* Este campo es obligatorio</small>
+            </div>
+
+            <div class="col-sm-4 cli-form-element" *ngIf="DATA_PRODUCT">
+                <label>Fecha creación</label>
+                <input type="date" readonly="true"
+                    class="form-control cli-input-white"
+                    formControlName="create_date">
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- --------------------------------------------BOTONES ------------------------------------------>
+    <div class="cli-form-buttons" style="margin-top: 2%">
+      <button class="cli-btn btn-m btn-cancel" type="submit" (click)="close()">
+        <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+      </button>
+
+      <button
+        class="cli-btn btn-m btn-blue"
+        (click)="createOrUpdateProduct()"
+        [disabled]="productForm.invalid"
+        ><mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+      </button>
+    </div>
+  </div>
+</form>

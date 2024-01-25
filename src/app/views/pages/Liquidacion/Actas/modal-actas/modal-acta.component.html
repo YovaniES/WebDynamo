@@ -269,8 +269,8 @@
                 <table class="cli-table_x stripedtable underlinedtable"  >
                   <thead>
                     <tr class="bgc-blue c-white">
-                      <th style="min-width: 155px;">Nombre</th>
-                      <th style="min-width: 100px;">Perfil</th>
+                      <th style="min-width: 170px;">Nombre</th>
+                      <th style="min-width: 250px;">Perfil</th>
                       <th style="min-width: 80px;" >Precio unid.</th>
                       <th>Cantidad</th>
                       <th>Total   </th>
@@ -284,10 +284,10 @@
                   <tbody style="background: #e9eae8">
                     <tr *ngFor="let detalle of listDetActas; let i = index">
                       <td style="text-align: left; padding-left: 4px;">{{detalle.nombre}}</td>
-                      <td>{{detalle.perfil        }}</td>
-                      <td style="text-align: end;">{{ detalle.precio_unidad| number : '1.0-2'}}</td>
-                      <td style="text-align: end;">{{ detalle.unidades     | number : '1.0-2'}}</td>
-                      <td style="text-align: end;">{{ detalle.precioTotal  | number : '1.0-2'}}</td>
+                      <td style="text-align: left;">{{ detalle.perfil        }}</td>
+                      <td style="text-align: end;" >{{ detalle.precio_unidad| number : '1.0-2'}}</td>
+                      <td style="text-align: end;" >{{ detalle.unidades     | number : '1.0-2'}}</td>
+                      <td style="text-align: end;" >{{ detalle.precioTotal  | number : '1.0-2'}}</td>
                       <td>{{ detalle.categoria1   }}</td>
                       <td>{{ detalle.categoria2   }}</td>
                       <td>{{ detalle.observacion  }}</td>

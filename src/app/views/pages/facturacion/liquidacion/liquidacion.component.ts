@@ -297,7 +297,7 @@ export class LiquidacionComponent implements OnInit {
       this.spinner.hide();
     }
       this.page = event;
-  }
+  };
 
   actualizarLiquidacion(DATA: any) {
     console.log('DATA_LIQUID', DATA);
