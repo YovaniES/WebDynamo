@@ -107,6 +107,13 @@ export class ModalCertificacionesComponent implements OnInit {
             confirmButtonText: 'Ok',
           });
           this.close(true);
+      }else{
+        Swal.fire({
+          title: 'Cuidado!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok',
+        });
       }
     })
   }

@@ -5,7 +5,6 @@ import {
   API_ACTAS_EXPORT_DECLARADOS,
   API_ACTAS_EXPORT_FILTRO,
   API_ACTAS_FILTRO,
-  API_CERTIFICACION,
   API_CONTAR_ACTAS,
   API_DET_ACTA,
   API_DET_CERTIFICACION,
@@ -139,21 +138,21 @@ export class ActasService {
   }
 
   // CRUD CERTIFICACION
-  actualizarCertificacion(idVD: number, reqCert: any) {
-    return this.http.put(`${API_CERTIFICACION}/${idVD}`, reqCert);
-  }
+  // actualizarCertificacion(idVD: number, reqCert: any) {
+  //   return this.http.put(`${API_CERTIFICACION}/${idVD}`, reqCert);
+  // }
 
-  crearCertificacion(requestCert: any) {
-    return this.http.post(`${API_CERTIFICACION}`, requestCert);
-  }
+  // crearCertificacion(requestCert: any) {
+  //   return this.http.post(`${API_CERTIFICACION}`, requestCert);
+  // }
 
-  cargarCertificacionById(idCert: number) {
-    return this.http.get<any>(`${API_CERTIFICACION}/${idCert}`).pipe(
-      map((resp: any) => {
-        return resp.result;
-      })
-    );
-  }
+  // cargarCertificacionById(idCert: number) {
+  //   return this.http.get<any>(`${API_CERTIFICACION}/${idCert}`).pipe(
+  //     map((resp: any) => {
+  //       return resp.result;
+  //     })
+  //   );
+  // }
 
   // CRUD DETALLE ACTA - CERTIFICACION
   crearDetalleCertificacion(requestCert: any) {

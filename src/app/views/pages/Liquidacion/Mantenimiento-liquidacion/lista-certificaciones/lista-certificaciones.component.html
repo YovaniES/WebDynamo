@@ -27,7 +27,7 @@
             </div>
 
             <div class="cli-form-element col-f-4">
-              <label>Proyectos</label>
+              <label>Proyecto</label>
               <select formControlName="proyecto" class="cli-input">
                 <option [value]="0" disabled>-Seleccione-</option>
                 <option [value]="proy.codigoProyecto" *ngFor="let proy of listProyectos">{{proy.codigoProyecto}}</option>
@@ -87,7 +87,7 @@
               <th>ID</th>
               <th style="min-width: 120px">Orden compra</th>
               <th style="min-width: 150px">Certificación</th>
-              <th style="min-width: 150px">Proyecto(s)</th>
+              <th style="min-width: 150px">Proyecto</th>
               <th style="min-width: 100px">Estado factura</th>
               <th>Total</th>
               <th>Consumido</th>
@@ -169,7 +169,7 @@
     </div>
   </div>
 
-  <div class="cli-form-buttons" style="margin-top: 5%">
+  <div class="cli-form-buttons" style="margin-top: 2%">
     <button class="cli-btn btn-m btn-regresar"
             type="submit" (click)="close()">
             <mat-icon class="icon-18">keyboard_return</mat-icon> Regresar

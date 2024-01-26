@@ -34,7 +34,7 @@ export class ListaFacturasComponent implements OnInit {
     this.getAllProyecto();
     this.getAllOrdenCombo()
     this.getListaEstadosFactura();
-    this.getAllCertificaciones();
+    this.getAllCertificacionCombo();
   }
 
   facturaForm!: FormGroup;
@@ -111,8 +111,8 @@ export class ListaFacturasComponent implements OnInit {
   };
 
   listCertificaciones: any[] = [];
-  getAllCertificaciones(){
-    this.liquidacionService.getAllCertificaciones().subscribe(resp => {
+  getAllCertificacionCombo(){
+    this.liquidacionService.getAllCertificacionCombo().subscribe(resp => {
       this.listCertificaciones = resp;
       // console.log('CERTIFICACIONES', this.listCertificaciones);
     })

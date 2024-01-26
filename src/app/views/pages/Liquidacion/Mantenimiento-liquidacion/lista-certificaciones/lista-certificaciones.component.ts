@@ -35,7 +35,7 @@ export class ListaCertificacionesComponent implements OnInit {
     this.getAllProyecto();
     this.getAllEstadosActa();
     this.getAllOrdenCombo();
-    this.getAllCertificaciones();
+    this.getAllCertificacionCombo();
     this.getAllCertificacionesFiltro();
   }
 
@@ -75,8 +75,8 @@ export class ListaCertificacionesComponent implements OnInit {
   }
 
   listCertificaciones: any[] = [];
-  getAllCertificaciones(){
-    this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
+  getAllCertificacionCombo(){
+    this.liquidacionService.getAllCertificacionCombo().subscribe( (resp: any) => {
       this.listCertificaciones = resp;
       console.log('DATA_CERTIF', this.listCertificaciones);
     })
@@ -156,7 +156,7 @@ export class ListaCertificacionesComponent implements OnInit {
     this.spinner.show();
 
     if (this.totalfiltro != this.totalCerticaciones) {
-      this.liquidacionService.getAllCertificaciones().subscribe( (resp: any) => {
+      this.liquidacionService.getAllCertificacionCombo().subscribe( (resp: any) => {
             this.listCertificacionesFiltro = resp.list;
             this.spinner.hide();
           });

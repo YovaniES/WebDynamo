@@ -28,7 +28,7 @@ export class ModalCertificacionComponent implements OnInit {
 
   ngOnInit(): void {
   this.newForm()
-  this.getAllCertificaciones();
+  this.getAllCertificacionCombo();
   this.getUserID();
   // console.log('DATA_DET_ACTA_CERT', this.DATA_DET_ACTA.detalle);
   // console.log('X-Z', this.DATA_DET_ACTA.detalle.idDetalleCertificacion);
@@ -153,8 +153,8 @@ export class ModalCertificacionComponent implements OnInit {
   };
 
   listCertificaciones: any[] = [];
-  getAllCertificaciones(){
-    this.liquidacionService.getAllCertificaciones().subscribe(resp => {
+  getAllCertificacionCombo(){
+    this.liquidacionService.getAllCertificacionCombo().subscribe(resp => {
       // this.listCertificaciones = resp.filter((x: any) => x.estado.estadoId == 1);
       this.listCertificaciones = resp;
       console.log('CERTIFICACIONES', this.listCertificaciones, this.listCertificaciones.length, resp);

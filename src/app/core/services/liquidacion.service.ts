@@ -326,11 +326,6 @@ export class LiquidacionService {
     );
   }
 
-  // eliminarEstado(idEstado: number): Observable<any> {
-  //   return this.http.delete<any>(`${API_ESTADOS_DET_ACTA}/${idEstado}`);
-  // }
-
-
   //  SERVICES - CERTIFICACIONES
   getAllCertificacionesFiltro(request: any): Observable<any> {
     return this.http.post<any>(API_CERTIFICACION_FILTRO, request).pipe(
@@ -340,8 +335,8 @@ export class LiquidacionService {
     );
   }
 
-  getAllCertificaciones() {
-    return this.http.get(API_CERTIFICACION).pipe(
+  getAllCertificacionCombo() {
+    return this.http.get(`${API_CERTIFICACION}/certificacionListado`).pipe(
       map((resp: any) => {
         return resp.result;
       })
