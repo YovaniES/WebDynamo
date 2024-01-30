@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { LiquidacionService } from 'src/app/core/services/liquidacion.service';
 import Swal from 'sweetalert2';
 import { AsignarCertificacionComponent } from './asignar-certificacion/asignar-certificacion.component';
+import { ActasService } from 'src/app/core/services/actas.service';
 
 @Component({
   selector: 'app-modal-ordencompra',
@@ -17,13 +18,20 @@ import { AsignarCertificacionComponent } from './asignar-certificacion/asignar-c
 export class ModalOrdencompraComponent implements OnInit {
   @BlockUI() blockUI!: NgBlockUI;
   loadingItem: boolean = false;
+  totalOrdencompra: number = 0;
 
   page = 1;
   totalFacturas: number = 0;
   pageSize = 10;
 
+  activeTab: string = 'manual';
+  onTabClick(tab: string) {
+    this.activeTab = tab;
+  }
+
   constructor( private fb: FormBuilder,
                private liquidacionService: LiquidacionService,
+               private actasService: ActasService,
                private authService: AuthService,
                private spinner: NgxSpinnerService,
                private dialog: MatDialog,
@@ -50,7 +58,40 @@ export class ModalOrdencompraComponent implements OnInit {
      moneda          : [''],
      fecha_creacion  : [''],
      proyecto        : [''],
-     id_estado       : ['']
+     id_estado       : [''],
+     import          : ['']
+    })
+  };
+
+  readExcell(e: any){
+    console.log('|==>',e, this.ordencompraForm);
+    this.blockUI.start("Espere por favor, estamos Importando la Data... ") ;
+    let file = e.target.files[0];
+    let formData: FormData = new FormData();
+
+    formData.append('file', file, file.name);
+    this.importarOrdenCompra(formData);
+  }
+
+  listOrdenImportado: any[] = [];
+  importarOrdenCompra(formData: FormData){
+    this.actasService.importarOrdenCompra(formData).subscribe((resp: any) => {
+      this.blockUI.stop();
+      if (resp.success) {
+        console.log('IMPORT_DATA', resp);
+
+        let ordenCompra = resp.result;
+
+        this.listOrdenImportado = ordenCompra;
+        console.log('IMP_DET', this.listOrdenImportado);
+      }else{
+        Swal.fire({
+          title: 'ERROR!',
+          text : `${resp.message}`,
+          icon : 'warning',
+          confirmButtonText: 'Ok'
+        })
+      }
     })
   };
 
@@ -104,7 +145,7 @@ export class ModalOrdencompraComponent implements OnInit {
     }
 
     this.liquidacionService.crearOrdenCompra(request).subscribe((resp: any) => {
-      if (resp.message) {
+      if (resp.result) {
         Swal.fire({
           title: 'Crear orden de compra!',
           text: `${resp.message}`,
@@ -112,6 +153,13 @@ export class ModalOrdencompraComponent implements OnInit {
           confirmButtonText: 'Ok'
         });
         this.close(true);
+      } else{
+        Swal.fire({
+          title: 'ERROR..!',
+          text: `${resp.message}`,
+          icon: 'warning',
+          confirmButtonText: 'Ok'
+        });
       }
     })
   }

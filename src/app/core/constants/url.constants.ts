@@ -74,6 +74,7 @@ export const API_FACTURAS_FILTRO         = BASE_LIQUIDACION + 'Factura/filtrar';
 export const API_FACTURAS                = BASE_LIQUIDACION + 'Factura';
 export const API_ESTADO_FACTURAS         = BASE_LIQUIDACION + 'Factura/EstadoFactura';
 export const API_IMPORT_ACTAS            = BASE_LIQUIDACION + 'Acta/ImportActaExcel';
+export const API_IMPORT_ORDENCOMPRA      = BASE_LIQUIDACION + 'Acta/ImportOrdenExcel'; //OJO FALTA EL ENDPOINT
 
 
 // MANTENIMIENTO LIQUIDACION

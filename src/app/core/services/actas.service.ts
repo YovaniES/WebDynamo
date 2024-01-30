@@ -11,6 +11,7 @@ import {
   API_ESTADOS_DET_ACTA,
   API_GESTOR_SUBS,
   API_IMPORT_ACTAS,
+  API_IMPORT_ORDENCOMPRA,
   API_VENTA_DECLARADA,
 } from '../constants/url.constants';
 import { Observable, map } from 'rxjs';
@@ -172,6 +173,17 @@ export class ActasService {
   }
 
   importarActas(formData: FormData) {
+    let headers = new HttpHeaders();
+
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.post(`${API_IMPORT_ORDENCOMPRA}`, formData, {
+      headers: headers,
+    });
+  };
+
+  importarOrdenCompra(formData: FormData) {
     let headers = new HttpHeaders();
 
     headers.append('Content-Type', 'multipart/form-data');

@@ -5,68 +5,138 @@
 <div class="cli-form mt-3">
   <div class="cli-form-title c-male" style="margin-bottom: 20px">{{ DATA_ORDENCOMPRA ? "Actualizar" : "Crear" }} orden de compra</div>
 
+  <div class="cli-content" *ngIf="!DATA_ORDENCOMPRA">
+    <div class="cli-card-body; padding: none">
+      <div>
+        <ul class="tabs-container">
+          <li (click)="onTabClick('manual')"   [class.active]="activeTab == 'manual'"   class="tab-link form-buttons"><mat-icon class="icon-13" style="margin-right: 4px;">flip_camera_android</mat-icon>Manual</li>
+          <li (click)="onTabClick('importar')" [class.active]="activeTab == 'importar'" class="tab-link form-buttons"><mat-icon class="icon-13" style="margin-right: 4px;">update_disabled</mat-icon>Importar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
   <div class="pr-subtitle">Data Orden compra</div>
     <div class="pr-section">
-      <div class="pr-module-container mb-2">
-        <form class="row g-3" [formGroup]="ordencompraForm">
-          <div class="cli-form newvac-wrapper">
-            <div class="row g-3">
-              <div class="cli-form-element col-f-3">
-                <label>N° Orden de compra <small style="color: red">*</small></label>
-                <input
-                  class="cli-input"
-                  formControlName="nro_orden"
-                  type="text"/>
-                  <small class="form-text text-alert" *ngIf="campoNoValido('nro_orden')">* Ingrese la Orden de compra es obligatorio</small>
-              </div>
-
-              <div class="cli-form-element col-f-3" *ngIf="DATA_ORDENCOMPRA">
-                <label>N° Certificación</label>
-                <input
-                  class="cli-input_x"
-                  formControlName="certificaciones"
-                  type="text"/>
-              </div>
-
-              <div class="cli-form-element col-f-3" *ngIf="DATA_ORDENCOMPRA">
-                <label>Proyecto(s)</label>
-                <input
-                  class="cli-input_x"
-                  formControlName="proyecto"
-                  type="text"/>
-              </div>
-
-              <div class="cli-form-element col-f-3">
-                <label>Monto <small style="color: red">*</small></label>
-                <input
-                  class="cli-input"
-                  formControlName="monto"
-                  type="text"/>
-                  <small class="form-text text-alert" *ngIf="campoNoValido('monto')">* Ingrese el Monto es obligatorio</small>
-              </div>
-
-              <div class="cli-form-element col-f-3">
-                <label>Moneda</label>
-                <input
-                  class="cli-input"
-                  formControlName="moneda"
-                  type="text"/>
-              </div>
-
-              <ng-container *ngIf="this.DATA_ORDENCOMPRA">
+      <form class="row g-3" [formGroup]="ordencompraForm">
+        <div class="pr-module-container mb-2 mt-3" *ngIf="activeTab == 'manual'">
+          <div class="card" style="border: none" >
+            <div class="cli-form newvac-wrapper">
+              <div class="row g-3">
                 <div class="cli-form-element col-f-3">
-                  <label>Estado</label>
-                  <select formControlName="id_estado" class="cli-input_x">
-                    <option [value]="10" disabled>-Seleccione-</option>
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
-                  </select>
+                  <label>N° Orden de compra <small style="color: red">*</small></label>
+                  <input
+                    class="cli-input"
+                    formControlName="nro_orden"
+                    type="text"/>
+                    <small class="form-text text-alert" *ngIf="campoNoValido('nro_orden')">* Ingrese la Orden de compra es obligatorio</small>
                 </div>
-              </ng-container>
+
+                <div class="cli-form-element col-f-3" *ngIf="DATA_ORDENCOMPRA">
+                  <label>N° Certificación</label>
+                  <input
+                    class="cli-input_x"
+                    formControlName="certificaciones"
+                    type="text"/>
+                </div>
+
+                <div class="cli-form-element col-f-3" *ngIf="DATA_ORDENCOMPRA">
+                  <label>Proyecto(s)</label>
+                  <input
+                    class="cli-input_x"
+                    formControlName="proyecto"
+                    type="text"/>
+                </div>
+
+                <div class="cli-form-element col-f-3">
+                  <label>Monto <small style="color: red">*</small></label>
+                  <input
+                    class="cli-input"
+                    formControlName="monto"
+                    type="number"/>
+                    <small class="form-text text-alert" *ngIf="campoNoValido('monto')">* Ingrese el Monto es obligatorio</small>
+                </div>
+
+                <div class="cli-form-element col-f-3">
+                  <label>Moneda</label>
+                  <input
+                    class="cli-input"
+                    formControlName="moneda"
+                    type="text"/>
+                </div>
+
+                <ng-container *ngIf="this.DATA_ORDENCOMPRA">
+                  <div class="cli-form-element col-f-3">
+                    <label>Estado</label>
+                    <select formControlName="id_estado" class="cli-input_x">
+                      <option [value]="10" disabled>-Seleccione-</option>
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
+                    </select>
+                  </div>
+                </ng-container>
+              </div>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div class="pr-module-container mb-2 mt-3" *ngIf="activeTab == 'importar'">
+          <div class="card" style="min-height: 150px; border: none;">
+
+            <!-- <div style="display: flex" class="mb-1">
+              <input type="file" class="cli-import"
+              accept=".xlsx, .xls, .csv"
+              formControlName="import"
+              (change)="readExcell($event)">
+            </div> -->
+
+                  <!-- TABLA DE ORDENES DE COMPRA ------------------------------------------------------------------>
+            <div style="overflow: auto; min-height: 250px; color: #6c757d" *ngIf="listOrdenImportado.length > 0">
+              <table class="cli-table stripedtable underlinedtable">
+                <thead>
+                  <tr class="bgc-blue-light c-white">
+                    <th>N°</th>
+                    <th style="min-width: 150px" >Orden de compra.</th>
+                    <th style="min-width: 250px" >Certificaciones</th>
+                    <th style="min-width: 250px" >Proyecto(s)</th>
+                    <th style="min-width: 118px;">Monto Total</th>
+                    <th style="min-width: 90px"  >Moneda</th>
+                    <th style="min-width: 106px" >Factura</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let orden of listOrdenImportado | paginate: {
+                              itemsPerPage: pageSize,
+                              currentPage: page,
+                              totalItems: totalOrdencompra }">
+
+                    <td style="font-weight: 600">{{ orden.idOrden   }}</td>
+                    <td style="text-align: left">{{ orden.nro_orden }}</td>
+                    <td>{{ orden.certificacions  }}</td>
+                    <td>{{ orden.proyectos       }}</td>
+                    <td>{{ orden.monto | number : "1.0-2"}}</td>
+                    <td>{{ orden.moneda          }}</td>
+                    <td>{{ orden.factura         }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="cli-loader" *ngIf="loadingItem">
+                <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
+              </div>
+
+              <div
+                *ngIf="!loadingItem && listOrdenImportado.length == 0"
+                class="cli-loader mt-5"
+                style="color: #f83434">
+                No hay Orden de compra para mostrar
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
 
     <ng-container *ngIf="DATA_ORDENCOMPRA">
