@@ -30,6 +30,7 @@ import { DetalleActasComponent } from './Actas/modal-actas/detalle-actas/detalle
 import { VentaDeclaradaComponent } from './Actas/modal-actas/venta-declarada/venta-declarada.component';
 import { ModalCertificacionComponent } from './Actas/modal-actas/detalle-actas/modal-certificacion/modal-certificacion.component';
 import { ListProductsComponent } from '../facturacion/list-products/list-products.component';
+import { CertificacionMasivaComponent } from './Actas/modal-actas/detalle-actas/certificacion-masiva/certificacion-masiva.component';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { ListProductsComponent } from '../facturacion/list-products/list-product
     ModalCertificacionComponent,
     ModalGestorSubservicioComponent,
     AsignarCertificacionComponent,
+    CertificacionMasivaComponent
 
   ],
   imports: [

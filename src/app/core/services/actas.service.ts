@@ -178,7 +178,7 @@ export class ActasService {
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Content-Type', 'application/json');
 
-    return this.http.post(`${API_IMPORT_ORDENCOMPRA}`, formData, {
+    return this.http.post(`${API_IMPORT_ACTAS}`, formData, {
       headers: headers,
     });
   };
@@ -189,7 +189,7 @@ export class ActasService {
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Content-Type', 'application/json');
 
-    return this.http.post(`${API_IMPORT_ACTAS}`, formData, {
+    return this.http.post(`${API_IMPORT_ORDENCOMPRA}`, formData, {
       headers: headers,
     });
   };

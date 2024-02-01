@@ -14,10 +14,8 @@
           <div class="flex-1" ></div>
           <ng-container
             class="input-group">
-            <!-- <div class="input-group-text" >
-              <mat-icon style="color: #0d6efd; margin-top: 4.5px">person</mat-icon>
-            </div> -->
-            <div class="cli-user">
+            <div style="display: flex;align-items: center;font-weight: 600;">
+              <mat-icon style="color: #0d6efd;margin-top: 4px;">person</mat-icon>
               {{ subActasForm.controls["gestor"].value | uppercase }}
             </div>
           </ng-container>
@@ -73,15 +71,25 @@
               </select>
             </div>
 
-            <div class="cli-form-element col-f-4">
+            <div class="cli-form-element col-f-5">
               <label>Venta total</label>
-              <input class="cli-input_x" style="text-align: center;" formControlName="venta_total" type="text" />
+              <input class="cli-input_x" style="text-align: center; font-weight: 500;" formControlName="venta_total" type="text" />
               <small class="form-text text-alert" *ngIf="campoNoValido('venta_total')">* Ingrese la Venta total es obligatorio</small>
             </div>
 
-            <div class="cli-form-element col-f-4" *ngIf="DATA_ACTA">
-              <label>Declarado</label>
-              <input class="cli-input_x" style="text-align: center;" formControlName="declarado" type="text" />
+            <div class="cli-form-element col-f-5" *ngIf="DATA_ACTA">
+              <label>Declarado(s)</label>
+              <input class="cli-input_x" style="text-align: center; font-weight: 500;" formControlName="declarado" type="text" />
+            </div>
+
+            <div class="cli-form-element col-f-5" *ngIf="DATA_ACTA">
+              <label>Certificado(s)</label>
+              <input class="cli-input_x" style="text-align: center; font-weight: 500; color: #c29202;" formControlName="certificado" type="text" />
+            </div>
+
+            <div class="cli-form-element col-f-5" *ngIf="DATA_ACTA">
+              <label>Facturado(s)</label>
+              <input class="cli-input_x" style="text-align: center; color: #3ec989;font-weight: 600;" formControlName="facturado" type="text" />
             </div>
 
             <div class="cli-form-element col-f-2"               >
@@ -194,6 +202,17 @@
                       </button>
                     </div>
 
+                    <!-- class="icon-btn btn-trans c-cyan-export" -->
+                    <div class="d-flex">
+                      <button
+                      matTooltip="Certificar masivamente"
+                      class="cli-btn btn-certificar mb-1 "
+
+                        (click)="certificarMasivamente(DATA_ACTA)"
+                        ><mat-icon class="icon-18">checklist_rtl</mat-icon>Cert. masiv.
+                      </button>
+                    </div>
+
                     <div class="flex-1"></div>
                     <div class="mt-1" style="color: #345df3; font-weight: 400" *ngIf="listDetActas.length > 0">
                       Total : <span class="total">{{ listDetActas.length }} Actas detalle</span>
@@ -207,18 +226,18 @@
                     <table class="cli-table_x stripedtable underlinedtable" *ngIf="listDetActas.length > 0" >
                       <thead>
                         <tr class="bgc-blue c-white" >
-                          <th style="min-width: 60px"></th>
-                          <th style="min-width: 80px;">N°</th>
+                          <th style="min-width: 60px"  ></th>
+                          <th style="min-width: 80px;" >N°</th>
                           <th style="min-width: 212px;">Nombre</th>
                           <th style="min-width: 215px;">Perfil</th>
-                          <th style="min-width: 140px">Estado</th>
-                          <th style="min-width: 80px;">Precio unid.</th>
+                          <th style="min-width: 140px" >Estado</th>
+                          <th style="min-width: 80px;" >Precio unid.</th>
                           <th>Cantidad</th>
                           <th>Total</th>
-                          <th style="min-width: 85px">Unidad</th>
-                          <th>Certificado(s)</th>
-                          <th>Facturado(s)</th>
+                          <th>Certificado</th>
+                          <th>Facturado</th>
                           <th style="min-width: 210px;">Cód. Certificación</th>
+                          <th style="min-width: 85px"  >Unidad</th>
                           <th style="min-width: 120px;">Observaciones</th>
                           <th style="min-width: 100px;">Comentario</th>
                         </tr>
@@ -246,18 +265,18 @@
                           <td>{{i+1}}</td>
                           <td style="text-align: left;">{{detalle.nombre}}</td>
                           <td style="min-width: 100px;">{{detalle.perfil}}</td>
-                          <td style="font-family: Webapp-Bold;">{{ detalle.estado      }}</td>
+                          <td style="font-family: Webapp-Bold;">{{ detalle.estado }}</td>
                           <td>{{ detalle.precioUnidad}}</td>
                           <td>{{ detalle.unidades    }}</td>
                           <td style="font-weight: 600;">{{ detalle.precioTotal }}</td>
-                          <td>{{ detalle.unidad      }}</td>
-                          <td>{{ detalle.certificado }}</td>
+                          <td style="color:#c29202;">{{ detalle.certificado }}</td>
                           <td>
                             <div *ngIf="detalle.facturado > 0" style="color: #37c885">
                               {{ detalle.facturado }}
                             </div>
                           </td>
-                          <td>{{ detalle.certificacions }}</td>
+                          <td style="color:#c29202;">{{ detalle.certificacions }}</td>
+                          <td>{{ detalle.unidad         }}</td>
                           <td style="min-width: 220px;">{{ detalle.observacion }}</td>
                           <td>{{ detalle.comentario  }}</td>
                         </tr>

@@ -64,7 +64,7 @@
 
 // COLORES
 .btn-cancel {
-  background-color: #FFF;
+  background-color: #fff;
   transition: ease 0.3s;
   color: #007bff;
   border: solid 1px #007bff;
@@ -74,7 +74,7 @@
   }
   &:hover:enabled:active {
     background-color: #5493ff;
-    color: #FFF;
+    color: #fff;
   }
 }
 
@@ -114,6 +114,19 @@
   }
 }
 
+.btn-certificar {
+  background-color: #81eaff;
+  border: solid 1px $color-grey-3;
+  color: white;
+  transition: ease 0.3s;
+  &:hover:enabled {
+    background-color: #0dcaf0;
+  }
+  &:hover:enabled:active {
+    background-color: #0091af;
+  }
+}
+
 .btn-white {
   background-color: #fff;
   border: solid 1px $color-grey-3;
@@ -135,6 +148,11 @@
   &:hover:enabled:active {
     background-color: $color-green-d;
   }
+}
+
+.c-cyan-export {
+  color: #0dcaf0;
+  border: solid 0.5px #0dcaf0;
 }
 
 .btn-green {
@@ -159,9 +177,9 @@
   &:hover:enabled:active {
     background-color: #257cfdd9;
   }
-  &:disabled{
-   background: #00b0ff70;
-   color:#fff
+  &:disabled {
+    background: #00b0ff70;
+    color: #fff;
   }
 }
 
@@ -226,6 +244,7 @@
     background-color: $color-purple-d;
   }
 }
+
 .btn-yellow {
   background-color: $color-yellow;
   color: #fff;

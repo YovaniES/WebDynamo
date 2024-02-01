@@ -86,7 +86,7 @@ export class ActaComponent implements OnInit {
       // console.log('EXPORT_VD', this.listVentasDeclaradasExport);
 
     })
-  }
+  };
 
   listActas: any[] = [];
   getAllActas(){
@@ -116,7 +116,6 @@ export class ActaComponent implements OnInit {
     this.contarActas();
     this.exportarVentasDeclaradas();
     this.exportarFiltroActas();
-
   }
 
   eliminarActa(acta: any) {

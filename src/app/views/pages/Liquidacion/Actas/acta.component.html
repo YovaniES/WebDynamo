@@ -171,7 +171,7 @@
                     <mat-icon [ngClass]="{ 'c-green_x': acta.estado == 'Completado', 'c-red': acta.estado == 'Pendiente' }" class="icon-18">report</mat-icon>{{acta.estado | uppercase}}
                   </small>
                 </td>
-                <td>{{ acta.ventaTotal     | number : "1.0-2"}}</td>
+                <td style="font-weight: 600;">{{ acta.ventaTotal     | number : "1.0-2"}}</td>
                 <td>{{ acta.declaradoTotal | number : "1.0-2"}}</td>
                 <td>{{ acta.facturadoTotal | number : "1.0-2"}}</td>
                 <td>{{ acta.ventaTotal  - acta.facturadoTotal | number : "1.0-2"}}</td>
@@ -238,7 +238,7 @@
                   <td style="text-align: left; min-width: 95px; font-weight: 700;">{{ detalle.idActaConcat }}</td>
                   <td>{{ detalle.proyecto    }}</td>
                   <td style="min-width: 200px;">{{ detalle.subservicio }}</td>
-                  <td style="min-width: 95px;" >{{ detalle.estado      }}</td>
+                  <td style="min-width: 95px; color:#94a4ff;;" >{{ detalle.estado      }}</td>
                   <td style="min-width: 125px;">{{ detalle.ventaTotalActa | number : "1.0-2"}}</td>
                   <td>{{ detalle.declaradoTotalActa | number : "1.0-2"}}</td>
                   <td>{{ detalle.facturadoTotalActa | number : "1.0-2"}}</td>
@@ -249,7 +249,7 @@
                     </small>
                   </td> -->
                   <td style="text-align:left ">
-                    <div class="cli-table_x-user">
+                    <div class="cli-table_x-user" style="color: #0dcaf0">
                       <button *ngIf="detalle.usuarioCreacion.usuario"
                         matTooltip={{detalle.usuarioCreacion.fullName}}
                         class="icon-btn btn-trans"

@@ -1,0 +1,55 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div class="cli-form-title c-male" style="margin-bottom: 20px; color: #adadad; font-size: 18px;">{{ DATA_DET_ACTA? "Certificar" : "Actualizar certificación" }} masivamente</div>
+  <!-- <div class="cli-form-title c-male" style="margin-bottom: 20px; color: #adadad; font-size: 18px;">{{ DATA_DET_ACTA.detalle.idDetalleActa && DATA_DET_ACTA.isCreate? "Certificar" : "Actualizar certificación" }} detalle</div> -->
+
+  <form class="row g-3" [formGroup]="certificacionForm">
+    <div class="cli-form newvac-wrapper">
+      <!-- <div style="display: flex">
+        <div class="id-score">Analista :<span class="total">{{DATA_DET_ACTA.nombre}}</span></div>
+        <div class="flex-1" style="background: #f8f9fa"></div>
+        <div class="venta">Precio total : <span class="total">{{DATA_DET_ACTA.detalle.precioTotal}}</span></div>
+        <div class="flex-1" style="background: #f8f9fa"></div>
+        <div class="cert">total certificado : <span class="total">{{DATA_DET_ACTA.detalle.certificado}}</span></div>
+      </div> -->
+
+      <div class="row">
+        <div class="cli-form-element col-f-2">
+        <label class="form-label">Certificación <small style="color: red">*</small></label>
+        <mat-form-field appearance="outline" color="accent" >
+          <mat-select formControlName="selectIdCertificacion" style="margin-left: 31px; font-size: 12px; width: 90%;" multiple>
+            <mat-option *ngFor="let option of listCertificaciones" [value]="option.id">{{option.nombre}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <small class="form-text text-alert" *ngIf="campoNoValido('selectIdCertificacion')">* Seleccione la certificación es obligatorio</small>
+        </div>
+
+
+        <div class="cli-form-element col-f-2">
+          <label>Fecha certificación <small style="color: red">*</small></label>
+          <input type="date" class="cli-input" formControlName="fechaCertificacion" />
+          <small class="form-text text-alert" *ngIf="campoNoValido('fechaCertificacion')">* Ingrese la Fecha de certificación es obligatorio</small>
+        </div>
+
+        <div class="cli-form-buttons">
+          <button
+            class="cli-btn btn-m btn-regresar"
+            type="submit"
+            (click)="close()">
+            <mat-icon class="icon-18">cancel</mat-icon> Cancelar
+          </button>
+
+          <button
+            class="cli-btn btn-m btn-turq"
+            [disabled]="certificacionForm.invalid"
+            (click)="crearOactualizarCertificacionMasiva()">
+            <mat-icon class="icon-18">save</mat-icon> {{ actionBtn }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

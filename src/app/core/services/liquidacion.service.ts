@@ -342,6 +342,10 @@ export class LiquidacionService {
       })
     );
   }
+  // https://facturacionactas2.azurewebsites.net/api/Certificacion/CrearDetalleCertificacionMasiva
+  certificacionMasiva(cert: any): Observable<any> {
+    return this.http.post<any>(`${API_DET_CERTIFICACION}/CrearDetalleCertificacionMasiva`, cert)
+  }
 
   crearCertificacion(requestCert: any): Observable<any> {
     return this.http.post(API_CERTIFICACION, requestCert);

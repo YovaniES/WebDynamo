@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UtilService } from 'src/app/core/services/util.service';
 import { VentaDeclaradaComponent } from '../modal-actas/venta-declarada/venta-declarada.component';
 import { DetalleActasComponent } from '../modal-actas/detalle-actas/detalle-actas.component';
+import { CertificacionMasivaComponent } from '../modal-actas/detalle-actas/certificacion-masiva/certificacion-masiva.component';
 
 @Component({
   selector: 'app-sub-actas',
@@ -58,6 +59,8 @@ export class SubActasComponent implements OnInit {
       enlace       : [''],
       idEstado     : [''],
       comentario   : [''],
+      certificado  : [''],
+      facturado    : ['']
     })
   };
 
@@ -175,6 +178,8 @@ export class SubActasComponent implements OnInit {
         this.subActasForm.reset({
           comentario        : acta.comentario,
           declarado         : acta.declaradoTotalActa,
+          certificado       : acta.certificadoTotalActa,
+          facturado         : acta.facturadoTotalActa,
           enlace            : acta.enlaceActa,
           facturadoTotalActa: acta.facturadoTotalActa,
           gestor            : acta.gestor,
@@ -188,11 +193,9 @@ export class SubActasComponent implements OnInit {
           venta_total       : acta.ventaTotalActa,
         })
 
-        // this.subActasForm.controls['idGestor'  ].disable();
-        // this.subActasForm.controls['idProyecto' ].disable();
         this.subActasForm.controls['declarado'  ].disable();
-        // this.subActasForm.controls['venta_total'].disable();
-        // this.subActasForm.controls['periodo'   ].disable();
+        this.subActasForm.controls['certificado'].disable();
+        this.subActasForm.controls['facturado'  ].disable();
       })
     }
   };
@@ -280,5 +283,16 @@ export class SubActasComponent implements OnInit {
       });
   }
 
+  certificarMasivamente(DATA?: any) {
+    console.log('DATA_DET_CERT', DATA);
+    this.dialog
+      .open(CertificacionMasivaComponent, { width: '40%', data: DATA })
+      .afterClosed().subscribe((resp) => {
+        console.log('RESP_DET_ACT', resp);
+        if (resp) {
+          this.cargarActaById();
+        }
+      });
+    }
 }
 
