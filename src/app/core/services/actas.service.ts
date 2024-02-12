@@ -194,6 +194,10 @@ export class ActasService {
     });
   };
 
+  guardarOrdenCompraImportado(){
+
+  }
+
   // CRUD GESTOR SUBSERIVICIO
   crearGestorSubservicio(requestGestor: any) {
     return this.http.post(`${API_GESTOR_SUBS}`, requestGestor);

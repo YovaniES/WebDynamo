@@ -71,19 +71,95 @@ export class ModalOrdencompraComponent implements OnInit {
 
     formData.append('file', file, file.name);
     this.importarOrdenCompra(formData);
+  };
+
+  generarOcImportado(){
+
+    return this.listOrdenImportado.map(x => {
+      return {
+        nroOrden     : x.nroOrden,
+        monto        : x.monto,
+        moneda       : x.moneda,
+        certificacion:{
+            nroCertificacion  : x.certificacion.nroCertificacion,
+            valor             : x.certificacion.valor,
+            fechaCertificacion: x.certificacion.fechaCertificacion,
+            idProyecto        : x.certificacion.idProyecto,
+            proyecto          : x.certificacion.proyecto,
+            factura           : {
+                nroFactura    : x.certificacion.factura.nroFactura,
+                fechaFactura  : x.certificacion.factura.fechaFactura,
+                facturaTgs    : x.certificacion.factura.facturaTgs,
+                facturaAdquira: x.certificacion.factura.facturaAdquira,
+            }
+          }
+      }
+    })
   }
+
+  guardarOrdenCompraImportado(){
+    const formValues = this.ordencompraForm.getRawValue();
+    console.log('IMP-OC', this.listOrdenImportado);
+
+    const request = this.generarOcImportado();
+
+    // const request = {
+    //   this.generarOcImportado();
+        // idGestor         : formValues.idGestor,
+        // idProyecto       : formValues.idProyecto,
+        // idSubservicio    : formValues.idSubservicio,
+        // periodo          : formValues.periodo + '-01',
+        // comentario       : formValues.comentario,
+        // ventaTotal       : formValues.venta_total,
+        // enlaceAta        : formValues.enlaceAta,
+
+        // idUsuarioCreacion: this.userID,
+        // nroOrden     : "9404986558",
+        // monto        : 31880.64,
+        // moneda       : "PEN",
+        // certificacion: {
+        //     nroCertificacion  : "5040707329",
+        //     valor             : 20000,
+        //     fechaCertificacion: "2023-10-10T00:00:00",
+        //     idProyecto        : 774,
+        //     proyecto          : "TQAFAB",
+        //     factura           : {
+        //         nroFactura    : "F001-025491",
+        //         fechaFactura  : "2023-10-10T00:00:00",
+        //         facturaTgs    : null,
+        //         facturaAdquira: null
+        //     }
+        // }
+      // }
+      console.log('GUARDAR', request);
+
+      this.liquidacionService.guardarOrdenCompraImportado(request).subscribe(resp => {
+        if (resp.success) {
+          Swal.fire({
+            title: 'Guardar orden de compra Importado!',
+            text : `${resp.message}`,
+            icon : 'success',
+            confirmButtonText: 'Ok'
+          })
+          this.close(true);
+        }else{
+          Swal.fire({
+            title: 'ERROR!',
+            text : `${resp.message}`,
+            icon : 'warning',
+            confirmButtonText: 'Ok'
+          })
+        }
+      })
+  };
 
   listOrdenImportado: any[] = [];
   importarOrdenCompra(formData: FormData){
     this.actasService.importarOrdenCompra(formData).subscribe((resp: any) => {
       this.blockUI.stop();
       if (resp.success) {
-        console.log('IMPORT_DATA', resp);
-
-        let ordenCompra = resp.result;
-
-        this.listOrdenImportado = ordenCompra;
-        console.log('IMP_DET', this.listOrdenImportado);
+        this.listOrdenImportado = resp.result;
+        console.log('IMP_OC', this.listOrdenImportado);
       }else{
         Swal.fire({
           title: 'ERROR!',
@@ -161,6 +237,7 @@ export class ModalOrdencompraComponent implements OnInit {
           confirmButtonText: 'Ok'
         });
       }
+    }, (error: any) => {console.log('ERROR OC', error);
     })
   }
 

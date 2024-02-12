@@ -25,9 +25,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatAutocompleteSelectedEvent, MatAutocompleteModule} from '@angular/material/autocomplete';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatChipsModule} from '@angular/material/chips';
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -55,14 +54,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatMenuModule,
     MatDatepickerModule,
     MatInputModule,
-    // MatAutocompleteSelectedEvent,
     MatAutocompleteModule,
     MatChipsModule,
-
-    // BrowserAnimationsModule,
-
     MatMomentDateModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es',  }, ],
 })
+
 export class MaterialModule {}

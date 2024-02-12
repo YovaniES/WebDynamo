@@ -1,0 +1,110 @@
+<!-- <div class="modal-title-inic mt-5">Vista facturados</div> -->
+<div class="cli-content">
+  <div class="cli-card-body">
+    <input
+      id="ckh2h"
+      (click)="filtrar(this)"
+      type="button"
+      style="height: 0px; width: 0px; visibility: hidden"
+    /><p *ngIf="!resultadoV"><em>Cargando...</em></p>
+
+    <div class="row" style="justify-content: space-around">
+      <div class="col-lg-6 col-12">
+        <h3 class="visor-title">Facturados por periodo</h3>
+        <div class="chart-wrapper canvas">
+          <canvas
+            baseChart
+            [data]="pieChartData"
+            [labels]="pieChartLabels"
+            [chartType]="pieChartType"
+            [options]="pieChartOptions"
+            [plugins]="pieChartPlugins"
+            [legend]="pieChartLegend"
+          >
+          </canvas>
+        </div>
+      </div>
+      <div class="col-lg-6 col-12">
+        <h3 class="visor-title">Facturados por Proyecto</h3>
+        <div style="display: block" class="canvas">
+          <canvas
+            baseChart
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="barChartLegend"
+            [chartType]="barChartType">
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mt-4" style="padding: 10px">
+      <div class="card-header border-transparent" style="display: flex">
+        <h3 class="card-title">
+          <span style="font-weight: 600" id="titulo">Facturados :: ({{ sum | number : "5.2-2" }})</span>
+        </h3>
+
+        <div class="flex-1"></div>
+
+        <div class="card-tools">
+          <button
+            type="button"
+            class="btn btn-tool"
+            style="color: #67de67"
+            matTooltip="Exportar"
+            (click)="exportToExcel()"
+          >
+            <mat-icon>downloading</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table
+            id="tbRes"
+            class="table table-sm table-centered mb-0"
+            style="font-size: small">
+            <thead>
+              <tr>
+                <th>Periodo</th>
+                <th>Proyecto</th>
+                <th>Lider</th>
+                <th>Sub Servicio</th>
+                <th>Estado</th>
+                <th>Factura</th>
+                <th>Monto Facturado</th>
+                <th>Orden compra - Certificacion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fact of resultadoV | paginate: {
+                          itemsPerPage: pageSize,
+                          currentPage: page,
+                          totalItems: totalFacturas}">
+                <td>{{ fact.periodo  }}</td>
+                <td>{{ fact.proyecto }}</td>
+                <td>{{ fact.lider    }}</td>
+                <td>{{ fact.sub_servicio }}</td>
+                <td>{{ fact.estado   }}</td>
+                <td>{{ fact.factura  }}</td>
+                <td>{{ fact.monto_facturado | number : "3.2-2" }}</td>
+                <td>{{ fact.orden_compra + " - " + fact.cod_certificacion }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card-footer pb-0 pt-3">
+        <pagination-controls
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+          [responsive]="false"
+          (pageChange)="cambiarPagina($event)">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

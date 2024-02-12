@@ -15,6 +15,7 @@ import {
   API_GESTOR_COMBO,
   API_GESTOR_FILTRO,
   API_GESTOR_SUBS,
+  API_GUARDAR_ORDENCOMPRA,
   API_JEFATURA,
   API_JEFATURA_FILTRO,
   API_LIDER,
@@ -342,6 +343,7 @@ export class LiquidacionService {
       })
     );
   }
+
   // https://facturacionactas2.azurewebsites.net/api/Certificacion/CrearDetalleCertificacionMasiva
   certificacionMasiva(cert: any): Observable<any> {
     return this.http.post<any>(`${API_DET_CERTIFICACION}/CrearDetalleCertificacionMasiva`, cert)
@@ -481,5 +483,9 @@ export class LiquidacionService {
   eliminarOrdenCompra(idOrden: number): Observable<any> {
     return this.http.delete<any>(`${API_ORDEN_COMPRA}/${idOrden}`);
   };
+
+  guardarOrdenCompraImportado(params: any): Observable<any> {
+    return this.http.post(API_GUARDAR_ORDENCOMPRA, params);
+  }
 
 }

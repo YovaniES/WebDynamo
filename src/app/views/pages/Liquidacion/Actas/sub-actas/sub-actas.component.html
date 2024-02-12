@@ -268,15 +268,15 @@
                           <td style="font-family: Webapp-Bold;">{{ detalle.estado }}</td>
                           <td>{{ detalle.precioUnidad}}</td>
                           <td>{{ detalle.unidades    }}</td>
-                          <td style="font-weight: 600;">{{ detalle.precioTotal }}</td>
-                          <td style="color:#c29202;">{{ detalle.certificado }}</td>
+                          <td style="font-weight: 600;">{{ detalle.precioTotal | number : "1.0-2"}}</td>
+                          <td style="color:#c29202;">{{ detalle.certificado  | number : "1.0-2"}}</td>
                           <td>
                             <div *ngIf="detalle.facturado > 0" style="color: #37c885">
-                              {{ detalle.facturado }}
+                              {{ detalle.facturado | number : "1.0-2"}}
                             </div>
                           </td>
                           <td style="color:#c29202;">{{ detalle.certificacions }}</td>
-                          <td>{{ detalle.unidad         }}</td>
+                          <td>{{ detalle.unidad      }}</td>
                           <td style="min-width: 220px;">{{ detalle.observacion }}</td>
                           <td>{{ detalle.comentario  }}</td>
                         </tr>

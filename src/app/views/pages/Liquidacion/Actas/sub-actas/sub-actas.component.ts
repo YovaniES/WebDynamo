@@ -177,9 +177,9 @@ export class SubActasComponent implements OnInit {
 
         this.subActasForm.reset({
           comentario        : acta.comentario,
-          declarado         : acta.declaradoTotalActa,
+          declarado         : acta.declaradoTotalActa.toFixed(),
           certificado       : acta.certificadoTotalActa,
-          facturado         : acta.facturadoTotalActa,
+          facturado         : acta.facturadoTotalActa.toFixed(),
           enlace            : acta.enlaceActa,
           facturadoTotalActa: acta.facturadoTotalActa,
           gestor            : acta.gestor,

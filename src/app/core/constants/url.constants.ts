@@ -26,7 +26,9 @@ switch (ENVIROMENT) {
   case 'PROD':
     AUTH_API             = 'http://seguridadweb.indratools.com/aut/seguridad/';
     PATH_VISOR_DYNAMO    = 'http://visordynamosupportapi.indratools.com/';
-    BASE_LIQUIDACION     = 'http://facturacionactas.indratools.com/api/'
+    // PATH_VISOR_DYNAMO    = 'https://localhost:7197/';
+    // BASE_LIQUIDACION     = 'http://facturacionactas.indratools.com/api/'
+    BASE_LIQUIDACION     = 'https://facturaciondynamo2.azurewebsites.net/api/' // AZURE
     MANTENIM_LIQUIDACION = 'http://mantenimientoactas.indratools.com/api/'
     PATH_BACK_NET        = 'http://backdynamosupport.indratools.com/api/configurador/' //SUBSITE 21
     PATH_FACTURACION     = 'http://facturacionwebapi.indratools.com/api'//SUBSITE34 (CON BD_DynamoSupport_PROD)
@@ -37,7 +39,8 @@ switch (ENVIROMENT) {
   default:
     break;
 }
-// https://facturacionactas2.azurewebsites.net/api/DetalleActaCertificacion/CrearDetalleCertificacionMasiva
+
+
 // LOGIN certificacionListado
 export const AUTH_SESSION = AUTH_API + 'login';
 
@@ -71,8 +74,10 @@ export const API_FACTURAS_FILTRO         = BASE_LIQUIDACION + 'Factura/filtrar';
 export const API_FACTURAS                = BASE_LIQUIDACION + 'Factura';
 export const API_ESTADO_FACTURAS         = BASE_LIQUIDACION + 'Factura/EstadoFactura';
 export const API_IMPORT_ACTAS            = BASE_LIQUIDACION + 'Acta/ImportActaExcel';
-export const API_IMPORT_ORDENCOMPRA      = BASE_LIQUIDACION + 'Acta/ImportOrdenExcel'; //OJO FALTA EL ENDPOINT
-  // https://facturacionactas2.azurewebsites.net/api/DetalleActaCertificacion/CrearDetalleCertificacionMasiva
+export const API_IMPORT_ORDENCOMPRA      = 'https://facturaciondynamo2.azurewebsites.net/api/OrdenCompra/ImportOrdenCompraExcel';
+export const API_GUARDAR_ORDENCOMPRA     = 'https://facturaciondynamo2.azurewebsites.net/api/OrdenCompra/createOrdenCompraMasive';
+// https://facturaciondynamo2.azurewebsites.net/api/OrdenCompra/createOrdenCompraMasive
+
 
 
 // MANTENIMIENTO LIQUIDACION
@@ -102,19 +107,8 @@ export const PATH_IMPORT_LIQ = API_SAVE_DATA_IMPORT;
 
 export const API_CORREO = 'https://localhost:44395/api/email'; //NO SE USA EN DYNAMOSUPPORT
 
-// fechaCertificacion:"2024-02-02",
-// idActa:240,
-// idCertificacions:[31, 29]
-// 0:31,
-// 1:29,
-// idUsuarioActualiza:441
-
-
-
-
 
 // https://localhost:7247/api/Facturacion/Guardar
-// http://localhost:5167/swagger/v1/swagger.json // LOGIN SEGURIDAD WEB
 
 // PATH_BACK_NET  = 'http://backsupport.indratools.com/api/configurador/';
 

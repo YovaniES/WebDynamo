@@ -17,7 +17,7 @@
   </div>
 
 
-  <div class="pr-subtitle">Data Orden compra</div>
+  <div class="pr-subtitle mt-2">Data Orden compra</div>
     <div class="pr-section">
       <form class="row g-3" [formGroup]="ordencompraForm">
         <div class="pr-module-container mb-2 mt-3" *ngIf="activeTab == 'manual'">
@@ -78,63 +78,100 @@
                 </ng-container>
               </div>
             </div>
+
           </div>
+          <!-- <div class="cli-form-buttons">
+            <button class="cli-btn btn-m btn-regresar"
+                    type="submit" (click)="close()">
+                    <mat-icon class="icon-18">cancel</mat-icon> Regresar
+            </button>
+
+            <button class="cli-btn btn-m btn-turq"
+                    [disabled]="ordencompraForm.invalid"
+                    (click)="crearOactualizarOrdenCompra()">
+                    <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
+            </button>
+          </div> -->
         </div>
 
-        <div class="pr-module-container mb-2 mt-3" *ngIf="activeTab == 'importar'">
-          <div class="card" style="min-height: 150px; border: none;">
-
-            <!-- <div style="display: flex" class="mb-1">
+        <div class="card" style="min-height: 160px; border: none;" *ngIf="activeTab == 'importar'">
+            <div style="display: flex" class="mt-4 mb-1">
               <input type="file" class="cli-import"
               accept=".xlsx, .xls, .csv"
               formControlName="import"
               (change)="readExcell($event)">
-            </div> -->
-
-                  <!-- TABLA DE ORDENES DE COMPRA ------------------------------------------------------------------>
-            <div style="overflow: auto; min-height: 250px; color: #6c757d" *ngIf="listOrdenImportado.length > 0">
-              <table class="cli-table stripedtable underlinedtable">
-                <thead>
-                  <tr class="bgc-blue-light c-white">
-                    <th>N°</th>
-                    <th style="min-width: 150px" >Orden de compra.</th>
-                    <th style="min-width: 250px" >Certificaciones</th>
-                    <th style="min-width: 250px" >Proyecto(s)</th>
-                    <th style="min-width: 118px;">Monto Total</th>
-                    <th style="min-width: 90px"  >Moneda</th>
-                    <th style="min-width: 106px" >Factura</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr *ngFor="let orden of listOrdenImportado | paginate: {
-                              itemsPerPage: pageSize,
-                              currentPage: page,
-                              totalItems: totalOrdencompra }">
-
-                    <td style="font-weight: 600">{{ orden.idOrden   }}</td>
-                    <td style="text-align: left">{{ orden.nro_orden }}</td>
-                    <td>{{ orden.certificacions  }}</td>
-                    <td>{{ orden.proyectos       }}</td>
-                    <td>{{ orden.monto | number : "1.0-2"}}</td>
-                    <td>{{ orden.moneda          }}</td>
-                    <td>{{ orden.factura         }}</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div class="cli-loader" *ngIf="loadingItem">
-                <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
-              </div>
-
-              <div
-                *ngIf="!loadingItem && listOrdenImportado.length == 0"
-                class="cli-loader mt-5"
-                style="color: #f83434">
-                No hay Orden de compra para mostrar
-              </div>
             </div>
-          </div>
+
+            <!-------- TABLA DE ORDENES DE COMPRA ------------------------------------------------------------------>
+            <ng-container *ngIf="listOrdenImportado.length> 0">
+              <div class="chart-draw">
+                  <div class="pr-module-container row g-3">
+
+                    <div style="overflow: auto; min-height: 200px; color: #6c757d">
+                      <table class="cli-table stripedtable underlinedtable">
+                        <thead>
+                          <tr class="bgc-blue-light c-white">
+                            <th>N°</th>
+                            <th style="min-width: 150px" >Orden de compra.</th>
+                            <th style="min-width: 118px;">Monto Total</th>
+                            <th style="min-width: 90px"  >Moneda</th>
+                            <th style="min-width: 90px"  >Certificación</th>
+                            <th style="min-width: 140px"  >Fecha certificación</th>
+                            <th style="min-width: 250px" >Proyecto(s)</th>
+                            <th style="min-width: 90px"  >Valor</th>
+
+                            <th style="min-width: 106px" >Factura</th>
+                            <th style="min-width: 106px" >Factura Tgs</th>
+                            <th style="min-width: 126px" >Factura Adquira</th>
+                            <th style="min-width: 106px" >Fecha factura</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr *ngFor="let orden of listOrdenImportado; let i = index">
+                            <td style="font-weight: 600">{{ i+1  }}</td>
+                            <td style="text-align: left">{{ orden.nroOrden }}</td>
+                            <td>{{ orden.monto | number : "1.0-2"}}</td>
+                            <td>{{ orden.moneda          }}</td>
+                            <td>{{ orden.certificacion.nroCertificacion   }}</td>
+                            <td>{{ orden.certificacion.fechaCertificacion }}</td>
+                            <td>{{ orden.certificacion.proyecto  }}</td>
+                            <td>{{ orden.certificacion.valor     }}</td>
+
+                            <td>{{ orden.certificacion.factura.nroFactura? orden.certificacion.factura.nroFactura : '-' }}</td>
+                            <td>{{ orden.certificacion.factura.facturaTgs? orden.certificacion.factura.facturaTgs : 'x' }}</td>
+                            <td>{{ orden.certificacion.factura.facturaAdquira? orden.certificacion.factura.facturaAdquira: 'y' }}</td>
+                            <td>{{ orden.certificacion.factura.fechaFactura? (orden.certificacion.factura.fechaFactura | date:'dd/MM/yyyy') : 'f'   }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <div class="cli-loader" *ngIf="loadingItem">
+                        <mat-spinner style="margin-right: 20px" diameter="20"></mat-spinner>cargando...
+                      </div>
+
+                      <div
+                        *ngIf="!loadingItem && listOrdenImportado.length == 0"
+                        class="cli-loader mt-5"
+                        style="color: #f83434">
+                        No hay Orden de compra para mostrar
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="cli-form-buttons">
+                    <button class="cli-btn btn-m btn-regresar"
+                            type="submit" (click)="close()">
+                            <mat-icon class="icon-18">clear</mat-icon> Cancelar
+                    </button>
+
+                    <button class="cli-btn btn-m btn-turq"
+                            (click)="guardarOrdenCompraImportado()">
+                            <mat-icon class="icon-18">save</mat-icon> Guardar
+                    </button>
+                  </div>
+              </div>
+          </ng-container>
         </div>
       </form>
     </div>
@@ -228,19 +265,20 @@
             </div>
         </div>
       </div>
-      </ng-container>
+    </ng-container>
 
-  <div class="cli-form-buttons">
-    <button class="cli-btn btn-m btn-regresar"
-            type="submit" (click)="close()">
-            <mat-icon class="icon-18">cancel</mat-icon> Cancelar
-    </button>
+    <div class="cli-form-buttons" *ngIf="DATA_ORDENCOMPRA && listOrdenImportado.length> 0">
+      <button class="cli-btn btn-m btn-regresar"
+              type="submit" (click)="close()">
+              <mat-icon class="icon-18">cancel</mat-icon> Regresar
+      </button>
 
-    <button class="cli-btn btn-m btn-turq"
-            [disabled]="ordencompraForm.invalid"
-            (click)="crearOactualizarOrdenCompra()">
-            <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
-    </button>
-  </div>
+      <button class="cli-btn btn-m btn-turq"
+              [disabled]="ordencompraForm.invalid"
+              (click)="crearOactualizarOrdenCompra()">
+              <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
+      </button>
+    </div>
+
 </div>
 

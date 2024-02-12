@@ -246,10 +246,7 @@ export class RegistroVacacionesComponent implements OnInit {
   getUsuario(){
    this.authService.getCurrentUser().subscribe( resp => {
      this.userID   =  resp.user.userId;
-    //  this.userID   = resp,  resp.user.userId;
      this.userLogeado = `${resp.user.nombres} ${resp.user.apellidoPaterno}`
-    //  console.log('USER_lOGEADO', this.userID, this.userLogeado);
-    //  console.log('USER_ID_LOG', this.userID);
    })
   };
 
@@ -266,12 +263,11 @@ export class RegistroVacacionesComponent implements OnInit {
   actualizarVacaciones(DATA: any) {
     // console.log('DATA_PERSONA_VACACIONES', DATA);
     this.dialog
-      .open(ActualizarVacacionesComponent, {width: '65%', height: '75%', data: DATA, disableClose: true})
+      .open(ActualizarVacacionesComponent, {width: '65%', data: DATA, disableClose: true})
       .afterClosed().subscribe((resp) => {
-        // if (resp) {
-        //   this.cargarOBuscarVacaciones();
-        // }
+        if (resp) {
           this.cargarOBuscarVacaciones();
+        }
       });
   }
 }

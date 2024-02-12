@@ -250,11 +250,8 @@ export class RegistroPersonalComponent implements OnInit {
   }
 
   crearPersonal() {
-    const dialogRef = this.dialog.open(CrearPersonalComponent, {
-      width: '55%',
-    });
-
-    dialogRef.afterClosed().subscribe((resp) => {
+    this.dialog.open(CrearPersonalComponent, {width: '55%',})
+    .afterClosed().subscribe((resp) => {
       if (resp) {
         this.cargarOBuscarPersonal();
       }
@@ -265,7 +262,7 @@ export class RegistroPersonalComponent implements OnInit {
     // console.log('DATA_PERSONA_HC', DATA);
 
     this.dialog
-      .open(ActualizarPersonalComponent, {width: '55%', height: '90%', data: DATA})
+      .open(ActualizarPersonalComponent, {width: '55%', data: DATA})
       .afterClosed()
       .subscribe((resp) => {
         if (resp) {

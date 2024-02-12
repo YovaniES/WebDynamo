@@ -1,6 +1,6 @@
 <div class="cli-card fit-card">
   <div class="cli-card-body">
-    <div class="modal-title c-male">Registro de Actas</div>
+    <div class="modal-title c-title">Registro de Actas</div>
     <div>
       <!-- BUSCADOR POR FILTRO ---------------------------------------------------------------->
       <form [formGroup]="actasForm">
@@ -103,7 +103,7 @@
         </div>
 
         <!-- BOTON MODAL PARA CREAR ACTA ----------------------------------------------------->
-        <div style="display: flex" class="mt-4 mb-1">
+        <div style="display: flex" class="mt-1 mb-1">
           <div class="d-flex">
             <button class="cli-btn btn-turq"
               (click)="abrirModalCrearOactualizar()"
@@ -242,12 +242,7 @@
                   <td style="min-width: 125px;">{{ detalle.ventaTotalActa | number : "1.0-2"}}</td>
                   <td>{{ detalle.declaradoTotalActa | number : "1.0-2"}}</td>
                   <td>{{ detalle.facturadoTotalActa | number : "1.0-2"}}</td>
-                  <td>{{ detalle.ventaTotalActa -  detalle.facturadoTotalActa  }}</td>
-                  <!-- <td>
-                    <small class="label">
-                      {{ detalle.usuarioCreacion.usuario }}
-                    </small>
-                  </td> -->
+                  <td>{{ (detalle.ventaTotalActa -  detalle.facturadoTotalActa) | number : "1.0-2" }}</td>
                   <td style="text-align:left ">
                     <div class="cli-table_x-user" style="color: #0dcaf0">
                       <button *ngIf="detalle.usuarioCreacion.usuario"

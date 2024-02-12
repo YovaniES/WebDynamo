@@ -21,7 +21,7 @@ export class VisorService {
   getFacturados() {
     return this.http.get<any>(API_VISOR + 'getFacturados').pipe(
       tap((resp: any) => {
-        // console.log('VISOR_Facturados: ', resp);
+        console.log('VISOR_Facturados: ', resp);
       })
     );
   }
@@ -42,8 +42,8 @@ export class VisorService {
     );
   }
 
-  getLiqByProyecto() {
-    return this.http.get<any>(API_VISOR + 'getLiqByProyecto').pipe(
+  getLiquidacionVenta() {
+    return this.http.get<any>(API_VISOR + 'getLiqVenta').pipe(
       tap((resp: any) => {
         // console.log('LIQ_BY_PROY: ', resp);
       })
@@ -75,3 +75,5 @@ export class VisorService {
     );
   }
 }
+
+
