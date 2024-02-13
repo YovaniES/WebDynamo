@@ -27,8 +27,8 @@ switch (ENVIROMENT) {
     AUTH_API             = 'http://seguridadweb.indratools.com/aut/seguridad/';
     PATH_VISOR_DYNAMO    = 'http://visordynamosupportapi.indratools.com/';
     // PATH_VISOR_DYNAMO    = 'https://localhost:7197/';
-    // BASE_LIQUIDACION     = 'http://facturacionactas.indratools.com/api/'
-    BASE_LIQUIDACION     = 'https://facturaciondynamo2.azurewebsites.net/api/' // AZURE
+    BASE_LIQUIDACION     = 'http://facturacionactas.indratools.com/api/'
+    // BASE_LIQUIDACION     = 'https://facturaciondynamo2.azurewebsites.net/api/' // AZURE PRUEBAS
     MANTENIM_LIQUIDACION = 'http://mantenimientoactas.indratools.com/api/'
     PATH_BACK_NET        = 'http://backdynamosupport.indratools.com/api/configurador/' //SUBSITE 21
     PATH_FACTURACION     = 'http://facturacionwebapi.indratools.com/api'//SUBSITE34 (CON BD_DynamoSupport_PROD)

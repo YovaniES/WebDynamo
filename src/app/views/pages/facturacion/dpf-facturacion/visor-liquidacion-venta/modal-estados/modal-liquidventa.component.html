@@ -1,0 +1,74 @@
+<div class="cli-modalclose">
+  <mat-icon class="icon-20" matTooltip="Cerrar" (click)="dialogRef.close()">close</mat-icon>
+</div>
+
+<div class="cli-form mt-3">
+  <div style="text-align: left; color: #adadad; font-size: 16px;">Liquidación - {{ DATA_LIQ_VENTA.proyecto }}</div>
+
+    <!-- <p *ngIf="!caspru"><em>Loading...</em></p> -->
+    <div style="overflow: auto; color: #6c757d">
+    <!-- <table class="cli-table stripedtable underlinedtable" style="font-size:x-small">
+      <thead>
+        <tr>
+          <th>Gestor</th>
+          <th>Sub Servicio</th>
+          <th>Estado</th>
+          <th>Importe</th>
+          <th>Declarado</th>
+          <th>Facturado</th>
+          </tr>
+      </thead>
+      <tbody *ngFor="let x of listDetalleLiquidVenta">
+        <tr>
+          <td   ><span>{{ x.torneo }}</span></td>
+          <td><span>{{x.requerimientos[0].subservicio}}</span></td>
+          <td><span  [ngStyle]="{'color':  (x.requerimientos[0].estado == 'En Elaboración') ? 'red' : (x.requerimientos[0].estado == 'Enviado') ? 'blue' : 'green'}"> {{x.requerimientos[0].estado}} </span></td>
+          <td><span>{{x.requerimientos[0].importe| number:'3.2-2' }}</span></td>
+          <td><span>{{x.requerimientos[0].declarado| number:'3.2-2' }}</span></td>
+          <td><span>{{x.requerimientos[0].facturado| number:'3.2-2' }}</span></td>
+        </tr> -->
+
+
+        <!-- <tr *ngFor="let item of x.requerimientos| slice:1; let i = index;">
+          <td><span>{{item.subservicio}}</span></td>
+          <td><span [ngStyle]="{'color':  (item.estado == 'En Elaboración') ? 'red' : (item.estado == 'Enviado') ? 'blue' : 'green'  }"  > {{item.estado}} </span></td>
+          <td><span>{{item.importe| number:'3.2-2' }} </span></td>
+          <td><span>{{item.declarado| number:'3.2-2' }} </span></td>
+          <td><span>{{item.facturado| number:'3.2-2' }} </span></td>
+        </tr> -->
+      <!-- </tbody>
+    </table> -->
+
+    <table class="table_slim stripedtable underlinedtable" style="font-size:x-small">
+      <thead>
+        <tr class="bgc-blue c-white">
+          <th>Gestor</th>
+          <th style="min-width: 100px;">Sub Servicio</th>
+          <th>Estado</th>
+          <th>Importe</th>
+          <th>Declarado</th>
+          <th>Facturado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <ng-container *ngFor="let gestor of datosAgrupados | keyvalue ; let i = index">
+          <!-- <div>Clave: {{ gestor.key }}</div> -->
+          <ng-container *ngFor="let item of gestor.value; let isFirstChild = first">
+            <tr>
+              <td style="text-align: left;" *ngIf="isFirstChild">{{ gestor.key }}</td> <!-- [attr.rowspan]="gestor.value.length"-->
+              <td style="text-align: left;" *ngIf="!isFirstChild"></td>
+              <td style="text-align: left;">{{ item.subservicio }}</td>
+              <td><span  [ngStyle]="{'color': (item.estado == 'En Elaboración') ? 'red' : (item.estado == 'Enviado') ? 'blue' : (item.estado == 'Facturado') ? '#31b12e' : '#419cff'}"> {{item.estado}} </span></td>
+              <td style="text-align: end;">{{ item.importe   | number : "1.0-2" }}</td>
+              <td style="text-align: end;">{{ item.declarado | number : "1.0-2" }}</td>
+              <td style="text-align: end;">{{ item.facturado? item.facturado: '' | number : "1.0-2" }}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+

@@ -78,20 +78,7 @@
                 </ng-container>
               </div>
             </div>
-
           </div>
-          <!-- <div class="cli-form-buttons">
-            <button class="cli-btn btn-m btn-regresar"
-                    type="submit" (click)="close()">
-                    <mat-icon class="icon-18">cancel</mat-icon> Regresar
-            </button>
-
-            <button class="cli-btn btn-m btn-turq"
-                    [disabled]="ordencompraForm.invalid"
-                    (click)="crearOactualizarOrdenCompra()">
-                    <mat-icon class="icon-18">save</mat-icon> {{actionBtn}}
-            </button>
-          </div> -->
         </div>
 
         <div class="card" style="min-height: 160px; border: none;" *ngIf="activeTab == 'importar'">
@@ -132,16 +119,15 @@
                             <td style="font-weight: 600">{{ i+1  }}</td>
                             <td style="text-align: left">{{ orden.nroOrden }}</td>
                             <td>{{ orden.monto | number : "1.0-2"}}</td>
-                            <td>{{ orden.moneda          }}</td>
-                            <td>{{ orden.certificacion.nroCertificacion   }}</td>
-                            <td>{{ orden.certificacion.fechaCertificacion }}</td>
+                            <td>{{ orden.moneda }}</td>
+                            <td>{{ orden.certificacion.nroCertificacion }}</td>
+                            <td>{{ orden.certificacion.fechaCertificacion | date:'dd/MM/yyyy'}}</td>
                             <td>{{ orden.certificacion.proyecto  }}</td>
                             <td>{{ orden.certificacion.valor     }}</td>
-
-                            <td>{{ orden.certificacion.factura.nroFactura? orden.certificacion.factura.nroFactura : '-' }}</td>
-                            <td>{{ orden.certificacion.factura.facturaTgs? orden.certificacion.factura.facturaTgs : 'x' }}</td>
-                            <td>{{ orden.certificacion.factura.facturaAdquira? orden.certificacion.factura.facturaAdquira: 'y' }}</td>
-                            <td>{{ orden.certificacion.factura.fechaFactura? (orden.certificacion.factura.fechaFactura | date:'dd/MM/yyyy') : 'f'   }}</td>
+                            <td>{{ orden.certificacion.factura.nroFactura? orden.certificacion.factura.nroFactura : '' }}</td>
+                            <td>{{ orden.certificacion.factura.facturaTgs? orden.certificacion.factura.facturaTgs : '' }}</td>
+                            <td>{{ orden.certificacion.factura.facturaAdquira? orden.certificacion.factura.facturaAdquira: '' }}</td>
+                            <td>{{ (orden.certificacion.factura.nroFactura == null ||orden.certificacion.factura.nroFactura == '' )? '' : (orden.certificacion.factura.fechaFactura | date:'dd/MM/yyyy') }}</td>
                           </tr>
                         </tbody>
                       </table>

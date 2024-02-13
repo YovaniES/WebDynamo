@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { VisorService } from 'src/app/core/services/visor.service';
+import { ModalLiquidacionVentaComponent } from './modal-estados/modal-liquidventa.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-liquidacion-venta',
@@ -9,129 +11,35 @@ import { VisorService } from 'src/app/core/services/visor.service';
 export class LiquidacionVentaComponent implements OnInit {
   resultado  : any[] = [];
   resultadoV : any[] = [];
-  totalColum : any;
+  totalColum : any[]=[];
   resultadoVF: any;
   caspru : any;
   casprux: any;
   closeResult: string = '';
 
-  constructor(private visorServices: VisorService,) {}
+
+
+    constructor(private visorServices: VisorService,
+                private dialog: MatDialog,
+      ) {}
 
   ngOnInit() {
-    this.getLiquidacionVenta();
+    this.getDataLiquidacionVenta();
   }
 
-  public dataSource: any[] = [];
+  public dataLiqVenta: any[] = [];
   public displayedColumns: string[] = [];
-  getLiquidacionVenta(){
+  getDataLiquidacionVenta(){
     this.visorServices.getLiquidacionVenta().subscribe((resp: any[]) => {
-      this.dataSource = resp;
+      this.dataLiqVenta = resp;
       this.totalColum = resp;
-      console.log('LIQ-VEN', this.dataSource);
+      console.log('LIQ-VEN', this.dataLiqVenta);
 
-      this.displayedColumns = ["periodo","proyecto","actas","avance","importe","venta_declarada","certificado","facturado",]
+      // this.displayedColumns = ["periodo","proyecto","actas","avance","importe","venta_declarada","certificado","facturado",]
 
     }, (error) => console.error(error)
     )
   }
-
-  getDataLiquidacionVenta() {
-    this.visorServices.getLiquidacionVenta().subscribe((result: any[]) => {
-      this.resultado = result;
-      // this.resultadoV = result;
-      this.dataSource = result;
-      console.log('LIQ_VENTA', this.dataSource);
-
-      // this.suma();
-
-        // function groupBy(objectArray: any[], property: string) {
-        //   return objectArray.reduce(function (acc, obj) {
-        //     var key = obj[property];
-
-        //     if (!acc[key]) {
-        //       acc[key] = [];
-        //     }
-        //     acc[key].push(obj);
-        //     return acc;
-        //   }, {});
-        // }
-
-        // const groupedData = groupBy(this.resultadoV, 'proyecto');
-        // const reducedData = [];
-
-        // for (let key in groupedData) {
-        //   let initialValue = 0;
-        //   let sum = groupedData[key].reduce((accumulator: any, currentValue: any) => {
-        //     return accumulator + (currentValue.grupo == "EyP" ? 1 : 0);
-        //   }, initialValue);
-
-        //   let sumd = groupedData[key].reduce((accumulator: any, currentValue: any) => {
-        //     return accumulator + (currentValue.grupo == "Controller" ? 1 : 0);
-        //   }, initialValue);
-
-        //   let sumf = groupedData[key].reduce((accumulator: any, currentValue: any) => {
-        //     return (
-        //       accumulator + (currentValue.grupo == "Facturación" ? 1 : 0)
-        //     );
-        //   }, initialValue);
-
-        //   reducedData.push({
-        //     Derivados: sumd,
-        //     Planificados: sum,
-        //     Facturar: sumf,
-        //     fecha: key,
-        //   });
-        // }
-
-        // this.barChartData = [
-        //   { label: "EyP",
-        //     data: reducedData.sort((a, b) => a.fecha > b.fecha ? 1 : b.fecha > a.fecha ? -1 : 0)
-        //       .map((x) => x["Planificados"]),
-        //   },
-        //   { label: "Controller",
-        //     data: reducedData.sort((a, b) => a.fecha > b.fecha ? 1 : b.fecha > a.fecha ? -1 : 0)
-        //       .map((x) => x["Derivados"]),
-        //   },
-        //   { label: "Facturación",
-        //     data: reducedData.sort((a, b) => a.fecha > b.fecha ? 1 : b.fecha > a.fecha ? -1 : 0)
-        //       .map((x) => x["Facturar"]),
-        //   },
-        // ];
-
-        // this.barChartLabels = reducedData
-        //   .sort((a, b) => (a.fecha > b.fecha ? 1 : b.fecha > a.fecha ? -1 : 0))
-        //   .map((x) => x['fecha']);
-
-        // console.log('DATA_FAC_FIL', res);
-
-        // var res0 = [];
-
-        // res0 = this.resultadoV.reduce(
-        //   (p: { [x: string]: number }, n: { periodo: string | number }) => {
-        //     if (p[n.periodo]) {
-        //       p[n.periodo] += 1;
-        //     } else {
-        //       p[n.periodo] = 1;
-        //     }
-        //     return p;
-        //   },
-        //   []
-        // );
-
-        // var res = [];
-        // for (var x in res0) {
-        //   res0.hasOwnProperty(x) && res.push(res0[x]);
-        // }
-        // this.pieChartData = res;
-
-        // var res = [];
-        // for (var x in res0) {
-        //   res0.hasOwnProperty(x) && res.push(x);
-        // }
-        // this.pieChartLabels = res;
-      },(error) => console.error(error));
-  }
-
 
 
   open(content: any, proy: any, periodo: any, origen: any) {
@@ -170,12 +78,23 @@ export class LiquidacionVentaComponent implements OnInit {
     // return false;
   }
 
-  public total(item: number) {
-    return item == 1
-      ? this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.importe,     0): item == 3
-      ? this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.facturado,   0): item == 4
-      ? this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.certificado, 0)
-      : this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.venta_declarada, 0 );
+  total(item: number) {
+    return item == 1? this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.importe,     0):
+           item == 2? this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.venta_declarada, 0):
+           item == 3? this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.certificado, 0):
+                      this.totalColum.reduce((acumulador:any, valorActual:any) => acumulador + valorActual.facturado,   0);
+  }
+
+
+  abrirDetalleLiquidacion(DATA?: any) {
+    console.log('DATA_DET_LIQ', DATA);
+    this.dialog
+      .open(ModalLiquidacionVentaComponent, { width: '45%', data: DATA, position:{top:'75px', left: '33.3%'} })
+      .afterClosed().subscribe((resp) => {
+        if (resp) {
+          this.getDataLiquidacionVenta();
+        }
+      });
   }
 
 }

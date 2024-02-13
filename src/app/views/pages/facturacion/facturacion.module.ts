@@ -21,6 +21,7 @@ import { ListProductsComponent } from './list-products/list-products.component';
 import { VisorDeclaradaComponent } from './dpf-facturacion/visor-venta-decl/visor-declarada.component';
 import { VisorFacturadosComponent } from './dpf-facturacion/visor-facturados/visor-facturados.component';
 import { LiquidacionVentaComponent } from './dpf-facturacion/visor-liquidacion-venta/liquidacion-venta.component';
+import { ModalLiquidacionVentaComponent } from './dpf-facturacion/visor-liquidacion-venta/modal-estados/modal-liquidventa.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { LiquidacionVentaComponent } from './dpf-facturacion/visor-liquidacion-v
     ModalProductComponent,
     VisorDeclaradaComponent,
     VisorFacturadosComponent,
-    LiquidacionVentaComponent
+    LiquidacionVentaComponent,
+    ModalLiquidacionVentaComponent
   ],
   imports: [
     CommonModule,

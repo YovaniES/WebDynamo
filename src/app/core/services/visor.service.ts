@@ -73,6 +73,10 @@ export class VisorService {
         // console.log('DATA-getListPendByGestor: ', resp);
       })
     );
+  };
+
+  getLiquidacionVentaDetalle(){
+    return this.http.get(API_VISOR + 'getDataModalLiqVentaFacturados');
   }
 }
 
